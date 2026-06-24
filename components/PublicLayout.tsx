@@ -6,7 +6,7 @@ import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileMenu } from "@/components/MobileMenu";
 
-const socialIconsMap: Record<string, JSX.Element> = {
+const socialIconsMap: Record<string, ReactNode> = {
   whatsapp: <FaWhatsapp className="w-5 h-5" />,
   facebook: <FaFacebookF className="w-4 h-4" />,
   tiktok: <FaTiktok className="w-4 h-4" />,
