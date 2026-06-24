@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cairo-standard",
+    "name": "استقبال عادي",
+    "airport": "القاهرة",
+    "price": 950,
+    "currency": "EGP",
+    "description": "مرافقة داخل المطار وتسهيل إجراءات الوصول أو السفر.",
+    "status": "available",
+    "sortOrder": 1
+  },
+  {
+    "id": "cairo-golf",
+    "name": "استقبال مع جولف كار",
+    "airport": "القاهرة",
+    "price": 1450,
+    "currency": "EGP",
+    "description": "خدمة مرافقة مع جولف كار داخل صالات المطار حسب التوفر.",
+    "status": "available",
+    "sortOrder": 2
+  },
+  {
+    "id": "sharm-vip",
+    "name": "VIP Fast Track",
+    "airport": "شرم الشيخ",
+    "price": 1800,
+    "currency": "EGP",
+    "description": "مسار سريع مميز للضيوف وكبار الزوار.",
+    "status": "available",
+    "sortOrder": 3
+  },
+  {
+    "id": "hurghada-standard",
+    "name": "استقبال عادي",
+    "airport": "الغردقة",
+    "price": 1100,
+    "currency": "EGP",
+    "description": "تنسيق استقبال وتسهيل إجراءات الوصول.",
+    "status": "available",
+    "sortOrder": 4
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "whatsappCarNumber": "01068033333",
+  "whatsappServiceNumber": "01068044444",
+  "address": "2 Makram Ebeid, Nasr City, Cairo",
+  "heroTitle": "ليمو مصر",
+  "heroSubtitle": "حجز ليموزين، فاست تراك، وفنادق في مصر بخطوة واحدة عبر واتساب.",
+  "heroImage": "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=1600&q=80",
+  "socialLinks": {
+    "facebook": "",
+    "instagram": "",
+    "tiktok": ""
+  },
+  "policies": "تأكيد الحجز يتم بعد مراجعة التفاصيل عبر واتساب. الأسعار قابلة للتغيير حسب الموعد والمسار والتوفر.",
+  "privacy": "نستخدم بيانات التواصل والحجز فقط لتأكيد الخدمة والتواصل مع العميل.",
+  "translations": {
+    "ar": {
+      "brand": "ليمو مصر",
+      "address": "2 مكرم عبيد، مدينة نصر، القاهرة",
+      "heroTitle": "ليمو مصر",
+      "heroSubtitle": "حجز ليموزين، فاست تراك، وفنادق في مصر بخطوة واحدة عبر واتساب.",
+      "heroBadge": "خدمة 24 ساعة في القاهرة والمطارات",
+      "footerText": "حجز سيارات، استقبال مطارات، وفنادق بخدمة سريعة وواضحة.",
+      "policies": "تأكيد الحجز يتم بعد مراجعة التفاصيل عبر واتساب. الأسعار قابلة للتغيير حسب الموعد والمسار والتوفر.",
+      "privacy": "نستخدم بيانات التواصل والحجز فقط لتأكيد الخدمة والتواصل مع العميل."
+    },
+    "en": {
+      "brand": "Limo Masr",
+      "address": "2 Makram Ebeid, Nasr City, Cairo",
+      "heroTitle": "Limo Masr",
+      "heroSubtitle": "Book limousine rides, airport fast track, and hotels in Egypt in one WhatsApp step.",
+      "heroBadge": "24/7 service in Cairo and airports",
+      "footerText": "Cars, airport assistance, and hotel booking with fast, clear service.",
+      "policies": "Bookings are confirmed after reviewing details on WhatsApp. Prices may change based on date, route, and availability.",
+      "privacy": "We use contact and booking details only to confirm the service and communicate with the customer."
+    }
+  }
+}

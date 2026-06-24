@@ -1,0 +1,17 @@
+[
+  {
+    "id": "650d08b8-fdff-4129-88fc-cd31d19696bf",
+    "type": "car",
+    "customerName": "mahmoud",
+    "phone": "01278635262",
+    "serviceRefId": "economy-sedan",
+    "serviceName": "سيارات صغيرة",
+    "date": "2026-07-10T19:50",
+    "notes": "",
+    "passengers": 1,
+    "price": 900,
+    "status": "new",
+    "source": "whatsapp",
+    "createdAt": "2026-06-24T17:15:20.064Z"
+  }
+]
