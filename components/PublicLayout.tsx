@@ -4,6 +4,7 @@ import { siteText, ui, withLang } from "@/lib/i18n";
 import { buildWhatsappUrl, serviceWhatsappNumber } from "@/lib/utils";
 import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaCar, FaPlane } from "react-icons/fa";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { MobileMenu } from "@/components/MobileMenu";
 
 const socialIconsMap: Record<string, JSX.Element> = {
   whatsapp: <FaWhatsapp className="w-5 h-5" />,
@@ -69,11 +70,13 @@ export async function PublicLayout({
             ))}
           </nav>
           
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 md:gap-5">
             <LanguageSwitcher currentLocale={locale} targetLocale={otherLocale} />
-            <Link href={whatsappUrl} target="_blank" className="bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] font-black rounded-md py-2.5 px-6 text-sm transition-colors duration-300 shadow-sm">
+            <Link href={whatsappUrl} target="_blank" className="bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] font-black rounded-md py-2 px-4 md:py-2.5 md:px-6 text-xs md:text-sm transition-colors duration-300 shadow-sm">
               {t.whatsapp}
             </Link>
+            {/* Mobile Nav Toggle */}
+            <MobileMenu navItems={navItems} translations={t as any} locale={locale} />
           </div>
         </div>
       </header>
