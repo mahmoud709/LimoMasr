@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import type { SiteSettings, ServiceType, Locale } from "@/lib/types";
 import { siteText, ui, withLang } from "@/lib/i18n";
 import { buildWhatsappUrl, serviceWhatsappNumber } from "@/lib/utils";
 import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaCar, FaPlane } from "react-icons/fa";
