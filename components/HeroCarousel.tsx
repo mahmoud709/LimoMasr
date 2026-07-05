@@ -1,127 +1,93 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
-// Transparent-background PNG car cutouts — no box, floats on dark hero background
-const SLIDES = [
-  {
-    src: "https://www.freepnglogos.com/uploads/mercedes-benz-png/mercedes-benz-logo-png-transparent-svg-vector-bie-supply-2.png",
-    alt: "Mercedes Benz",
-  },
-  {
-    src: "https://cdn.freepnglogos.com/uploads/bmw-png/bmw-cars-png-brand-emblem-symbol-transparent-background-15.png",
-    alt: "BMW Car",
-  },
-  {
-    src: "https://cdn.freepnglogos.com/uploads/toyota-png/toyota-camry-2018-transparent-background-1.png",
-    alt: "Toyota Camry",
-  },
-  {
-    src: "https://www.freepnglogos.com/uploads/kia-png/kia-car-png-transparent-image-2.png",
-    alt: "Kia Car",
-  },
-  {
-    src: "https://www.freepnglogos.com/uploads/hyundai-png/hyundai-car-png-transparent-background-11.png",
-    alt: "Hyundai Car",
-  },
-];
+export function HeroCarousel({ images }: { images?: string[] }) {
+  const slides = images && images.length > 0 ? images : [];
 
-// Fallback: same original working image if any slide fails to load
-const FALLBACK =
-  "https://www.motortrend.com/uploads/2023/09/2024-mercedes-benz-e-class-front-three-quarters-1.png";
-
-export function HeroCarousel() {
   const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [direction, setDirection] = useState<"left" | "right">("right");
   const [errors, setErrors] = useState<Record<number, boolean>>({});
 
-  const goTo = useCallback(
-    (index: number, dir: "left" | "right" = "right") => {
-      if (animating) return;
-      setAnimating(true);
-      setDirection(dir);
-      setTimeout(() => {
-        setCurrent(index);
-        setAnimating(false);
-      }, 400);
-    },
-    [animating]
-  );
+  const goTo = useCallback((index: number) => {
+    setCurrent(index);
+  }, []);
 
-  const prev = () => {
-    const newIdx = (current - 1 + SLIDES.length) % SLIDES.length;
-    goTo(newIdx, "left");
-  };
-
+  const prev = useCallback(() => {
+    if (slides.length === 0) return;
+    setCurrent(c => (c - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+  
   const next = useCallback(() => {
-    const newIdx = (current + 1) % SLIDES.length;
-    goTo(newIdx, "right");
-  }, [current, goTo]);
+    if (slides.length === 0) return;
+    setCurrent(c => (c + 1) % slides.length);
+  }, [slides.length]);
 
   useEffect(() => {
-    const timer = setInterval(next, 4000);
+    const timer = setInterval(next, 6000);
     return () => clearInterval(timer);
   }, [next]);
 
-  const imgSrc = errors[current] ? FALLBACK : SLIDES[current].src;
-
   return (
-    <div className="relative w-full max-w-[600px] xl:max-w-[800px] rtl:lg:-translate-x-10 ltr:lg:translate-x-10 select-none">
-      {/* Floating car image — no background, no box */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        key={current}
-        src={imgSrc}
-        alt={SLIDES[current].alt}
-        onError={() => setErrors((prev) => ({ ...prev, [current]: true }))}
-        className="w-full h-auto object-contain drop-shadow-2xl rtl:scale-x-[-1]"
-        style={{
-          transition: "opacity 0.4s ease, transform 0.4s ease",
-          opacity: animating ? 0 : 1,
-          transform: animating
-            ? `translateX(${direction === "right" ? "32px" : "-32px"})`
-            : "translateX(0)",
-        }}
-      />
-
-      {/* Prev arrow */}
-      <button
-        onClick={prev}
-        aria-label="Previous"
-        className="absolute top-1/2 -translate-y-1/2 rtl:-right-4 ltr:-left-4 w-9 h-9 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-lg z-20"
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
-      {/* Next arrow */}
-      <button
-        onClick={next}
-        aria-label="Next"
-        className="absolute top-1/2 -translate-y-1/2 rtl:-left-4 ltr:-right-4 w-9 h-9 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-lg z-20"
-      >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      {/* Dot indicators */}
-      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20" dir="ltr">
-        {SLIDES.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goTo(i, i > current ? "right" : "left")}
-            aria-label={`Go to slide ${i + 1}`}
-            className={`transition-all duration-300 rounded-full ${
-              i === current
-                ? "w-6 h-2 bg-[#d0a755]"
-                : "w-2 h-2 bg-white/30 hover:bg-white/60"
-            }`}
+    <div className="absolute inset-0 w-full h-full overflow-hidden group bg-[#1a2b3c]">
+      {/* Background Images */}
+      {slides.map((src, idx) => (
+        <div
+          key={idx}
+          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${idx === current ? "opacity-100 scale-100 z-0" : "opacity-0 scale-105 -z-10"}`}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt="Hero Background"
+            className="w-full h-full object-cover"
           />
-        ))}
-      </div>
+        </div>
+      ))}
+
+      {/* Dark Overlay for Text Readability - gradient towards the start (right for RTL, left for LTR) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20 z-10 pointer-events-none ltr:bg-gradient-to-l rtl:bg-gradient-to-r"></div>
+      {/* Base shadow to guarantee readability globally */}
+      <div className="absolute inset-0 bg-[#1a2b3c]/40 z-10 pointer-events-none"></div>
+
+      {/* Only show controls if there are multiple slides */}
+      {slides.length > 1 && (
+        <>
+          {/* Prev arrow */}
+          <button
+            onClick={prev}
+            aria-label="Previous"
+            className="absolute top-1/2 -translate-y-1/2 rtl:right-8 ltr:left-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
+          >
+            <FiChevronRight className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
+          </button>
+
+          {/* Next arrow */}
+          <button
+            onClick={next}
+            aria-label="Next"
+            className="absolute top-1/2 -translate-y-1/2 rtl:left-8 ltr:right-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
+          >
+            <FiChevronLeft className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
+          </button>
+
+          {/* Dot indicators */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-[100] pointer-events-auto" dir="ltr">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                className={`transition-all duration-300 rounded-full cursor-pointer pointer-events-auto ${
+                  i === current
+                    ? "w-10 h-3 bg-[#d0a755] shadow-[0_0_15px_rgba(208,167,85,0.8)]"
+                    : "w-3 h-3 bg-white/40 hover:bg-white/80"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

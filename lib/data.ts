@@ -7,6 +7,7 @@ import type {
   FastTrackPackage,
   HotelOption,
   SiteSettings,
+  ContactMessage,
 } from "./types";
 
 const dataDir = path.join(process.cwd(), "data");
@@ -268,4 +269,39 @@ export async function saveSiteSettings(settings: SiteSettings) {
     { _id: "site-settings" as any, ...settings },
     { upsert: true }
   );
+}
+
+export async function addContactMessage(message: ContactMessage) {
+  const db = await getDb();
+  const collection = db.collection("messages");
+  await collection.insertOne({ ...message });
+}
+
+export async function getContactMessages(page = 1, limit = 10): Promise<{ messages: ContactMessage[], total: number }> {
+  const db = await getDb();
+  const collection = db.collection<ContactMessage>("messages");
+  const skip = (page - 1) * limit;
+  
+  const [messages, total] = await Promise.all([
+    collection.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray(),
+    collection.countDocuments()
+  ]);
+  
+  return { 
+    messages: messages.map(({ _id, ...m }) => m as ContactMessage), 
+    total 
+  };
+}
+
+export async function updateContactMessage(id: string, update: Partial<ContactMessage>) {
+  const db = await getDb();
+  const collection = db.collection("messages");
+  const { _id, ...updateData } = update as any;
+  await collection.updateOne({ id }, { $set: updateData });
+}
+
+export async function deleteContactMessage(id: string) {
+  const db = await getDb();
+  const collection = db.collection("messages");
+  await collection.deleteOne({ id });
 }

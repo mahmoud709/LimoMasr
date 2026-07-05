@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { FiBell, FiCalendar, FiClock } from "react-icons/fi";
+import { FiBell, FiCalendar, FiClock, FiCheckCircle } from "react-icons/fi";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Booking } from "@/lib/types";
 import { useToast } from "@/components/admin/ToastProvider";
@@ -46,6 +46,27 @@ export function AdminHeader() {
   
   const last10 = sortedNewBookings.slice(0, 10);
   const prevCount = useRef<number>(0);
+
+  // Read State Management
+  const [readIds, setReadIds] = useState<string[]>([]);
+  
+  useEffect(() => {
+    const saved = localStorage.getItem("readNotificationIds");
+    if (saved) {
+      try { setReadIds(JSON.parse(saved)); } catch (e) {}
+    }
+  }, []);
+
+  function markAsRead(id: string) {
+    setReadIds(prev => {
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      localStorage.setItem("readNotificationIds", JSON.stringify(next));
+      return next;
+    });
+  }
+
+  const unreadBookings = newBookings.filter(b => !readIds.includes(b.id));
 
   // Global SSE Listener for Real-Time Updates
   useEffect(() => {
@@ -99,11 +120,9 @@ export function AdminHeader() {
           className="relative w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors focus:outline-none"
         >
           <FiBell className="w-5 h-5" />
-          {newBookings.length > 0 && (
-            <span className="absolute top-2 right-2 flex w-3.5 h-3.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full w-3.5 h-3.5 bg-rose-500 border-2 border-white text-[9px] items-center justify-center text-white font-black">
-              </span>
+          {unreadBookings.length > 0 && (
+            <span className="absolute -top-1 -right-1 flex w-5 h-5 items-center justify-center bg-rose-500 rounded-full text-white text-[10px] font-black border-2 border-white shadow-sm">
+              {unreadBookings.length}
             </span>
           )}
         </button>
@@ -114,7 +133,7 @@ export function AdminHeader() {
             <div className="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
               <h3 className="font-black text-[#0F1115] text-sm tracking-tight">أحدث الإشعارات</h3>
               <span className="bg-rose-100 text-rose-600 text-[10px] font-black px-2 py-1 rounded-md">
-                {newBookings.length} جديد
+                {unreadBookings.length} غير مقروء
               </span>
             </div>
             
@@ -126,18 +145,22 @@ export function AdminHeader() {
                 </div>
               ) : (
                 <div className="divide-y divide-slate-50">
-                  {last10.map((booking) => (
-                    <Link 
-                      href="/admin/bookings" 
+                  {last10.map((booking) => {
+                    const isRead = readIds.includes(booking.id);
+                    return (
+                    <div 
                       key={booking.id}
-                      onClick={() => setIsOpen(false)}
-                      className="p-4 flex gap-4 hover:bg-slate-50 transition-colors group block"
+                      className={`p-4 flex gap-4 transition-colors group relative ${isRead ? 'bg-slate-50/50 opacity-70' : 'hover:bg-slate-50 bg-white'}`}
                     >
                       <div className="w-10 h-10 rounded-full bg-[#BCA37F]/10 text-[#BCA37F] flex items-center justify-center shrink-0">
                         <FiCalendar className="w-4 h-4" />
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-bold text-[#0F1115] mb-0.5">
+                      <Link 
+                        href="/admin/bookings" 
+                        onClick={() => { setIsOpen(false); markAsRead(booking.id); }}
+                        className="flex-1 block"
+                      >
+                        <p className={`text-sm mb-0.5 ${isRead ? 'font-medium text-slate-600' : 'font-black text-[#0F1115]'}`}>
                           حجز جديد من <span className="text-[#BCA37F]">{booking.customerName}</span>
                         </p>
                         <p className="text-xs font-medium text-slate-500 line-clamp-1 mb-1.5">
@@ -147,9 +170,18 @@ export function AdminHeader() {
                           <FiClock className="w-3 h-3" />
                           {booking.createdAt ? formatRelativeTime(booking.createdAt) : "الآن"}
                         </div>
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                      {!isRead && (
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); markAsRead(booking.id); }}
+                          title="تحديد كمقروء"
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:bg-emerald-50 hover:text-emerald-500 transition-colors shrink-0"
+                        >
+                          <FiCheckCircle className="w-5 h-5" />
+                        </button>
+                      )}
+                    </div>
+                  )})}
                 </div>
               )}
             </div>

@@ -1,4 +1,4 @@
-﻿export type ServiceType = "car" | "fast_track" | "hotel";
+export type ServiceType = "car" | "fast_track" | "hotel";
 
 export type AvailabilityStatus = "available" | "unavailable";
 
@@ -97,8 +97,19 @@ export type SiteSettings = {
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;
+  heroImages?: string[];
   socialLinks: Record<string, string>;
   policies: string;
   privacy: string;
   translations?: Partial<Record<Locale, SiteTranslation>>;
+};
+
+export type ContactMessage = {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  createdAt: string;
+  read: boolean;
 };

@@ -19,6 +19,24 @@ const typeLabels: Record<string, string> = {
   hotel: "فندق",
 };
 
+function formatDateTime(val: string) {
+  try {
+    if (!val) return "";
+    const d = new Date(val);
+    if (isNaN(d.getTime())) return val;
+    return new Intl.DateTimeFormat("ar-EG", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    }).format(d);
+  } catch (e) {
+    return val;
+  }
+}
+
 export default function BookingsPage() {
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -170,7 +188,7 @@ export default function BookingsPage() {
                         {typeLabels[b.type] ?? b.type}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-[#1a2b3c]/50">{b.date}</td>
+                    <td className="px-5 py-4 text-[#1a2b3c]/50" dir="ltr">{formatDateTime(b.date)}</td>
                     <td className="px-5 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-black border ${s.bg} ${s.color} ${s.border}`}>
                         {s.label}
@@ -223,7 +241,7 @@ export default function BookingsPage() {
                           <p className="text-xs font-bold text-slate-500">رقم الحجز: <span className="font-mono text-slate-400">{b.id.split("-")[1]}</span></p>
                         </div>
                         <div className="text-left">
-                          <p className="text-sm font-bold text-slate-600 mb-1">{b.date}</p>
+                          <p className="text-sm font-bold text-slate-600 mb-1" dir="ltr">{formatDateTime(b.date)}</p>
                           <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black border ${s.bg} ${s.color} ${s.border}`}>
                             {s.label}
                           </span>

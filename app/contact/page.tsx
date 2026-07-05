@@ -1,4 +1,5 @@
 import { PublicLayout } from "@/components/PublicLayout";
+import { ContactForm } from "@/components/ContactForm";
 import { getSiteSettings } from "@/lib/data";
 import { FaMapMarkerAlt, FaCar, FaPlane, FaWhatsapp, FaEnvelope, FaUser, FaPhone, FaFacebookF, FaInstagram, FaTiktok, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { buildWhatsappUrl } from "@/lib/utils";
@@ -48,51 +49,7 @@ export default async function ContactPage({
           <div className="grid gap-8 lg:grid-cols-2 animate-reveal-2">
             
             {/* Contact Form */}
-            <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-[0_20px_40px_rgba(0,0,0,0.03)] border border-black/5 flex flex-col h-full">
-              <h2 className="text-xl font-black text-[#1a2b3c] mb-6 flex items-center gap-3">
-                <span className="w-6 h-1 rounded-full bg-[#d0a755]"></span>
-                {t.contactPage.formTitle}
-              </h2>
-              
-              <form action="https://formsubmit.co/info@limo-egypt.com" method="POST" className="flex flex-col gap-5 flex-1 text-start">
-                {/* Honey pot and settings for formsubmit */}
-                <input type="hidden" name="_subject" value="New Contact Request - Limo Masr!" />
-                <input type="hidden" name="_template" value="table" />
-                
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-[#1a2b3c]">{t.contactPage.name} <span className="text-red-500">*</span></label>
-                  <div className="relative">
-                    <FaUser className="absolute rtl:right-4 ltr:left-4 top-1/2 -translate-y-1/2 text-black/20" />
-                    <input type="text" name="name" placeholder={t.contactPage.name} className="w-full bg-[#F9F8F6] border border-black/5 rounded-xl rtl:pr-12 ltr:pl-12 rtl:pl-4 ltr:pr-4 py-3.5 text-sm text-[#1a2b3c] focus:outline-none focus:ring-2 focus:ring-[#d0a755]/50 transition-all" required />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-[#1a2b3c]">{t.contactPage.email} <span className="text-red-500">*</span></label>
-                  <div className="relative">
-                    <FaEnvelope className="absolute rtl:right-4 ltr:left-4 top-1/2 -translate-y-1/2 text-black/20" />
-                    <input type="email" name="email" placeholder="example@email.com" dir="ltr" className="w-full text-left bg-[#F9F8F6] border border-black/5 rounded-xl rtl:pr-12 ltr:pl-12 rtl:pl-4 ltr:pr-4 py-3.5 text-sm text-[#1a2b3c] focus:outline-none focus:ring-2 focus:ring-[#d0a755]/50 transition-all" required />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-[#1a2b3c]">{t.contactPage.phone}</label>
-                  <div className="relative">
-                    <FaPhone className="absolute rtl:right-4 ltr:left-4 top-1/2 -translate-y-1/2 text-black/20" />
-                    <input type="tel" name="phone" placeholder={t.contactPage.phonePlaceholder} dir="ltr" className="w-full text-left bg-[#F9F8F6] border border-black/5 rounded-xl rtl:pr-12 ltr:pl-12 rtl:pl-4 ltr:pr-4 py-3.5 text-sm text-[#1a2b3c] focus:outline-none focus:ring-2 focus:ring-[#d0a755]/50 transition-all" />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2 flex-1">
-                  <label className="text-sm font-bold text-[#1a2b3c]">{t.contactPage.message} <span className="text-red-500">*</span></label>
-                  <textarea name="message" placeholder={t.contactPage.messagePlaceholder} className="w-full h-full min-h-[120px] bg-[#F9F8F6] border border-black/5 rounded-xl px-6 py-4 text-sm text-[#1a2b3c] focus:outline-none focus:ring-2 focus:ring-[#d0a755]/50 transition-all resize-none" required></textarea>
-                </div>
-
-                <button type="submit" className="w-full bg-[#d0a755] text-[#1a2b3c] font-black text-base py-4 rounded-xl hover:bg-[#b89040] hover:shadow-[0_10px_20px_rgba(208,167,85,0.2)] hover:-translate-y-1 transition-all mt-2">
-                  {t.contactPage.send}
-                </button>
-              </form>
-            </div>
+            <ContactForm t={t.contactPage} />
 
             {/* Luxury Contact Card */}
             <div className="bg-[#1a2b3c] rounded-[2rem] p-8 md:p-10 text-white flex flex-col justify-center gap-8 shadow-2xl relative overflow-hidden border border-[#d0a755]/20 h-full text-start">

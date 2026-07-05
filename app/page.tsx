@@ -3,6 +3,7 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import { CarCarousel } from "@/components/CarCarousel";
 import { FastTrackCarousel } from "@/components/FastTrackCarousel";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getCars, getFastTrackPackages, getSiteSettings } from "@/lib/data";
@@ -20,40 +21,26 @@ export default async function Home() {
     <PublicLayout settings={settings}>
       <main className="flex flex-col w-full overflow-hidden">
         {/* Exact Layout Hero Section */}
-        <section className="relative min-h-[85vh] w-full flex items-center pt-24 bg-[#1a2b3c] overflow-hidden">
-          {/* Decorative Dashed Curved Line */}
-          <svg className="absolute rtl:left-[-5%] ltr:right-[-5%] top-[10%] w-[600px] h-[800px] opacity-20 pointer-events-none rtl:scale-x-100 ltr:-scale-x-100" viewBox="0 0 600 800" fill="none">
-            <path d="M 100 800 C 100 500, 300 300, 600 100" stroke="#ffffff" strokeWidth="4" strokeDasharray="16 24" strokeLinecap="round" />
-          </svg>
+        <section className="relative min-h-screen w-full flex items-center pt-24 overflow-hidden">
+          {/* Background Image Carousel */}
+          <HeroCarousel images={settings.heroImages || (settings.heroImage ? [settings.heroImage] : [])} />
 
-          <div className="relative z-10 mx-auto max-w-[1400px] px-8 w-full grid lg:grid-cols-2 gap-10 items-center">
+          <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
             {/* Text Content */}
-            <div className="flex flex-col items-start text-start z-20 pb-12 lg:pb-0">
-              <p className="text-[#d0a755] font-bold text-base md:text-lg mb-4 animate-reveal-1">
+            <div className="flex flex-col items-start text-start max-w-2xl py-16 md:py-24 pointer-events-auto">
+              <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-6 animate-reveal-1 drop-shadow-md uppercase">
                 {t.hero.eyebrow}
               </p>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.3] mb-6 animate-reveal-2">
-                {t.hero.title1} {t.hero.title2}.
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.2] mb-8 animate-reveal-2 drop-shadow-lg">
+                {t.hero.title1} <br/> <span className="text-white">{t.hero.title2}.</span>
               </h1>
-              <p className="text-white/80 text-base md:text-lg leading-[1.8] mb-10 max-w-xl animate-reveal-3 font-light">
+              <p className="text-white/90 text-lg md:text-xl leading-[1.8] mb-12 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
                 {t.hero.text}
               </p>
               <div className="animate-reveal-3">
-                <Link href="/cars" className="inline-block bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] font-black py-3.5 px-10 rounded-md transition-all duration-300 text-base shadow-[0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1">
+                <Link href="/cars" className="inline-block bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] font-black py-4 px-12 rounded-xl transition-all duration-300 text-lg shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.4)] hover:-translate-y-1">
                   {t.hero.cta}
                 </Link>
-              </div>
-            </div>
-
-            {/* Image Content */}
-            <div className="relative z-10 animate-scale-in flex justify-center lg:justify-end mt-8 lg:mt-0">
-              <div className="relative w-full max-w-[600px] xl:max-w-[800px] rtl:lg:-translate-x-10 ltr:lg:translate-x-10">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://freepngimg.com/thumb/car/4-2-car-png-hd.png"
-                  alt="Luxury Car"
-                  className="w-full h-auto object-contain drop-shadow-2xl rtl:scale-x-[-1]"
-                />
               </div>
             </div>
           </div>

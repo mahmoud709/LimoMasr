@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import type { SiteSettings } from "@/lib/types";
 import { FiSave, FiCheck } from "react-icons/fi";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -73,7 +74,13 @@ export default function SettingsPage() {
           <Textarea label="النص التعريفي (عربي)" value={settings.translations?.ar?.heroSubtitle ?? settings.heroSubtitle} onChange={v => f("translations.ar.heroSubtitle", v)} />
           <Field label="عنوان الهيرو (إنجليزي)" value={settings.translations?.en?.heroTitle ?? ""} onChange={v => f("translations.en.heroTitle", v)} />
           <Textarea label="النص التعريفي (إنجليزي)" value={settings.translations?.en?.heroSubtitle ?? ""} onChange={v => f("translations.en.heroSubtitle", v)} />
-          <Field label="رابط صورة الهيرو" value={settings.heroImage ?? ""} onChange={v => f("heroImage", v)} dir="ltr" />
+          <div className="pt-2">
+            <h3 className="block text-xs font-black text-[#1a2b3c]/60 mb-3 uppercase tracking-wide">صور معرض الهيرو</h3>
+            <ImageUploader 
+               images={settings.heroImages || (settings.heroImage ? [settings.heroImage] : [])} 
+               onChange={imgs => f("heroImages", imgs as any)} 
+            />
+          </div>
         </Card>
 
         {/* Social */}
