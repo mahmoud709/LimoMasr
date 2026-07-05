@@ -6,8 +6,19 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Booking } from "@/lib/types";
 import { useToast } from "@/components/admin/ToastProvider";
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
-import { ar } from "date-fns/locale";
+
+function formatRelativeTime(dateString: string) {
+  const diffInSeconds = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
+  const rtf = new Intl.RelativeTimeFormat("ar-EG", { numeric: "auto" });
+  
+  if (diffInSeconds < 60) return "الآن";
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return rtf.format(-diffInMinutes, "minute");
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return rtf.format(-diffInHours, "hour");
+  const diffInDays = Math.floor(diffInHours / 24);
+  return rtf.format(-diffInDays, "day");
+}
 
 export function AdminHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -134,7 +145,7 @@ export function AdminHeader() {
                         </p>
                         <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400">
                           <FiClock className="w-3 h-3" />
-                          {booking.createdAt ? formatDistanceToNow(new Date(booking.createdAt), { addSuffix: true, locale: ar }) : "الآن"}
+                          {booking.createdAt ? formatRelativeTime(booking.createdAt) : "الآن"}
                         </div>
                       </div>
                     </Link>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import type { Booking, BookingStatus } from "@/lib/types";
-import { FiDownload, FiSearch, FiFilter } from "react-icons/fi";
+import { FiDownload, FiSearch, FiFilter, FiClock, FiX } from "react-icons/fi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
 
@@ -26,6 +26,7 @@ export default function BookingsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<BookingStatus | "all">("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [clientHistory, setClientHistory] = useState<string | null>(null);
 
   // Fetch Bookings with React Query - Polling every 5 seconds for Real-time updates
   const { data: bookings = [], isLoading } = useQuery<Booking[]>({
@@ -150,7 +151,18 @@ export default function BookingsPage() {
                 const s = statusConfig[b.status];
                 return (
                   <tr key={b.id} className="border-t border-black/5 hover:bg-[#f8f9fa] transition-colors">
-                    <td className="px-5 py-4 font-bold text-[#1a2b3c]">{b.customerName}</td>
+                    <td className="px-5 py-4 font-bold text-[#1a2b3c]">
+                      <div className="flex items-center justify-end gap-2">
+                        {b.customerName}
+                        <button 
+                          onClick={() => setClientHistory(b.phone)}
+                          className="w-7 h-7 rounded-full bg-[#1a2b3c]/5 flex items-center justify-center text-[#1a2b3c]/50 hover:bg-[#1a2b3c] hover:text-[#d0a755] transition-colors"
+                          title="عرض سجل العميل"
+                        >
+                          <FiClock className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
                     <td className="px-5 py-4 text-[#1a2b3c]/60 font-mono">{b.phone}</td>
                     <td className="px-5 py-4 text-[#1a2b3c]/70">{b.serviceName}</td>
                     <td className="px-5 py-4">
@@ -184,6 +196,47 @@ export default function BookingsPage() {
           </table>
         </div>
       </div>
+      {/* Client History Modal */}
+      {clientHistory && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F1115]/80 backdrop-blur-md">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col animate-in slide-in-from-bottom-4 duration-300">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div>
+                <h2 className="font-black text-[#0F1115] text-xl tracking-tight">السجل التاريخي للعميل</h2>
+                <p className="text-sm font-medium text-slate-500 mt-1" dir="ltr">{clientHistory}</p>
+              </div>
+              <button onClick={() => setClientHistory(null)} className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-500 transition-colors shadow-sm border border-slate-100">
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-8 overflow-y-auto flex-1">
+              <div className="space-y-4">
+                {bookings.filter(b => b.phone === clientHistory).map((b, idx) => {
+                  const s = statusConfig[b.status];
+                  return (
+                    <div key={b.id} className="p-5 rounded-2xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all bg-white relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 w-2 h-full bg-slate-100 group-hover:bg-[#BCA37F] transition-colors" />
+                      <div className="flex flex-wrap gap-6 items-center justify-between pr-4">
+                        <div>
+                          <p className="text-sm font-black text-[#0F1115] mb-1">{b.serviceName}</p>
+                          <p className="text-xs font-bold text-slate-500">رقم الحجز: <span className="font-mono text-slate-400">{b.id.split("-")[1]}</span></p>
+                        </div>
+                        <div className="text-left">
+                          <p className="text-sm font-bold text-slate-600 mb-1">{b.date}</p>
+                          <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black border ${s.bg} ${s.color} ${s.border}`}>
+                            {s.label}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
