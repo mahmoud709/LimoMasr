@@ -37,28 +37,8 @@ export default function BookingsPage() {
     }
   });
 
-  // Listen to Server-Sent Events (SSE) for Real-Time Bookings
-  useEffect(() => {
-    const sse = new EventSource("/api/admin/bookings/stream");
-    
-    sse.onmessage = (event) => {
-      try {
-        const newBooking = JSON.parse(event.data);
-        queryClient.setQueryData<Booking[]>(["bookings"], (old) => {
-          if (!old) return [newBooking];
-          // Prevent duplicates
-          if (old.some(b => b.id === newBooking.id)) return old;
-          return [newBooking, ...old];
-        });
-      } catch (err) {
-        console.error("SSE parse error", err);
-      }
-    };
-
-    return () => {
-      sse.close();
-    };
-  }, [queryClient]);
+  // SSE and Audio Notifications are now handled globally by the AdminHeader component.
+  // The queryClient cache is automatically updated, which triggers a re-render here.
 
   // Mutate Booking Status
   const updateStatusMutation = useMutation({
@@ -80,20 +60,7 @@ export default function BookingsPage() {
     },
   });
 
-  // Real-time Sound & Toast Notification for new bookings
-  const newCount = bookings.filter(b => b.status === "new").length;
-  const prevNewCountRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    // Only alert if we already established the initial count and it increased
-    if (prevNewCountRef.current !== null && newCount > prevNewCountRef.current) {
-      toast.info(`هناك حجز جديد وارد! لدينا الآن ${newCount} حجوزات جديدة.`);
-      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-200.wav");
-      audio.volume = 0.5;
-      audio.play().catch(() => {});
-    }
-    prevNewCountRef.current = newCount;
-  }, [newCount, toast]);
+  // Note: Audio and toast alert logic has been moved to the global AdminHeader component.
 
   function exportCsv() {
     const header = ["id", "type", "customerName", "phone", "serviceName", "date", "status", "createdAt"];
