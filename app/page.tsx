@@ -82,8 +82,8 @@ export default async function Home() {
         {/* Why Choose Us - Interconnected Grid */}
         <section className="relative mx-auto max-w-[1200px] px-8 py-24 w-full bg-[#F9F8F6] overflow-hidden">
           <div className="text-center mb-20 animate-reveal-1 relative z-20">
-            <p className="text-[#d0a755] font-bold tracking-[0.2em] text-xs md:text-sm mb-3 uppercase">لماذا تختارنا؟</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1a2b3c]">لماذا ليمو مصر؟</h2>
+            <p className="text-[#d0a755] font-bold tracking-[0.2em] text-xs md:text-sm mb-3 uppercase">{t.whyChooseUs.eyebrow}</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1a2b3c]">{t.whyChooseUs.title}</h2>
           </div>
 
           <div className="relative w-full mx-auto">
@@ -93,8 +93,8 @@ export default async function Home() {
             <div className="relative z-10 grid md:grid-cols-2 gap-6 md:gap-x-16 lg:gap-x-20 gap-y-10 lg:gap-y-12">
               {[
                 {
-                  title: "احترافية عالية",
-                  text: "نمتلك فريقاً من السائقين المدربين على أعلى مستوى، إلى جانب فريق دعم محترف جاهز لمساعدتك في أي وقت، لضمان تجربة تنقل آمنة ومريحة بكل ثقة.",
+                  title: t.whyChooseUs.f1Title,
+                  text: t.whyChooseUs.f1Text,
                   icon: (
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -103,8 +103,8 @@ export default async function Home() {
                   highlight: true,
                 },
                 {
-                  title: "خدمة 24/7",
-                  text: "نحن متواجدون 24/7 لتلبية جميع احتياجاتك في أي وقت، سواء كانت رحلتك مخططة مسبقاً أو طارئة، لنكون دائماً الخيار الذي يمكنك الاعتماد عليه.",
+                  title: t.whyChooseUs.f2Title,
+                  text: t.whyChooseUs.f2Text,
                   icon: (
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -113,8 +113,8 @@ export default async function Home() {
                   highlight: false,
                 },
                 {
-                  title: "أسعار تنافسية",
-                  text: "نقدم أسعاراً مدروسة تتناسب مع مختلف الفئات والميزانيات، مع الحفاظ على أعلى مستوى من الجودة والخدمة دون أي تكاليف خفية.",
+                  title: t.whyChooseUs.f3Title,
+                  text: t.whyChooseUs.f3Text,
                   icon: (
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -123,8 +123,8 @@ export default async function Home() {
                   highlight: false,
                 },
                 {
-                  title: "سيارات فاخرة",
-                  text: "نوفر مجموعة متميزة من السيارات الفاخرة والمجهزة بأحدث وسائل الراحة، لتختار منها ما يناسب ذوقك واحتياجاتك وتستمتع برحلة استثنائية.",
+                  title: t.whyChooseUs.f4Title,
+                  text: t.whyChooseUs.f4Text,
                   icon: (
                     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
@@ -146,6 +146,7 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
         {/* Professional Drivers Section */}
         <section className="relative w-full bg-[#1a2b3c] py-24 overflow-hidden text-white border-b border-white/5">
           {/* Subtle Background Pattern */}
@@ -160,13 +161,13 @@ export default async function Home() {
             <div className="animate-reveal-1">
               <span className="flex items-center gap-4 mb-4">
                 <span className="w-8 h-[1px] bg-[#d0a755]"></span>
-                <span className="text-[#d0a755] font-bold tracking-widest text-xs uppercase">فريق العمل</span>
+                <span className="text-[#d0a755] font-bold tracking-widest text-xs uppercase">{t.drivers.eyebrow}</span>
               </span>
               <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
-                سائقون محترفون <br/><span className="text-[#d0a755]">لرحلة آمنة ومريحة</span>
+                {t.drivers.title1} <br/><span className="text-[#d0a755]">{t.drivers.title2}</span>
               </h2>
               <p className="text-white/70 text-lg leading-relaxed mb-10 font-light max-w-lg">
-                في ليمو مصر، ندرك أن السائق هو واجهة الشركة والمؤتمن على سلامتك. لذلك نختار فريقنا بعناية فائقة ونخضعهم لتدريبات دورية لضمان تقديم أعلى مستويات الأمان، الاحترافية، واللباقة طوال رحلتك.
+                {t.drivers.text}
               </p>
               
               <div className="grid grid-cols-2 gap-x-6 gap-y-8">
@@ -177,8 +178,8 @@ export default async function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">رخص مهنية معتمدة</h4>
-                    <p className="text-xs text-white/50 leading-relaxed">قيادة آمنة وموثوقة</p>
+                    <h4 className="font-bold text-white mb-1">{t.drivers.f1Title}</h4>
+                    <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f1Sub}</p>
                   </div>
                 </div>
                 
@@ -189,8 +190,8 @@ export default async function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">التزام تام بالمواعيد</h4>
-                    <p className="text-xs text-white/50 leading-relaxed">احترام كامل لوقتك</p>
+                    <h4 className="font-bold text-white mb-1">{t.drivers.f2Title}</h4>
+                    <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f2Sub}</p>
                   </div>
                 </div>
                 
@@ -201,8 +202,8 @@ export default async function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">لباقة واحترافية</h4>
-                    <p className="text-xs text-white/50 leading-relaxed">تعامل راقٍ ومهذب</p>
+                    <h4 className="font-bold text-white mb-1">{t.drivers.f3Title}</h4>
+                    <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f3Sub}</p>
                   </div>
                 </div>
                 
@@ -213,8 +214,8 @@ export default async function Home() {
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">معرفة بالطرق</h4>
-                    <p className="text-xs text-white/50 leading-relaxed">اختيار أسرع المسارات</p>
+                    <h4 className="font-bold text-white mb-1">{t.drivers.f4Title}</h4>
+                    <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f4Sub}</p>
                   </div>
                 </div>
               </div>
@@ -232,7 +233,7 @@ export default async function Home() {
               
               <div className="absolute z-10 bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8 text-center p-4 md:p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
                 <p className="text-white opacity-100 text-sm md:text-base font-bold leading-relaxed drop-shadow-md">
-                  &quot;سلامتك وراحتك هي أولويتنا في كل خطوة من الرحلة &quot;
+                  &quot;{t.drivers.quote}&quot;
                 </p>
               </div>
             </div>
@@ -249,14 +250,14 @@ export default async function Home() {
             <div className="text-center animate-reveal-1">
               <span className="flex items-center justify-center gap-4 mb-6">
                 <span className="w-12 h-[1px] bg-[#d0a755]/50"></span>
-                <span className="text-[#d0a755] font-bold tracking-[0.2em] text-xs uppercase">أسطولنا</span>
+                <span className="text-[#d0a755] font-bold tracking-[0.2em] text-xs uppercase">{t.brands.eyebrow}</span>
                 <span className="w-12 h-[1px] bg-[#d0a755]/50"></span>
               </span>
               <h2 className="text-4xl md:text-5xl font-black text-[#1a2b3c] mb-6 tracking-tight">
-                علامات تجارية نثق بها
+                {t.brands.title}
               </h2>
               <p className="text-[#1a2b3c]/60 text-base md:text-lg max-w-2xl mx-auto font-light leading-[1.8]">
-                نوفر أحدث موديلات السيارات من أفضل العلامات التجارية العالمية لتجربة سفر لا تُنسى.
+                {t.brands.text}
               </p>
             </div>
           </div>

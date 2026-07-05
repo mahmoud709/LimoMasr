@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { getCars, saveCars } from "@/lib/data";
+import { getCars, addCar } from "@/lib/data";
 
 export async function GET() {
   return NextResponse.json(await getCars());
 }
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   const payload = await request.json();
-  await saveCars(payload);
-  return NextResponse.json({ ok: true });
+  await addCar(payload);
+  return NextResponse.json({ ok: true, id: payload.id });
 }

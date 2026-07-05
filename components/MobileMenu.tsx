@@ -10,16 +10,21 @@ type NavItem = readonly [string, string];
 export function MobileMenu({ 
   navItems, 
   translations, 
-  locale 
+  locale,
+  portalLink,
+  portalText
 }: { 
   navItems: readonly NavItem[]; 
   translations: Record<string, string>; 
   locale: "ar" | "en";
+  portalLink?: string;
+  portalText?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     // Prevent body scroll when menu is open
     if (isOpen) {
@@ -34,8 +39,9 @@ export function MobileMenu({
 
   // Helper to prepend locale correctly
   const getHref = (path: string) => {
-    if (path === "/") return locale === "ar" ? "/" : "/en";
-    return locale === "ar" ? path : `/en${path}`;
+    const cleanPath = path.startsWith("/") ? path : `/${path}`;
+    if (cleanPath === "/") return `/${locale}`;
+    return `/${locale}${cleanPath}`;
   };
 
   return (
@@ -65,6 +71,15 @@ export function MobileMenu({
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#d0a755] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
+            {portalLink && portalText && (
+              <Link
+                href={getHref(portalLink)}
+                onClick={() => setIsOpen(false)}
+                className="text-lg font-black tracking-wide text-[#d0a755] hover:text-white transition-colors relative group py-2 mt-4 border-t border-white/10 w-4/5 text-center"
+              >
+                {portalText}
+              </Link>
+            )}
           </nav>
         </div>,
         document.body

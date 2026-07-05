@@ -47,8 +47,8 @@ export function CarCarousel({ cars, title, viewAllText, locale = "ar" }: { cars:
         className="flex overflow-x-auto gap-5 pb-8 snap-x snap-mandatory scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {cars.map((car) => (
-          <div key={car.id} className="snap-start shrink-0 w-[280px] md:w-[360px]">
+        {cars.map((car, index) => (
+          <div key={`${car.id || car._id}-${index}`} className="snap-start shrink-0 w-[280px] md:w-[360px]">
              <CarCard car={car} locale={locale} />
           </div>
         ))}

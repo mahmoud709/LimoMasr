@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 };
 
 import { cookies } from "next/headers";
+import { QueryProvider } from "@/components/QueryProvider";
+import { ToastProvider } from "@/components/admin/ToastProvider";
 
 export default async function RootLayout({
   children,
@@ -34,7 +36,11 @@ export default async function RootLayout({
     <html lang={locale} dir={dir} className={`${cairo.variable} ${outfit.variable} h-full antialiased bg-[#F9F8F6]`}>
       <body className="min-h-full flex flex-col font-cairo bg-[#F9F8F6] text-[#111111] selection:bg-[#B88A44]/30 selection:text-black">
         <div className="noise-overlay"></div>
-        {children}
+        <QueryProvider>
+          <ToastProvider>
+            {children}
+          </ToastProvider>
+        </QueryProvider>
       </body>
     </html>
   );

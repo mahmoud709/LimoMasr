@@ -80,6 +80,38 @@ export const ui = {
       hq: "مقر الشركة الرئيسي",
       emailLabel: "البريد الإلكتروني",
       followUs: "تابعنا على"
+    },
+    whyChooseUs: {
+      eyebrow: "لماذا تختارنا؟",
+      title: "لماذا ليمو مصر؟",
+      f1Title: "احترافية عالية",
+      f1Text: "نمتلك فريقاً من السائقين المدربين على أعلى مستوى، إلى جانب فريق دعم محترف جاهز لمساعدتك في أي وقت، لضمان تجربة تنقل آمنة ومريحة بكل ثقة.",
+      f2Title: "خدمة 24/7",
+      f2Text: "نحن متواجدون 24/7 لتلبية جميع احتياجاتك في أي وقت، سواء كانت رحلتك مخططة مسبقاً أو طارئة، لنكون دائماً الخيار الذي يمكنك الاعتماد عليه.",
+      f3Title: "أسعار تنافسية",
+      f3Text: "نقدم أسعاراً مدروسة تتناسب مع مختلف الفئات والميزانيات، مع الحفاظ على أعلى مستوى من الجودة والخدمة دون أي تكاليف خفية.",
+      f4Title: "سيارات فاخرة",
+      f4Text: "نوفر مجموعة متميزة من السيارات الفاخرة والمجهزة بأحدث وسائل الراحة، لتختار منها ما يناسب ذوقك واحتياجاتك وتستمتع برحلة استثنائية."
+    },
+    drivers: {
+      eyebrow: "فريق العمل",
+      title1: "سائقون محترفون",
+      title2: "لرحلة آمنة ومريحة",
+      text: "في ليمو مصر، ندرك أن السائق هو واجهة الشركة والمؤتمن على سلامتك. لذلك نختار فريقنا بعناية فائقة ونخضعهم لتدريبات دورية لضمان تقديم أعلى مستويات الأمان، الاحترافية، واللباقة طوال رحلتك.",
+      f1Title: "رخص مهنية معتمدة",
+      f1Sub: "قيادة آمنة وموثوقة",
+      f2Title: "التزام تام بالمواعيد",
+      f2Sub: "احترام كامل لوقتك",
+      f3Title: "لباقة واحترافية",
+      f3Sub: "تعامل راقٍ ومهذب",
+      f4Title: "معرفة بالطرق",
+      f4Sub: "اختيار أسرع المسارات",
+      quote: "سلامتك وراحتك هي أولويتنا في كل خطوة من الرحلة"
+    },
+    brands: {
+      eyebrow: "أسطولنا",
+      title: "علامات تجارية نثق بها",
+      text: "نوفر أحدث موديلات السيارات من أفضل العلامات التجارية العالمية لتجربة سفر لا تُنسى."
     }
   },
   en: {
@@ -159,6 +191,38 @@ export const ui = {
       hq: "Headquarters",
       emailLabel: "Email",
       followUs: "Follow Us"
+    },
+    whyChooseUs: {
+      eyebrow: "Why Choose Us?",
+      title: "Why Limo Masr?",
+      f1Title: "High Professionalism",
+      f1Text: "We have a team of highly trained drivers and a professional support team ready to assist you at any time, ensuring a safe and comfortable ride with confidence.",
+      f2Title: "24/7 Service",
+      f2Text: "We are available 24/7 to meet all your needs at any time, whether your trip is planned in advance or urgent, to always be the choice you can rely on.",
+      f3Title: "Competitive Prices",
+      f3Text: "We offer carefully studied prices that suit different budgets, while maintaining the highest level of quality and service without any hidden costs.",
+      f4Title: "Luxury Cars",
+      f4Text: "We provide an outstanding selection of luxury cars equipped with the latest comfort amenities, for you to choose what suits your taste and enjoy an exceptional journey."
+    },
+    drivers: {
+      eyebrow: "Our Team",
+      title1: "Professional Drivers",
+      title2: "for a safe and comfortable trip",
+      text: "At Limo Masr, we understand that the driver is the face of the company and entrusted with your safety. Therefore, we select our team with extreme care and subject them to regular training to ensure the highest levels of safety, professionalism, and courtesy throughout your trip.",
+      f1Title: "Certified Professional Licenses",
+      f1Sub: "Safe and reliable driving",
+      f2Title: "Punctuality & Commitment",
+      f2Sub: "Complete respect for your time",
+      f3Title: "Courtesy & Professionalism",
+      f3Sub: "Refined and polite interaction",
+      f4Title: "Road Knowledge",
+      f4Sub: "Choosing the fastest routes",
+      quote: "Your safety and comfort is our top priority at every step of the journey"
+    },
+    brands: {
+      eyebrow: "Our Fleet",
+      title: "Brands We Trust",
+      text: "We provide the latest car models from the best international brands for an unforgettable travel experience."
     }
   },
 } as const;
@@ -168,7 +232,9 @@ export function getLocale(value?: string | string[]): Locale {
 }
 
 export function withLang(href: string, locale: Locale) {
-  return locale === "ar" ? href : `${href}?lang=en`;
+  const cleanHref = href.startsWith("/") ? href : `/${href}`;
+  if (cleanHref === "/") return `/${locale}`;
+  return `/${locale}${cleanHref}`;
 }
 
 export function siteText(settings: SiteSettings, locale: Locale) {

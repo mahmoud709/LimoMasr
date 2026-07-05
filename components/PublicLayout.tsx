@@ -6,6 +6,7 @@ import { buildWhatsappUrl, serviceWhatsappNumber } from "@/lib/utils";
 import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaCar, FaPlane } from "react-icons/fa";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileMenu } from "@/components/MobileMenu";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const socialIconsMap: Record<string, ReactNode> = {
   whatsapp: <FaWhatsapp className="w-5 h-5" />,
@@ -42,6 +43,12 @@ export async function PublicLayout({
   const cookieLocale = cookieStore.get('NEXT_LOCALE')?.value as Locale;
   const locale = propLocale || cookieLocale || "ar";
 
+  const customerToken = cookieStore.get("customer-token")?.value;
+  const portalLink = customerToken ? "/my-bookings" : "/login";
+  const portalText = locale === "en"
+    ? (customerToken ? "My Bookings" : "Login")
+    : (customerToken ? "حجوزاتي" : "دخول");
+
   const t = ui[locale];
   const content = siteText(settings, locale);
   const phone = serviceWhatsappNumber(whatsappType, settings);
@@ -69,6 +76,10 @@ export async function PublicLayout({
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#d0a755] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
+            <Link href={withLang(portalLink, locale)} className="text-[#d0a755] hover:text-white transition-colors duration-300 relative group py-2 font-black">
+              {portalText}
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#d0a755] transition-all duration-300 group-hover:w-full"></span>
+            </Link>
           </nav>
           
           <div className="flex items-center gap-3 md:gap-5">
@@ -77,7 +88,7 @@ export async function PublicLayout({
               {t.whatsapp}
             </Link>
             {/* Mobile Nav Toggle */}
-            <MobileMenu navItems={navItems} translations={t as any} locale={locale} />
+            <MobileMenu navItems={navItems} translations={t as any} locale={locale} portalLink={portalLink} portalText={portalText} />
           </div>
         </div>
       </header>
@@ -88,7 +99,7 @@ export async function PublicLayout({
 
       {/* Massive Call To Action Banner (Floating above footer) */}
       <div className="relative z-20 -mb-12 px-6 md:px-8 max-w-[1400px] mx-auto w-full">
-        <div className="bg-gradient-to-l from-[#d0a755] to-[#e6c175] rounded-[2rem] p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden border border-white/40">
+        <div className="bg-linear-to-l from-[#d0a755] to-[#e6c175] rounded-4xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden border border-white/40">
           <div className="absolute -left-10 -bottom-10 opacity-20 w-64 h-64 bg-white rounded-full blur-3xl pointer-events-none"></div>
           
           <div className="relative z-10 text-right md:w-2/3">
@@ -164,7 +175,7 @@ export async function PublicLayout({
 
             {/* Contact Details */}
             <div className="lg:col-span-3">
-              <h3 className="text-sm font-black tracking-[0.1em] text-white mb-8 flex items-center gap-3">
+              <h3 className="text-sm font-black tracking-widest text-white mb-8 flex items-center gap-3">
                 <span className="w-6 h-1 rounded-full bg-[#d0a755]"></span>
                 التواصل
               </h3>
@@ -188,7 +199,7 @@ export async function PublicLayout({
             
             {/* Legal Info */}
             <div className="lg:col-span-2">
-              <h3 className="text-sm font-black tracking-[0.1em] text-white mb-8 flex items-center gap-3">
+              <h3 className="text-sm font-black tracking-widest text-white mb-8 flex items-center gap-3">
                 <span className="w-6 h-1 rounded-full bg-[#d0a755]"></span>
                 معلومات
               </h3>
@@ -212,6 +223,7 @@ export async function PublicLayout({
           </div>
         </div>
       </footer>
+      <FloatingWhatsApp phone={settings.whatsappCarNumber} />
     </div>
   );
 }

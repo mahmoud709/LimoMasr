@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { getFastTrackPackages, saveFastTrackPackages } from "@/lib/data";
+import { getFastTrackPackages, addFastTrackPackage } from "@/lib/data";
 
 export async function GET() {
   return NextResponse.json(await getFastTrackPackages());
 }
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
   const payload = await request.json();
-  await saveFastTrackPackages(payload);
-  return NextResponse.json({ ok: true });
+  await addFastTrackPackage(payload);
+  return NextResponse.json({ ok: true, id: payload.id });
 }
