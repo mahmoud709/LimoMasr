@@ -56,7 +56,7 @@ export function BookingForm({
 
   const message = useMemo(() => {
     let finalNotes = notes;
-    if (type === 'hotel') {
+    if (['hotel', 'apartment'].includes(type)) {
       finalNotes = `الميزانية المتوقعة لليلة: ${budget} ج.م\n\nالملاحظات:\n${notes}`;
     }
     return bookingMessage({
@@ -81,7 +81,7 @@ export function BookingForm({
           phone,
           serviceRefId,
           serviceName,
-          notes: type === 'hotel' ? `[Budget: ${budget}] ${notes}` : notes,
+          notes: ['hotel', 'apartment'].includes(type) ? `[Budget: ${budget}] ${notes}` : notes,
           passengers,
           price,
           source: bookingSource,
@@ -149,9 +149,14 @@ export function BookingForm({
 
   return (
     <form onSubmit={submitBooking} className="luxury-panel bg-white p-6 md:p-8 space-y-6">
-      <div className="flex items-center gap-3 border-b border-black/5 pb-4 mb-6">
-        <span className="w-8 h-[1px] bg-[#d0a755]"></span>
-        <h2 className="text-2xl font-black text-[#1a2b3c]">تأكيد الحجز</h2>
+      <div className="flex flex-col gap-1 border-b border-black/5 pb-4 mb-6">
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-[1px] bg-[#d0a755]"></span>
+          <h2 className="text-2xl font-black text-[#1a2b3c]">{isEn ? "Confirm Booking" : "تأكيد الحجز"}</h2>
+        </div>
+        <p className="text-sm font-bold text-[#d0a755] mt-1 pr-11 rtl:pr-11 ltr:pl-11">
+          {isEn ? "Service:" : "الخدمة:"} {serviceName}
+        </p>
       </div>
       
       <div className="space-y-4">
@@ -178,7 +183,7 @@ export function BookingForm({
         
         <div className="relative flex items-center justify-between rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-2 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
           <span className="text-sm font-bold text-[#1a2b3c]/70 w-1/3">
-            {type === 'hotel' ? 'عدد الأفراد' : 'عدد الركاب'}
+            {['hotel', 'apartment'].includes(type) ? 'عدد الأفراد' : 'عدد الركاب'}
           </span>
           <input
             required
@@ -191,7 +196,7 @@ export function BookingForm({
           />
         </div>
 
-        {type === 'hotel' && (
+        {['hotel', 'apartment'].includes(type) && (
           <div className="space-y-4 py-2">
             <div>
               <div className="flex justify-between items-end mb-2">
@@ -200,7 +205,7 @@ export function BookingForm({
               </div>
               <input 
                 type="range" 
-                min={1000} 
+                min={500} 
                 max={20000} 
                 step={500}
                 value={budget}
@@ -218,6 +223,10 @@ export function BookingForm({
             placeholder={
               type === 'hotel' 
                 ? "ملاحظات إضافية (المدينة المطلوبة، فنادق مفضلة...)" 
+                : type === 'flight'
+                ? "ملاحظات إضافية (الوجهة ذهاب وعودة، درجة الطيران، طلبات خاصة...)"
+                : type === 'apartment'
+                ? "ملاحظات إضافية (المدينة المطلوبة، عدد الغرف...)"
                 : "ملاحظات إضافية (أماكن التوقف، طلبات خاصة...)"
             }
             rows={3}

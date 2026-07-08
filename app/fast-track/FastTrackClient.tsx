@@ -21,9 +21,16 @@ export function FastTrackClient({
           <article 
             key={item.id} 
             onClick={() => setSelectedPackage(item)}
-            className={`luxury-panel p-8 cursor-pointer transition-all duration-300 ${selectedPackage?.id === item.id ? 'ring-2 ring-[#d0a755] bg-[#d0a755]/5 scale-[1.02] shadow-[0_10px_30px_rgba(208,167,85,0.15)]' : 'hover:-translate-y-1 hover:border-[#d0a755]/50'}`}
+            className={`luxury-panel cursor-pointer transition-all duration-300 overflow-hidden flex flex-col ${selectedPackage?.id === item.id ? 'ring-2 ring-[#d0a755] bg-[#d0a755]/5 scale-[1.02] shadow-[0_10px_30px_rgba(208,167,85,0.15)]' : 'hover:-translate-y-1 hover:border-[#d0a755]/50'}`}
           >
-            <div className="flex justify-between items-start mb-3">
+            {item.image && (
+              <div className="w-full h-48 relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              </div>
+            )}
+            <div className="p-8 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-3">
               <p className="text-xs font-bold tracking-widest text-[#d0a755] uppercase">مطار {item.airport}</p>
               <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${selectedPackage?.id === item.id ? 'border-[#d0a755] bg-[#d0a755]' : 'border-black/20'}`}>
                 {selectedPackage?.id === item.id && <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
@@ -34,6 +41,7 @@ export function FastTrackClient({
             <div className="mt-6 pt-6 border-t border-black/5 flex items-baseline gap-2">
               <span className="text-3xl font-black text-[#d0a755]">{formatCurrency(item.price, item.currency)}</span>
               <span className="text-sm font-bold text-[#1a2b3c]/40">/ للفرد</span>
+            </div>
             </div>
           </article>
         ))}

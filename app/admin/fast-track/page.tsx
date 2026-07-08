@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import type { FastTrackPackage } from "@/lib/types";
 import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave } from "react-icons/fi";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 const empty: Omit<FastTrackPackage, "id"> = {
   name: "",
@@ -251,6 +252,14 @@ export default function FastTrackPage() {
                   <label className="block text-xs font-black text-[#1a2b3c]/60 mb-1.5 uppercase tracking-wide">الوصف (إنجليزي)</label>
                   <textarea value={form.translations?.en?.description || ""} onChange={e => fTrans("en", "description", e.target.value)} rows={3} className="w-full bg-[#f0f2f5] rounded-xl px-3 py-2.5 text-sm font-medium text-[#1a2b3c] outline-none resize-none" />
                 </div>
+              </div>
+
+              <div className="border-t border-black/5 pt-4">
+                <label className="block text-xs font-black text-[#1a2b3c]/60 mb-1.5 uppercase tracking-wide">صورة الباقة</label>
+                <ImageUploader 
+                  images={form.image ? [form.image] : []}
+                  onChange={(imgs) => f("image", imgs.length > 0 ? imgs[imgs.length - 1] : undefined)}
+                />
               </div>
 
               <div>

@@ -1,4 +1,4 @@
-export type ServiceType = "car" | "fast_track" | "hotel";
+export type ServiceType = "car" | "fast_track" | "hotel" | "flight" | "apartment";
 
 export type AvailabilityStatus = "available" | "unavailable";
 
@@ -43,6 +43,7 @@ export type FastTrackPackage = {
   price: number;
   currency: "EGP" | "USD";
   description: string;
+  image?: string;
   status: AvailabilityStatus;
   sortOrder: number;
   translations?: {

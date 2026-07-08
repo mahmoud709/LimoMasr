@@ -30,11 +30,10 @@ export function HeroCarousel({ images }: { images?: string[] }) {
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden group bg-[#1a2b3c]">
-      {/* Background Images */}
       {slides.map((src, idx) => (
         <div
           key={idx}
-          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${idx === current ? "opacity-100 scale-100 z-0" : "opacity-0 scale-105 -z-10"}`}
+          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${idx === current ? "opacity-100 scale-100 z-[2]" : "opacity-0 scale-105 z-[1]"}`}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -53,23 +52,41 @@ export function HeroCarousel({ images }: { images?: string[] }) {
       {/* Only show controls if there are multiple slides */}
       {slides.length > 1 && (
         <>
-          {/* Prev arrow */}
+          {/* Desktop Prev arrow */}
           <button
             onClick={prev}
             aria-label="Previous"
-            className="absolute top-1/2 -translate-y-1/2 rtl:right-8 ltr:left-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
+            className="hidden md:flex absolute top-1/2 -translate-y-1/2 rtl:right-8 ltr:left-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
           >
             <FiChevronRight className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
           </button>
 
-          {/* Next arrow */}
+          {/* Desktop Next arrow */}
           <button
             onClick={next}
             aria-label="Next"
-            className="absolute top-1/2 -translate-y-1/2 rtl:left-8 ltr:right-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
+            className="hidden md:flex absolute top-1/2 -translate-y-1/2 rtl:left-8 ltr:right-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
           >
             <FiChevronLeft className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
           </button>
+
+          {/* Mobile Controls (grouped bottom-left, above floating WhatsApp) */}
+          <div className="absolute bottom-24 left-6 flex gap-4 z-[100] md:hidden pointer-events-auto">
+            <button
+              onClick={prev}
+              aria-label="Previous"
+              className="w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:scale-110 cursor-pointer"
+            >
+              <FiChevronRight className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next"
+              className="w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:scale-110 cursor-pointer"
+            >
+              <FiChevronLeft className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
+            </button>
+          </div>
 
           {/* Dot indicators */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-[100] pointer-events-auto" dir="ltr">

@@ -50,6 +50,12 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar" 
         {packages.map((item) => (
           <div key={item.id} className="snap-start shrink-0 w-[280px] md:w-[340px]">
             <article className="luxury-panel p-6 md:p-8 flex flex-col h-full bg-white relative overflow-hidden group hover:border-[#d0a755] transition-colors">
+              {item.image && (
+                <div className="w-full h-40 -mt-6 -mx-6 mb-6 relative overflow-hidden rounded-t-2xl">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                </div>
+              )}
               {/* Subtle accent icon */}
               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
                 <svg className="w-16 h-16 text-[#1a2b3c]" fill="currentColor" viewBox="0 0 24 24"><path d="M21.9 10.4c-.2-.7-.8-1.2-1.5-1.4l-7.7-2.3-3.6-5.8c-.3-.5-.8-.7-1.4-.7-.3 0-.6.1-.8.2-.2.1-.3.3-.4.5-.1.2-.1.5 0 .8l2.6 6.5-4.8-1.5-1.9-2.9c-.2-.3-.5-.5-.8-.5H1c-.3 0-.5.2-.6.4-.1.3 0 .5.2.7l3.6 3.6-2.5 1.5c-.3.2-.5.5-.6.9-.1.4 0 .8.2 1.1l1.5 2.5c.2.3.5.5.9.6h.4l8.3-5 5.5 1.6c.7.2 1.5-.1 1.9-.7l.9-1.5c.3-.6.2-1.4-.3-1.9z"/></svg>

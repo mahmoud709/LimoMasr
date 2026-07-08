@@ -3,7 +3,8 @@ import type { ReactNode } from "react";
 import type { SiteSettings, ServiceType, Locale } from "@/lib/types";
 import { siteText, ui, withLang } from "@/lib/i18n";
 import { buildWhatsappUrl, serviceWhatsappNumber } from "@/lib/utils";
-import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaCar, FaPlane } from "react-icons/fa";
+import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaCar, FaPlane, FaSnapchatGhost, FaTelegramPlane } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileMenu } from "@/components/MobileMenu";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
@@ -15,13 +16,18 @@ const socialIconsMap: Record<string, ReactNode> = {
   instagram: <FaInstagram className="w-5 h-5" />,
   linkedin: <FaLinkedinIn className="w-4 h-4" />,
   youtube: <FaYoutube className="w-5 h-5" />,
+  snapchat: <FaSnapchatGhost className="w-5 h-5" />,
+  telegram: <FaTelegramPlane className="w-5 h-5" />,
+  x: <FaXTwitter className="w-4 h-4" />,
 };
 
 const navItems = [
   ["home", "/"],
-  ["cars", "/cars"],
-  ["fastTrack", "/fast-track"],
+  ["flights", "/flights"],
   ["hotels", "/hotels"],
+  ["hotelApartments", "/hotel-apartments"],
+  ["fastTrack", "/fast-track"],
+  ["cars", "/cars"],
   ["about", "/about"],
   ["contact", "/contact"],
 ] as const;
@@ -149,7 +155,10 @@ export async function PublicLayout({
                   { name: 'instagram', url: settings.socialLinks?.instagram || '#' },
                   { name: 'facebook', url: settings.socialLinks?.facebook || '#' },
                   { name: 'whatsapp', url: settings.socialLinks?.whatsapp || '#' },
-                ].map(({ name, url }) => (
+                  { name: 'snapchat', url: settings.socialLinks?.snapchat || '#' },
+                  { name: 'telegram', url: settings.socialLinks?.telegram || '#' },
+                  { name: 'x', url: settings.socialLinks?.x || '#' },
+                ].filter(s => s.url && s.url !== '#').map(({ name, url }) => (
                   <Link key={name} href={url} target="_blank" className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/80 hover:bg-[#d0a755] hover:border-[#d0a755] hover:text-[#1a2b3c] hover:-translate-y-1 transition-all duration-300 shadow-sm">
                     {socialIconsMap[name]}
                   </Link>

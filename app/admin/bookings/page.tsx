@@ -17,6 +17,8 @@ const typeLabels: Record<string, string> = {
   car: "سيارة",
   fast_track: "فاست تراك",
   hotel: "فندق",
+  flight: "طيران",
+  apartment: "شقة فندقية",
 };
 
 function formatDateTime(val: string) {
@@ -145,6 +147,8 @@ export default function BookingsPage() {
             <option value="car">سيارة</option>
             <option value="fast_track">فاست تراك</option>
             <option value="hotel">فندق</option>
+            <option value="flight">طيران</option>
+            <option value="apartment">شقة فندقية</option>
           </select>
         </div>
       </div>

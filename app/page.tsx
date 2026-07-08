@@ -7,7 +7,8 @@ import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getCars, getFastTrackPackages, getSiteSettings } from "@/lib/data";
-import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaSnapchatGhost, FaTelegramPlane } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { ui } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
@@ -310,10 +311,13 @@ export default async function Home() {
               {[
                 { icon: <FaWhatsapp className="w-8 h-8" />, color: "hover:bg-[#25D366] hover:text-white", href: settings.socialLinks?.whatsapp || "#" },
                 { icon: <FaFacebookF className="w-7 h-7" />, color: "hover:bg-[#1877F2] hover:text-white", href: settings.socialLinks?.facebook || "#" },
-                { icon: <FaTiktok className="w-7 h-7" />, color: "hover:bg-black hover:text-white", href: settings.socialLinks?.tiktok || "#" },
                 { icon: <FaInstagram className="w-8 h-8" />, color: "hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white border-transparent", href: settings.socialLinks?.instagram || "#" },
-                { icon: <FaLinkedinIn className="w-7 h-7" />, color: "hover:bg-[#0A66C2] hover:text-white", href: settings.socialLinks?.linkedin || "#" },
+                { icon: <FaTiktok className="w-7 h-7" />, color: "hover:bg-black hover:text-white", href: settings.socialLinks?.tiktok || "#" },
+                { icon: <FaSnapchatGhost className="w-7 h-7" />, color: "hover:bg-[#FFFC00] hover:text-black", href: settings.socialLinks?.snapchat || "#" },
+                { icon: <FaTelegramPlane className="w-8 h-8" />, color: "hover:bg-[#0088cc] hover:text-white", href: settings.socialLinks?.telegram || "#" },
                 { icon: <FaYoutube className="w-8 h-8" />, color: "hover:bg-[#FF0000] hover:text-white", href: settings.socialLinks?.youtube || "#" },
+                { icon: <FaXTwitter className="w-7 h-7" />, color: "hover:bg-black hover:text-white", href: settings.socialLinks?.x || "#" },
+                { icon: <FaLinkedinIn className="w-7 h-7" />, color: "hover:bg-[#0A66C2] hover:text-white", href: settings.socialLinks?.linkedin || "#" },
               ].map((social, idx) => (
                 <Link
                   key={idx}

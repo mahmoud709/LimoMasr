@@ -114,23 +114,7 @@ export function CarCard({ car, locale = "ar" }: { car: Car; locale?: Locale }) {
           </div>
         </div>
 
-        {/* Extended Details Grid */}
-        <div className="grid grid-cols-2 gap-3 mt-1 bg-[#F9F8F6] p-3 rounded-xl border border-black/5">
-          {car.models && car.models.length > 0 && (
-            <div className="flex flex-col gap-1">
-              <span className="text-[9px] text-[#1a2b3c]/40 font-black uppercase tracking-widest">الموديلات المتاحة</span>
-              <span className="text-xs text-[#1a2b3c] font-bold truncate">
-                {car.models[0]}{car.models.length > 1 ? '...' : ''}
-              </span>
-            </div>
-          )}
-          {car.year && (
-            <div className="flex flex-col gap-1">
-              <span className="text-[9px] text-[#1a2b3c]/40 font-black uppercase tracking-widest">سنة الصنع</span>
-              <span className="text-xs text-[#1a2b3c] font-bold">{car.year} أو أحدث</span>
-            </div>
-          )}
-        </div>
+
       </div>
       
       <div className="flex items-center justify-between mt-auto pt-4 border-t border-black/5">

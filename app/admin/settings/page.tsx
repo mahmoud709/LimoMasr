@@ -85,7 +85,7 @@ export default function SettingsPage() {
 
         {/* Social */}
         <Card title="حسابات التواصل الاجتماعي">
-          {["facebook", "instagram", "tiktok", "youtube", "linkedin", "whatsapp"].map(platform => (
+          {["facebook", "instagram", "tiktok", "snapchat", "telegram", "youtube", "x", "linkedin", "whatsapp"].map(platform => (
             <Field key={platform} label={platform} value={settings.socialLinks?.[platform] ?? ""} onChange={v => f(`socialLinks.${platform}`, v)} dir="ltr" />
           ))}
         </Card>
