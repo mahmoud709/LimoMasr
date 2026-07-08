@@ -14,16 +14,20 @@ const statusConfig: Record<BookingStatus, { label: string; color: string; bg: st
   completed: { label: "منتهي",  labelEn: "Completed", color: "text-gray-600",  bg: "bg-gray-50",  border: "border-gray-200", icon: FiClock } as any,
 };
 
-const serviceIcons = {
+const serviceIcons: Record<string, any> = {
   car: FiTruck,
   fast_track: FiZap,
   hotel: FiMapPin,
+  flight: FiMapPin,
+  apartment: FiMapPin,
 };
 
 const typeLabels: Record<string, { ar: string; en: string }> = {
   car: { ar: "ليموزين", en: "Limousine" },
   fast_track: { ar: "المسار السريع", en: "Fast Track" },
   hotel: { ar: "فندق", en: "Hotel Room" },
+  flight: { ar: "طيران", en: "Flight" },
+  apartment: { ar: "شقة فندقية", en: "Hotel Apartment" },
 };
 
 // Date formatter helper using Intl API
