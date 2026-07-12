@@ -108,19 +108,21 @@ export async function PublicLayout({
         <div className="bg-linear-to-l from-[#d0a755] to-[#e6c175] rounded-4xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden border border-white/40">
           <div className="absolute -left-10 -bottom-10 opacity-20 w-64 h-64 bg-white rounded-full blur-3xl pointer-events-none"></div>
           
-          <div className="relative z-10 text-right md:w-2/3">
+          <div className="relative z-10 rtl:text-right ltr:text-left md:w-2/3">
             <h3 className="text-2xl md:text-3xl font-black text-[#1a2b3c] mb-2 tracking-tight leading-tight">
-              هل أنت مستعد لتجربة فاخرة؟
+              {locale === "en" ? "Ready for a Luxury Experience?" : "هل أنت مستعد لتجربة فاخرة؟"}
             </h3>
             <p className="text-[#1a2b3c]/80 text-base md:text-lg font-medium max-w-xl">
-              احجز سيارتك الآن أو تواصل معنا لترتيب استقبالك من المطار بأعلى معايير الراحة والأمان.
+              {locale === "en"
+                ? "Book your car now or contact us to arrange your airport welcome with the highest standards of comfort and safety."
+                : "احجز سيارتك الآن أو تواصل معنا لترتيب استقبالك من المطار بأعلى معايير الراحة والأمان."}
             </p>
           </div>
           
           <div className="relative z-10 shrink-0">
             <a href={buildWhatsappUrl(settings.whatsappCarNumber, "")} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-[#1a2b3c] text-white px-6 py-3.5 rounded-xl font-black text-base tracking-wide hover:bg-white hover:text-[#1a2b3c] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
               <FaWhatsapp className="w-5 h-5 text-[#25D366]" />
-              تواصل عبر واتساب
+              {locale === "en" ? "Connect via WhatsApp" : "تواصل عبر واتساب"}
             </a>
           </div>
         </div>
@@ -142,7 +144,9 @@ export async function PublicLayout({
               <div className="text-sm leading-[2] text-white/60 font-light mb-8 max-w-sm space-y-4">
                 <p>{content.footerText}</p>
                 <p>
-                  ليمو مصر هي خيارك الأول لخدمات الليموزين الفاخرة والنقل السياحي. نقدم أسطولاً حديثاً من السيارات مع سائقين محترفين لضمان راحتك وأمانك في كل رحلة، سواء كانت تنقلات داخل المدينة أو استقبال من المطار.
+                  {locale === "en"
+                    ? "Limo Masr is your premier choice for luxury limousine and tourist transportation services. We provide a modern fleet of vehicles with professional drivers to ensure your comfort and safety on every journey, whether for city transits or airport transfers."
+                    : "ليمو مصر هي خيارك الأول لخدمات الليموزين الفاخرة والنقل السياحي. نقدم أسطولاً حديثاً من السيارات مع سائقين محترفين لضمان راحتك وأمانك في كل رحلة، سواء كانت تنقلات داخل المدينة أو استقبال من المطار."}
                 </p>
               </div>
               
@@ -170,7 +174,7 @@ export async function PublicLayout({
             <div className="lg:col-span-3">
               <h3 className="text-sm font-black tracking-[0.1em] text-white mb-8 flex items-center gap-3">
                 <span className="w-6 h-1 rounded-full bg-[#d0a755]"></span>
-                الروابط السريعة
+                {locale === "en" ? "Quick Links" : "الروابط السريعة"}
               </h3>
               <div className="flex flex-col gap-5">
                 {navItems.map(([key, href]) => (
@@ -186,7 +190,7 @@ export async function PublicLayout({
             <div className="lg:col-span-3">
               <h3 className="text-sm font-black tracking-widest text-white mb-8 flex items-center gap-3">
                 <span className="w-6 h-1 rounded-full bg-[#d0a755]"></span>
-                التواصل
+                {locale === "en" ? "Contact Us" : "التواصل"}
               </h3>
               <div className="space-y-6 text-sm text-white/80 font-light">
                 <div className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-[#d0a755]/30 transition-colors">
@@ -210,7 +214,7 @@ export async function PublicLayout({
             <div className="lg:col-span-2">
               <h3 className="text-sm font-black tracking-widest text-white mb-8 flex items-center gap-3">
                 <span className="w-6 h-1 rounded-full bg-[#d0a755]"></span>
-                معلومات
+                {locale === "en" ? "Information" : "معلومات"}
               </h3>
               <div className="flex flex-col gap-5 font-light">
                 <Link href={withLang("/policies", locale)} className="text-white/60 hover:text-[#d0a755] transition-colors text-base flex items-center gap-3 w-fit group">
@@ -227,12 +231,12 @@ export async function PublicLayout({
           </div>
           
           <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-white/40 font-light">
-            <p>© {new Date().getFullYear()} {content.brand}. جميع الحقوق محفوظة.</p>
+            <p>© {new Date().getFullYear()} {content.brand}. {locale === "en" ? "All rights reserved." : "جميع الحقوق محفوظة."}</p>
             <p className="mt-4 md:mt-0 uppercase tracking-[0.2em] text-[11px] font-bold">Designed for Excellence</p>
           </div>
         </div>
       </footer>
-      <FloatingWhatsApp phone={settings.whatsappCarNumber} />
+      <FloatingWhatsApp phone={settings.whatsappCarNumber} socialLinks={settings.socialLinks} locale={locale} />
     </div>
   );
 }

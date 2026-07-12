@@ -7,9 +7,9 @@ import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getCars, getFastTrackPackages, getSiteSettings } from "@/lib/data";
-import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaSnapchatGhost, FaTelegramPlane } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaSnapchatGhost, FaTelegramPlane, FaCar, FaPlane, FaBed } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import { ui } from "@/lib/i18n";
+import { ui, withLang } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 
 export default async function Home() {
@@ -17,9 +17,10 @@ export default async function Home() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
   const t = ui[locale];
+  const isRtl = locale === "ar";
 
   return (
-    <PublicLayout settings={settings}>
+    <PublicLayout settings={settings} locale={locale}>
       <main className="flex flex-col w-full overflow-hidden">
         {/* Exact Layout Hero Section */}
         <section className="relative min-h-screen w-full flex items-center pt-24 overflow-hidden">
@@ -28,7 +29,7 @@ export default async function Home() {
 
           <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
             {/* Text Content */}
-            <div className="flex flex-col items-start text-start max-w-2xl py-16 md:py-24 pointer-events-auto">
+            <div className="flex flex-col items-start text-start max-w-4xl py-16 md:py-24 pointer-events-auto">
               <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-6 animate-reveal-1 drop-shadow-md uppercase">
                 {t.hero.eyebrow}
               </p>
@@ -38,10 +39,56 @@ export default async function Home() {
               <p className="text-white/90 text-lg md:text-xl leading-[1.8] mb-12 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
                 {t.hero.text}
               </p>
-              <div className="animate-reveal-3">
-                <Link href="/cars" className="inline-block bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] font-black py-4 px-12 rounded-xl transition-all duration-300 text-lg shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.4)] hover:-translate-y-1">
-                  {t.hero.cta}
-                </Link>
+
+              {/* Sleek, Compact Booking Cards Row - 4 Cards Layout */}
+              <div className="w-full animate-reveal-3 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                  {[
+                    {
+                      title: t.bookingSection.limoTitle,
+                      subtitle: t.bookingSection.limoSubtitle,
+                      href: "/cars",
+                      icon: <FaCar className="w-5 h-5 text-[#d0a755]" />
+                    },
+                    {
+                      title: t.bookingSection.flightsTitle,
+                      subtitle: t.bookingSection.flightsSubtitle,
+                      href: "/flights",
+                      icon: <FaPlane className="w-5 h-5 text-white" />
+                    },
+                    {
+                      title: t.bookingSection.fastTrackTitle,
+                      subtitle: t.bookingSection.fastTrackSubtitle,
+                      href: "/fast-track",
+                      icon: <FaPlane className="w-5 h-5 text-[#d0a755] rotate-45" />
+                    },
+                    {
+                      title: t.bookingSection.hotelsTitle,
+                      subtitle: t.bookingSection.hotelsSubtitle,
+                      href: "/hotels",
+                      icon: <FaBed className="w-5 h-5 text-[#d0a755]" />
+                    }
+                  ].map((card, idx) => (
+                    <Link
+                      key={idx}
+                      href={withLang(card.href, locale)}
+                      className="group flex items-center justify-between p-4 rounded-2xl bg-white/10 backdrop-blur-md hover:bg-white/20 border border-white/10 hover:border-[#d0a755]/50 transition-all duration-300 text-white min-w-0"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                          {card.icon}
+                        </div>
+                        <div className="flex flex-col min-w-0 text-right rtl:text-right ltr:text-left py-0.5 gap-0.5">
+                          <span className="text-sm font-black tracking-tight leading-relaxed group-hover:text-[#d0a755] transition-colors truncate">{card.title}</span>
+                          <span className="text-[10px] text-white/50 truncate leading-normal">{card.subtitle}</span>
+                        </div>
+                      </div>
+                      <svg className={`w-3.5 h-3.5 text-white/60 shrink-0 group-hover:text-[#d0a755] transition-colors ${isRtl ? 'rotate-0 group-hover:-translate-x-1' : 'rotate-180 group-hover:translate-x-1'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 12H5m7 7l-7-7 7-7" />
+                      </svg>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -53,8 +100,8 @@ export default async function Home() {
             {/* Cars Carousel */}
             <CarCarousel
               cars={cars}
-              title="أسطول ليمو مصر"
-              viewAllText="عرض الكل"
+              title={locale === "en" ? "Limo Masr Fleet" : "أسطول ليمو مصر"}
+              viewAllText={locale === "en" ? "View All" : "عرض الكل"}
               locale={locale}
             />
             {/* Fast Track Carousel */}

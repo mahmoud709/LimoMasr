@@ -14,6 +14,7 @@ type BookingFormProps = {
   serviceName: string;
   whatsappNumber: string;
   price?: number;
+  locale?: string;
 };
 
 export function BookingForm({
@@ -22,6 +23,7 @@ export function BookingForm({
   serviceName,
   whatsappNumber,
   price,
+  locale,
 }: BookingFormProps) {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
@@ -32,8 +34,12 @@ export function BookingForm({
   const [bookingSource, setBookingSource] = useState<"web" | "whatsapp">("web");
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
-  // Detect locale based on window location in client-side
-  const isEn = typeof window !== "undefined" && window.location.search.includes("lang=en");
+  // Detect locale based on props, pathname prefix, or cookie
+  const isEn = locale ? locale === "en" : (typeof window !== "undefined" && (
+    window.location.pathname.startsWith("/en") ||
+    window.location.search.includes("lang=en") ||
+    document.cookie.includes("NEXT_LOCALE=en")
+  ));
 
   // Fetch logged in customer if available to pre-fill details
   const { data: authData } = useQuery({
@@ -57,7 +63,9 @@ export function BookingForm({
   const message = useMemo(() => {
     let finalNotes = notes;
     if (['hotel', 'apartment'].includes(type)) {
-      finalNotes = `الميزانية المتوقعة لليلة: ${budget} ج.م\n\nالملاحظات:\n${notes}`;
+      finalNotes = isEn
+        ? `Expected budget per night: ${budget} EGP\n\nNotes:\n${notes}`
+        : `الميزانية المتوقعة لليلة: ${budget} ج.م\n\nالملاحظات:\n${notes}`;
     }
     return bookingMessage({
       serviceName,
@@ -65,8 +73,8 @@ export function BookingForm({
       phone,
       passengers,
       notes: finalNotes,
-    });
-  }, [type, serviceName, customerName, phone, passengers, notes, budget]);
+    }, isEn ? "en" : "ar");
+  }, [type, serviceName, customerName, phone, passengers, notes, budget, isEn]);
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -165,7 +173,7 @@ export function BookingForm({
             required
             value={customerName}
             onChange={(event) => setCustomerName(event.target.value)}
-            placeholder="الاسم كاملًا"
+            placeholder={isEn ? "Full Name" : "الاسم كاملًا"}
             className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
           />
         </div>
@@ -176,14 +184,16 @@ export function BookingForm({
             type="tel"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
-            placeholder="رقم الهاتف للتواصل"
+            placeholder={isEn ? "Phone Number" : "رقم الهاتف للتواصل"}
             className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
           />
         </div>
         
         <div className="relative flex items-center justify-between rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-2 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
           <span className="text-sm font-bold text-[#1a2b3c]/70 w-1/3">
-            {['hotel', 'apartment'].includes(type) ? 'عدد الأفراد' : 'عدد الركاب'}
+            {isEn 
+              ? (['hotel', 'apartment'].includes(type) ? 'Number of guests' : 'Number of passengers')
+              : (['hotel', 'apartment'].includes(type) ? 'عدد الأفراد' : 'عدد الركاب')}
           </span>
           <input
             required
@@ -200,8 +210,12 @@ export function BookingForm({
           <div className="space-y-4 py-2">
             <div>
               <div className="flex justify-between items-end mb-2">
-                <p className="text-sm font-bold text-[#1a2b3c]">الميزانية لليلة الواحدة</p>
-                <p className="text-[#d0a755] font-black text-sm dir-ltr">{budget} ج.م</p>
+                <p className="text-sm font-bold text-[#1a2b3c]">
+                  {isEn ? "Budget per night" : "الميزانية لليلة الواحدة"}
+                </p>
+                <p className="text-[#d0a755] font-black text-sm dir-ltr">
+                  {budget} {isEn ? "EGP" : "ج.م"}
+                </p>
               </div>
               <input 
                 type="range" 
@@ -221,13 +235,23 @@ export function BookingForm({
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
             placeholder={
-              type === 'hotel' 
-                ? "ملاحظات إضافية (المدينة المطلوبة، فنادق مفضلة...)" 
-                : type === 'flight'
-                ? "ملاحظات إضافية (الوجهة ذهاب وعودة، درجة الطيران، طلبات خاصة...)"
-                : type === 'apartment'
-                ? "ملاحظات إضافية (المدينة المطلوبة، عدد الغرف...)"
-                : "ملاحظات إضافية (أماكن التوقف، طلبات خاصة...)"
+              isEn ? (
+                type === 'hotel' 
+                  ? "Additional notes (destination city, preferred hotels...)" 
+                  : type === 'flight'
+                  ? "Additional notes (round trip destination, flight class, special requests...)"
+                  : type === 'apartment'
+                  ? "Additional notes (destination city, number of rooms...)"
+                  : "Additional notes (stops, special requests...)"
+              ) : (
+                type === 'hotel' 
+                  ? "ملاحظات إضافية (المدينة المطلوبة، فنادق مفضلة...)" 
+                  : type === 'flight'
+                  ? "ملاحظات إضافية (الوجهة ذهاب وعودة، درجة الطيران، طلبات خاصة...)"
+                  : type === 'apartment'
+                  ? "ملاحظات إضافية (المدينة المطلوبة، عدد الغرف...)"
+                  : "ملاحظات إضافية (أماكن التوقف، طلبات خاصة...)"
+              )
             }
             rows={3}
             className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] resize-none"

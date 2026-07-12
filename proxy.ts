@@ -8,7 +8,9 @@ export function proxy(req: NextRequest) {
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
-    pathname.includes(".")
+    pathname.includes(".") ||
+    req.headers.has("x-locale-rewritten") ||
+    req.nextUrl.searchParams.has("__locale")
   ) {
     return NextResponse.next();
   }
@@ -41,7 +43,16 @@ export function proxy(req: NextRequest) {
 
     // Rewrite internally to the page without language prefix
     const rewriteUrl = new URL(`${restOfPath}${search}`, req.url);
-    const response = NextResponse.rewrite(rewriteUrl);
+    rewriteUrl.searchParams.set("__locale", locale);
+
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set("x-locale-rewritten", "true");
+
+    const response = NextResponse.rewrite(rewriteUrl, {
+      request: {
+        headers: requestHeaders,
+      },
+    });
 
     // Persist language cookie
     response.cookies.set("NEXT_LOCALE", locale, { path: "/", maxAge: 31536000, sameSite: "lax" });

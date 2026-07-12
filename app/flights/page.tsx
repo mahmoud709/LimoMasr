@@ -3,17 +3,22 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getSiteSettings } from "@/lib/data";
 import { CinematicBackground } from "@/components/CinematicBackground";
+import { cookies } from "next/headers";
+import type { Locale } from "@/lib/types";
 
 export default async function FlightsPage() {
   const settings = await getSiteSettings();
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
+
   return (
-    <PublicLayout settings={settings} whatsappType="hotel">
+    <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-24">
         <div className="animate-reveal-1 px-8 max-w-7xl mx-auto w-full">
           <SectionHeader 
-            eyebrow="حجز طيران" 
-            title="رحلات طيران إلى كافة الوجهات العالمية والمحلية" 
-            text="نوفر لك أفضل عروض تذاكر الطيران، لتسافر براحة تامة إلى وجهتك المفضلة بأفضل الأسعار." 
+            eyebrow={locale === "en" ? "Flight Booking" : "حجز طيران"} 
+            title={locale === "en" ? "Flights to all Global & Domestic Destinations" : "رحلات طيران إلى كافة الوجهات العالمية والمحلية"} 
+            text={locale === "en" ? "We provide you with the best flight ticket offers to travel in comfort to your favorite destinations at the best prices." : "نوفر لك أفضل عروض تذاكر الطيران، لتسافر براحة تامة إلى وجهتك المفضلة بأفضل الأسعار."} 
           />
         </div>
 
@@ -30,34 +35,42 @@ export default async function FlightsPage() {
                   </svg>
                 </span>
                 
-                <h2 className="text-3xl md:text-5xl font-black text-white leading-[1.3] mb-6 drop-shadow-lg">
-                  احجز رحلتك القادمة مع <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">ليمو مصر</span>
+                <h2 className="text-3xl md:text-5xl font-black text-white leading-[1.3] mb-6 drop-shadow-lg rtl:text-right ltr:text-left">
+                  {locale === "en" ? (
+                    <>Book Your Next Journey with <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">Limo Masr</span></>
+                  ) : (
+                    <>احجز رحلتك القادمة مع <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">ليمو مصر</span></>
+                  )}
                 </h2>
                 
-                <div className="space-y-6 text-white/90 font-medium leading-relaxed text-lg">
+                <div className="space-y-6 text-white/90 font-medium leading-relaxed text-lg rtl:text-right ltr:text-left">
                   <p className="drop-shadow-md">
-                    نحن نهتم بأدق تفاصيل رحلتك، سواء كنت تسافر للعمل أو السياحة، نقدم لك تجربة حجز طيران احترافية وسريعة تناسب جميع ميزانياتك.
+                    {locale === "en" 
+                      ? "We care about the finest details of your journey. Whether you are traveling for business or leisure, we provide you with a professional and fast flight booking experience that fits all budgets."
+                      : "نحن نهتم بأدق تفاصيل رحلتك، سواء كنت تسافر للعمل أو السياحة، نقدم لك تجربة حجز طيران احترافية وسريعة تناسب جميع ميزانياتك."}
                   </p>
                   <ul className="grid grid-cols-2 gap-4 mt-6 text-white/80">
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      رحلات دولية ومحلية
+                      {locale === "en" ? "International & Domestic" : "رحلات دولية ومحلية"}
                     </li>
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      أفضل الخطوط الجوية
+                      {locale === "en" ? "Best Airlines" : "أفضل الخطوط الجوية"}
                     </li>
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      أسعار تنافسية وحصرية
+                      {locale === "en" ? "Competitive Prices" : "أسعار تنافسية وحصرية"}
                     </li>
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      دعم متواصل حتى الوصول
+                      {locale === "en" ? "Continuous Support" : "دعم متواصل حتى الوصول"}
                     </li>
                   </ul>
                   <p className="pt-4 border-t border-white/20 mt-6 font-bold text-white drop-shadow-md">
-                    شارك معنا تفاصيل وجهتك، وسيتم إعداد عرض أسعار حصري في وقت قياسي.
+                    {locale === "en"
+                      ? "Share your destination details with us, and an exclusive price quote will be prepared in record time."
+                      : "شارك معنا تفاصيل وجهتك، وسيتم إعداد عرض أسعار حصري في وقت قياسي."}
                   </p>
                 </div>
               </div>
@@ -68,8 +81,9 @@ export default async function FlightsPage() {
             <BookingForm 
               type="flight" 
               serviceRefId="flight-request" 
-              serviceName="طلب حجز طيران" 
+              serviceName={locale === "en" ? "Flight Booking Request" : "طلب حجز طيران"} 
               whatsappNumber={settings.whatsappServiceNumber} 
+              locale={locale}
             />
           </div>
         </div>

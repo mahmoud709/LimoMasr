@@ -46,9 +46,11 @@ export type FastTrackPackage = {
   image?: string;
   status: AvailabilityStatus;
   sortOrder: number;
+  tagLeft?: string;
+  tagRight?: string;
   translations?: {
-    ar?: Partial<Pick<FastTrackPackage, "name" | "airport" | "description">>;
-    en?: Partial<Pick<FastTrackPackage, "name" | "airport" | "description">>;
+    ar?: Partial<Pick<FastTrackPackage, "name" | "airport" | "description" | "tagLeft" | "tagRight">>;
+    en?: Partial<Pick<FastTrackPackage, "name" | "airport" | "description" | "tagLeft" | "tagRight">>;
   };
 };
 

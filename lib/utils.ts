@@ -2,7 +2,13 @@ import type { Booking, Locale, PriceUnit, ServiceType, SiteSettings } from "./ty
 
 export function formatCurrency(value?: number, currency = "EGP", locale: Locale = "ar") {
   if (!value) return locale === "en" ? "Price on request" : "السعر حسب الطلب";
-  return new Intl.NumberFormat(locale === "en" ? "en-EG" : "ar-EG", {
+  if (locale === "en") {
+    const formattedNum = new Intl.NumberFormat("en-US", {
+      maximumFractionDigits: 0,
+    }).format(value);
+    return currency === "EGP" ? `${formattedNum} EGP` : `${currency} ${formattedNum}`;
+  }
+  return new Intl.NumberFormat("ar-EG", {
     style: "currency",
     currency,
     maximumFractionDigits: 0,

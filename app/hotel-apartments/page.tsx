@@ -3,17 +3,22 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getSiteSettings } from "@/lib/data";
 import { CinematicBackground } from "@/components/CinematicBackground";
+import { cookies } from "next/headers";
+import type { Locale } from "@/lib/types";
 
 export default async function HotelApartmentsPage() {
   const settings = await getSiteSettings();
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
+
   return (
-    <PublicLayout settings={settings} whatsappType="hotel">
+    <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-24">
         <div className="animate-reveal-1 px-8 max-w-7xl mx-auto w-full">
           <SectionHeader 
-            eyebrow="شقق فندقية" 
-            title="إقامة فاخرة تمنحك شعور المنزل" 
-            text="احجز شقتك الفندقية الراقية بأفضل المواقع، مساحات واسعة وخصوصية تامة لراحتك." 
+            eyebrow={locale === "en" ? "Hotel Apartments" : "شقق فندقية"} 
+            title={locale === "en" ? "Luxury Stay Giving You a Home Feeling" : "إقامة فاخرة تمنحك شعور المنزل"} 
+            text={locale === "en" ? "Book your luxury hotel apartment in the best locations, spacious areas and complete privacy for your comfort." : "احجز شقتك الفندقية الراقية بأفضل المواقع، مساحات واسعة وخصوصية تامة لراحتك."} 
           />
         </div>
 
@@ -30,34 +35,42 @@ export default async function HotelApartmentsPage() {
                   </svg>
                 </span>
                 
-                <h2 className="text-3xl md:text-5xl font-black text-white leading-[1.3] mb-6 drop-shadow-lg">
-                  شقق فندقية متميزة في <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">أرقى الأماكن</span>
+                <h2 className="text-3xl md:text-5xl font-black text-white leading-[1.3] mb-6 drop-shadow-lg rtl:text-right ltr:text-left">
+                  {locale === "en" ? (
+                    <>Premium Hotel Apartments in <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">Prestigious Areas</span></>
+                  ) : (
+                    <>شقق فندقية متميزة في <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">أرقى الأماكن</span></>
+                  )}
                 </h2>
                 
-                <div className="space-y-6 text-white/90 font-medium leading-relaxed text-lg">
+                <div className="space-y-6 text-white/90 font-medium leading-relaxed text-lg rtl:text-right ltr:text-left">
                   <p className="drop-shadow-md">
-                    نوفر للعائلات ورجال الأعمال مجموعة حصرية من الشقق الفندقية التي تتميز بالمساحات الواسعة والتجهيزات الفاخرة لتجربة إقامة تجمع بين الراحة والرفاهية العالية.
+                    {locale === "en"
+                      ? "We provide families and businessmen with an exclusive collection of hotel apartments characterized by spacious areas and luxury fittings for a stay experience combining comfort and high luxury."
+                      : "نوفر للعائلات ورجال الأعمال مجموعة حصرية من الشقق الفندقية التي تتميز بالمساحات الواسعة والتجهيزات الفاخرة لتجربة إقامة تجمع بين الراحة والرفاهية العالية."}
                   </p>
                   <ul className="grid grid-cols-2 gap-4 mt-6 text-white/80">
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      مواقع استراتيجية حيوية
+                      {locale === "en" ? "Vital Strategic Locations" : "مواقع استراتيجية حيوية"}
                     </li>
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      مساحات تناسب العائلات
+                      {locale === "en" ? "Sizes Suitable for Families" : "مساحات تناسب العائلات"}
                     </li>
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      خصوصية تامة واستقلالية
+                      {locale === "en" ? "Complete Privacy & Independence" : "خصوصية تامة واستقلالية"}
                     </li>
                     <li className="flex items-center gap-3 drop-shadow-md">
                       <span className="w-2 h-2 rounded-full bg-[#d0a755] shadow-[0_0_10px_rgba(208,167,85,0.8)]"></span>
-                      تجهيزات وخدمات راقية
+                      {locale === "en" ? "Luxury Fittings & Services" : "تجهيزات وخدمات راقية"}
                     </li>
                   </ul>
                   <p className="pt-4 border-t border-white/20 mt-6 font-bold text-white drop-shadow-md">
-                    أخبرنا بوجهتك وعدد الأفراد، وسنقوم بتوفير الشقة الفندقية الأنسب لراحتك.
+                    {locale === "en"
+                      ? "Tell us your destination and number of guests, and we will provide the most suitable hotel apartment for your comfort."
+                      : "أخبرنا بوجهتك وعدد الأفراد، وسنقوم بتوفير الشقة الفندقية الأنسب لراحتك."}
                   </p>
                 </div>
               </div>
@@ -68,8 +81,9 @@ export default async function HotelApartmentsPage() {
             <BookingForm 
               type="apartment" 
               serviceRefId="hotel-apartments-request" 
-              serviceName="طلب حجز شقق فندقية" 
+              serviceName={locale === "en" ? "Hotel Apartments Booking Request" : "طلب حجز شقق فندقية"} 
               whatsappNumber={settings.whatsappServiceNumber} 
+              locale={locale}
             />
           </div>
         </div>

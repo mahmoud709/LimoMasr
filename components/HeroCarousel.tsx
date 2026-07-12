@@ -56,7 +56,7 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           <button
             onClick={prev}
             aria-label="Previous"
-            className="hidden md:flex absolute top-1/2 -translate-y-1/2 rtl:right-8 ltr:left-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
+            className="hidden md:flex absolute top-1/2 -translate-y-1/2 rtl:right-8 ltr:left-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-30 hover:scale-110 cursor-pointer pointer-events-auto"
           >
             <FiChevronRight className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
           </button>
@@ -65,13 +65,13 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           <button
             onClick={next}
             aria-label="Next"
-            className="hidden md:flex absolute top-1/2 -translate-y-1/2 rtl:left-8 ltr:right-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-[100] hover:scale-110 cursor-pointer pointer-events-auto"
+            className="hidden md:flex absolute top-1/2 -translate-y-1/2 rtl:left-8 ltr:right-8 w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] z-30 hover:scale-110 cursor-pointer pointer-events-auto"
           >
             <FiChevronLeft className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
           </button>
 
           {/* Mobile Controls (grouped bottom-left, above floating WhatsApp) */}
-          <div className="absolute bottom-24 left-6 flex gap-4 z-[100] md:hidden pointer-events-auto">
+          <div className="absolute bottom-24 left-6 flex gap-4 z-30 md:hidden pointer-events-auto">
             <button
               onClick={prev}
               aria-label="Previous"
@@ -89,7 +89,7 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           </div>
 
           {/* Dot indicators */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-[100] pointer-events-auto" dir="ltr">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-30 pointer-events-auto" dir="ltr">
             {slides.map((_, i) => (
               <button
                 key={i}

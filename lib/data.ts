@@ -96,9 +96,16 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
     
     let packages = await collection.find({}).toArray();
     
-    if (packages.length === 0) {
+    // Check if we have duplicate ids in the database and clean them up
+    const ids = packages.map(p => p.id);
+    const hasDuplicates = ids.some((id, index) => ids.indexOf(id) !== index);
+    
+    // Check if we have old seed data (containing "cairo-standard" or USD currency) or if it's empty
+    const hasOldData = packages.some(p => p.id === "cairo-standard" || p.currency === "USD");
+    if (packages.length === 0 || hasOldData || hasDuplicates) {
       const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
       if (fallbackPackages && fallbackPackages.length > 0) {
+        await collection.deleteMany({});
         const toInsert = fallbackPackages.map(({ ...p }) => p);
         await collection.insertMany(toInsert).catch(err => console.error("Error seeding fast-track packages:", err));
         packages = await collection.find({}).toArray();

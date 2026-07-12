@@ -1,42 +1,89 @@
 [
   {
-    "id": "cairo-standard",
-    "name": "استقبال عادي",
-    "airport": "القاهرة",
-    "price": 950,
-    "currency": "EGP",
-    "description": "مرافقة داخل المطار وتسهيل إجراءات الوصول أو السفر.",
-    "status": "available",
-    "sortOrder": 1
-  },
-  {
-    "id": "cairo-golf",
-    "name": "استقبال مع جولف كار",
-    "airport": "القاهرة",
-    "price": 1450,
-    "currency": "EGP",
-    "description": "خدمة مرافقة مع جولف كار داخل صالات المطار حسب التوفر.",
-    "status": "available",
-    "sortOrder": 2
-  },
-  {
-    "id": "sharm-vip",
-    "name": "VIP Fast Track",
-    "airport": "شرم الشيخ",
+    "id": "vip-fast-track",
+    "name": "مسار سريع كبار الشخصيات",
+    "airport": "كل المطارات",
     "price": 1800,
     "currency": "EGP",
-    "description": "مسار سريع مميز للضيوف وكبار الزوار.",
+    "description": "استقبل عند البوابة\nإنهاء كامل للتأشيرة\nدخول صالة كبار الشخصيات (VIP)\nسيارة خاصة لباب الطائرة",
+    "image": "/vip_airport_assistance.png",
     "status": "available",
-    "sortOrder": 3
+    "sortOrder": 1,
+    "tagLeft": "الأفضل",
+    "tagRight": "كبار الشخصيات",
+    "translations": {
+      "ar": {
+        "name": "مسار سريع كبار الشخصيات",
+        "airport": "كل المطارات",
+        "description": "استقبل عند البوابة\nإنهاء كامل للتأشيرة\nدخول صالة كبار الشخصيات (VIP)\nسيارة خاصة لباب الطائرة",
+        "tagLeft": "الأفضل",
+        "tagRight": "كبار الشخصيات"
+      },
+      "en": {
+        "name": "VIP Fast Track",
+        "airport": "All Airports",
+        "description": "Gate welcome & escort\nFull visa processing\nVIP lounge entry\nPrivate car to the plane door",
+        "tagLeft": "Best Choice",
+        "tagRight": "VIP"
+      }
+    }
   },
   {
-    "id": "hurghada-standard",
-    "name": "استقبال عادي",
-    "airport": "الغردقة",
-    "price": 1100,
+    "id": "golf-fast-track",
+    "name": "مسار سريع مع جولف كار",
+    "airport": "كل المطارات",
+    "price": 1450,
     "currency": "EGP",
-    "description": "تنسيق استقبال وتسهيل إجراءات الوصول.",
+    "description": "استقبال عادي من بوابة الممر\nسيارة جولف للتنقل داخل المطار\nإنهاء سريع للجوازات والحقائب\nالمساعدة في التأشيرة للوصول",
+    "image": "/airport_golf_car.png",
     "status": "available",
-    "sortOrder": 4
+    "sortOrder": 2,
+    "tagLeft": "شائع",
+    "tagRight": "مع جولف كار",
+    "translations": {
+      "ar": {
+        "name": "مسار سريع مع جولف كار",
+        "airport": "كل المطارات",
+        "description": "استقبال عادي من بوابة الممر\nسيارة جولف للتنقل داخل المطار\nإنهاء سريع للجوازات والحقائب\nالمساعدة في التأشيرة للوصول",
+        "tagLeft": "شائع",
+        "tagRight": "مع جولف كار"
+      },
+      "en": {
+        "name": "Fast Track with Golf Car",
+        "airport": "All Airports",
+        "description": "Standard welcome at gate\nGolf car transport inside terminal\nFast passport & luggage check\nVisa support on arrival",
+        "tagLeft": "Popular",
+        "tagRight": "With Golf Car"
+      }
+    }
+  },
+  {
+    "id": "standard-fast-track",
+    "name": "مسار سريع عادي",
+    "airport": "كل المطارات",
+    "price": 950,
+    "currency": "EGP",
+    "description": "استقبال باللوحة عند بوابة الدخول\nمرافقة وتسهيل الإجراءات الأمنية\nإنهاء سريع لمسار الجوازات\nالمساعدة في حمل ونقل الأمتعة",
+    "image": "/airport_fast_track.png",
+    "status": "available",
+    "sortOrder": 3,
+    "tagLeft": "الأكثر حجزاً",
+    "tagRight": "عادي",
+    "translations": {
+      "ar": {
+        "name": "مسار سريع عادي",
+        "airport": "كل المطارات",
+        "description": "استقبال باللوحة عند بوابة الدخول\nمرافقة وتسهيل الإجراءات الأمنية\nإنهاء سريع لمسار الجوازات\nالمساعدة في حمل ونقل الأمتعة",
+        "tagLeft": "الأكثر حجزاً",
+        "tagRight": "عادي"
+      },
+      "en": {
+        "name": "Standard Fast Track",
+        "airport": "All Airports",
+        "description": "Nameboard sign welcome at gate\nSecurity checks assistance\nFast passport clearance\nLuggage collection support",
+        "tagLeft": "Most Booked",
+        "tagRight": "Standard"
+      }
+    }
   }
 ]

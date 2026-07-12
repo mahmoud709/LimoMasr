@@ -57,6 +57,19 @@ export const ui = {
     privacy: "سياسة الخصوصية",
     carsLabel: "سيارات",
     fastHotelsLabel: "المسار السريع وفنادق",
+    bookingSection: {
+      pill: "مصر — أرض الفراعنة 🇪🇬",
+      title: "ابدأ الحجز",
+      cta: "احجز",
+      limoTitle: "الليموزين",
+      limoSubtitle: "أسطول ليموزين فاخر بسائق",
+            fastTrackTitle: "المسار السريع",
+      fastTrackSubtitle: "مساعدة VIP في المطار",
+      hotelsTitle: "الإقامات",
+      hotelsSubtitle: "فنادق وفلل منتقاة",
+      flightsTitle: "الطيران",
+      flightsSubtitle: "حجز رحلات طيران حصرية"
+    },
     hero: {
       eyebrow: "تنقل أسهل... راحة أكثر",
       title1: "احجز رحلتك الآن واستمتع",
@@ -170,6 +183,19 @@ export const ui = {
     privacy: "Privacy Policy",
     carsLabel: "Cars",
     fastHotelsLabel: "Fast Track and Hotels",
+    bookingSection: {
+      pill: "Egypt — Land of Pharaohs 🇪🇬",
+      title: "Start Booking",
+      cta: "Book",
+      limoTitle: "Limousine",
+      limoSubtitle: "Luxury limousine fleet with a driver",
+            fastTrackTitle: "Fast Track",
+      fastTrackSubtitle: "VIP airport assistance services",
+      hotelsTitle: "Accommodations",
+      hotelsSubtitle: "Handpicked hotels and villas",
+      flightsTitle: "Flights",
+      flightsSubtitle: "Exclusive flight bookings"
+    },
     hero: {
       eyebrow: "Easier transit... More comfort",
       title1: "Book your ride now and enjoy",

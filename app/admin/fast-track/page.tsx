@@ -13,9 +13,11 @@ const empty: Omit<FastTrackPackage, "id"> = {
   description: "",
   status: "available",
   sortOrder: 99,
+  tagLeft: "",
+  tagRight: "",
   translations: {
-    ar: { name: "", airport: "", description: "" },
-    en: { name: "", airport: "", description: "" },
+    ar: { name: "", airport: "", description: "", tagLeft: "", tagRight: "" },
+    en: { name: "", airport: "", description: "", tagLeft: "", tagRight: "" },
   }
 };
 
@@ -40,8 +42,8 @@ export default function FastTrackPage() {
     setForm({
       ...empty,
       translations: {
-        ar: { name: "", airport: "", description: "" },
-        en: { name: "", airport: "", description: "" },
+        ar: { name: "", airport: "", description: "", tagLeft: "", tagRight: "" },
+        en: { name: "", airport: "", description: "", tagLeft: "", tagRight: "" },
       }
     });
     setEditing(null);
@@ -56,11 +58,15 @@ export default function FastTrackPage() {
           name: pkg.translations?.ar?.name || pkg.name || "",
           airport: pkg.translations?.ar?.airport || pkg.airport || "",
           description: pkg.translations?.ar?.description || pkg.description || "",
+          tagLeft: pkg.translations?.ar?.tagLeft || pkg.tagLeft || "",
+          tagRight: pkg.translations?.ar?.tagRight || pkg.tagRight || "",
         },
         en: {
           name: pkg.translations?.en?.name || "",
           airport: pkg.translations?.en?.airport || "",
           description: pkg.translations?.en?.description || "",
+          tagLeft: pkg.translations?.en?.tagLeft || "",
+          tagRight: pkg.translations?.en?.tagRight || "",
         }
       }
     });
@@ -74,27 +80,37 @@ export default function FastTrackPage() {
     const arName = form.translations?.ar?.name || form.name || "باقة جديدة";
     const arAirport = form.translations?.ar?.airport || form.airport || "";
     const arDescription = form.translations?.ar?.description || form.description || "";
+    const arTagLeft = form.translations?.ar?.tagLeft || form.tagLeft || "";
+    const arTagRight = form.translations?.ar?.tagRight || form.tagRight || "";
 
     const enName = form.translations?.en?.name || arName;
     const enAirport = form.translations?.en?.airport || arAirport;
     const enDescription = form.translations?.en?.description || arDescription;
+    const enTagLeft = form.translations?.en?.tagLeft || arTagLeft;
+    const enTagRight = form.translations?.en?.tagRight || arTagRight;
 
     const data: FastTrackPackage = {
       ...form,
       name: arName,
       airport: arAirport,
       description: arDescription,
+      tagLeft: arTagLeft,
+      tagRight: arTagRight,
       id: editing?.id ?? `ft-${Date.now()}`,
       translations: {
         ar: {
           name: arName,
           airport: arAirport,
           description: arDescription,
+          tagLeft: arTagLeft,
+          tagRight: arTagRight,
         },
         en: {
           name: enName,
           airport: enAirport,
           description: enDescription,
+          tagLeft: enTagLeft,
+          tagRight: enTagRight,
         }
       }
     };
@@ -229,6 +245,16 @@ export default function FastTrackPage() {
               <div className="grid grid-cols-2 gap-4">
                 <Field label="المطار (عربي)" value={form.translations?.ar?.airport || ""} onChange={v => fTrans("ar", "airport", v)} />
                 <Field label="المطار (إنجليزي)" value={form.translations?.en?.airport || ""} onChange={v => fTrans("en", "airport", v)} />
+              </div>
+
+              {/* Tags/Badges Translation */}
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="الوسم الأيسر (عربي - مثلاً: الأكثر حجزاً)" value={form.translations?.ar?.tagLeft || ""} onChange={v => fTrans("ar", "tagLeft", v)} />
+                <Field label="الوسم الأيسر (إنجليزي)" value={form.translations?.en?.tagLeft || ""} onChange={v => fTrans("en", "tagLeft", v)} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="الوسم الأيمن (عربي - مثلاً: عادي)" value={form.translations?.ar?.tagRight || ""} onChange={v => fTrans("ar", "tagRight", v)} />
+                <Field label="الوسم الأيمن (إنجليزي)" value={form.translations?.en?.tagRight || ""} onChange={v => fTrans("en", "tagRight", v)} />
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-2">
