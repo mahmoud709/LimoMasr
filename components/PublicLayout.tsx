@@ -86,7 +86,7 @@ export async function PublicLayout({
           </nav>
           
           <div className="flex items-center gap-4 md:gap-6">
-            <Link href={withLang(portalLink, locale)} className="hidden md:block text-[#d0a755] hover:text-white transition-colors duration-300 font-black text-sm">
+            <Link href={withLang(portalLink, locale)} className="hidden md:flex items-center justify-center px-4 py-2 rounded-full border border-[#d0a755]/30 bg-[#d0a755]/10 text-[#d0a755] hover:bg-[#d0a755] hover:text-[#1a2b3c] transition-all duration-300 font-black text-sm shadow-sm">
               {portalText}
             </Link>
             <LanguageCurrencyModal currentLocale={locale} currentCurrency={cookieCurrency} />
