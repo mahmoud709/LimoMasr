@@ -532,3 +532,25 @@
 2026-07-18T13:50:08.102Z - REWRITE: /ar -> /?__locale=ar
 2026-07-18T13:50:08.352Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-07-18T13:50:08.370Z - REWRITE: /ar -> /?__locale=ar
+2026-07-18T14:23:43.527Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:23:43.655Z - REDIRECT: / -> /ar
+2026-07-18T14:23:43.683Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:23:43.710Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:23:43.735Z - REWRITE: /ar -> /?__locale=ar
+2026-07-18T14:23:43.760Z - REDIRECT: / -> /ar
+2026-07-18T14:24:11.768Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:24:11.791Z - REDIRECT: / -> /ar
+2026-07-18T14:24:11.823Z - REWRITE: /ar -> /?__locale=ar
+2026-07-18T14:24:11.847Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:24:40.344Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:24:40.368Z - REDIRECT: / -> /ar
+2026-07-18T14:24:40.700Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:24:40.718Z - REWRITE: /ar -> /?__locale=ar
+2026-07-18T14:24:53.205Z - INCOMING: /en | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:24:53.227Z - REWRITE: /en -> /?__locale=en
+2026-07-18T14:24:53.596Z - INCOMING: /en | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:24:53.621Z - REWRITE: /en -> /?__locale=en
+2026-07-18T14:25:17.324Z - REWRITE: /ar -> /?__locale=ar
+2026-07-18T14:25:17.370Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:25:17.733Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-18T14:25:17.754Z - REWRITE: /ar -> /?__locale=ar
