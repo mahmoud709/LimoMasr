@@ -51,12 +51,6 @@ export default async function Home() {
                       icon: <FaCar className="w-5 h-5 text-[#d0a755]" />
                     },
                     {
-                      title: t.bookingSection.flightsTitle,
-                      subtitle: t.bookingSection.flightsSubtitle,
-                      href: "/flights",
-                      icon: <FaPlane className="w-5 h-5 text-white" />
-                    },
-                    {
                       title: t.bookingSection.fastTrackTitle,
                       subtitle: t.bookingSection.fastTrackSubtitle,
                       href: "/fast-track",
@@ -67,6 +61,12 @@ export default async function Home() {
                       subtitle: t.bookingSection.hotelsSubtitle,
                       href: "/hotels",
                       icon: <FaBed className="w-5 h-5 text-[#d0a755]" />
+                    },
+                    {
+                      title: t.bookingSection.flightsTitle,
+                      subtitle: t.bookingSection.flightsSubtitle,
+                      href: "/flights",
+                      icon: <FaPlane className="w-5 h-5 text-white" />
                     }
                   ].map((card, idx) => (
                     <Link
@@ -103,6 +103,8 @@ export default async function Home() {
               title={locale === "en" ? "Limo Masr Fleet" : "أسطول ليمو مصر"}
               viewAllText={locale === "en" ? "View All" : "عرض الكل"}
               locale={locale}
+              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
+              usdRate={settings.usdRate}
             />
             {/* Fast Track Carousel */}
             <FastTrackCarousel
@@ -110,6 +112,8 @@ export default async function Home() {
               title={locale === "en" ? "Fast Track Services" : "المسار السريع"}
               viewAllText={locale === "en" ? "View All" : "عرض الباقات"}
               locale={locale}
+              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
+              usdRate={settings.usdRate}
             />
           </div>
         </section>

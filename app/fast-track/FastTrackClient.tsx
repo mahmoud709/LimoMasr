@@ -8,11 +8,15 @@ import type { FastTrackPackage, Locale } from "@/lib/types";
 export function FastTrackClient({ 
   packages, 
   whatsappNumber,
-  locale = "ar"
+  locale = "ar",
+  currency = "EGP",
+  usdRate = 50
 }: { 
   packages: FastTrackPackage[];
   whatsappNumber: string;
   locale?: Locale;
+  currency?: string;
+  usdRate?: number;
 }) {
   const [selectedPackage, setSelectedPackage] = useState<FastTrackPackage | null>(packages[0] || null);
 
@@ -85,7 +89,7 @@ export function FastTrackClient({
                 {/* Price Row */}
                 <div className="pt-4 border-t border-[#1a2b3c]/5 flex items-baseline justify-between">
                   <span className="text-3xl font-black text-[#d0a755]">
-                    {formatCurrency(item.price, item.currency, locale)}
+                    {formatCurrency(item.price, item.currency, locale, currency, usdRate)}
                   </span>
                   <span className="text-xs font-bold text-[#1a2b3c]/40">
                     {locale === 'ar' ? '/ للفرد' : '/ person'}
@@ -107,7 +111,10 @@ export function FastTrackClient({
           ) : (locale === "en" ? "Fast Track Booking" : "حجز المسار السريع")} 
           whatsappNumber={whatsappNumber} 
           price={selectedPackage?.price} 
+          baseCurrency={selectedPackage?.currency || "EGP"}
           locale={locale}
+          currency={currency}
+          usdRate={usdRate}
         />
       </div>
     </div>

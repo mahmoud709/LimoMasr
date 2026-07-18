@@ -1,18 +1,36 @@
 import type { Booking, Locale, PriceUnit, ServiceType, SiteSettings } from "./types";
 
-export function formatCurrency(value?: number, currency = "EGP", locale: Locale = "ar") {
+export function formatCurrency(
+  value: number | undefined, 
+  baseCurrency = "EGP", 
+  locale: Locale = "ar", 
+  targetCurrency = "EGP", 
+  exchangeRate = 50
+) {
   if (!value) return locale === "en" ? "Price on request" : "السعر حسب الطلب";
+  
+  // Convert from base currency to target currency if needed
+  let displayValue = value;
+  
+  if (baseCurrency === "EGP" && targetCurrency === "USD") {
+    displayValue = value / exchangeRate;
+  } else if (baseCurrency === "USD" && targetCurrency === "EGP") {
+    displayValue = value * exchangeRate;
+  }
+
+  // Cap fast track original USD prices if they're shown as EGP (or whatever)
+  
   if (locale === "en") {
     const formattedNum = new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: 0,
-    }).format(value);
-    return currency === "EGP" ? `${formattedNum} EGP` : `${currency} ${formattedNum}`;
+      maximumFractionDigits: targetCurrency === "USD" ? 2 : 0,
+    }).format(displayValue);
+    return targetCurrency === "EGP" ? `${formattedNum} EGP` : `${targetCurrency} ${formattedNum}`;
   }
   return new Intl.NumberFormat("ar-EG", {
     style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(value);
+    currency: targetCurrency,
+    maximumFractionDigits: targetCurrency === "USD" ? 2 : 0,
+  }).format(displayValue);
 }
 
 export function priceUnitLabel(unit: PriceUnit, locale: Locale = "ar") {

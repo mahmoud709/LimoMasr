@@ -104,6 +104,7 @@ export type SiteSettings = {
   socialLinks: Record<string, string>;
   policies: string;
   privacy: string;
+  usdRate?: number;
   translations?: Partial<Record<Locale, SiteTranslation>>;
 };
 

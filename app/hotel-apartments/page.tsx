@@ -84,6 +84,8 @@ export default async function HotelApartmentsPage() {
               serviceName={locale === "en" ? "Hotel Apartments Booking Request" : "طلب حجز شقق فندقية"} 
               whatsappNumber={settings.whatsappServiceNumber} 
               locale={locale}
+              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
+              usdRate={settings.usdRate}
             />
           </div>
         </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import type { FastTrackPackage, Locale } from "@/lib/types";
 
-export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar" }: { packages: FastTrackPackage[]; title: string; viewAllText?: string; locale?: Locale }) {
+export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar", currency = "EGP", usdRate = 50 }: { packages: FastTrackPackage[]; title: string; viewAllText?: string; locale?: Locale; currency?: string; usdRate?: number; }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
@@ -100,7 +100,7 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar" 
                 
                 <div className="mt-6 pt-4 border-t border-black/5 flex flex-wrap items-center justify-between gap-2 relative z-10">
                   <div className="flex items-baseline gap-1" dir="rtl">
-                    <span className="text-xl font-black text-[#d0a755]">{formatCurrency(item.price, item.currency, locale)}</span>
+                    <span className="text-xl font-black text-[#d0a755]">{formatCurrency(item.price, item.currency, locale, currency, usdRate)}</span>
                     <span className="text-[10px] font-bold text-[#1a2b3c]/40">{locale === "en" ? "/ person" : "/ للفرد"}</span>
                   </div>
                   <Link href="/fast-track" className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-4 py-2 rounded-xl text-[11px] font-bold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap">

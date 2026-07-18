@@ -5,7 +5,7 @@ import { siteText, ui, withLang } from "@/lib/i18n";
 import { buildWhatsappUrl, serviceWhatsappNumber } from "@/lib/utils";
 import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaMapMarkerAlt, FaCar, FaPlane, FaSnapchatGhost, FaTelegramPlane } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { LanguageCurrencyModal } from "@/components/LanguageCurrencyModal";
 import { MobileMenu } from "@/components/MobileMenu";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
@@ -23,11 +23,11 @@ const socialIconsMap: Record<string, ReactNode> = {
 
 const navItems = [
   ["home", "/"],
-  ["flights", "/flights"],
+  ["cars", "/cars"],
+  ["fastTrack", "/fast-track"],
   ["hotels", "/hotels"],
   ["hotelApartments", "/hotel-apartments"],
-  ["fastTrack", "/fast-track"],
-  ["cars", "/cars"],
+  ["flights", "/flights"],
   ["about", "/about"],
   ["contact", "/contact"],
 ] as const;
@@ -49,11 +49,13 @@ export async function PublicLayout({
   const cookieLocale = cookieStore.get('NEXT_LOCALE')?.value as Locale;
   const locale = propLocale || cookieLocale || "ar";
 
+  const cookieCurrency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+
   const customerToken = cookieStore.get("customer-token")?.value;
   const portalLink = customerToken ? "/my-bookings" : "/login";
   const portalText = locale === "en"
-    ? (customerToken ? "My Bookings" : "Login")
-    : (customerToken ? "حجوزاتي" : "دخول");
+    ? (customerToken ? "My Bookings" : "Log in")
+    : (customerToken ? "حجوزاتي" : "تسجيل دخول");
 
   const t = ui[locale];
   const content = siteText(settings, locale);
@@ -64,7 +66,6 @@ export async function PublicLayout({
       ? "Hello Limo Masr, I want to ask about booking."
       : "مرحبًا ليمو مصر، أريد الاستفسار عن الحجز.",
   );
-  const otherLocale = locale === "ar" ? "en" : "ar";
 
   return (
     <div className="min-h-screen flex flex-col relative z-10 bg-[#F9F8F6] text-[#111111]" dir={locale === "ar" ? "rtl" : "ltr"}>
@@ -82,19 +83,15 @@ export async function PublicLayout({
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#d0a755] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
-            <Link href={withLang(portalLink, locale)} className="text-[#d0a755] hover:text-white transition-colors duration-300 relative group py-2 font-black">
-              {portalText}
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#d0a755] transition-all duration-300 group-hover:w-full"></span>
-            </Link>
           </nav>
           
-          <div className="flex items-center gap-3 md:gap-5">
-            <LanguageSwitcher currentLocale={locale} targetLocale={otherLocale} />
-            <Link href={whatsappUrl} target="_blank" className="bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] font-black rounded-md py-2 px-4 md:py-2.5 md:px-6 text-xs md:text-sm transition-colors duration-300 shadow-sm">
-              {t.whatsapp}
+          <div className="flex items-center gap-4 md:gap-6">
+            <Link href={withLang(portalLink, locale)} className="hidden md:block text-[#d0a755] hover:text-white transition-colors duration-300 font-black text-sm">
+              {portalText}
             </Link>
+            <LanguageCurrencyModal currentLocale={locale} currentCurrency={cookieCurrency} />
             {/* Mobile Nav Toggle */}
-            <MobileMenu navItems={navItems} translations={t as any} locale={locale} portalLink={portalLink} portalText={portalText} />
+            <MobileMenu navItems={navItems as any} translations={t as any} locale={locale} portalLink={portalLink} portalText={portalText} />
           </div>
         </div>
       </header>

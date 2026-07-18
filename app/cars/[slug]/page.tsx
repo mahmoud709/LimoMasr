@@ -3,14 +3,20 @@ import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
 import { getCars, getSiteSettings } from "@/lib/data";
 import { formatCurrency, priceUnitLabel } from "@/lib/utils";
+import { cookies } from "next/headers";
+import type { Locale } from "@/lib/types";
 
 export default async function CarDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const [{ slug }, settings, cars] = await Promise.all([params, getSiteSettings(), getCars()]);
   const car = cars.find((item) => item.slug === slug);
   if (!car) notFound();
 
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
+  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+
   return (
-    <PublicLayout settings={settings} whatsappType="car">
+    <PublicLayout settings={settings} whatsappType="car" locale={locale}>
       <main className="mx-auto max-w-[1400px] px-6 md:px-8 pt-32 pb-24 relative z-10">
         
         {/* Header Section */}
@@ -31,7 +37,7 @@ export default async function CarDetailsPage({ params }: { params: Promise<{ slu
             <div className="bg-[#1a2b3c] text-white px-8 py-4 rounded-2xl shadow-lg border border-[#d0a755]/20 flex flex-col items-start md:items-end shrink-0">
               <span className="text-white/60 text-xs font-bold uppercase tracking-widest mb-1">سعر الحجز</span>
               <p className="text-3xl font-black text-[#d0a755]" dir="rtl">
-                {formatCurrency(car.price)} <span className="text-sm font-light text-white/60">/ {priceUnitLabel(car.priceUnit)}</span>
+                {formatCurrency(car.price, "EGP", locale, currency, settings.usdRate)} <span className="text-sm font-light text-white/60">/ {priceUnitLabel(car.priceUnit)}</span>
               </p>
             </div>
           </div>
@@ -131,7 +137,17 @@ export default async function CarDetailsPage({ params }: { params: Promise<{ slu
           {/* Right Column: Booking Form (Sticky) */}
           <div className="relative z-20">
             <div className="sticky top-32">
-              <BookingForm type="car" serviceRefId={car.id} serviceName={car.categoryName} whatsappNumber={settings.whatsappCarNumber} price={car.price} />
+              <BookingForm 
+                type="car" 
+                serviceRefId={car.id} 
+                serviceName={car.categoryName} 
+                whatsappNumber={settings.whatsappCarNumber} 
+                price={car.price} 
+                locale={locale}
+                baseCurrency="EGP"
+                currency={currency}
+                usdRate={settings.usdRate}
+              />
             </div>
           </div>
           

@@ -61,6 +61,17 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-5">
+        {/* Currencies */}
+        <Card title="الأسعار والعملات">
+          <Field 
+            label="سعر صرف الدولار مقابل الجنيه (USD to EGP)" 
+            value={settings.usdRate?.toString() || "50"} 
+            onChange={v => f("usdRate", parseFloat(v) || 50 as any)} 
+            dir="ltr" 
+            type="number"
+          />
+        </Card>
+
         {/* Contact */}
         <Card title="معلومات التواصل">
           <Field label="رقم واتساب السيارات" value={settings.whatsappCarNumber} onChange={v => f("whatsappCarNumber", v)} dir="ltr" />
@@ -111,11 +122,11 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
   );
 }
 
-function Field({ label, value, onChange, dir }: { label: string; value: string; onChange: (v: string) => void; dir?: string }) {
+function Field({ label, value, onChange, dir, type = "text" }: { label: string; value: string; onChange: (v: string) => void; dir?: string; type?: string }) {
   return (
     <div>
       <label className="block text-xs font-black text-[#1a2b3c]/60 mb-1.5 uppercase tracking-wide">{label}</label>
-      <input type="text" value={value} onChange={e => onChange(e.target.value)} dir={dir} className="w-full bg-[#f0f2f5] rounded-xl px-3 py-2.5 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]/50" />
+      <input type={type} value={value} onChange={e => onChange(e.target.value)} dir={dir} className="w-full bg-[#f0f2f5] rounded-xl px-3 py-2.5 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]/50" />
     </div>
   );
 }

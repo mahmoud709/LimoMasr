@@ -306,6 +306,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     socialLinks: {},
     policies: "",
     privacy: "",
+    usdRate: 50,
   };
 }
 

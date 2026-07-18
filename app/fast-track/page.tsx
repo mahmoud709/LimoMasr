@@ -21,7 +21,13 @@ export default async function FastTrackPage() {
           />
         </div>
         
-        <FastTrackClient packages={packages} whatsappNumber={settings.whatsappServiceNumber} locale={locale} />
+        <FastTrackClient 
+          packages={packages} 
+          whatsappNumber={settings.whatsappServiceNumber} 
+          locale={locale} 
+          currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
+          usdRate={settings.usdRate}
+        />
 
       </main>
     </PublicLayout>

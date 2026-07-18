@@ -92,6 +92,8 @@ export default async function HotelsPage() {
               serviceName={locale === "en" ? "Hotel Booking Request" : "طلب حجز فندق"} 
               whatsappNumber={settings.whatsappServiceNumber} 
               locale={locale}
+              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
+              usdRate={settings.usdRate}
             />
           </div>
         </div>

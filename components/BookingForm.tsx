@@ -15,6 +15,9 @@ type BookingFormProps = {
   whatsappNumber: string;
   price?: number;
   locale?: string;
+  baseCurrency?: string;
+  currency?: string;
+  usdRate?: number;
 };
 
 export function BookingForm({
@@ -24,6 +27,9 @@ export function BookingForm({
   whatsappNumber,
   price,
   locale,
+  baseCurrency = "EGP",
+  currency = "EGP",
+  usdRate = 50,
 }: BookingFormProps) {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
@@ -63,9 +69,10 @@ export function BookingForm({
   const message = useMemo(() => {
     let finalNotes = notes;
     if (['hotel', 'apartment'].includes(type)) {
+      const formattedBudget = currency === "USD" ? (budget / usdRate).toFixed(2) + " USD" : budget + " EGP";
       finalNotes = isEn
-        ? `Expected budget per night: ${budget} EGP\n\nNotes:\n${notes}`
-        : `الميزانية المتوقعة لليلة: ${budget} ج.م\n\nالملاحظات:\n${notes}`;
+        ? `Expected budget per night: ${formattedBudget}\n\nNotes:\n${notes}`
+        : `الميزانية المتوقعة لليلة: ${formattedBudget}\n\nالملاحظات:\n${notes}`;
     }
     return bookingMessage({
       serviceName,
@@ -74,12 +81,13 @@ export function BookingForm({
       passengers,
       notes: finalNotes,
     }, isEn ? "en" : "ar");
-  }, [type, serviceName, customerName, phone, passengers, notes, budget, isEn]);
+  }, [type, serviceName, customerName, phone, passengers, notes, budget, isEn, currency, usdRate]);
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     try {
+      const formattedBudget = currency === "USD" ? (budget / usdRate).toFixed(2) + " USD" : budget + " EGP";
       const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -89,7 +97,7 @@ export function BookingForm({
           phone,
           serviceRefId,
           serviceName,
-          notes: ['hotel', 'apartment'].includes(type) ? `[Budget: ${budget}] ${notes}` : notes,
+          notes: ['hotel', 'apartment'].includes(type) ? `[Budget: ${formattedBudget}] ${notes}` : notes,
           passengers,
           price,
           source: bookingSource,
@@ -214,7 +222,7 @@ export function BookingForm({
                   {isEn ? "Budget per night" : "الميزانية لليلة الواحدة"}
                 </p>
                 <p className="text-[#d0a755] font-black text-sm dir-ltr">
-                  {budget} {isEn ? "EGP" : "ج.م"}
+                  {currency === "USD" ? (budget / usdRate).toFixed(2) + " USD" : budget + " EGP"}
                 </p>
               </div>
               <input 

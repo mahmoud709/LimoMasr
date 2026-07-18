@@ -84,6 +84,8 @@ export default async function FlightsPage() {
               serviceName={locale === "en" ? "Flight Booking Request" : "طلب حجز طيران"} 
               whatsappNumber={settings.whatsappServiceNumber} 
               locale={locale}
+              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
+              usdRate={settings.usdRate}
             />
           </div>
         </div>
