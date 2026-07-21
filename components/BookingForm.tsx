@@ -17,7 +17,7 @@ type BookingFormProps = {
   locale?: string;
   baseCurrency?: string;
   currency?: string;
-  usdRate?: number;
+  exchangeRate?: number;
 };
 
 export function BookingForm({
@@ -29,7 +29,7 @@ export function BookingForm({
   locale,
   baseCurrency = "EGP",
   currency = "EGP",
-  usdRate = 50,
+  exchangeRate = 1,
 }: BookingFormProps) {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
@@ -39,6 +39,20 @@ export function BookingForm({
   const [budget, setBudget] = useState(5000);
   const [bookingSource, setBookingSource] = useState<"web" | "whatsapp">("web");
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  
+  const [accommodationType, setAccommodationType] = useState<"hotel" | "apartment">(type === "apartment" ? "apartment" : "hotel");
+  const [hotelDetails, setHotelDetails] = useState("");
+  const [apartmentArea, setApartmentArea] = useState("");
+
+  const [flightFrom, setFlightFrom] = useState("");
+  const [flightTo, setFlightTo] = useState("");
+  const [flightDateFrom, setFlightDateFrom] = useState("");
+  const [flightDateTo, setFlightDateTo] = useState("");
+
+  const [hotelSuggestions, setHotelSuggestions] = useState<any[]>([]);
+  const [isSearchingHotels, setIsSearchingHotels] = useState(false);
+  const [showHotelSuggestions, setShowHotelSuggestions] = useState(false);
+  const [selectedHotelIndex, setSelectedHotelIndex] = useState(-1);
 
   // Detect locale based on props, pathname prefix, or cookie
   const isEn = locale ? locale === "en" : (typeof window !== "undefined" && (
@@ -66,13 +80,46 @@ export function BookingForm({
     }
   }, [user]);
 
+  useEffect(() => {
+    if (accommodationType !== "hotel" || hotelDetails.length < 3 || !showHotelSuggestions) {
+      setHotelSuggestions([]);
+      return;
+    }
+    
+    const delayDebounceFn = setTimeout(async () => {
+      setIsSearchingHotels(true);
+      try {
+        const query = encodeURIComponent(`${hotelDetails} hotel egypt`);
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=5&addressdetails=1&accept-language=${isEn ? 'en' : 'ar'}`);
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
+        setHotelSuggestions(data);
+      } catch (err) {
+        console.error("Error fetching hotel suggestions", err);
+      } finally {
+        setIsSearchingHotels(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [hotelDetails, accommodationType, showHotelSuggestions, isEn]);
+
   const message = useMemo(() => {
     let finalNotes = notes;
     if (['hotel', 'apartment'].includes(type)) {
-      const formattedBudget = currency === "USD" ? (budget / usdRate).toFixed(2) + " USD" : budget + " EGP";
+      const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
+      const accDetails = accommodationType === "hotel" 
+        ? (isEn ? `Accommodation: Hotel\nGovernorate/Hotel Name: ${hotelDetails}` : `الإقامة: فنادق\nالمحافظة أو اسم الفندق: ${hotelDetails}`)
+        : (isEn ? `Accommodation: Hotel Apartment\nArea: ${apartmentArea}` : `الإقامة: شقق فندقية\nالمنطقة: ${apartmentArea}`);
+      
       finalNotes = isEn
-        ? `Expected budget per night: ${formattedBudget}\n\nNotes:\n${notes}`
-        : `الميزانية المتوقعة لليلة: ${formattedBudget}\n\nالملاحظات:\n${notes}`;
+        ? `${accDetails}\nExpected budget per night: ${formattedBudget}\n\nNotes:\n${notes}`
+        : `${accDetails}\nالميزانية المتوقعة لليلة: ${formattedBudget}\n\nالملاحظات:\n${notes}`;
+    } else if (type === 'flight') {
+      const flightDetails = isEn
+        ? `From: ${flightFrom}\nTo: ${flightTo}\nDate From: ${flightDateFrom}\nDate To: ${flightDateTo}`
+        : `من: ${flightFrom}\nإلى: ${flightTo}\nالتاريخ من: ${flightDateFrom}\nالتاريخ إلى: ${flightDateTo}`;
+      finalNotes = `${flightDetails}\n\n${isEn ? 'Notes' : 'الملاحظات'}:\n${notes}`;
     }
     return bookingMessage({
       serviceName,
@@ -81,13 +128,13 @@ export function BookingForm({
       passengers,
       notes: finalNotes,
     }, isEn ? "en" : "ar");
-  }, [type, serviceName, customerName, phone, passengers, notes, budget, isEn, currency, usdRate]);
+  }, [type, serviceName, customerName, phone, passengers, notes, budget, isEn, currency, exchangeRate, accommodationType, hotelDetails, apartmentArea, flightFrom, flightTo, flightDateFrom, flightDateTo]);
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     try {
-      const formattedBudget = currency === "USD" ? (budget / usdRate).toFixed(2) + " USD" : budget + " EGP";
+      const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
       const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,7 +144,11 @@ export function BookingForm({
           phone,
           serviceRefId,
           serviceName,
-          notes: ['hotel', 'apartment'].includes(type) ? `[Budget: ${formattedBudget}] ${notes}` : notes,
+          notes: ['hotel', 'apartment'].includes(type) 
+            ? `[Type: ${accommodationType === 'hotel' ? 'Hotel' : 'Apartment'}] [Details: ${accommodationType === 'hotel' ? hotelDetails : apartmentArea}] [Budget: ${formattedBudget}] ${notes}` 
+            : type === 'flight'
+            ? `[From: ${flightFrom}] [To: ${flightTo}] [DateFrom: ${flightDateFrom}] [DateTo: ${flightDateTo}] ${notes}`
+            : notes,
           passengers,
           price,
           source: bookingSource,
@@ -216,13 +267,95 @@ export function BookingForm({
 
         {['hotel', 'apartment'].includes(type) && (
           <div className="space-y-4 py-2">
+            <div className="relative">
+              <label className="block text-sm font-bold text-[#1a2b3c] mb-2">
+                {isEn ? "Accommodation Type" : "نوع الإقامة"}
+              </label>
+              <select
+                value={accommodationType}
+                onChange={(e) => setAccommodationType(e.target.value as "hotel" | "apartment")}
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+              >
+                <option value="hotel">{isEn ? "Hotels" : "فنادق"}</option>
+                <option value="apartment">{isEn ? "Hotel Apartments" : "شقق فندقية"}</option>
+              </select>
+            </div>
+
+            {accommodationType === "hotel" ? (
+              <div className="relative">
+                <input
+                  value={hotelDetails}
+                  onChange={(event) => {
+                    setHotelDetails(event.target.value);
+                    setShowHotelSuggestions(true);
+                    setSelectedHotelIndex(-1);
+                  }}
+                  onBlur={() => {
+                    setTimeout(() => setShowHotelSuggestions(false), 200);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      setSelectedHotelIndex(prev => prev < hotelSuggestions.length - 1 ? prev + 1 : prev);
+                    } else if (e.key === "ArrowUp") {
+                      e.preventDefault();
+                      setSelectedHotelIndex(prev => prev > 0 ? prev - 1 : -1);
+                    } else if (e.key === "Enter" && selectedHotelIndex >= 0) {
+                      e.preventDefault();
+                      const selected = hotelSuggestions[selectedHotelIndex];
+                      setHotelDetails(selected.display_name);
+                      setShowHotelSuggestions(false);
+                    }
+                  }}
+                  placeholder={isEn ? "Governorate or Hotel Name (Optional)" : "المحافظة أو اسم الفندق (اختياري)"}
+                  className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+                  autoComplete="off"
+                />
+                
+                {showHotelSuggestions && (hotelSuggestions.length > 0 || isSearchingHotels) && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black/10 rounded-xl shadow-lg z-50 overflow-hidden max-h-60 overflow-y-auto">
+                    {isSearchingHotels ? (
+                      <div className="p-4 text-center text-sm text-[#1a2b3c]/50">
+                        {isEn ? "Searching..." : "جاري البحث..."}
+                      </div>
+                    ) : (
+                      <ul className="py-1">
+                        {hotelSuggestions.map((suggestion, index) => (
+                          <li 
+                            key={suggestion.place_id}
+                            className={`px-4 py-2 text-sm cursor-pointer transition-colors ${selectedHotelIndex === index ? 'bg-[#d0a755]/10 text-[#d0a755]' : 'hover:bg-[#F9F8F6] text-[#1a2b3c]'}`}
+                            onClick={() => {
+                              setHotelDetails(suggestion.display_name);
+                              setShowHotelSuggestions(false);
+                            }}
+                          >
+                            <span className="font-bold block text-right rtl:text-right ltr:text-left">{suggestion.name || suggestion.display_name.split(',')[0]}</span>
+                            <span className="text-xs opacity-70 truncate block text-right rtl:text-right ltr:text-left">{suggestion.display_name}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="relative">
+                <input
+                  value={apartmentArea}
+                  onChange={(event) => setApartmentArea(event.target.value)}
+                  placeholder={isEn ? "Area (Optional)" : "المنطقة (اختياري)"}
+                  className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+                />
+              </div>
+            )}
+
             <div>
               <div className="flex justify-between items-end mb-2">
                 <p className="text-sm font-bold text-[#1a2b3c]">
                   {isEn ? "Budget per night" : "الميزانية لليلة الواحدة"}
                 </p>
                 <p className="text-[#d0a755] font-black text-sm dir-ltr">
-                  {currency === "USD" ? (budget / usdRate).toFixed(2) + " USD" : budget + " EGP"}
+                  {currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP"}
                 </p>
               </div>
               <input 
@@ -233,6 +366,59 @@ export function BookingForm({
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
                 className="w-full accent-[#d0a755] h-1 bg-black/10 rounded-lg appearance-none cursor-pointer"
+              />
+            </div>
+          </div>
+        )}
+
+        {type === 'flight' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="relative">
+              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "From" : "الواجهة من"}
+              </label>
+              <input
+                required
+                value={flightFrom}
+                onChange={(event) => setFlightFrom(event.target.value)}
+                placeholder={isEn ? "Departure City/Airport" : "مدينة/مطار المغادرة"}
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+              />
+            </div>
+            <div className="relative">
+              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "To" : "الواجهة إلي"}
+              </label>
+              <input
+                required
+                value={flightTo}
+                onChange={(event) => setFlightTo(event.target.value)}
+                placeholder={isEn ? "Destination City/Airport" : "مدينة/مطار الوصول"}
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+              />
+            </div>
+            <div className="relative">
+              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "Date From" : "التاريخ من"}
+              </label>
+              <input
+                required
+                type="date"
+                value={flightDateFrom}
+                onChange={(event) => setFlightDateFrom(event.target.value)}
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+              />
+            </div>
+            <div className="relative">
+              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "Date To" : "التاريخ إلي"}
+              </label>
+              <input
+                required
+                type="date"
+                value={flightDateTo}
+                onChange={(event) => setFlightDateTo(event.target.value)}
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
               />
             </div>
           </div>

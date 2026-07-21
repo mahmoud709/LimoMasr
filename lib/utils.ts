@@ -12,9 +12,9 @@ export function formatCurrency(
   // Convert from base currency to target currency if needed
   let displayValue = value;
   
-  if (baseCurrency === "EGP" && targetCurrency === "USD") {
+  if (baseCurrency === "EGP" && targetCurrency !== "EGP") {
     displayValue = value / exchangeRate;
-  } else if (baseCurrency === "USD" && targetCurrency === "EGP") {
+  } else if (baseCurrency !== "EGP" && targetCurrency === "EGP") {
     displayValue = value * exchangeRate;
   }
 

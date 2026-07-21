@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CarCard } from "./CarCard";
 import type { Car, Locale } from "@/lib/types";
 
-export function CarCarousel({ cars, title, viewAllText, locale = "ar", currency = "EGP", usdRate = 50 }: { cars: Car[]; title: string; viewAllText?: string; locale?: Locale; currency?: string; usdRate?: number; }) {
+export function CarCarousel({ cars, title, viewAllText, locale = "ar", currency = "EGP", exchangeRate = 50 }: { cars: Car[]; title: string; viewAllText?: string; locale?: Locale; currency?: string; exchangeRate?: number; }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
@@ -49,7 +49,7 @@ export function CarCarousel({ cars, title, viewAllText, locale = "ar", currency 
       >
         {cars.map((car, index) => (
           <div key={`${car.id}-${index}`} className="snap-start shrink-0 w-[280px] md:w-[360px]">
-             <CarCard car={car} locale={locale} currency={currency} usdRate={usdRate} />
+             <CarCard car={car} locale={locale} currency={currency} exchangeRate={exchangeRate} />
           </div>
         ))}
       </div>

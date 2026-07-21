@@ -105,6 +105,11 @@ export type SiteSettings = {
   policies: string;
   privacy: string;
   usdRate?: number;
+  eurRate?: number;
+  sarRate?: number;
+  qarRate?: number;
+  kwdRate?: number;
+  bhdRate?: number;
   translations?: Partial<Record<Locale, SiteTranslation>>;
 };
 

@@ -10,13 +10,13 @@ export function FastTrackClient({
   whatsappNumber,
   locale = "ar",
   currency = "EGP",
-  usdRate = 50
+  exchangeRate = 50
 }: { 
   packages: FastTrackPackage[];
   whatsappNumber: string;
   locale?: Locale;
   currency?: string;
-  usdRate?: number;
+  exchangeRate?: number;
 }) {
   const [selectedPackage, setSelectedPackage] = useState<FastTrackPackage | null>(packages[0] || null);
 
@@ -89,7 +89,7 @@ export function FastTrackClient({
                 {/* Price Row */}
                 <div className="pt-4 border-t border-[#1a2b3c]/5 flex items-baseline justify-between">
                   <span className="text-3xl font-black text-[#d0a755]">
-                    {formatCurrency(item.price, item.currency, locale, currency, usdRate)}
+                    {formatCurrency(item.price, item.currency, locale, currency, exchangeRate)}
                   </span>
                   <span className="text-xs font-bold text-[#1a2b3c]/40">
                     {locale === 'ar' ? '/ للفرد' : '/ person'}
@@ -114,7 +114,7 @@ export function FastTrackClient({
           baseCurrency={selectedPackage?.currency || "EGP"}
           locale={locale}
           currency={currency}
-          usdRate={usdRate}
+          exchangeRate={exchangeRate}
         />
       </div>
     </div>

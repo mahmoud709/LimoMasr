@@ -18,6 +18,8 @@ export default async function Home() {
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
   const t = ui[locale];
   const isRtl = locale === "ar";
+  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
 
   return (
     <PublicLayout settings={settings} locale={locale}>
@@ -103,8 +105,8 @@ export default async function Home() {
               title={locale === "en" ? "Limo Masr Fleet" : "أسطول ليمو مصر"}
               viewAllText={locale === "en" ? "View All" : "عرض الكل"}
               locale={locale}
-              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
-              usdRate={settings.usdRate}
+              currency={currency}
+              exchangeRate={exchangeRate}
             />
             {/* Fast Track Carousel */}
             <FastTrackCarousel
@@ -112,8 +114,8 @@ export default async function Home() {
               title={locale === "en" ? "Fast Track Services" : "المسار السريع"}
               viewAllText={locale === "en" ? "View All" : "عرض الباقات"}
               locale={locale}
-              currency={cookieStore.get('NEXT_CURRENCY')?.value || "EGP"}
-              usdRate={settings.usdRate}
+              currency={currency}
+              exchangeRate={exchangeRate}
             />
           </div>
         </section>

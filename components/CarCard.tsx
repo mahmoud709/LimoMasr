@@ -7,7 +7,7 @@ import { ui, withLang } from "@/lib/i18n";
 import { formatCurrency, priceUnitLabel } from "@/lib/utils";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
-export function CarCard({ car, locale = "ar", currency = "EGP", usdRate = 50 }: { car: Car; locale?: Locale; currency?: string; usdRate?: number; }) {
+export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 50 }: { car: Car; locale?: Locale; currency?: string; exchangeRate?: number; }) {
   const t = ui[locale];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -125,7 +125,7 @@ export function CarCard({ car, locale = "ar", currency = "EGP", usdRate = 50 }: 
       
       <div className="flex items-center justify-between mt-auto pt-4 border-t border-black/5">
         <p className="text-[12px] text-[#1a2b3c]/60 font-medium" dir="rtl">
-          <span className="font-black text-[#d0a755] text-lg">{formatCurrency(car.price, "EGP", locale, currency, usdRate)}</span> / {priceUnitLabel(car.priceUnit, locale)} 
+          <span className="font-black text-[#d0a755] text-lg">{formatCurrency(car.price, "EGP", locale, currency, exchangeRate)}</span> / {priceUnitLabel(car.priceUnit, locale)} 
         </p>
         <Link href={withLang(`/cars/${car.slug}`, locale)} className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 shadow-md hover:shadow-lg w-auto">
           {locale === "en" ? "Book Now" : "احجز الآن"}

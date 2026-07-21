@@ -13,6 +13,7 @@ export default async function CarsPage() {
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
   const cookieCurrency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const exchangeRate = cookieCurrency === "USD" ? (settings.usdRate || 50) : cookieCurrency === "EUR" ? (settings.eurRate || 55) : cookieCurrency === "SAR" ? (settings.sarRate || 13) : cookieCurrency === "QAR" ? (settings.qarRate || 13) : cookieCurrency === "KWD" ? (settings.kwdRate || 160) : cookieCurrency === "BHD" ? (settings.bhdRate || 130) : 1;
   
   const t = ui[locale];
 
@@ -32,7 +33,7 @@ export default async function CarsPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-reveal-2">
             {cars.map((car) => (
-              <CarCard key={car.id} car={car} locale={locale} currency={cookieCurrency} usdRate={settings.usdRate} />
+              <CarCard key={car.id} car={car} locale={locale} currency={cookieCurrency} exchangeRate={exchangeRate} />
             ))}
           </div>
           

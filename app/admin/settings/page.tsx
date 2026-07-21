@@ -63,13 +63,50 @@ export default function SettingsPage() {
       <div className="space-y-5">
         {/* Currencies */}
         <Card title="الأسعار والعملات">
-          <Field 
-            label="سعر صرف الدولار مقابل الجنيه (USD to EGP)" 
-            value={settings.usdRate?.toString() || "50"} 
-            onChange={v => f("usdRate", parseFloat(v) || 50 as any)} 
-            dir="ltr" 
-            type="number"
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field 
+              label="سعر صرف الدولار (USD to EGP)" 
+              value={settings.usdRate?.toString() || "50"} 
+              onChange={v => f("usdRate", parseFloat(v) || 50 as any)} 
+              dir="ltr" 
+              type="number"
+            />
+            <Field 
+              label="سعر صرف اليورو (EUR to EGP)" 
+              value={settings.eurRate?.toString() || "55"} 
+              onChange={v => f("eurRate", parseFloat(v) || 55 as any)} 
+              dir="ltr" 
+              type="number"
+            />
+            <Field 
+              label="سعر صرف الريال السعودي (SAR to EGP)" 
+              value={settings.sarRate?.toString() || "13"} 
+              onChange={v => f("sarRate", parseFloat(v) || 13 as any)} 
+              dir="ltr" 
+              type="number"
+            />
+            <Field 
+              label="سعر صرف الريال القطري (QAR to EGP)" 
+              value={settings.qarRate?.toString() || "13"} 
+              onChange={v => f("qarRate", parseFloat(v) || 13 as any)} 
+              dir="ltr" 
+              type="number"
+            />
+            <Field 
+              label="سعر صرف الدينار الكويتي (KWD to EGP)" 
+              value={settings.kwdRate?.toString() || "160"} 
+              onChange={v => f("kwdRate", parseFloat(v) || 160 as any)} 
+              dir="ltr" 
+              type="number"
+            />
+            <Field 
+              label="سعر صرف الدينار البحريني (BHD to EGP)" 
+              value={settings.bhdRate?.toString() || "130"} 
+              onChange={v => f("bhdRate", parseFloat(v) || 130 as any)} 
+              dir="ltr" 
+              type="number"
+            />
+          </div>
         </Card>
 
         {/* Contact */}

@@ -43,6 +43,11 @@ export function LanguageCurrencyModal({
   const currencies = [
     { code: "EGP", label: "EGP", sub: "جنيه مصري", flag: "eg" },
     { code: "USD", label: "USD", sub: "دولار أمريكي", flag: "us" },
+    { code: "EUR", label: "EUR", sub: "يورو", flag: "eu" },
+    { code: "SAR", label: "SAR", sub: "ريال سعودي", flag: "sa" },
+    { code: "QAR", label: "QAR", sub: "ريال قطري", flag: "qa" },
+    { code: "KWD", label: "KWD", sub: "دينار كويتي", flag: "kw" },
+    { code: "BHD", label: "BHD", sub: "دينار بحريني", flag: "bh" },
   ];
 
   const handleSave = () => {

@@ -14,6 +14,7 @@ export default async function CarDetailsPage({ params }: { params: Promise<{ slu
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
 
   return (
     <PublicLayout settings={settings} whatsappType="car" locale={locale}>
@@ -37,7 +38,7 @@ export default async function CarDetailsPage({ params }: { params: Promise<{ slu
             <div className="bg-[#1a2b3c] text-white px-8 py-4 rounded-2xl shadow-lg border border-[#d0a755]/20 flex flex-col items-start md:items-end shrink-0">
               <span className="text-white/60 text-xs font-bold uppercase tracking-widest mb-1">سعر الحجز</span>
               <p className="text-3xl font-black text-[#d0a755]" dir="rtl">
-                {formatCurrency(car.price, "EGP", locale, currency, settings.usdRate)} <span className="text-sm font-light text-white/60">/ {priceUnitLabel(car.priceUnit)}</span>
+                {formatCurrency(car.price, "EGP", locale, currency, exchangeRate)} <span className="text-sm font-light text-white/60">/ {priceUnitLabel(car.priceUnit)}</span>
               </p>
             </div>
           </div>
@@ -146,7 +147,7 @@ export default async function CarDetailsPage({ params }: { params: Promise<{ slu
                 locale={locale}
                 baseCurrency="EGP"
                 currency={currency}
-                usdRate={settings.usdRate}
+                exchangeRate={exchangeRate}
               />
             </div>
           </div>
