@@ -479,7 +479,8 @@ export function BookingForm({
             setFlightTo(location);
           }
         }}
-        type={activeModal === "hotel" ? "hotel" : "airport"}
+        title={activeModal === "hotel" ? (isEn ? "Select Hotel" : "اختر الفندق") : (isEn ? "Select Airport" : "اختر المطار")}
+        placeholder={activeModal === "hotel" ? (isEn ? "Search for a hotel..." : "ابحث عن فندق...") : (isEn ? "Search for an airport..." : "ابحث عن مطار...")}
         isEn={isEn}
       />
     </form>

@@ -23,6 +23,7 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
     submit: locale === "ar" ? "إرسال التقييم" : "Submit Review",
     submitting: locale === "ar" ? "جاري الإرسال..." : "Submitting...",
     successMsg: locale === "ar" ? "شكراً لك! تم إرسال تقييمك بنجاح وسيتم مراجعته." : "Thank you! Your review has been submitted and is pending approval.",
+    note: locale === "ar" ? "يتم سحب التقييمات وعرضها بشفافية لضمان مصداقية التجربة." : "Reviews are pulled and displayed transparently to ensure a credible experience.",
   };
 
   useEffect(() => {

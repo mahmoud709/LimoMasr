@@ -9,7 +9,7 @@ export function ReviewsAdminClient({ initialReviews }: { initialReviews: Review[
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const { showToast } = useToast();
+  const toast = useToast();
 
   const handleApprove = async (id: string, approved: boolean) => {
     setLoadingId(id);
@@ -23,9 +23,9 @@ export function ReviewsAdminClient({ initialReviews }: { initialReviews: Review[
       if (!res.ok) throw new Error("Failed");
       
       setReviews(reviews.map(r => r.id === id ? { ...r, approved } : r));
-      showToast("تم تحديث حالة التقييم", "success");
+      toast.success("تم تحديث حالة التقييم");
     } catch (err) {
-      showToast("فشل في تحديث التقييم", "error");
+      toast.error("فشل في تحديث التقييم");
     } finally {
       setLoadingId(null);
     }
@@ -46,9 +46,9 @@ export function ReviewsAdminClient({ initialReviews }: { initialReviews: Review[
       if (!res.ok) throw new Error("Failed");
       
       setReviews(reviews.filter(r => r.id !== idToDelete));
-      showToast("تم حذف التقييم بنجاح", "success");
+      toast.success("تم حذف التقييم بنجاح");
     } catch (err) {
-      showToast("فشل في حذف التقييم", "error");
+      toast.error("فشل في حذف التقييم");
     } finally {
       setLoadingId(null);
     }
