@@ -1,7 +1,8 @@
 import { PublicLayout } from "@/components/PublicLayout";
 import Link from "next/link";
 import Image from "next/image";
-import { FiArrowLeft } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { cookies } from "next/headers";
 import { getSiteSettings, getArticles } from "@/lib/data";
 
 export const metadata = {
@@ -11,6 +12,9 @@ export const metadata = {
 
 export default async function BlogPage() {
   const [settings, articles] = await Promise.all([getSiteSettings(), getArticles()]);
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'ar';
+  const isEn = locale === "en";
 
   return (
     <PublicLayout settings={settings}>

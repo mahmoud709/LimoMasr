@@ -1,7 +1,8 @@
 import { PublicLayout } from "@/components/PublicLayout";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import { getSiteSettings, getArticles, getArticleBySlug } from "@/lib/data";
 
@@ -31,7 +32,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     getSiteSettings()
   ]);
 
-  const isEn = settings?.locale === "en";
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'ar';
+  const isEn = locale === "en";
 
   if (!article) {
     notFound();
