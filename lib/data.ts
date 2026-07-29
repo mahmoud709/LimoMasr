@@ -8,6 +8,8 @@ import type {
   HotelOption,
   SiteSettings,
   ContactMessage,
+  Review,
+  Article,
 } from "./types";
 
 const dataDir = path.join(process.cwd(), "data");
@@ -19,9 +21,69 @@ async function readJsonFallback<T>(fileName: string): Promise<T | null> {
       file = file.slice(1);
     }
     return JSON.parse(file) as T;
-  } catch (error) {
+} catch (error) {
     console.error(`Error reading fallback JSON file ${fileName}:`, error);
     return null;
+  }
+}
+
+export async function getArticles(): Promise<Article[]> {
+  try {
+    const db = await getDb();
+    const collection = db.collection<Article>("articles");
+    
+    let articles = await collection.find({}).toArray();
+    
+    if (articles.length === 0) {
+      const fallbackArticles = await readJsonFallback<Article[]>("articles.json");
+      if (fallbackArticles && fallbackArticles.length > 0) {
+        const toInsert = fallbackArticles.map(({ ...a }) => a);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding articles:", err));
+        articles = await collection.find({}).toArray();
+      }
+    }
+    
+    const result = articles.map(({ _id, ...article }) => article as Article);
+    return result;
+  } catch (error) {
+    console.error("Failed to fetch articles from DB, falling back to JSON:", error);
+    const fallbackArticles = await readJsonFallback<Article[]>("articles.json");
+    return fallbackArticles || [];
+  }
+}
+
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  const articles = await getArticles();
+  return articles.find(a => a.slug === slug) || null;
+}
+
+export async function addArticle(article: Article): Promise<void> {
+  try {
+    const db = await getDb();
+    await db.collection("articles").insertOne(article);
+  } catch (error) {
+    console.error("Error adding article:", error);
+    throw error;
+  }
+}
+
+export async function updateArticle(id: string, updates: Partial<Article>): Promise<void> {
+  try {
+    const db = await getDb();
+    await db.collection("articles").updateOne({ id }, { $set: updates });
+  } catch (error) {
+    console.error("Error updating article:", error);
+    throw error;
+  }
+}
+
+export async function deleteArticle(id: string): Promise<void> {
+  try {
+    const db = await getDb();
+    await db.collection("articles").deleteOne({ id });
+  } catch (error) {
+    console.error("Error deleting article:", error);
+    throw error;
   }
 }
 
@@ -266,7 +328,29 @@ export async function deleteBooking(id: string) {
   await collection.deleteOne({ id });
 }
 
+export async function getLiveExchangeRates() {
+  try {
+    const res = await fetch("https://api.exchangerate-api.com/v4/latest/EGP", {
+      next: { revalidate: 3600 }
+    });
+    if (!res.ok) throw new Error("Failed to fetch rates");
+    const data = await res.json();
+    return {
+      usdRate: data.rates.USD ? Number((1 / data.rates.USD).toFixed(2)) : undefined,
+      eurRate: data.rates.EUR ? Number((1 / data.rates.EUR).toFixed(2)) : undefined,
+      sarRate: data.rates.SAR ? Number((1 / data.rates.SAR).toFixed(2)) : undefined,
+      qarRate: data.rates.QAR ? Number((1 / data.rates.QAR).toFixed(2)) : undefined,
+      kwdRate: data.rates.KWD ? Number((1 / data.rates.KWD).toFixed(2)) : undefined,
+      bhdRate: data.rates.BHD ? Number((1 / data.rates.BHD).toFixed(2)) : undefined,
+    };
+  } catch (err) {
+    console.error("Error fetching live rates:", err);
+    return {};
+  }
+}
+
 export async function getSiteSettings(): Promise<SiteSettings> {
+  let settingsToReturn: SiteSettings | null = null;
   try {
     const db = await getDb();
     const collection = db.collection("settings");
@@ -276,37 +360,51 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     
     if (settingsDoc) {
       const { _id, ...settings } = settingsDoc as any;
-      return settings as SiteSettings;
+      settingsToReturn = settings as SiteSettings;
     }
     
-    // Seed settings if empty
+    if (!settingsToReturn) {
     const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
-    if (fallbackSettings) {
-      const doc = { _id: "site-settings" as any, ...fallbackSettings };
-      await collection.insertOne(doc).catch(err => console.error("Error seeding site settings:", err));
-      return fallbackSettings;
+      if (fallbackSettings) {
+        const doc = { _id: "site-settings" as any, ...fallbackSettings };
+        await collection.insertOne(doc).catch(err => console.error("Error seeding site settings:", err));
+        settingsToReturn = fallbackSettings;
+      }
     }
   } catch (error) {
     console.error("Failed to fetch site settings from DB, falling back to JSON:", error);
   }
   
-  const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
-  if (fallbackSettings) {
-    return fallbackSettings;
+  if (!settingsToReturn) {
+    const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
+    if (fallbackSettings) {
+      settingsToReturn = fallbackSettings;
+    } else {
+      // Fallback empty settings object if everything fails
+      settingsToReturn = {
+        whatsappCarNumber: "",
+        whatsappServiceNumber: "",
+        address: "",
+        heroTitle: "",
+        heroSubtitle: "",
+        heroImage: "",
+        socialLinks: {},
+        policies: "",
+        privacy: "",
+        usdRate: 50,
+      };
+    }
   }
-  
-  // Fallback empty settings object if everything fails
+
+  const liveRates = await getLiveExchangeRates();
   return {
-    whatsappCarNumber: "",
-    whatsappServiceNumber: "",
-    address: "",
-    heroTitle: "",
-    heroSubtitle: "",
-    heroImage: "",
-    socialLinks: {},
-    policies: "",
-    privacy: "",
-    usdRate: 50,
+    ...settingsToReturn,
+    usdRate: liveRates.usdRate || settingsToReturn.usdRate || 50,
+    eurRate: liveRates.eurRate || settingsToReturn.eurRate || 55,
+    sarRate: liveRates.sarRate || settingsToReturn.sarRate || 13,
+    qarRate: liveRates.qarRate || settingsToReturn.qarRate || 13,
+    kwdRate: liveRates.kwdRate || settingsToReturn.kwdRate || 160,
+    bhdRate: liveRates.bhdRate || settingsToReturn.bhdRate || 130,
   };
 }
 
@@ -358,5 +456,37 @@ export async function updateContactMessage(id: string, update: Partial<ContactMe
 export async function deleteContactMessage(id: string) {
   const db = await getDb();
   const collection = db.collection("messages");
+  await collection.deleteOne({ id });
+}
+
+export async function getReviews(onlyApproved = false): Promise<Review[]> {
+  try {
+    const db = await getDb();
+    const collection = db.collection<Review>("reviews");
+    const query = onlyApproved ? { approved: true } : {};
+    const reviews = await collection.find(query).sort({ date: -1 }).toArray();
+    return reviews.map(({ _id, ...r }) => r as Review);
+  } catch (error) {
+    console.error("Failed to fetch reviews from DB:", error);
+    return [];
+  }
+}
+
+export async function addReview(review: Review) {
+  const db = await getDb();
+  const collection = db.collection("reviews");
+  await collection.insertOne({ ...review });
+}
+
+export async function updateReview(id: string, update: Partial<Review>) {
+  const db = await getDb();
+  const collection = db.collection("reviews");
+  const { _id, ...updateData } = update as any;
+  await collection.updateOne({ id }, { $set: updateData });
+}
+
+export async function deleteReview(id: string) {
+  const db = await getDb();
+  const collection = db.collection("reviews");
   await collection.deleteOne({ id });
 }

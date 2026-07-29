@@ -61,8 +61,11 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-5">
-        {/* Currencies */}
         <Card title="الأسعار والعملات">
+          <div className="mb-4 p-3 bg-blue-50 text-blue-800 text-xs font-bold rounded-xl border border-blue-100 flex items-center gap-2">
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            يتم تحديث أسعار الصرف تلقائياً من الإنترنت، ولا يمكن تعديلها يدوياً.
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field 
               label="سعر صرف الدولار (USD to EGP)" 
@@ -70,6 +73,7 @@ export default function SettingsPage() {
               onChange={v => f("usdRate", parseFloat(v) || 50 as any)} 
               dir="ltr" 
               type="number"
+              readOnly
             />
             <Field 
               label="سعر صرف اليورو (EUR to EGP)" 
@@ -77,6 +81,7 @@ export default function SettingsPage() {
               onChange={v => f("eurRate", parseFloat(v) || 55 as any)} 
               dir="ltr" 
               type="number"
+              readOnly
             />
             <Field 
               label="سعر صرف الريال السعودي (SAR to EGP)" 
@@ -84,6 +89,7 @@ export default function SettingsPage() {
               onChange={v => f("sarRate", parseFloat(v) || 13 as any)} 
               dir="ltr" 
               type="number"
+              readOnly
             />
             <Field 
               label="سعر صرف الريال القطري (QAR to EGP)" 
@@ -91,6 +97,7 @@ export default function SettingsPage() {
               onChange={v => f("qarRate", parseFloat(v) || 13 as any)} 
               dir="ltr" 
               type="number"
+              readOnly
             />
             <Field 
               label="سعر صرف الدينار الكويتي (KWD to EGP)" 
@@ -98,6 +105,7 @@ export default function SettingsPage() {
               onChange={v => f("kwdRate", parseFloat(v) || 160 as any)} 
               dir="ltr" 
               type="number"
+              readOnly
             />
             <Field 
               label="سعر صرف الدينار البحريني (BHD to EGP)" 
@@ -105,6 +113,7 @@ export default function SettingsPage() {
               onChange={v => f("bhdRate", parseFloat(v) || 130 as any)} 
               dir="ltr" 
               type="number"
+              readOnly
             />
           </div>
         </Card>
@@ -159,11 +168,11 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
   );
 }
 
-function Field({ label, value, onChange, dir, type = "text" }: { label: string; value: string; onChange: (v: string) => void; dir?: string; type?: string }) {
+function Field({ label, value, onChange, dir, type = "text", readOnly = false }: { label: string; value: string; onChange: (v: string) => void; dir?: string; type?: string; readOnly?: boolean }) {
   return (
     <div>
       <label className="block text-xs font-black text-[#1a2b3c]/60 mb-1.5 uppercase tracking-wide">{label}</label>
-      <input type={type} value={value} onChange={e => onChange(e.target.value)} dir={dir} className="w-full bg-[#f0f2f5] rounded-xl px-3 py-2.5 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]/50" />
+      <input type={type} value={value} onChange={e => !readOnly && onChange(e.target.value)} dir={dir} readOnly={readOnly} className={`w-full rounded-xl px-3 py-2.5 text-sm font-medium outline-none focus:ring-2 focus:ring-[#d0a755]/50 ${readOnly ? 'bg-[#e9ecef] text-[#1a2b3c]/50 cursor-not-allowed' : 'bg-[#f0f2f5] text-[#1a2b3c]'}`} />
     </div>
   );
 }

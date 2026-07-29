@@ -15,6 +15,33 @@ export type LocalizedText = {
   en?: string;
 };
 
+export type Article = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  category: string;
+  date: string;
+  readTime: string;
+  published: boolean;
+  translations?: {
+    ar?: {
+      title?: string;
+      excerpt?: string;
+      content?: string;
+      category?: string;
+    };
+    en?: {
+      title?: string;
+      excerpt?: string;
+      content?: string;
+      category?: string;
+    };
+  };
+};
+
 export type Car = {
   id: string;
   slug: string;
@@ -121,4 +148,14 @@ export type ContactMessage = {
   message: string;
   createdAt: string;
   read: boolean;
+};
+
+export type Review = {
+  id: string;
+  name: string;
+  rating: number;
+  text: string;
+  date: string;
+  source: "google" | "website";
+  approved: boolean;
 };

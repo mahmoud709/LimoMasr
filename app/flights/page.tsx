@@ -27,9 +27,7 @@ export default async function FlightsPage() {
         <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] animate-reveal-2 px-8 max-w-7xl mx-auto w-full">
           <section className="flex flex-col gap-8 h-full">
             <div className="luxury-panel p-10 flex flex-col justify-center h-full relative overflow-hidden group border-white/20">
-              
               <CinematicBackground />
-              
               <div className="relative z-10">
                 <span className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#d0a755]/10 backdrop-blur-md text-[#d0a755] mb-8 border border-[#d0a755]/20 shadow-[0_0_30px_rgba(208,167,85,0.2)]">
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -2,13 +2,17 @@
 
 import { useEffect, useState } from "react";
 
-const images = [
-  "https://images.unsplash.com/photo-1542314831-c6a4d27ece50?q=80&w=2000&auto=format&fit=crop", // Luxury pool
-  "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2000&auto=format&fit=crop", // Red Sea resort
-  "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2000&auto=format&fit=crop", // Tropical luxury
+interface CinematicBackgroundProps {
+  images?: string[];
+}
+
+const DEFAULT_IMAGES = [
+  "/images/hero/carhero1avif.avif",
+  "/team.png",
+  "/images/hero/g6.jpg",
 ];
 
-export function CinematicBackground() {
+export function CinematicBackground({ images = DEFAULT_IMAGES }: CinematicBackgroundProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {

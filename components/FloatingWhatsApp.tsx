@@ -88,7 +88,7 @@ export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: Flo
 
   return (
     <div
-      className={`fixed bottom-6 left-6 z-50 flex flex-col items-center transition-all duration-500 ${
+      className={`fixed bottom-6 end-4 md:end-6 z-50 flex flex-col items-center transition-all duration-500 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
       }`}
     >
@@ -115,8 +115,8 @@ export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: Flo
             >
               {item.icon}
               
-              {/* Tooltip Label sliding to the right */}
-              <span className="absolute left-14 px-3 py-1 text-xs font-bold text-white bg-[#1a2b3c] border border-[#d0a755]/30 rounded-lg opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap shadow-md pointer-events-none">
+              {/* Tooltip Label sliding to the end */}
+              <span className="absolute end-14 px-3 py-1 text-xs font-bold text-white bg-[#1a2b3c] border border-[#d0a755]/30 rounded-lg opacity-0 rtl:translate-x-2 ltr:-translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 whitespace-nowrap shadow-md pointer-events-none">
                 {item.name}
               </span>
             </a>

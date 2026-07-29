@@ -11,6 +11,8 @@ import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube
 import { FaXTwitter } from 'react-icons/fa6';
 import { ui, withLang } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
+import { ReviewsSection } from "@/components/ReviewsSection";
+import { ArticlesSection } from "@/components/ArticlesSection";
 
 export default async function Home() {
   const [settings, cars, packages] = await Promise.all([getSiteSettings(), getCars(), getFastTrackPackages()]);
@@ -81,8 +83,8 @@ export default async function Home() {
                           {card.icon}
                         </div>
                         <div className="flex flex-col min-w-0 text-right rtl:text-right ltr:text-left py-0.5 gap-0.5">
-                          <span className="text-sm font-black tracking-tight leading-relaxed group-hover:text-[#d0a755] transition-colors truncate">{card.title}</span>
-                          <span className="text-[10px] text-white/50 truncate leading-normal">{card.subtitle}</span>
+                          <span className="text-sm font-black tracking-tight leading-relaxed group-hover:text-[#d0a755] transition-colors">{card.title}</span>
+                          <span className="text-[10px] text-white/50 leading-normal">{card.subtitle}</span>
                         </div>
                       </div>
                       <svg className={`w-3.5 h-3.5 text-white/60 shrink-0 group-hover:text-[#d0a755] transition-colors ${isRtl ? 'rotate-0 group-hover:-translate-x-1' : 'rotate-180 group-hover:translate-x-1'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -342,6 +344,9 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <ReviewsSection locale={locale} />
+        <ArticlesSection />
 
         {/* Social Media Section */}
         <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">

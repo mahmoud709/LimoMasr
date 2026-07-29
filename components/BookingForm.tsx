@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
+import { LocationSearchModal } from "./LocationSearchModal";
 
 type BookingFormProps = {
   type: ServiceType;
@@ -53,6 +54,8 @@ export function BookingForm({
   const [isSearchingHotels, setIsSearchingHotels] = useState(false);
   const [showHotelSuggestions, setShowHotelSuggestions] = useState(false);
   const [selectedHotelIndex, setSelectedHotelIndex] = useState(-1);
+  
+  const [activeModal, setActiveModal] = useState<"hotel" | "flightFrom" | "flightTo" | null>(null);
 
   // Detect locale based on props, pathname prefix, or cookie
   const isEn = locale ? locale === "en" : (typeof window !== "undefined" && (
@@ -284,59 +287,12 @@ export function BookingForm({
             {accommodationType === "hotel" ? (
               <div className="relative">
                 <input
+                  readOnly
                   value={hotelDetails}
-                  onChange={(event) => {
-                    setHotelDetails(event.target.value);
-                    setShowHotelSuggestions(true);
-                    setSelectedHotelIndex(-1);
-                  }}
-                  onBlur={() => {
-                    setTimeout(() => setShowHotelSuggestions(false), 200);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "ArrowDown") {
-                      e.preventDefault();
-                      setSelectedHotelIndex(prev => prev < hotelSuggestions.length - 1 ? prev + 1 : prev);
-                    } else if (e.key === "ArrowUp") {
-                      e.preventDefault();
-                      setSelectedHotelIndex(prev => prev > 0 ? prev - 1 : -1);
-                    } else if (e.key === "Enter" && selectedHotelIndex >= 0) {
-                      e.preventDefault();
-                      const selected = hotelSuggestions[selectedHotelIndex];
-                      setHotelDetails(selected.display_name);
-                      setShowHotelSuggestions(false);
-                    }
-                  }}
+                  onClick={() => setActiveModal("hotel")}
                   placeholder={isEn ? "Governorate or Hotel Name (Optional)" : "المحافظة أو اسم الفندق (اختياري)"}
-                  className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
-                  autoComplete="off"
+                  className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
                 />
-                
-                {showHotelSuggestions && (hotelSuggestions.length > 0 || isSearchingHotels) && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black/10 rounded-xl shadow-lg z-50 overflow-hidden max-h-60 overflow-y-auto">
-                    {isSearchingHotels ? (
-                      <div className="p-4 text-center text-sm text-[#1a2b3c]/50">
-                        {isEn ? "Searching..." : "جاري البحث..."}
-                      </div>
-                    ) : (
-                      <ul className="py-1">
-                        {hotelSuggestions.map((suggestion, index) => (
-                          <li 
-                            key={suggestion.place_id}
-                            className={`px-4 py-2 text-sm cursor-pointer transition-colors ${selectedHotelIndex === index ? 'bg-[#d0a755]/10 text-[#d0a755]' : 'hover:bg-[#F9F8F6] text-[#1a2b3c]'}`}
-                            onClick={() => {
-                              setHotelDetails(suggestion.display_name);
-                              setShowHotelSuggestions(false);
-                            }}
-                          >
-                            <span className="font-bold block text-right rtl:text-right ltr:text-left">{suggestion.name || suggestion.display_name.split(',')[0]}</span>
-                            <span className="text-xs opacity-70 truncate block text-right rtl:text-right ltr:text-left">{suggestion.display_name}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
               </div>
             ) : (
               <div className="relative">
@@ -379,10 +335,11 @@ export function BookingForm({
               </label>
               <input
                 required
+                readOnly
                 value={flightFrom}
-                onChange={(event) => setFlightFrom(event.target.value)}
+                onClick={() => setActiveModal("flightFrom")}
                 placeholder={isEn ? "Departure City/Airport" : "مدينة/مطار المغادرة"}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
               />
             </div>
             <div className="relative">
@@ -391,10 +348,11 @@ export function BookingForm({
               </label>
               <input
                 required
+                readOnly
                 value={flightTo}
-                onChange={(event) => setFlightTo(event.target.value)}
+                onClick={() => setActiveModal("flightTo")}
                 placeholder={isEn ? "Destination City/Airport" : "مدينة/مطار الوصول"}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
               />
             </div>
             <div className="relative">
@@ -507,6 +465,23 @@ export function BookingForm({
           </p>
         </div>
       )}
+
+      {/* Render the modal outside of normal document flow */}
+      <LocationSearchModal
+        isOpen={activeModal !== null}
+        onClose={() => setActiveModal(null)}
+        onSelect={(location) => {
+          if (activeModal === "hotel") {
+            setHotelDetails(location);
+          } else if (activeModal === "flightFrom") {
+            setFlightFrom(location);
+          } else if (activeModal === "flightTo") {
+            setFlightTo(location);
+          }
+        }}
+        type={activeModal === "hotel" ? "hotel" : "airport"}
+        isEn={isEn}
+      />
     </form>
   );
 }

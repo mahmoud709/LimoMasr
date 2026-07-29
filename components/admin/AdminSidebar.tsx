@@ -6,13 +6,15 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   FiHome, FiCalendar, FiTruck, FiZap,
   FiMapPin, FiSettings, FiExternalLink, FiLogOut,
-  FiMenu, FiX, FiMessageSquare,
+  FiMenu, FiX, FiMessageSquare, FiStar, FiFileText
 } from "react-icons/fi";
 
 const navItems = [
   { href: "/admin", label: "الرئيسية", icon: FiHome, exact: true },
   { href: "/admin/bookings", label: "الحجوزات", icon: FiCalendar },
   { href: "/admin/messages", label: "الرسائل", icon: FiMessageSquare },
+  { href: "/admin/reviews", label: "التقييمات", icon: FiStar },
+  { href: "/admin/articles", label: "المقالات", icon: FiFileText },
   { href: "/admin/cars", label: "السيارات", icon: FiTruck },
   { href: "/admin/fast-track", label: "فاست تراك", icon: FiZap },
   { href: "/admin/hotels", label: "الفنادق", icon: FiMapPin },

@@ -66,7 +66,7 @@ export const ui = {
             fastTrackTitle: "المسار السريع",
       fastTrackSubtitle: "مساعدة VIP في المطار",
       hotelsTitle: "الإقامات",
-      hotelsSubtitle: "فنادق وفلل منتقاة",
+      hotelsSubtitle: "حجز فنادق وشقق فندقيه",
       flightsTitle: "الطيران",
       flightsSubtitle: "حجز رحلات طيران حصرية"
     },
@@ -192,7 +192,7 @@ export const ui = {
             fastTrackTitle: "Fast Track",
       fastTrackSubtitle: "VIP airport assistance services",
       hotelsTitle: "Accommodations",
-      hotelsSubtitle: "Handpicked hotels and villas",
+      hotelsSubtitle: "Book hotels and hotel apartments",
       flightsTitle: "Flights",
       flightsSubtitle: "Exclusive flight bookings"
     },
