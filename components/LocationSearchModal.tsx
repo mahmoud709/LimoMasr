@@ -14,6 +14,34 @@ type LocationSearchModalProps = {
   isEn?: boolean;
 };
 
+const LOCAL_AIRPORTS = [
+  { nameAr: "مطار القاهرة الدولي", nameEn: "Cairo International Airport", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "مطار برج العرب الدولي", nameEn: "Borg El Arab International Airport", cityAr: "الإسكندرية", cityEn: "Alexandria" },
+  { nameAr: "مطار شرم الشيخ الدولي", nameEn: "Sharm El Sheikh International Airport", cityAr: "شرم الشيخ", cityEn: "Sharm El Sheikh" },
+  { nameAr: "مطار الغردقة الدولي", nameEn: "Hurghada International Airport", cityAr: "الغردقة", cityEn: "Hurghada" },
+  { nameAr: "مطار الأقصر الدولي", nameEn: "Luxor International Airport", cityAr: "الأقصر", cityEn: "Luxor" },
+  { nameAr: "مطار أسوان الدولي", nameEn: "Aswan International Airport", cityAr: "أسوان", cityEn: "Aswan" },
+  { nameAr: "مطار سفنكس الدولي", nameEn: "Sphinx International Airport", cityAr: "الجيزة", cityEn: "Giza" },
+  { nameAr: "مطار العاصمة الدولي", nameEn: "Capital International Airport", cityAr: "العاصمة الإدارية", cityEn: "New Capital" },
+  { nameAr: "مطار العلمين الدولي", nameEn: "Alamein International Airport", cityAr: "العلمين", cityEn: "Alamein" },
+];
+
+const LOCAL_HOTELS = [
+  { nameAr: "فندق فور سيزونز نايل بلازا", nameEn: "Four Seasons Hotel Cairo at Nile Plaza", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق فور سيزونز الفيرست ريزيدنس", nameEn: "Four Seasons Hotel Cairo at The First Residence", cityAr: "الجيزة", cityEn: "Giza" },
+  { nameAr: "فندق النيل ريتز كارلتون", nameEn: "The Nile Ritz-Carlton", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق ماريوت القاهرة وكازينو عمر الخيام", nameEn: "Cairo Marriott Hotel & Omar Khayyam Casino", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق سانت ريجيس القاهرة", nameEn: "The St. Regis Cairo", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق كمبينسكي النيل", nameEn: "Kempinski Nile Hotel", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق فيرمونت نايل سيتي", nameEn: "Fairmont Nile City", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق كونراد القاهرة", nameEn: "Conrad Cairo", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق سوفيتيل الجزيرة", nameEn: "Sofitel Cairo Nile El Gezirah", cityAr: "القاهرة", cityEn: "Cairo" },
+  { nameAr: "فندق ماريوت مينا هاوس", nameEn: "Marriott Mena House", cityAr: "الجيزة", cityEn: "Giza" },
+  { nameAr: "فندق رينيسانس كايرو", nameEn: "Renaissance Cairo Mirage City Hotel", cityAr: "القاهرة الجديدة", cityEn: "New Cairo" },
+  { nameAr: "فندق دوسيت تاني", nameEn: "Dusit Thani LakeView Cairo", cityAr: "القاهرة الجديدة", cityEn: "New Cairo" },
+  { nameAr: "فندق تريومف لاكشري", nameEn: "Triumph Luxury Hotel", cityAr: "القاهرة الجديدة", cityEn: "New Cairo" },
+];
+
 const POPULAR_DESTINATIONS = [
   { nameAr: "القاهرة", nameEn: "Cairo" },
   { nameAr: "الجيزة", nameEn: "Giza" },
@@ -59,19 +87,39 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
 
     const timer = setTimeout(async () => {
       setIsSearching(true);
+
+      const q = query.toLowerCase().trim();
+      const localMatches = [...LOCAL_AIRPORTS, ...LOCAL_HOTELS].filter(a => 
+        a.nameAr.includes(q) || a.nameEn.toLowerCase().includes(q) ||
+        a.cityAr.includes(q) || a.cityEn.toLowerCase().includes(q)
+      ).map(a => ({
+        place_id: `local-${a.nameEn}`,
+        name: isEn ? a.nameEn : a.nameAr,
+        display_name: isEn ? `${a.nameEn}, ${a.cityEn}, Egypt` : `${a.nameAr}، ${a.cityAr}، مصر`
+      }));
+
       try {
-        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1&accept-language=${isEn ? 'en' : 'ar'}`;
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&addressdetails=1&countrycodes=eg&accept-language=${isEn ? 'en' : 'ar'}`;
         const res = await fetch(url);
         if (res.ok) {
           const data = await res.json();
-          setResults(data);
+          const apiFormatted = data.map((d: any) => ({
+            place_id: d.place_id,
+            name: d.name,
+            display_name: d.display_name
+          }));
+          
+          const combined = [...localMatches, ...apiFormatted];
+          const unique = combined.filter((v, i, a) => a.findIndex(t => t.name === v.name) === i);
+          setResults(unique);
         }
       } catch (err) {
         console.error("Failed to fetch locations", err);
+        setResults(localMatches);
       } finally {
         setIsSearching(false);
       }
-    }, 500);
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [query, isEn]);
@@ -151,29 +199,62 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
                   {isEn ? "Searching..." : "جاري البحث..."}
                 </div>
               ) : results.length > 0 ? (
-                results.map((res, i) => (
+                <>
+                  {results.map((res, i) => (
+                    <button
+                      key={res.place_id || i}
+                      onClick={() => handleSelect(res.name)}
+                      className="w-full text-start p-4 hover:bg-slate-50 rounded-2xl flex items-start gap-4 transition-colors group"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0 group-hover:bg-[#d0a755]/10 group-hover:text-[#d0a755] text-slate-400 transition-colors">
+                        <FiMapPin className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-black text-[#1a2b3c] truncate text-sm">
+                          {res.name}
+                        </p>
+                        <p className="text-xs text-slate-500 truncate mt-1">
+                          {res.display_name}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                  
+                  {/* Always allow the user to just use what they typed exactly */}
                   <button
-                    key={res.place_id || i}
-                    onClick={() => handleSelect(res.display_name.split(',')[0])}
-                    className="w-full text-start p-4 hover:bg-slate-50 rounded-2xl flex items-start gap-4 transition-colors group"
+                    onClick={() => handleSelect(query.trim())}
+                    className="w-full text-start p-4 hover:bg-[#d0a755]/10 rounded-2xl flex items-start gap-4 transition-colors group border border-dashed border-[#d0a755]/50 mt-2 bg-[#d0a755]/5"
                   >
-                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0 group-hover:bg-[#d0a755]/10 group-hover:text-[#d0a755] text-slate-400 transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 text-[#d0a755] shadow-sm">
                       <FiMapPin className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-black text-[#1a2b3c] truncate text-sm">
-                        {res.name || res.display_name.split(',')[0]}
+                      <p className="font-black text-[#d0a755] truncate text-sm">
+                        {isEn ? `Use "${query.trim()}"` : `استخدام "${query.trim()}"`}
                       </p>
-                      <p className="text-xs text-slate-500 truncate mt-1">
-                        {res.display_name}
+                      <p className="text-xs text-[#1a2b3c]/60 truncate mt-1">
+                        {isEn ? "Enter this exact location manually" : "إدخال هذا المكان واعتماده مباشرة"}
                       </p>
                     </div>
                   </button>
-                ))
+                </>
               ) : (
-                <div className="py-8 text-center text-slate-400 text-sm font-bold">
-                  {isEn ? "No results found" : "لم يتم العثور على نتائج"}
-                </div>
+                <button
+                  onClick={() => handleSelect(query.trim())}
+                  className="w-full text-start p-4 hover:bg-[#d0a755]/10 rounded-2xl flex items-start gap-4 transition-colors group border border-dashed border-[#d0a755]/50 bg-[#d0a755]/5"
+                >
+                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 text-[#d0a755] shadow-sm">
+                    <FiMapPin className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-black text-[#d0a755] truncate text-sm">
+                      {isEn ? `Use "${query.trim()}"` : `استخدام "${query.trim()}"`}
+                    </p>
+                    <p className="text-xs text-[#1a2b3c]/60 truncate mt-1">
+                      {isEn ? "Location not found on map, but you can use it manually." : "لم يتم العثور عليه في الخريطة، لكن يمكنك اعتماده كعنوان مباشر."}
+                    </p>
+                  </div>
+                </button>
               )}
             </div>
           ) : (

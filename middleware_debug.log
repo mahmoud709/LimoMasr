@@ -3114,3 +3114,181 @@
 2026-07-26T12:28:43.385Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
 2026-07-26T12:29:21.451Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
 2026-07-26T12:29:21.471Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T08:14:17.873Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:14:18.110Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:14:18.144Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:14:18.177Z - REDIRECT: / -> /ar
+2026-07-30T08:18:46.900Z - INCOMING: /en | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:18:46.927Z - REWRITE: /en -> /?__locale=en
+2026-07-30T08:18:47.241Z - INCOMING: /en | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:18:47.326Z - REWRITE: /en -> /?__locale=en
+2026-07-30T08:19:32.781Z - INCOMING: /en/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:19:32.803Z - REWRITE: /en/hotels -> /hotels?__locale=en
+2026-07-30T08:19:36.850Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:19:36.872Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-07-30T08:19:37.076Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:19:37.097Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-07-30T08:19:42.449Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:19:42.467Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:20:01.844Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:20:01.872Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:20:02.135Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:20:02.210Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:20:09.331Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:20:09.386Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:20:09.644Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:20:09.723Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:21:52.551Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:21:52.576Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:25:20.738Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:25:20.781Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:25:32.195Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:25:32.220Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:28:15.367Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:28:15.387Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:29:33.584Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:29:33.653Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:30:58.067Z - INCOMING: /ar/flights | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:30:58.088Z - REWRITE: /ar/flights -> /flights?__locale=ar
+2026-07-30T08:31:51.805Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:31:51.826Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:32:22.392Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:32:22.460Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-07-30T08:33:38.693Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:33:38.726Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-07-30T08:37:11.291Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-07-30T08:37:11.343Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:37:16.725Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:37:16.829Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-07-30T08:38:01.994Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:38:02.033Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:39:19.801Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:39:20.158Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-07-30T08:39:23.550Z - INCOMING: /admin/bookings | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:39:23.575Z - ADMIN PASSTHROUGH: /admin/bookings
+2026-07-30T08:39:30.527Z - INCOMING: /admin/articles | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:39:30.547Z - ADMIN PASSTHROUGH: /admin/articles
+2026-07-30T08:39:33.757Z - INCOMING: /admin/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:39:33.776Z - ADMIN PASSTHROUGH: /admin/cars
+2026-07-30T08:39:34.825Z - INCOMING: /admin/fast-track | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:39:34.846Z - ADMIN PASSTHROUGH: /admin/fast-track
+2026-07-30T08:40:44.581Z - REDIRECT: / -> /ar
+2026-07-30T08:40:44.601Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:40:44.658Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:40:44.682Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:41:13.368Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:41:13.400Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:41:15.823Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:41:15.934Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:41:16.546Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:41:16.566Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:41:16.720Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:41:16.738Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:41:16.758Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:41:16.777Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:41:16.970Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:41:16.990Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:42:11.348Z - INCOMING: /fast-track | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:42:11.370Z - REDIRECT: /fast-track -> /ar/fast-track
+2026-07-30T08:42:11.436Z - REWRITE: /ar/fast-track -> /fast-track?__locale=ar
+2026-07-30T08:42:11.459Z - INCOMING: /ar/fast-track | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:42:23.758Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:42:23.779Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:43:19.957Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:43:19.986Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:44:42.697Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:44:42.754Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:47:11.524Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:47:11.555Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:47:12.067Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:47:12.232Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:47:25.103Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:47:25.221Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:49:28.930Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:49:28.957Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:49:46.414Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:49:46.446Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:49:46.958Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:49:46.981Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:49:47.321Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:49:47.472Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:50:02.663Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:50:02.691Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:20.614Z - INCOMING: /blog/cairo-giza-best-places | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:20.635Z - REDIRECT: /blog/cairo-giza-best-places -> /ar/blog/cairo-giza-best-places
+2026-07-30T08:51:20.696Z - INCOMING: /ar/blog/cairo-giza-best-places | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:20.715Z - REWRITE: /ar/blog/cairo-giza-best-places -> /blog/cairo-giza-best-places?__locale=ar
+2026-07-30T08:51:33.989Z - INCOMING: /blog | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:34.012Z - REDIRECT: /blog -> /ar/blog
+2026-07-30T08:51:34.074Z - INCOMING: /ar/blog | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:34.097Z - REWRITE: /ar/blog -> /blog?__locale=ar
+2026-07-30T08:51:37.860Z - INCOMING: /ar/blog | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:37.883Z - REWRITE: /ar/blog -> /blog?__locale=ar
+2026-07-30T08:51:38.373Z - INCOMING: /ar/blog | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:38.400Z - REWRITE: /ar/blog -> /blog?__locale=ar
+2026-07-30T08:51:41.798Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:41.818Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:51:42.221Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:42.242Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:51:52.069Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:51:52.090Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:54:10.493Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:54:10.536Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T08:57:41.649Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:57:41.671Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T08:59:06.413Z - INCOMING: /ar/fast-track | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:59:06.436Z - REWRITE: /ar/fast-track -> /fast-track?__locale=ar
+2026-07-30T08:59:12.909Z - INCOMING: /ar/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:59:12.935Z - REWRITE: /ar/hotel-apartments -> /hotel-apartments?__locale=ar
+2026-07-30T08:59:15.631Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:59:15.652Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-07-30T08:59:21.937Z - INCOMING: /ar/contact | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:59:21.958Z - REWRITE: /ar/contact -> /contact?__locale=ar
+2026-07-30T08:59:25.321Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T08:59:25.341Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T09:00:40.257Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:40.291Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T09:00:40.635Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:40.746Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T09:00:51.659Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:52.528Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:00:53.622Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:53.647Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:00:53.929Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:53.963Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:00:54.422Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:54.442Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:00:54.558Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:54.652Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:00:54.673Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:00:54.700Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:07:53.749Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:07:53.784Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:07:53.834Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:07:53.856Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:09:06.836Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:09:06.862Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:56.232Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:10:56.260Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:56.292Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:57.002Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:10:57.024Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:57.049Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:10:57.072Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:10:57.232Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:57.260Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:57.285Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:10:57.355Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:10:57.374Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:14:03.897Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:14:03.921Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:15:33.566Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-07-30T09:15:33.670Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:45:59.533Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T09:45:59.578Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T10:14:03.682Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T10:14:03.736Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T10:14:04.033Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T10:14:04.107Z - REWRITE: /ar -> /?__locale=ar
+2026-07-30T10:14:04.383Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-07-30T10:14:04.405Z - REWRITE: /ar -> /?__locale=ar

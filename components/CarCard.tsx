@@ -7,7 +7,7 @@ import { ui, withLang } from "@/lib/i18n";
 import { formatCurrency, priceUnitLabel } from "@/lib/utils";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
-export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 50 }: { car: Car; locale?: Locale; currency?: string; exchangeRate?: number; }) {
+export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 50, viewMode = "grid" }: { car: Car; locale?: Locale; currency?: string; exchangeRate?: number; viewMode?: "grid" | "list" }) {
   const t = ui[locale];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -40,8 +40,8 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
   };
   
   return (
-    <article className="flex flex-col w-full h-full luxury-panel p-4 md:p-5 group transition-all duration-500 hover:-translate-y-2">
-      <div className="relative aspect-[16/10] overflow-hidden rounded-xl mb-6 w-full bg-[#1a2b3c]/5">
+    <article className={`flex ${viewMode === "grid" ? "flex-col" : "flex-col sm:flex-row items-stretch sm:items-center"} w-full h-full luxury-panel p-4 md:p-5 group transition-all duration-500 hover:-translate-y-2 gap-4 md:gap-6`}>
+      <div className={`relative ${viewMode === "grid" ? "aspect-[16/10] w-full mb-2" : "w-full sm:w-[45%] aspect-[16/10] sm:aspect-square md:aspect-[4/3]"} overflow-hidden rounded-xl bg-[#1a2b3c]/5 shrink-0`}>
         
         {/* Carousel Container */}
         <div 
@@ -107,7 +107,8 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
         )}
       </div>
       
-      <div className="flex flex-col flex-grow rtl:text-right ltr:text-left mb-5">
+      <div className={`flex flex-col flex-grow rtl:text-right ltr:text-left w-full h-full justify-between ${viewMode === "list" ? "py-2" : "mb-5"}`}>
+        <div className="flex flex-col gap-2">
         <div className="flex items-start justify-between mb-3">
           <h3 className="font-black text-[#1a2b3c] text-lg md:text-xl tracking-tight truncate max-w-[200px]">
              {categoryName}
@@ -120,17 +121,19 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
           </div>
         </div>
 
-
-      </div>
+        </div>
       
-      <div className="flex items-center justify-between mt-auto pt-4 border-t border-black/5">
-        <p className="text-[12px] text-[#1a2b3c]/60 font-medium" dir="rtl">
-          <span className="font-black text-[#d0a755] text-lg">{formatCurrency(car.price, "EGP", locale, currency, exchangeRate)}</span> / {priceUnitLabel(car.priceUnit, locale)} 
-        </p>
-        <Link href={withLang(`/cars/${car.slug}`, locale)} className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 shadow-md hover:shadow-lg w-auto">
-          {locale === "en" ? "Book Now" : "احجز الآن"}
-        </Link>
+      <div className="flex flex-col gap-4 mt-auto pt-4 border-t border-black/5">
+        <div className="flex items-center justify-between">
+          <p className="text-[12px] text-[#1a2b3c]/60 font-medium" dir="rtl">
+            <span className="font-black text-[#d0a755] text-lg">{formatCurrency(car.price, "EGP", locale, currency, exchangeRate)}</span> / {priceUnitLabel(car.priceUnit, locale)} 
+          </p>
+          <Link href={withLang(`/cars/${car.slug}`, locale)} className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 shadow-md hover:shadow-lg w-auto shrink-0">
+            {locale === "en" ? "Book Now" : "احجز الآن"}
+          </Link>
+        </div>
       </div>
+    </div>
     </article>
   );
 }

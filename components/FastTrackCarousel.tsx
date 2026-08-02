@@ -8,11 +8,13 @@ import type { FastTrackPackage, Locale } from "@/lib/types";
 export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar", currency = "EGP", exchangeRate = 50 }: { packages: FastTrackPackage[]; title: string; viewAllText?: string; locale?: Locale; currency?: string; exchangeRate?: number; }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const scroll = (dir: "left" | "right") => {
+  const scroll = (dir: "next" | "prev") => {
     if (scrollRef.current) {
-      const scrollAmount = 400;
+      const scrollStep = typeof window !== 'undefined' && window.innerWidth < 768 ? scrollRef.current.clientWidth : 360;
+      const sign = locale === "en" ? 1 : -1;
+      const direction = dir === "next" ? 1 : -1;
       scrollRef.current.scrollBy({
-        left: dir === "left" ? -scrollAmount : scrollAmount,
+        left: sign * direction * scrollStep,
         behavior: "smooth"
       });
     }
@@ -32,10 +34,10 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar",
             </Link>
           )}
           <div className="flex items-center gap-2" dir="ltr">
-            <button onClick={() => scroll("left")} className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]">
+            <button onClick={() => scroll(locale === "en" ? "prev" : "next")} className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]">
                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             </button>
-            <button onClick={() => scroll("right")} className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]">
+            <button onClick={() => scroll(locale === "en" ? "next" : "prev")} className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]">
                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </button>
           </div>
@@ -72,7 +74,7 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar",
                 </div>
 
                 {item.image && (
-                  <div className="w-full h-40 -mt-6 -mx-6 mb-6 relative overflow-hidden rounded-t-2xl bg-gray-50 shrink-0">
+                  <div className="w-[calc(100%+3rem)] md:w-[calc(100%+4rem)] h-56 -mt-6 md:-mt-8 -mx-6 md:-mx-8 mb-6 relative overflow-hidden rounded-t-2xl bg-gray-50 shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={item.image} alt={name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>

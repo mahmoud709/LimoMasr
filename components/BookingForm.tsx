@@ -262,7 +262,14 @@ export function BookingForm({
             type="number"
             min={1}
             value={passengers}
-            onChange={(event) => setPassengers(Number(event.target.value))}
+            onChange={(event) => {
+              const val = parseInt(event.target.value, 10);
+              if (isNaN(val) || val < 1) {
+                setPassengers(1);
+              } else {
+                setPassengers(val);
+              }
+            }}
             className="w-2/3 bg-transparent py-1.5 text-left text-lg font-black text-[#1a2b3c] outline-none"
             dir="ltr"
           />

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PublicLayout } from "@/components/PublicLayout";
-import { CarCard } from "@/components/CarCard";
+import { CarsClient } from "./CarsClient";
 import { getCars, getSiteSettings } from "@/lib/data";
 import { ui } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
@@ -31,23 +31,8 @@ export default async function CarsPage() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-reveal-2">
-            {cars.map((car) => (
-              <CarCard key={car.id} car={car} locale={locale} currency={cookieCurrency} exchangeRate={exchangeRate} />
-            ))}
-          </div>
+          <CarsClient cars={cars} locale={locale} currency={cookieCurrency} exchangeRate={exchangeRate} />
           
-          {cars.length === 0 && (
-            <div className="text-center py-20 bg-white rounded-3xl border border-black/5 shadow-sm">
-              <div className="w-20 h-20 mx-auto bg-[#F9F8F6] rounded-full flex items-center justify-center mb-6">
-                <svg className="w-8 h-8 text-[#1a2b3c]/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-black text-[#1a2b3c] mb-2">{locale === "en" ? "No cars found" : "لم يتم العثور على سيارات"}</h3>
-              <p className="text-[#1a2b3c]/50">{locale === "en" ? "There are currently no cars available." : "لا يوجد سيارات متاحة في الوقت الحالي."}</p>
-            </div>
-          )}
         </div>
       </div>
     </PublicLayout>

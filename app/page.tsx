@@ -13,6 +13,7 @@ import { ui, withLang } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 import { ReviewsSection } from "@/components/ReviewsSection";
 import { ArticlesSection } from "@/components/ArticlesSection";
+import { CorporateSection } from "@/components/CorporateSection";
 
 export default async function Home() {
   const [settings, cars, packages] = await Promise.all([getSiteSettings(), getCars(), getFastTrackPackages()]);
@@ -283,6 +284,8 @@ export default async function Home() {
           </div>
         </section>
 
+        <CorporateSection locale={locale} />
+
         {/* Car Brands Marquee Section */}
         <section className="relative w-full bg-white py-32 overflow-hidden">
           {/* Subtle top divider */}
@@ -345,8 +348,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <ReviewsSection locale={locale} />
-        <ArticlesSection />
+        <ArticlesSection locale={locale} />
 
         {/* Social Media Section */}
         <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">
@@ -389,6 +391,8 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <ReviewsSection locale={locale} />
       </main>
     </PublicLayout>
   );
