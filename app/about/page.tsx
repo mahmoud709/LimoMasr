@@ -5,10 +5,13 @@ import { FaCar, FaPlaneDeparture, FaHotel, FaRegClock, FaShieldAlt, FaHeadset } 
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
-export default async function AboutPage() {
-  const settings = await getSiteSettings();
-  const cookieStore = await cookies();
-  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
+export default async function AboutPage({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
+  const [settings, cookieStore, resolvedSearchParams] = await Promise.all([
+    getSiteSettings(),
+    cookies(),
+    searchParams
+  ]);
+  const locale = (resolvedSearchParams?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
 
   return (
     <PublicLayout settings={settings} locale={locale}>

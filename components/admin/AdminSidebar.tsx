@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  FiHome, FiCalendar, FiTruck, FiZap,
+  FiHome, FiCalendar, FiUsers, FiTruck, FiZap,
   FiMapPin, FiSettings, FiExternalLink, FiLogOut,
   FiMenu, FiX, FiMessageSquare, FiStar, FiFileText
 } from "react-icons/fi";
@@ -12,6 +12,7 @@ import {
 const navItems = [
   { href: "/admin", label: "الرئيسية", icon: FiHome, exact: true },
   { href: "/admin/bookings", label: "الحجوزات", icon: FiCalendar },
+  { href: "/admin/customers", label: "سجل العملاء", icon: FiUsers },
   { href: "/admin/messages", label: "الرسائل", icon: FiMessageSquare },
   { href: "/admin/reviews", label: "التقييمات", icon: FiStar },
   { href: "/admin/articles", label: "المقالات", icon: FiFileText },

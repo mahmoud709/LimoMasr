@@ -1,22 +1,23 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import type { Booking, BookingStatus } from "@/lib/types";
-import { FiDownload, FiSearch, FiFilter, FiClock, FiX } from "react-icons/fi";
+import { FiDownload, FiSearch, FiFilter, FiClock, FiMessageCircle, FiUser } from "react-icons/fi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
+import Link from "next/link";
 
 const statusConfig: Record<BookingStatus, { label: string; color: string; bg: string; border: string }> = {
   new:       { label: "جديد",   color: "text-blue-700",  bg: "bg-blue-50",  border: "border-blue-200" },
-  confirmed: { label: "مؤكد",  color: "text-green-700", bg: "bg-green-50", border: "border-green-200" },
-  cancelled: { label: "ملغي",  color: "text-red-700",   bg: "bg-red-50",   border: "border-red-200" },
-  completed: { label: "منتهي", color: "text-gray-600",  bg: "bg-gray-50",  border: "border-gray-200" },
+  confirmed: { label: "مؤكد",  color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200" },
+  cancelled: { label: "ملغي",  color: "text-rose-700",   bg: "bg-rose-50",   border: "border-rose-200" },
+  completed: { label: "منتهي", color: "text-slate-600",  bg: "bg-slate-50",  border: "border-slate-200" },
 };
 
 const typeLabels: Record<string, string> = {
-  car: "سيارة",
-  fast_track: "فاست تراك",
-  hotel: "فندق",
+  car: "سيارة ليموزين",
+  fast_track: "مسار سريع VIP",
+  hotel: "حجز فندق",
   flight: "طيران",
   apartment: "شقة فندقية",
 };
@@ -46,9 +47,8 @@ export default function BookingsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<BookingStatus | "all">("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
-  const [clientHistory, setClientHistory] = useState<string | null>(null);
 
-  // Fetch Bookings with React Query - Polling every 5 seconds for Real-time updates
+  // Fetch Bookings with React Query
   const { data: bookings = [], isLoading } = useQuery<Booking[]>({
     queryKey: ["bookings"],
     queryFn: async () => {
@@ -57,9 +57,6 @@ export default function BookingsPage() {
       return res.json();
     }
   });
-
-  // SSE and Audio Notifications are now handled globally by the AdminHeader component.
-  // The queryClient cache is automatically updated, which triggers a re-render here.
 
   // Mutate Booking Status
   const updateStatusMutation = useMutation({
@@ -80,8 +77,6 @@ export default function BookingsPage() {
       toast.error(err.message || "حدث خطأ أثناء تحديث الحالة");
     },
   });
-
-  // Note: Audio and toast alert logic has been moved to the global AdminHeader component.
 
   function exportCsv() {
     const header = ["id", "type", "customerName", "phone", "serviceName", "date", "status", "createdAt"];
@@ -104,36 +99,36 @@ export default function BookingsPage() {
   );
 
   return (
-    <div className="flex-1 p-8">
+    <div className="flex-1 p-6 md:p-10 space-y-6">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-[#1a2b3c]">الحجوزات</h1>
-          <p className="text-sm text-[#1a2b3c]/50 mt-1">{bookings.length} حجز إجمالي</p>
+          <h1 className="text-3xl font-black text-[#1a2b3c]">سجل الحجوزات الكامل</h1>
+          <p className="text-sm font-medium text-slate-500 mt-1">إجمالي الحجوزات المسجلة: {bookings.length}</p>
         </div>
-        <button onClick={exportCsv} className="flex items-center gap-2 bg-[#1a2b3c] text-white text-sm font-bold px-4 py-2.5 rounded-xl hover:bg-[#2a3d52] transition-colors shadow-sm">
-          <FiDownload className="w-4 h-4" />
+        <button onClick={exportCsv} className="flex items-center gap-2 bg-[#1a2b3c] text-white text-xs font-black px-5 py-3 rounded-xl hover:bg-[#2a3d52] transition-colors shadow-sm">
+          <FiDownload className="w-4 h-4 text-[#d0a755]" />
           تصدير CSV
         </button>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl shadow-sm border border-black/5 p-4 mb-5 flex flex-wrap gap-3">
-        <div className="flex items-center gap-2 flex-1 min-w-[200px] bg-[#f0f2f5] rounded-xl px-3 py-2">
-          <FiSearch className="w-4 h-4 text-[#1a2b3c]/40 shrink-0" />
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-wrap gap-3">
+        <div className="flex items-center gap-2 flex-1 min-w-[240px] bg-slate-50 rounded-xl px-4 py-2.5 border border-slate-200/60">
+          <FiSearch className="w-4 h-4 text-slate-400 shrink-0" />
           <input
             type="text"
-            placeholder="بحث باسم العميل أو الهاتف..."
+            placeholder="بحث باسم العميل، رقم الهاتف، أو اسم الخدمة..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="bg-transparent text-sm text-[#1a2b3c] placeholder:text-[#1a2b3c]/40 outline-none flex-1 font-medium"
+            className="bg-transparent text-sm text-[#1a2b3c] placeholder:text-slate-400 outline-none flex-1 font-medium"
           />
         </div>
 
-        <div className="flex items-center gap-2 bg-[#f0f2f5] rounded-xl px-3 py-2">
-          <FiFilter className="w-4 h-4 text-[#1a2b3c]/40 shrink-0" />
-          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value as BookingStatus | "all")} className="bg-transparent text-sm text-[#1a2b3c] outline-none font-medium cursor-pointer">
-            <option value="all">كل الحالات</option>
+        <div className="flex items-center gap-2 bg-slate-50 rounded-xl px-4 py-2.5 border border-slate-200/60">
+          <FiFilter className="w-4 h-4 text-slate-400 shrink-0" />
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value as BookingStatus | "all")} className="bg-transparent text-sm font-bold text-[#1a2b3c] outline-none cursor-pointer">
+            <option value="all">كل الحالات التشغيلية</option>
             <option value="new">جديد</option>
             <option value="confirmed">مؤكد</option>
             <option value="cancelled">ملغي</option>
@@ -141,11 +136,11 @@ export default function BookingsPage() {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#f0f2f5] rounded-xl px-3 py-2">
-          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="bg-transparent text-sm text-[#1a2b3c] outline-none font-medium cursor-pointer">
-            <option value="all">كل الأنواع</option>
-            <option value="car">سيارة</option>
-            <option value="fast_track">فاست تراك</option>
+        <div className="flex items-center gap-2 bg-slate-50 rounded-xl px-4 py-2.5 border border-slate-200/60">
+          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="bg-transparent text-sm font-bold text-[#1a2b3c] outline-none cursor-pointer">
+            <option value="all">كل أقسام الخدمات</option>
+            <option value="car">سيارة ليموزين</option>
+            <option value="fast_track">مسار سريع VIP</option>
             <option value="hotel">فندق</option>
             <option value="flight">طيران</option>
             <option value="apartment">شقة فندقية</option>
@@ -154,61 +149,83 @@ export default function BookingsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-right min-w-[900px]">
+          <table className="w-full text-sm text-right min-w-[950px]">
             <thead>
-              <tr className="bg-[#f8f9fa] border-b border-black/5">
-                {["العميل", "الهاتف", "الخدمة", "النوع", "التاريخ", "الحالة", "إجراء"].map(h => (
-                  <th key={h} className="px-5 py-3.5 text-xs font-black text-[#1a2b3c]/40 uppercase tracking-wide">{h}</th>
+              <tr className="bg-slate-50/60 border-b border-slate-100">
+                {["العميل", "الهاتف والتواصل", "الخدمة المطلوبة", "فئة الخدمة", "التاريخ", "الحالة", "تعديل الحالة"].map(h => (
+                  <th key={h} className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">{h}</th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-50">
               {isLoading ? (
-                <tr><td colSpan={7} className="px-5 py-16 text-center text-[#1a2b3c]/30 text-sm">جاري التحميل…</td></tr>
+                <tr><td colSpan={7} className="px-6 py-16 text-center text-slate-400 text-sm">جاري تحميل البيانات…</td></tr>
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={7} className="px-5 py-16 text-center text-[#1a2b3c]/30 text-sm">لا توجد نتائج</td></tr>
+                <tr><td colSpan={7} className="px-6 py-16 text-center text-slate-400 text-sm">لا توجد نتائج مطابقة للبحث</td></tr>
               ) : filtered.map(b => {
-                const s = statusConfig[b.status];
+                const s = statusConfig[b.status] || statusConfig.new;
+                const cleanPhone = b.phone ? b.phone.replace(/\D/g, "") : "";
                 return (
-                  <tr key={b.id} className="border-t border-black/5 hover:bg-[#f8f9fa] transition-colors">
-                    <td className="px-5 py-4 font-bold text-[#1a2b3c]">
-                      <div className="flex items-center justify-end gap-2">
-                        {b.customerName}
-                        <button 
-                          onClick={() => setClientHistory(b.phone)}
-                          className="w-7 h-7 rounded-full bg-[#1a2b3c]/5 flex items-center justify-center text-[#1a2b3c]/50 hover:bg-[#1a2b3c] hover:text-[#d0a755] transition-colors"
-                          title="عرض سجل العميل"
-                        >
-                          <FiClock className="w-3.5 h-3.5" />
-                        </button>
+                  <tr key={b.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="px-6 py-4">
+                      <Link 
+                        href={`/admin/customers/${encodeURIComponent(cleanPhone || b.phone)}`}
+                        className="flex items-center gap-3 group/client"
+                      >
+                        <div className="w-9 h-9 rounded-full bg-[#1a2b3c] group-hover/client:bg-[#d0a755] group-hover/client:text-[#1a2b3c] text-[#d0a755] flex items-center justify-center font-black text-xs shrink-0 transition-colors shadow-sm">
+                          {b.customerName ? b.customerName.charAt(0).toUpperCase() : "U"}
+                        </div>
+                        <div>
+                          <p className="font-bold text-[#1a2b3c] text-sm group-hover/client:text-[#d0a755] transition-colors">{b.customerName}</p>
+                          <span className="text-[11px] font-bold text-[#d0a755] flex items-center gap-1 mt-0.5">
+                            <FiClock className="w-3 h-3" /> فتح الملف الكامل
+                          </span>
+                        </div>
+                      </Link>
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono text-slate-600">{b.phone}</span>
+                        {cleanPhone && (
+                          <a 
+                            href={`https://wa.me/${cleanPhone}`} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-colors"
+                            title="تواصل عبر الواتساب"
+                          >
+                            <FiMessageCircle className="w-3.5 h-3.5" />
+                          </a>
+                        )}
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-[#1a2b3c]/60 font-mono">{b.phone}</td>
-                    <td className="px-5 py-4 text-[#1a2b3c]/70">{b.serviceName}</td>
-                    <td className="px-5 py-4">
-                      <span className="px-2.5 py-1 rounded-full bg-[#1a2b3c]/8 text-[#1a2b3c] text-xs font-bold">
+
+                    <td className="px-6 py-4 text-slate-700 font-medium">{b.serviceName}</td>
+                    <td className="px-6 py-4">
+                      <span className="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
                         {typeLabels[b.type] ?? b.type}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-[#1a2b3c]/50" dir="ltr">{formatDateTime(b.date)}</td>
-                    <td className="px-5 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-black border ${s.bg} ${s.color} ${s.border}`}>
+                    <td className="px-6 py-4 text-slate-500 font-mono text-xs" dir="ltr">{formatDateTime(b.date)}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3.5 py-1 rounded-full text-xs font-black border ${s.bg} ${s.color} ${s.border}`}>
                         {s.label}
                       </span>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-6 py-4">
                       <select
                         value={b.status}
                         onChange={e => updateStatusMutation.mutate({ id: b.id, status: e.target.value as BookingStatus })}
                         disabled={updateStatusMutation.isPending}
-                        className="text-xs font-bold rounded-lg border border-black/10 bg-white px-2.5 py-1.5 text-[#1a2b3c] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d0a755]/50 disabled:opacity-50"
+                        className="text-xs font-bold rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[#1a2b3c] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#d0a755]/50 disabled:opacity-50"
                       >
                         <option value="new">جديد</option>
                         <option value="confirmed">مؤكد</option>
-                        <option value="cancelled">ملغي</option>
                         <option value="completed">منتهي</option>
+                        <option value="cancelled">ملغي</option>
                       </select>
                     </td>
                   </tr>
@@ -218,47 +235,6 @@ export default function BookingsPage() {
           </table>
         </div>
       </div>
-      {/* Client History Modal */}
-      {clientHistory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F1115]/80 backdrop-blur-md">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col animate-in slide-in-from-bottom-4 duration-300">
-            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <div>
-                <h2 className="font-black text-[#0F1115] text-xl tracking-tight">السجل التاريخي للعميل</h2>
-                <p className="text-sm font-medium text-slate-500 mt-1" dir="ltr">{clientHistory}</p>
-              </div>
-              <button onClick={() => setClientHistory(null)} className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-500 transition-colors shadow-sm border border-slate-100">
-                <FiX className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="p-8 overflow-y-auto flex-1">
-              <div className="space-y-4">
-                {bookings.filter(b => b.phone === clientHistory).map((b, idx) => {
-                  const s = statusConfig[b.status];
-                  return (
-                    <div key={b.id} className="p-5 rounded-2xl border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all bg-white relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-2 h-full bg-slate-100 group-hover:bg-[#BCA37F] transition-colors" />
-                      <div className="flex flex-wrap gap-6 items-center justify-between pr-4">
-                        <div>
-                          <p className="text-sm font-black text-[#0F1115] mb-1">{b.serviceName}</p>
-                          <p className="text-xs font-bold text-slate-500">رقم الحجز: <span className="font-mono text-slate-400">{b.id.split("-")[1]}</span></p>
-                        </div>
-                        <div className="text-left">
-                          <p className="text-sm font-bold text-slate-600 mb-1" dir="ltr">{formatDateTime(b.date)}</p>
-                          <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black border ${s.bg} ${s.color} ${s.border}`}>
-                            {s.label}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

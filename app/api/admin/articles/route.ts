@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getArticles, addArticle } from "@/lib/data";
 
 export async function GET() {
-  return NextResponse.json(await getArticles());
+  return NextResponse.json(await getArticles(false));
 }
 
 export async function POST(request: Request) {

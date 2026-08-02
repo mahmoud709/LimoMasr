@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { updateArticle, deleteArticle } from "@/lib/data";
+import { getArticles, updateArticle, deleteArticle } from "@/lib/data";
+import { deleteFromCloudinary } from "@/lib/cloudinary";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -10,6 +11,17 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  try {
+    const articles = await getArticles();
+    const article = articles.find(a => a.id === id);
+    if (article && article.image) {
+      await deleteFromCloudinary(article.image);
+    }
+  } catch (err) {
+    console.error("Error cleaning Cloudinary image for deleted article:", err);
+  }
+
   await deleteArticle(id);
   return NextResponse.json({ ok: true });
 }

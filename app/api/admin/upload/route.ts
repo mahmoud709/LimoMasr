@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
 
 export async function POST(request: Request) {
   try {
@@ -10,25 +11,34 @@ export async function POST(request: Request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const base64Data = buffer.toString("base64");
-    
-    // Detect file mime-type, fallback to image/jpeg
     const mimeType = file.type || "image/jpeg";
-    
-    // Construct the Base64 Data URL
-    const dataUrl = `data:${mimeType};base64,${base64Data}`;
 
-    // Return the base64 URL which will be stored in MongoDB Atlas
-    return NextResponse.json({ url: dataUrl });
-  } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    // Upload directly to Cloudinary
+    const cloudinaryUrl = await uploadToCloudinary(buffer, mimeType, "limo-masr");
+
+    // Return the permanent Cloudinary HTTPS URL to store in MongoDB
+    return NextResponse.json({ url: cloudinaryUrl });
+  } catch (error: any) {
+    console.error("Upload to Cloudinary error:", error);
+    return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request) {
-  // Base64 images are stored directly in MongoDB document fields,
-  // so deleting the image from the document is handled during saving.
-  // We return ok: true to keep dashboard image removal buttons working.
-  return NextResponse.json({ ok: true });
+  try {
+    const body = await request.json();
+    const { url } = body;
+
+    if (!url) {
+      return NextResponse.json({ error: "No image URL provided" }, { status: 400 });
+    }
+
+    // Remove image from Cloudinary cloud storage
+    const success = await deleteFromCloudinary(url);
+
+    return NextResponse.json({ ok: true, deletedFromCloudinary: success });
+  } catch (error: any) {
+    console.error("Delete from Cloudinary error:", error);
+    return NextResponse.json({ error: error.message || "Deletion failed" }, { status: 500 });
+  }
 }

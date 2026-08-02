@@ -2,13 +2,19 @@
 
 import { useState, useEffect } from "react";
 import type { SiteSettings } from "@/lib/types";
-import { FiSave, FiCheck } from "react-icons/fi";
+import { FiSave, FiCheck, FiUploadCloud, FiRefreshCw, FiCheckCircle } from "react-icons/fi";
 import ImageUploader from "@/components/admin/ImageUploader";
+import { useToast } from "@/components/admin/ToastProvider";
 
 export default function SettingsPage() {
+  const toast = useToast();
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  // Cloudinary migration state
+  const [migrating, setMigrating] = useState(false);
+  const [migrationResult, setMigrationResult] = useState<any>(null);
 
   useEffect(() => {
     fetch("/api/admin/settings", { cache: "no-store" })
@@ -27,6 +33,25 @@ export default function SettingsPage() {
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
+  }
+
+  async function startCloudinaryMigration() {
+    setMigrating(true);
+    setMigrationResult(null);
+    try {
+      const res = await fetch("/api/admin/cloudinary/migrate", { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        setMigrationResult(data.summary);
+        toast.success(`تم تحويل ${data.summary.totalImagesUploaded} صورة بنجاح إلى Cloudinary!`);
+      } else {
+        toast.error(data.error || "فشلت عملية المزامنة");
+      }
+    } catch (err: any) {
+      toast.error("حدث خطأ أثناء الاتصال بالخادم");
+    } finally {
+      setMigrating(false);
+    }
   }
 
   const f = (path: string, value: string) => {
@@ -49,72 +74,76 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex-1 p-8 max-w-3xl">
+    <div className="flex-1 p-8 max-w-3xl space-y-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-[#1a2b3c]">الإعدادات</h1>
-          <p className="text-sm text-[#1a2b3c]/50 mt-1">إعدادات الموقع والتواصل</p>
+          <h1 className="text-2xl font-black text-[#1a2b3c]">الإعدادات العامة والميديا</h1>
+          <p className="text-sm text-[#1a2b3c]/50 mt-1">إعدادات الموقع، خوادم الصور السحابية، والتواصل</p>
         </div>
         <button onClick={save} disabled={saving} className={`flex items-center gap-2 text-sm font-black px-5 py-2.5 rounded-xl transition-all shadow-sm ${saved ? "bg-green-500 text-white" : "bg-[#d0a755] text-[#1a2b3c] hover:bg-[#b89040]"}`}>
           {saved ? <><FiCheck className="w-4 h-4" /> تم الحفظ</> : <><FiSave className="w-4 h-4" /> {saving ? "جاري الحفظ…" : "حفظ الإعدادات"}</>}
         </button>
       </div>
 
-      <div className="space-y-5">
+      <div className="space-y-6">
+
+        {/* Cloudinary Automatic Migration Section */}
+        <Card title="مزامنة ميديا الخادم إلى Cloudinary">
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 p-4 rounded-2xl bg-gradient-to-r from-[#1a2b3c] to-[#0F1115] text-white shadow-md">
+              <div className="w-12 h-12 rounded-xl bg-[#d0a755] text-[#1a2b3c] flex items-center justify-center font-black shrink-0">
+                <FiUploadCloud className="w-6 h-6" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-black text-sm text-[#d0a755]">تحويل كافة صور الموقع وقاعدة البيانات إلى Cloudinary</h3>
+                <p className="text-xs text-white/70 leading-relaxed font-light">
+                  يقوم هذا الأداة بفحص كامل قاعدة البيانات (السيارات، المقالات، الفنادق، الباقات، والهيرو) ونقل كل الصور المخزنة محلياً إلى Cloudinary وتحديث الروابط دائمياً.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <button
+                onClick={startCloudinaryMigration}
+                disabled={migrating}
+                className="px-5 py-3 rounded-xl bg-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] text-white text-xs font-black transition-all flex items-center gap-2 shadow-sm disabled:opacity-50"
+              >
+                <FiRefreshCw className={`w-4 h-4 text-[#d0a755] ${migrating ? "animate-spin" : ""}`} />
+                {migrating ? "جاري رفع ونقل الصور إلى Cloudinary..." : "بدء مزامنة كافة الصور إلى Cloudinary الآن"}
+              </button>
+            </div>
+
+            {migrationResult && (
+              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium space-y-2">
+                <div className="flex items-center gap-2 font-black text-emerald-900 text-sm">
+                  <FiCheckCircle className="w-4 h-4 text-emerald-600" /> تمت المزامنة بنجاح!
+                </div>
+                <p>إجمالي الصور التي تم رفعها وتحديث روابطها: <strong>{migrationResult.totalImagesUploaded} صورة</strong></p>
+                <ul className="list-disc list-inside text-[11px] space-y-1 text-emerald-700">
+                  <li>السيارات المحدثة: {migrationResult.carsMigrated}</li>
+                  <li>المقالات المحدثة: {migrationResult.articlesMigrated}</li>
+                  <li>الفنادق المحدثة: {migrationResult.hotelsMigrated}</li>
+                  <li>فاست تراك المحدثة: {migrationResult.fastTrackMigrated}</li>
+                  <li>إعدادات الموقع: {migrationResult.settingsMigrated}</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </Card>
+
+        {/* Currency Rates */}
         <Card title="الأسعار والعملات">
           <div className="mb-4 p-3 bg-blue-50 text-blue-800 text-xs font-bold rounded-xl border border-blue-100 flex items-center gap-2">
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             يتم تحديث أسعار الصرف تلقائياً من الإنترنت، ولا يمكن تعديلها يدوياً.
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field 
-              label="سعر صرف الدولار (USD to EGP)" 
-              value={settings.usdRate?.toString() || "50"} 
-              onChange={v => f("usdRate", parseFloat(v) || 50 as any)} 
-              dir="ltr" 
-              type="number"
-              readOnly
-            />
-            <Field 
-              label="سعر صرف اليورو (EUR to EGP)" 
-              value={settings.eurRate?.toString() || "55"} 
-              onChange={v => f("eurRate", parseFloat(v) || 55 as any)} 
-              dir="ltr" 
-              type="number"
-              readOnly
-            />
-            <Field 
-              label="سعر صرف الريال السعودي (SAR to EGP)" 
-              value={settings.sarRate?.toString() || "13"} 
-              onChange={v => f("sarRate", parseFloat(v) || 13 as any)} 
-              dir="ltr" 
-              type="number"
-              readOnly
-            />
-            <Field 
-              label="سعر صرف الريال القطري (QAR to EGP)" 
-              value={settings.qarRate?.toString() || "13"} 
-              onChange={v => f("qarRate", parseFloat(v) || 13 as any)} 
-              dir="ltr" 
-              type="number"
-              readOnly
-            />
-            <Field 
-              label="سعر صرف الدينار الكويتي (KWD to EGP)" 
-              value={settings.kwdRate?.toString() || "160"} 
-              onChange={v => f("kwdRate", parseFloat(v) || 160 as any)} 
-              dir="ltr" 
-              type="number"
-              readOnly
-            />
-            <Field 
-              label="سعر صرف الدينار البحريني (BHD to EGP)" 
-              value={settings.bhdRate?.toString() || "130"} 
-              onChange={v => f("bhdRate", parseFloat(v) || 130 as any)} 
-              dir="ltr" 
-              type="number"
-              readOnly
-            />
+            <Field label="سعر صرف الدولار (USD to EGP)" value={settings.usdRate?.toString() || "50"} onChange={v => f("usdRate", parseFloat(v) || 50 as any)} dir="ltr" type="number" readOnly />
+            <Field label="سعر صرف اليورو (EUR to EGP)" value={settings.eurRate?.toString() || "55"} onChange={v => f("eurRate", parseFloat(v) || 55 as any)} dir="ltr" type="number" readOnly />
+            <Field label="سعر صرف الريال السعودي (SAR to EGP)" value={settings.sarRate?.toString() || "13"} onChange={v => f("sarRate", parseFloat(v) || 13 as any)} dir="ltr" type="number" readOnly />
+            <Field label="سعر صرف الريال القطري (QAR to EGP)" value={settings.qarRate?.toString() || "13"} onChange={v => f("qarRate", parseFloat(v) || 13 as any)} dir="ltr" type="number" readOnly />
+            <Field label="سعر صرف الدينار الكويتي (KWD to EGP)" value={settings.kwdRate?.toString() || "160"} onChange={v => f("kwdRate", parseFloat(v) || 160 as any)} dir="ltr" type="number" readOnly />
+            <Field label="سعر صرف الدينار البحريني (BHD to EGP)" value={settings.bhdRate?.toString() || "130"} onChange={v => f("bhdRate", parseFloat(v) || 130 as any)} dir="ltr" type="number" readOnly />
           </div>
         </Card>
 

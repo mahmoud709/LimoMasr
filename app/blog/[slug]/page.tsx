@@ -5,9 +5,10 @@ import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { getSiteSettings, getArticles, getArticleBySlug } from "@/lib/data";
+import { formatArticleDate, formatArticleReadTime } from "@/lib/utils";
 
 export async function generateStaticParams() {
-  const articles = await getArticles();
+  const articles = await getArticles(true);
   return articles.map((article) => ({
     slug: article.slug,
   }));
@@ -43,6 +44,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const title = isEn && article.translations?.en?.title ? article.translations.en.title : article.title;
   const content = isEn && article.translations?.en?.content ? article.translations.en.content : article.content;
   const category = isEn && article.translations?.en?.category ? article.translations.en.category : article.category;
+  const date = isEn && article.translations?.en?.date ? article.translations.en.date : formatArticleDate(article.date, isEn);
+  const readTime = isEn && article.translations?.en?.readTime ? article.translations.en.readTime : formatArticleReadTime(article.readTime, isEn);
 
   return (
     <PublicLayout settings={settings}>
@@ -66,9 +69,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 {title}
               </h1>
               <div className="flex items-center justify-center gap-2 text-gray-400 text-sm font-medium">
-                <span>{article.date}</span>
+                <span>{date}</span>
                 <span>·</span>
-                <span>{article.readTime}</span>
+                <span>{readTime}</span>
               </div>
             </div>
           </div>

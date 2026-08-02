@@ -251,8 +251,8 @@ export function BookingForm({
           />
         </div>
         
-        <div className="relative flex items-center justify-between rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-2 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-          <span className="text-sm font-bold text-[#1a2b3c]/70 w-1/3">
+        <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+          <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0">
             {isEn 
               ? (['hotel', 'apartment'].includes(type) ? 'Number of guests' : 'Number of passengers')
               : (['hotel', 'apartment'].includes(type) ? 'عدد الأفراد' : 'عدد الركاب')}
@@ -270,7 +270,7 @@ export function BookingForm({
                 setPassengers(val);
               }
             }}
-            className="w-2/3 bg-transparent py-1.5 text-left text-lg font-black text-[#1a2b3c] outline-none"
+            className="w-full bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
             dir="ltr"
           />
         </div>

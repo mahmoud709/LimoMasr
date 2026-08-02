@@ -7,11 +7,12 @@ import type { FastTrackPackage, Locale } from "@/lib/types";
 
 export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar", currency = "EGP", exchangeRate = 50 }: { packages: FastTrackPackage[]; title: string; viewAllText?: string; locale?: Locale; currency?: string; exchangeRate?: number; }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isEn = locale === "en";
 
   const scroll = (dir: "next" | "prev") => {
     if (scrollRef.current) {
       const scrollStep = typeof window !== 'undefined' && window.innerWidth < 768 ? scrollRef.current.clientWidth : 360;
-      const sign = locale === "en" ? 1 : -1;
+      const sign = isEn ? 1 : -1;
       const direction = dir === "next" ? 1 : -1;
       scrollRef.current.scrollBy({
         left: sign * direction * scrollStep,
@@ -21,26 +22,41 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar",
   };
 
   return (
-    <div className="w-full relative z-10">
+    <div dir={isEn ? "ltr" : "rtl"} className="w-full relative z-10">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl md:text-3xl font-black text-[#1a2b3c] flex items-center gap-3">
           <span className="text-[#f0a500] text-2xl md:text-3xl leading-none">|</span> {title}
         </h2>
         
         <div className="flex items-center gap-5">
+          {/* Navigation Arrows first */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => scroll("prev")} 
+              className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]"
+              aria-label="Previous"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isEn ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+              </svg>
+            </button>
+            <button 
+              onClick={() => scroll("next")} 
+              className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]"
+              aria-label="Next"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isEn ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
+              </svg>
+            </button>
+          </div>
+
+          {/* View All Text Link after arrows */}
           {viewAllText && (
-            <Link href="/fast-track" className="text-sm font-bold text-[#1a2b3c] hover:text-[#f0a500] transition-colors hidden sm:block">
+            <Link href={isEn ? "/en/fast-track" : "/fast-track"} className="text-sm font-bold text-[#1a2b3c] hover:text-[#f0a500] transition-colors hidden sm:block shrink-0">
               {viewAllText}
             </Link>
           )}
-          <div className="flex items-center gap-2" dir="ltr">
-            <button onClick={() => scroll(locale === "en" ? "prev" : "next")} className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]">
-               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-            </button>
-            <button onClick={() => scroll(locale === "en" ? "next" : "prev")} className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]">
-               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            </button>
-          </div>
         </div>
       </div>
       

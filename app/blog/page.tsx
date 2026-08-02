@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { cookies } from "next/headers";
 import { getSiteSettings, getArticles } from "@/lib/data";
+import { formatArticleDate, formatArticleReadTime } from "@/lib/utils";
 
 export const metadata = {
   title: "المدونة | ليمو مصر",
@@ -11,7 +12,7 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const [settings, articles] = await Promise.all([getSiteSettings(), getArticles()]);
+  const [settings, articles] = await Promise.all([getSiteSettings(), getArticles(true)]);
   const cookieStore = await cookies();
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'ar';
   const isEn = locale === "en";
@@ -33,6 +34,8 @@ export default async function BlogPage() {
               const title = isEn && article.translations?.en?.title ? article.translations.en.title : article.title;
               const excerpt = isEn && article.translations?.en?.excerpt ? article.translations.en.excerpt : article.excerpt;
               const category = isEn && article.translations?.en?.category ? article.translations.en.category : article.category;
+              const date = isEn && article.translations?.en?.date ? article.translations.en.date : formatArticleDate(article.date, isEn);
+              const readTime = isEn && article.translations?.en?.readTime ? article.translations.en.readTime : formatArticleReadTime(article.readTime, isEn);
               
               return (
                 <Link 
@@ -55,9 +58,9 @@ export default async function BlogPage() {
                   
                   <div className="p-8">
                     <div className="flex items-center gap-4 text-xs font-bold text-gray-400 mb-4">
-                      <span>{article.date}</span>
+                      <span>{date}</span>
                       <span className="w-1 h-1 rounded-full bg-[#d0a755]"></span>
-                      <span>{article.readTime}</span>
+                      <span>{readTime}</span>
                     </div>
                     
                     <h3 className="text-xl font-black text-[#1a2b3c] mb-4 leading-tight group-hover:text-[#d0a755] transition-colors">

@@ -27,7 +27,7 @@ async function readJsonFallback<T>(fileName: string): Promise<T | null> {
   }
 }
 
-export async function getArticles(): Promise<Article[]> {
+export async function getArticles(onlyPublished = false): Promise<Article[]> {
   try {
     const db = await getDb();
     const collection = db.collection<Article>("articles");
@@ -44,16 +44,23 @@ export async function getArticles(): Promise<Article[]> {
     }
     
     const result = articles.map(({ _id, ...article }) => article as Article);
+    if (onlyPublished) {
+      return result.filter(a => a.published !== false);
+    }
     return result;
   } catch (error) {
     console.error("Failed to fetch articles from DB, falling back to JSON:", error);
     const fallbackArticles = await readJsonFallback<Article[]>("articles.json");
-    return fallbackArticles || [];
+    const list = fallbackArticles || [];
+    if (onlyPublished) {
+      return list.filter(a => a.published !== false);
+    }
+    return list;
   }
 }
 
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  const articles = await getArticles();
+export async function getArticleBySlug(slug: string, onlyPublished = true): Promise<Article | null> {
+  const articles = await getArticles(onlyPublished);
   return articles.find(a => a.slug === slug) || null;
 }
 

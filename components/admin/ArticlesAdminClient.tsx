@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Article } from "@/lib/types";
-import { FiPlus, FiEdit2, FiTrash2, FiAlertTriangle, FiX, FiSave } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiAlertTriangle, FiX, FiSave, FiRefreshCw } from "react-icons/fi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
 import ImageUploader from "@/components/admin/ImageUploader";
@@ -116,6 +116,21 @@ export function ArticlesAdminClient() {
     }
   });
 
+  const seedMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch("/api/admin/articles/seed", { method: "POST" });
+      if (!res.ok) throw new Error("حدث خطأ أثناء المزامنة");
+      return res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      toast.success(data.message || "تم حفظ واستيراد المقالات في قاعدة البيانات");
+    },
+    onError: (err: any) => {
+      toast.error(err.message || "فشلت المزامنة");
+    }
+  });
+
   async function save() {
     setSaving(true);
     
@@ -169,10 +184,21 @@ export function ArticlesAdminClient() {
           <h1 className="text-3xl font-black text-[#0F1115] tracking-tight">إدارة المقالات</h1>
           <p className="text-sm font-medium text-slate-500 mt-2">{articles.length} مقال في المدونة</p>
         </div>
-        <button onClick={openAdd} className="flex items-center gap-2 bg-[#BCA37F] text-white text-sm font-black px-6 py-3 rounded-xl hover:bg-[#A88F6A] transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
-          <FiPlus className="w-5 h-5" strokeWidth={3} />
-          إضافة مقال جديد
-        </button>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => seedMutation.mutate()} 
+            disabled={seedMutation.isPending}
+            className="flex items-center gap-2 bg-slate-100 text-[#0F1115] text-sm font-black px-4 py-3 rounded-xl hover:bg-slate-200 transition-all duration-300 border border-slate-200/80 disabled:opacity-50"
+            title="مزامنة المقالات وتخزينها في قاعدة البيانات"
+          >
+            <FiRefreshCw className={`w-4 h-4 ${seedMutation.isPending ? "animate-spin" : ""}`} />
+            استيراد لقاعدة البيانات
+          </button>
+          <button onClick={openAdd} className="flex items-center gap-2 bg-[#BCA37F] text-white text-sm font-black px-6 py-3 rounded-xl hover:bg-[#A88F6A] transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
+            <FiPlus className="w-5 h-5" strokeWidth={3} />
+            إضافة مقال جديد
+          </button>
+        </div>
       </div>
 
       {loading ? (

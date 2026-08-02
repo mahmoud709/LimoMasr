@@ -7,7 +7,7 @@ import { ArticlesCarousel } from "./ArticlesCarousel";
 
 export async function ArticlesSection({ locale = "ar" }: { locale?: Locale }) {
   const isEn = locale === 'en';
-  const articles = await getArticles();
+  const articles = await getArticles(true);
 
   return (
     <section className="relative w-full py-24 bg-[#F9F8F6] overflow-hidden border-t border-black/5">

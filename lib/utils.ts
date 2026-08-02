@@ -87,3 +87,68 @@ export function bookingMessage(booking: Partial<Booking>, locale: Locale = "ar")
     booking.notes ? `ملاحظات: ${booking.notes}` : "",
   ].filter(Boolean).join("\n");
 }
+
+export function toWesternNumerals(str: string): string {
+  if (!str) return "";
+  const arNums = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+  let res = str;
+  for (let i = 0; i < 10; i++) {
+    res = res.replace(new RegExp(arNums[i], "g"), i.toString());
+  }
+  return res;
+}
+
+export function formatArticleDate(dateStr: string, isEn: boolean): string {
+  if (!dateStr) return "";
+  if (!isEn) return dateStr;
+
+  let clean = toWesternNumerals(dateStr);
+
+  const monthMap: Record<string, string> = {
+    "يناير": "January",
+    "فبراير": "February",
+    "مارس": "March",
+    "أبريل": "April",
+    "ابريل": "April",
+    "مايو": "May",
+    "يونيو": "June",
+    "يوليو": "July",
+    "أغسطس": "August",
+    "اغسطس": "August",
+    "سبتمبر": "September",
+    "أكتوبر": "October",
+    "اكتوبر": "October",
+    "نوفمبر": "November",
+    "ديسمبر": "December"
+  };
+
+  for (const [arMonth, enMonth] of Object.entries(monthMap)) {
+    if (clean.includes(arMonth)) {
+      const parts = clean.split(/\s+/).filter(Boolean);
+      const day = parts.find(p => /^\d{1,2}$/.test(p)) || "";
+      const year = parts.find(p => /^\d{4}$/.test(p)) || "";
+      if (day && year) {
+        return `${enMonth} ${day}, ${year}`;
+      } else if (day) {
+        return `${enMonth} ${day}`;
+      }
+      return clean.replace(arMonth, enMonth);
+    }
+  }
+
+  return clean;
+}
+
+export function formatArticleReadTime(readTimeStr: string, isEn: boolean): string {
+  if (!readTimeStr) return "";
+  if (!isEn) return readTimeStr;
+
+  const clean = toWesternNumerals(readTimeStr);
+  const match = clean.match(/(\d+)/);
+  if (match) {
+    const mins = match[1];
+    return `${mins} min read`;
+  }
+
+  return readTimeStr;
+}
