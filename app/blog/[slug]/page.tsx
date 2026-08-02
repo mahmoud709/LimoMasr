@@ -41,11 +41,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
-  const title = isEn && article.translations?.en?.title ? article.translations.en.title : article.title;
-  const content = isEn && article.translations?.en?.content ? article.translations.en.content : article.content;
-  const category = isEn && article.translations?.en?.category ? article.translations.en.category : article.category;
-  const date = isEn && article.translations?.en?.date ? article.translations.en.date : formatArticleDate(article.date, isEn);
-  const readTime = isEn && article.translations?.en?.readTime ? article.translations.en.readTime : formatArticleReadTime(article.readTime, isEn);
+  const enTrans = article.translations?.en as any;
+  const title = isEn && enTrans?.title ? enTrans.title : article.title;
+  const content = isEn && enTrans?.content ? enTrans.content : article.content;
+  const category = isEn && enTrans?.category ? enTrans.category : article.category;
+  const date = isEn && enTrans?.date ? enTrans.date : formatArticleDate(article.date, isEn);
+  const readTime = isEn && enTrans?.readTime ? enTrans.readTime : formatArticleReadTime(article.readTime, isEn);
 
   return (
     <PublicLayout settings={settings}>

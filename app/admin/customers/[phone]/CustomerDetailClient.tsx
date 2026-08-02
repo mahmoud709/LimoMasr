@@ -234,7 +234,7 @@ export function CustomerDetailClient({
                       <FiStar key={i} className="w-4 h-4 text-amber-500 fill-amber-500" />
                     ))}
                   </div>
-                  <p className="text-sm font-medium text-slate-800">"{rev.comment}"</p>
+                  <p className="text-sm font-medium text-slate-800">"{rev.text}"</p>
                 </div>
                 <span className="text-xs font-bold text-slate-400">{rev.date}</span>
               </div>

@@ -73,7 +73,7 @@ export async function uploadToCloudinary(
   const formData = new FormData();
 
   if (Buffer.isBuffer(fileInput)) {
-    const blob = new Blob([fileInput], { type: mimeType });
+    const blob = new Blob([fileInput as any], { type: mimeType });
     formData.append("file", blob);
   } else if (typeof fileInput === "string") {
     formData.append("file", fileInput);

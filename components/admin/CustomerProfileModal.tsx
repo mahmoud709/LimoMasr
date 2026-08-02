@@ -210,7 +210,7 @@ export function CustomerProfileModal({
                           <FiStar key={i} className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                         ))}
                       </div>
-                      <p className="text-xs font-medium text-slate-700">"{rev.comment}"</p>
+                      <p className="text-xs font-medium text-slate-700">"{rev.text}"</p>
                     </div>
                     <span className="text-[10px] text-slate-400">{rev.date}</span>
                   </div>

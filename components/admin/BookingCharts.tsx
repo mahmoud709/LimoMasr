@@ -113,7 +113,7 @@ export function BookingTypeChart({ bookings }: { bookings: Booking[] }) {
 
 export function RevenueTrendChart({ bookings }: { bookings: Booking[] }) {
   const now = new Date();
-  const monthsData = [];
+  const monthsData: { name: string; revenue: number; isCurrent: boolean }[] = [];
 
   for (let i = 6; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);

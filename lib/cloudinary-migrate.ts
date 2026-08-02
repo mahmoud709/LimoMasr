@@ -79,11 +79,12 @@ export async function migrateAllImagesToCloudinary(): Promise<MigrationSummary> 
 
   for (const car of cars) {
     let updated = false;
+    const anyCar = car as any;
 
-    if (car.image && !car.image.includes("cloudinary.com")) {
-      const newUrl = await processAndUploadImage(car.image, "limo-masr/cars");
-      if (newUrl !== car.image) {
-        car.image = newUrl;
+    if (anyCar.image && typeof anyCar.image === "string" && !anyCar.image.includes("cloudinary.com")) {
+      const newUrl = await processAndUploadImage(anyCar.image, "limo-masr/cars");
+      if (newUrl !== anyCar.image) {
+        anyCar.image = newUrl;
         updated = true;
         totalImagesUploaded++;
       }
@@ -107,7 +108,7 @@ export async function migrateAllImagesToCloudinary(): Promise<MigrationSummary> 
     }
 
     if (updated) {
-      await carsCollection.updateOne({ _id: car._id }, { $set: { image: car.image, images: car.images } });
+      await carsCollection.updateOne({ _id: car._id }, { $set: { image: anyCar.image, images: car.images } });
       carsMigrated++;
       details.push(`سيارة: ${car.name || car.id}`);
     }

@@ -32,12 +32,16 @@ export type Article = {
       excerpt?: string;
       content?: string;
       category?: string;
+      date?: string;
+      readTime?: string;
     };
     en?: {
       title?: string;
       excerpt?: string;
       content?: string;
       category?: string;
+      date?: string;
+      readTime?: string;
     };
   };
 };

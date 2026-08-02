@@ -17,7 +17,8 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     const cars = await getCars();
     const car = cars.find(c => c.id === id);
     if (car) {
-      if (car.image) await deleteFromCloudinary(car.image);
+      const anyCar = car as any;
+      if (anyCar.image) await deleteFromCloudinary(anyCar.image);
       if (Array.isArray(car.images)) {
         for (const imgUrl of car.images) {
           await deleteFromCloudinary(imgUrl);
