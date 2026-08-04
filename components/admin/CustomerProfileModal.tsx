@@ -4,22 +4,16 @@ import { useState, useEffect } from "react";
 import type { Booking, Review } from "@/lib/types";
 import { 
   FiX, FiPhone, FiMessageCircle, FiCalendar, FiCheckCircle, 
-  FiXCircle, FiClock, FiStar, FiAward, FiDollarSign, FiEdit3, FiSave
+  FiXCircle, FiClock, FiStar, FiAward, FiDollarSign, FiEdit3, FiSave, FiEye
 } from "react-icons/fi";
+import { BookingDetailsModal } from "@/components/admin/BookingDetailsModal";
+import { ServiceBadge } from "@/components/admin/ServiceBadge";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; border: string }> = {
   new:       { label: "جديد",    color: "text-blue-700",    bg: "bg-blue-50",    border: "border-blue-200" },
   confirmed: { label: "مؤكد",   color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200" },
   completed: { label: "مكتمل",  color: "text-slate-600",   bg: "bg-slate-100",   border: "border-slate-200" },
   cancelled: { label: "ملغي",   color: "text-rose-700",    bg: "bg-rose-50",    border: "border-rose-200" },
-};
-
-const typeLabels: Record<string, string> = {
-  car: "سيارة ليموزين",
-  fast_track: "مسار سريع VIP",
-  hotel: "حجز فندق",
-  flight: "طيران",
-  apartment: "شقة فندقية",
 };
 
 export function CustomerProfileModal({ 
@@ -33,6 +27,8 @@ export function CustomerProfileModal({
   reviews?: Review[]; 
   onClose: () => void; 
 }) {
+  const [selectedBookingForDetails, setSelectedBookingForDetails] = useState<Booking | null>(null);
+
   // Filter bookings for this customer by phone
   const customerBookings = bookings.filter(b => b.phone === phone || (b.phone && phone && b.phone.replace(/\D/g, "") === phone.replace(/\D/g, "")));
   
@@ -116,8 +112,8 @@ export function CustomerProfileModal({
               </a>
               {cleanPhone && (
                 <a 
-                  href={`https://wa.me/${cleanPhone}`}
-                  target="_blank"
+                  href={`https://wa.me/${cleanPhone}`} 
+                  target="_blank" 
                   rel="noopener noreferrer"
                   className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-black transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/20"
                 >
@@ -236,9 +232,7 @@ export function CustomerProfileModal({
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="font-black text-[#1a2b3c] text-sm">{b.serviceName}</span>
-                          <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold">
-                            {typeLabels[b.type] ?? b.type}
-                          </span>
+                          <ServiceBadge type={b.type} />
                         </div>
                         <p className="text-xs text-slate-400 font-mono">
                           تاريخ الحجز: <span className="font-bold text-slate-600">{b.date}</span>
@@ -248,7 +242,15 @@ export function CustomerProfileModal({
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between md:justify-end gap-4 border-t md:border-t-0 pt-3 md:pt-0 border-slate-100">
+                      <div className="flex items-center justify-between md:justify-end gap-3 border-t md:border-t-0 pt-3 md:pt-0 border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedBookingForDetails(b)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group/btn"
+                        >
+                          <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover/btn:text-[#1a2b3c]" />
+                          <span>تفاصيل الحجز</span>
+                        </button>
                         <div className="text-left">
                           <span className="text-sm font-black text-[#1a2b3c] block">
                             {b.price ? `${new Intl.NumberFormat("ar-EG").format(b.price)} ج.م` : "سعر تقديري 3,500 ج.م"}
@@ -267,6 +269,12 @@ export function CustomerProfileModal({
 
         </div>
       </div>
+
+      {/* Booking Details Modal */}
+      <BookingDetailsModal
+        booking={selectedBookingForDetails}
+        onClose={() => setSelectedBookingForDetails(null)}
+      />
     </div>
   );
 }

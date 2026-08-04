@@ -1,13 +1,14 @@
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
-import { getSiteSettings } from "@/lib/data";
+import { getSiteSettings, getFlights } from "@/lib/data";
 import { CinematicBackground } from "@/components/CinematicBackground";
+import { FlightCarousel } from "@/components/FlightCarousel";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
 export default async function FlightsPage() {
-  const settings = await getSiteSettings();
+  const [settings, flights] = await Promise.all([getSiteSettings(), getFlights()]);
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
@@ -88,6 +89,15 @@ export default async function FlightsPage() {
               exchangeRate={exchangeRate}
             />
           </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto w-full px-8 mt-16">
+          <FlightCarousel
+            flights={flights}
+            locale={locale}
+            currency={currency}
+            exchangeRate={exchangeRate}
+          />
         </div>
       </main>
     </PublicLayout>

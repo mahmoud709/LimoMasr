@@ -92,7 +92,14 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar",
                 {item.image && (
                   <div className="w-[calc(100%+3rem)] md:w-[calc(100%+4rem)] h-56 -mt-6 md:-mt-8 -mx-6 md:-mx-8 mb-6 relative overflow-hidden rounded-t-2xl bg-gray-50 shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item.image} alt={name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <img 
+                      src={item.image} 
+                      alt={name} 
+                      onError={(e) => {
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80";
+                      }}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                    />
                   </div>
                 )}
                 

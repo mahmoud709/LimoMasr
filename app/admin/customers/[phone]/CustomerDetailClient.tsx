@@ -5,24 +5,18 @@ import type { Booking, BookingStatus, Review } from "@/lib/types";
 import Link from "next/link";
 import { 
   FiArrowRight, FiPhone, FiMessageCircle, FiCalendar, FiCheckCircle, 
-  FiXCircle, FiClock, FiStar, FiAward, FiDollarSign, FiEdit3, FiSave
+  FiXCircle, FiClock, FiStar, FiAward, FiDollarSign, FiEdit3, FiSave, FiEye
 } from "react-icons/fi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
+import { BookingDetailsModal } from "@/components/admin/BookingDetailsModal";
+import { ServiceBadge } from "@/components/admin/ServiceBadge";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; border: string }> = {
   new:       { label: "جديد",    color: "text-blue-700",    bg: "bg-blue-50",    border: "border-blue-200" },
   confirmed: { label: "مؤكد",   color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200" },
   completed: { label: "مكتمل",  color: "text-slate-600",   bg: "bg-slate-100",   border: "border-slate-200" },
   cancelled: { label: "ملغي",   color: "text-rose-700",    bg: "bg-rose-50",    border: "border-rose-200" },
-};
-
-const typeLabels: Record<string, string> = {
-  car: "سيارة ليموزين",
-  fast_track: "مسار سريع VIP",
-  hotel: "حجز فندق",
-  flight: "طيران",
-  apartment: "شقة فندقية",
 };
 
 export function CustomerDetailClient({
@@ -95,6 +89,7 @@ export function CustomerDetailClient({
   });
 
   const customerReviews = reviews.filter(r => r.name === customerName);
+  const [selectedBookingForDetails, setSelectedBookingForDetails] = useState<Booking | null>(null);
 
   return (
     <div className="flex-1 p-6 md:p-10 space-y-8 animate-reveal-1 max-w-[1400px] mx-auto w-full">
@@ -250,17 +245,17 @@ export function CustomerDetailClient({
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-right min-w-[850px]">
+          <table className="w-full text-sm text-right min-w-[950px]">
             <thead>
               <tr className="bg-slate-50/30 border-b border-slate-100">
-                {["رقم الحجز", "الخدمة المطلوبة", "فئة الخدمة", "التاريخ والوقت", "السعر التقديري", "الحالة", "تعديل الحالة"].map(h => (
-                  <th key={h} className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">{h}</th>
+                {["رقم الحجز", "الخدمة المطلوبة", "فئة الخدمة", "التاريخ والوقت", "السعر التقديري", "الحالة", "تفاصيل الحجز والمسافرين", "تعديل الحالة"].map(h => (
+                  <th key={h} className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {bookings.length === 0 ? (
-                <tr><td colSpan={7} className="px-6 py-12 text-center text-slate-400">لا توجد حجوزات مسجلة لهذا العميل.</td></tr>
+                <tr><td colSpan={8} className="px-6 py-12 text-center text-slate-400">لا توجد حجوزات مسجلة لهذا العميل.</td></tr>
               ) : bookings.map(b => {
                 const s = statusConfig[b.status] || statusConfig.new;
                 return (
@@ -268,9 +263,7 @@ export function CustomerDetailClient({
                     <td className="px-6 py-4 font-mono text-xs font-bold text-slate-500">{b.id}</td>
                     <td className="px-6 py-4 font-bold text-[#1a2b3c]">{b.serviceName}</td>
                     <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
-                        {typeLabels[b.type] ?? b.type}
-                      </span>
+                      <ServiceBadge type={b.type} />
                     </td>
                     <td className="px-6 py-4 text-slate-500 font-mono text-xs" dir="ltr">{b.date}</td>
                     <td className="px-6 py-4 font-bold text-[#1a2b3c]">
@@ -281,6 +274,25 @@ export function CustomerDetailClient({
                         {s.label}
                       </span>
                     </td>
+
+                    {/* View Details Button */}
+                    <td className="px-6 py-4">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBookingForDetails(b)}
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group"
+                        title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
+                      >
+                        <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover:text-[#1a2b3c]" />
+                        <span>عرض التفاصيل</span>
+                        {b.passengers > 1 && (
+                          <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                            {b.passengers} أفراد
+                          </span>
+                        )}
+                      </button>
+                    </td>
+
                     <td className="px-6 py-4">
                       <select
                         value={b.status}
@@ -301,6 +313,12 @@ export function CustomerDetailClient({
           </table>
         </div>
       </div>
+
+      {/* Booking Details Modal */}
+      <BookingDetailsModal
+        booking={selectedBookingForDetails}
+        onClose={() => setSelectedBookingForDetails(null)}
+      />
 
     </div>
   );

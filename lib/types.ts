@@ -85,15 +85,101 @@ export type FastTrackPackage = {
   };
 };
 
-export type HotelOption = {
+export type HotelItem = {
   id: string;
+  name: string;
   city: string;
-  name?: string;
-  description: string;
+  rating: number;
+  price: number;
+  image: string;
+  images?: string[];
+  tag?: string;
+  features: string[];
+  description?: string;
   status: AvailabilityStatus;
+  sortOrder: number;
   translations?: {
-    ar?: Partial<Pick<HotelOption, "city" | "name" | "description">>;
-    en?: Partial<Pick<HotelOption, "city" | "name" | "description">>;
+    ar?: {
+      name?: string;
+      city?: string;
+      tag?: string;
+      features?: string[];
+      description?: string;
+    };
+    en?: {
+      name?: string;
+      city?: string;
+      tag?: string;
+      features?: string[];
+      description?: string;
+    };
+  };
+};
+
+export type HotelOption = HotelItem;
+
+export type FlightRoute = {
+  id: string;
+  fromCity: string;
+  toCity: string;
+  flightType: string;
+  price: number;
+  image: string;
+  tag?: string;
+  features: string[];
+  status: AvailabilityStatus;
+  sortOrder: number;
+  translations?: {
+    ar?: {
+      fromCity?: string;
+      toCity?: string;
+      flightType?: string;
+      tag?: string;
+      features?: string[];
+    };
+    en?: {
+      fromCity?: string;
+      toCity?: string;
+      flightType?: string;
+      tag?: string;
+      features?: string[];
+    };
+  };
+};
+
+export type ApartmentItem = {
+  id: string;
+  name: string;
+  location: string;
+  rooms: string;
+  capacity: string;
+  price: number;
+  image: string;
+  images?: string[];
+  tag?: string;
+  features: string[];
+  description?: string;
+  status: AvailabilityStatus;
+  sortOrder: number;
+  translations?: {
+    ar?: {
+      name?: string;
+      location?: string;
+      rooms?: string;
+      capacity?: string;
+      tag?: string;
+      features?: string[];
+      description?: string;
+    };
+    en?: {
+      name?: string;
+      location?: string;
+      rooms?: string;
+      capacity?: string;
+      tag?: string;
+      features?: string[];
+      description?: string;
+    };
   };
 };
 

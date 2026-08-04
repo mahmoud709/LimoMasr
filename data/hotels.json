@@ -1,30 +1,222 @@
 [
   {
-    "id": "cairo",
-    "city": "القاهرة",
-    "name": "فنادق القاهرة",
-    "description": "اختيارات من فنادق مدينة نصر، وسط البلد، والتجمع حسب الميزانية.",
-    "status": "available"
+    "id": "hotel-cairo-nile",
+    "name": "فنادق القاهرة والنيل 5 نجوم",
+    "city": "القاهرة الكبرى",
+    "rating": 5,
+    "price": 3500,
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    "tag": "إطلالة نيلية ساحرة",
+    "features": [
+      "إطلالة مباشرة على النيل",
+      "إفطار بوفيه فاخر مفتوح",
+      "سبا ونادي صحي متكامل",
+      "خدمة كونسيرج 24/7"
+    ],
+    "description": "استمتع بإقامة استثنائية في قلب العاصمة مع إطلالة بانورامية على نهر النيل.",
+    "status": "available",
+    "sortOrder": 1,
+    "translations": {
+      "ar": {
+        "name": "فنادق القاهرة والنيل 5 نجوم",
+        "city": "القاهرة الكبرى",
+        "tag": "إطلالة نيلية ساحرة",
+        "features": [
+          "إطلالة مباشرة على النيل",
+          "إفطار بوفيه فاخر مفتوح",
+          "سبا ونادي صحي متكامل",
+          "خدمة كونسيرج 24/7"
+        ],
+        "description": "استمتع بإقامة استثنائية في قلب العاصمة مع إطلالة بانورامية على نهر النيل."
+      },
+      "en": {
+        "name": "Cairo & Nile 5-Star Hotels",
+        "city": "Greater Cairo",
+        "tag": "Stunning Nile View",
+        "features": [
+          "Direct Nile view",
+          "Luxury open buffet breakfast",
+          "Full wellness spa & club",
+          "24/7 concierge service"
+        ],
+        "description": "Experience an exceptional stay in the heart of the capital with panoramic views of the Nile."
+      }
+    }
   },
   {
-    "id": "sharm",
+    "id": "hotel-sharm-resort",
+    "name": "منتجعات شرم الشيخ الفاخرة",
     "city": "شرم الشيخ",
-    "name": "فنادق شرم الشيخ",
-    "description": "منتجعات وفنادق عائلية وقريبة من البحر.",
-    "status": "available"
+    "rating": 5,
+    "price": 4200,
+    "image": "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80",
+    "tag": "شامل كلياً (All-Inclusive)",
+    "features": [
+      "شاطئ رملي خاص ومسابح متعددة",
+      "أكوا بارك وأنشطة ترفيهية",
+      "مطاعم عالمية متخصصة",
+      "خدمات VIP لكبار الزوار"
+    ],
+    "description": "منتجعات فندقية متكاملة على ساحل البحر الأحمر الفيروزي مع برامج ترفيهية مميزة.",
+    "status": "available",
+    "sortOrder": 2,
+    "translations": {
+      "ar": {
+        "name": "منتجعات شرم الشيخ الفاخرة",
+        "city": "شرم الشيخ",
+        "tag": "شامل كلياً (All-Inclusive)",
+        "features": [
+          "شاطئ رملي خاص ومسابح متعددة",
+          "أكوا بارك وأنشطة ترفيهية",
+          "مطاعم عالمية متخصصة",
+          "خدمات VIP لكبار الزوار"
+        ],
+        "description": "منتجعات فندقية متكاملة على ساحل البحر الأحمر الفيروزي مع برامج ترفيهية مميزة."
+      },
+      "en": {
+        "name": "Sharm El Sheikh Luxury Resorts",
+        "city": "Sharm El Sheikh",
+        "tag": "Ultra All-Inclusive",
+        "features": [
+          "Private beach & multiple pools",
+          "Aqua park & entertainment",
+          "World-class dining cuisines",
+          "VIP guest treatment"
+        ],
+        "description": "All-inclusive luxury beachfront resorts on the turquoise Red Sea with premium activities."
+      }
+    }
   },
   {
-    "id": "hurghada",
-    "city": "الغردقة",
-    "name": "فنادق الغردقة",
-    "description": "عروض إقامة للسياحة والرحلات الجماعية.",
-    "status": "available"
+    "id": "hotel-gouna-hurghada",
+    "name": "فنادق الجونة والغردقة",
+    "city": "البحر الأحمر",
+    "rating": 5,
+    "price": 3900,
+    "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80",
+    "tag": "وجهة الاستجمام الأولى",
+    "features": [
+      "إطلالة بانورامية على اللاجون",
+      "أجنحة خاصة مع مسبح خاص",
+      "رحلات يخوت وغوص حصرية",
+      "أجواء راقية وهدوء تام"
+    ],
+    "description": "أرقى فنادق الجونة والغردقة لتجربة استرخاء لا تُنسى في أرقى البقاع الساحلية.",
+    "status": "available",
+    "sortOrder": 3,
+    "translations": {
+      "ar": {
+        "name": "فنادق الجونة والغردقة",
+        "city": "البحر الأحمر",
+        "tag": "وجهة الاستجمام الأولى",
+        "features": [
+          "إطلالة بانورامية على اللاجون",
+          "أجنحة خاصة مع مسبح خاص",
+          "رحلات يخوت وغوص حصرية",
+          "أجواء راقية وهدوء تام"
+        ],
+        "description": "أرقى فنادق الجونة والغردقة لتجربة استرخاء لا تُنسى في أرقى البقاع الساحلية."
+      },
+      "en": {
+        "name": "El Gouna & Hurghada Hotels",
+        "city": "Red Sea",
+        "tag": "Premier Seaside Escape",
+        "features": [
+          "Panoramic lagoon views",
+          "Private pool suites available",
+          "Exclusive yacht & diving trips",
+          "Serene luxury ambiance"
+        ],
+        "description": "The finest hotels in El Gouna and Hurghada for an unforgettable coastal getaway."
+      }
+    }
   },
   {
-    "id": "alexandria",
+    "id": "hotel-alex-coast",
+    "name": "فنادق الإسكندرية والساحل",
     "city": "الإسكندرية",
-    "name": "فنادق الإسكندرية",
-    "description": "فنادق مناسبة لزيارات العمل والإجازات القصيرة.",
-    "status": "available"
+    "rating": 5,
+    "price": 3100,
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80",
+    "tag": "عروس البحر المتوسط",
+    "features": [
+      "موقع مميز على كورنيش البحر",
+      "قريب من معالم المدينة والمطاعم",
+      "شرفات بإطلالة بحرية كاملة",
+      "أعلى معايير الضيافة"
+    ],
+    "description": "إقامة مميزة على ساحل الإسكندرية مع إطلالة بحرية وخدمات كونسيرج متكاملة.",
+    "status": "available",
+    "sortOrder": 4,
+    "translations": {
+      "ar": {
+        "name": "فنادق الإسكندرية والساحل",
+        "city": "الإسكندرية",
+        "tag": "عروس البحر المتوسط",
+        "features": [
+          "موقع مميز على كورنيش البحر",
+          "قريب من معالم المدينة والمطاعم",
+          "شرفات بإطلالة بحرية كاملة",
+          "أعلى معايير الضيافة"
+        ],
+        "description": "إقامة مميزة على ساحل الإسكندرية مع إطلالة بحرية وخدمات كونسيرج متكاملة."
+      },
+      "en": {
+        "name": "Alexandria & Coast Hotels",
+        "city": "Alexandria",
+        "tag": "Mediterranean Pearl",
+        "features": [
+          "Prime seaside Corniche location",
+          "Close to landmarks & restaurants",
+          "Full sea-view balconies",
+          "Premium hospitality"
+        ],
+        "description": "Prime coastal stays in Alexandria with direct sea views and comprehensive hospitality."
+      }
+    }
+  },
+  {
+    "id": "hotel-luxor-aswan",
+    "name": "فنادق الأقصر وأسوان التاريخية",
+    "city": "صعيد مصر",
+    "rating": 5,
+    "price": 4800,
+    "image": "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=80",
+    "tag": "عراقة وضيافة ملكية",
+    "features": [
+      "طابع تاريخي ومعماري ملكي",
+      "إطلالة ساحرة على جزر النيل",
+      "برامج جولات سياحية خاصة",
+      "هدوء وتجربة استثنائية"
+    ],
+    "description": "عراقة التاريخ والضيافة الملوكية على ضفاف النيل الخالد في الأقصر وأسوان.",
+    "status": "available",
+    "sortOrder": 5,
+    "translations": {
+      "ar": {
+        "name": "فنادق الأقصر وأسوان التاريخية",
+        "city": "صعيد مصر",
+        "tag": "عراقة وضيافة ملكية",
+        "features": [
+          "طابع تاريخي ومعماري ملكي",
+          "إطلالة ساحرة على جزر النيل",
+          "برامج جولات سياحية خاصة",
+          "هدوء وتجربة استثنائية"
+        ],
+        "description": "عراقة التاريخ والضيافة الملوكية على ضفاف النيل الخالد في الأقصر وأسوان."
+      },
+      "en": {
+        "name": "Historic Luxor & Aswan Hotels",
+        "city": "Upper Egypt",
+        "tag": "Royal Heritage",
+        "features": [
+          "Historic royal architecture",
+          "Mesmerizing Nile island views",
+          "Custom private guided tours",
+          "Exceptional peaceful stay"
+        ],
+        "description": "Timeless royal hospitality and historic ambiance on the banks of the eternal Nile."
+      }
+    }
   }
 ]

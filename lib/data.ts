@@ -6,6 +6,9 @@ import type {
   Car,
   FastTrackPackage,
   HotelOption,
+  HotelItem,
+  FlightRoute,
+  ApartmentItem,
   SiteSettings,
   ContactMessage,
   Review,
@@ -169,8 +172,8 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
     const ids = packages.map(p => p.id);
     const hasDuplicates = ids.some((id, index) => ids.indexOf(id) !== index);
     
-    // Check if we have old seed data (containing "cairo-standard" or USD currency) or if it's empty
-    const hasOldData = packages.some(p => p.id === "cairo-standard" || p.currency === "USD");
+    // Check if we have old seed data (containing "cairo-standard" or USD currency or old image paths) or if it's empty
+    const hasOldData = packages.some(p => p.id === "cairo-standard" || p.currency === "USD" || p.image?.startsWith("/airport_") || p.image?.startsWith("/vip_"));
     if (packages.length === 0 || hasOldData || hasDuplicates) {
       const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
       if (fallbackPackages && fallbackPackages.length > 0) {
@@ -223,31 +226,38 @@ export async function deleteFastTrackPackage(id: string) {
   await collection.deleteOne({ id });
 }
 
-export async function getHotels(): Promise<HotelOption[]> {
+export async function getHotels(): Promise<HotelItem[]> {
   try {
     const db = await getDb();
-    const collection = db.collection<HotelOption>("hotels");
+    const collection = db.collection<HotelItem>("hotels");
     
     let hotels = await collection.find({}).toArray();
     
-    if (hotels.length === 0) {
-      const fallbackHotels = await readJsonFallback<HotelOption[]>("hotels.json");
+    // Reseed if empty or old simple structure without price
+    const hasOldData = hotels.some(h => typeof h.price !== "number" || !h.features);
+    if (hotels.length === 0 || hasOldData) {
+      const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
       if (fallbackHotels && fallbackHotels.length > 0) {
+        await collection.deleteMany({});
         const toInsert = fallbackHotels.map(({ ...h }) => h);
         await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotels:", err));
         hotels = await collection.find({}).toArray();
       }
     }
     
-    return hotels.map(({ _id, ...h }) => h as HotelOption);
+    const result = hotels.map(({ _id, ...h }) => h as HotelItem);
+    return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
     console.error("Failed to fetch hotels from DB, falling back to JSON:", error);
-    const fallbackHotels = await readJsonFallback<HotelOption[]>("hotels.json");
-    return fallbackHotels || [];
+    const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
+    if (fallbackHotels) {
+      return fallbackHotels.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    }
+    return [];
   }
 }
 
-export async function saveHotels(hotels: HotelOption[]) {
+export async function saveHotels(hotels: HotelItem[]) {
   const db = await getDb();
   const collection = db.collection("hotels");
   
@@ -258,13 +268,13 @@ export async function saveHotels(hotels: HotelOption[]) {
   }
 }
 
-export async function addHotel(hotel: HotelOption) {
+export async function addHotel(hotel: HotelItem) {
   const db = await getDb();
   const collection = db.collection("hotels");
   await collection.insertOne({ ...hotel });
 }
 
-export async function updateHotel(id: string, hotel: Partial<HotelOption>) {
+export async function updateHotel(id: string, hotel: Partial<HotelItem>) {
   const db = await getDb();
   const collection = db.collection("hotels");
   const { _id, ...updateData } = hotel as any;
@@ -274,6 +284,132 @@ export async function updateHotel(id: string, hotel: Partial<HotelOption>) {
 export async function deleteHotel(id: string) {
   const db = await getDb();
   const collection = db.collection("hotels");
+  await collection.deleteOne({ id });
+}
+
+/* =========================================================================
+   FLIGHT ROUTES
+   ========================================================================= */
+
+export async function getFlights(): Promise<FlightRoute[]> {
+  try {
+    const db = await getDb();
+    const collection = db.collection<FlightRoute>("flights");
+    
+    let flights = await collection.find({}).toArray();
+    
+    if (flights.length === 0) {
+      const fallbackFlights = await readJsonFallback<FlightRoute[]>("flights.json");
+      if (fallbackFlights && fallbackFlights.length > 0) {
+        await collection.deleteMany({});
+        const toInsert = fallbackFlights.map(({ ...f }) => f);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding flights:", err));
+        flights = await collection.find({}).toArray();
+      }
+    }
+    
+    const result = flights.map(({ _id, ...f }) => f as FlightRoute);
+    return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  } catch (error) {
+    console.error("Failed to fetch flights from DB, falling back to JSON:", error);
+    const fallbackFlights = await readJsonFallback<FlightRoute[]>("flights.json");
+    if (fallbackFlights) {
+      return fallbackFlights.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    }
+    return [];
+  }
+}
+
+export async function saveFlights(flights: FlightRoute[]) {
+  const db = await getDb();
+  const collection = db.collection("flights");
+  
+  await collection.deleteMany({});
+  if (flights.length > 0) {
+    const toInsert = flights.map(({ ...f }) => f);
+    await collection.insertMany(toInsert);
+  }
+}
+
+export async function addFlight(flight: FlightRoute) {
+  const db = await getDb();
+  const collection = db.collection("flights");
+  await collection.insertOne({ ...flight });
+}
+
+export async function updateFlight(id: string, flight: Partial<FlightRoute>) {
+  const db = await getDb();
+  const collection = db.collection("flights");
+  const { _id, ...updateData } = flight as any;
+  await collection.updateOne({ id }, { $set: updateData });
+}
+
+export async function deleteFlight(id: string) {
+  const db = await getDb();
+  const collection = db.collection("flights");
+  await collection.deleteOne({ id });
+}
+
+/* =========================================================================
+   HOTEL APARTMENTS & SUITES
+   ========================================================================= */
+
+export async function getHotelApartments(): Promise<ApartmentItem[]> {
+  try {
+    const db = await getDb();
+    const collection = db.collection<ApartmentItem>("hotel_apartments");
+    
+    let apartments = await collection.find({}).toArray();
+    
+    if (apartments.length === 0) {
+      const fallbackApartments = await readJsonFallback<ApartmentItem[]>("hotel-apartments.json");
+      if (fallbackApartments && fallbackApartments.length > 0) {
+        await collection.deleteMany({});
+        const toInsert = fallbackApartments.map(({ ...a }) => a);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotel apartments:", err));
+        apartments = await collection.find({}).toArray();
+      }
+    }
+    
+    const result = apartments.map(({ _id, ...a }) => a as ApartmentItem);
+    return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  } catch (error) {
+    console.error("Failed to fetch hotel apartments from DB, falling back to JSON:", error);
+    const fallbackApartments = await readJsonFallback<ApartmentItem[]>("hotel-apartments.json");
+    if (fallbackApartments) {
+      return fallbackApartments.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    }
+    return [];
+  }
+}
+
+export async function saveHotelApartments(apartments: ApartmentItem[]) {
+  const db = await getDb();
+  const collection = db.collection("hotel_apartments");
+  
+  await collection.deleteMany({});
+  if (apartments.length > 0) {
+    const toInsert = apartments.map(({ ...a }) => a);
+    await collection.insertMany(toInsert);
+  }
+}
+
+export async function addHotelApartment(apartment: ApartmentItem) {
+  const db = await getDb();
+  const collection = db.collection("hotel_apartments");
+  await collection.insertOne({ ...apartment });
+}
+
+export async function updateHotelApartment(id: string, apartment: Partial<ApartmentItem>) {
+  const db = await getDb();
+  const collection = db.collection("hotel_apartments");
+  const { _id, ...updateData } = apartment as any;
+  await collection.updateOne({ id }, { $set: updateData });
+}
+
+export async function deleteHotelApartment(id: string) {
+  const db = await getDb();
+  const collection = db.collection("hotel_apartments");
   await collection.deleteOne({ id });
 }
 
@@ -293,13 +429,43 @@ export async function getBookings(): Promise<Booking[]> {
       }
     }
     
-    const result = bookings.map(({ _id, ...b }) => b as Booking);
+    const normalizeBooking = (b: any): Booking => {
+      const item = { ...b } as Booking;
+      if (item.notes) {
+        if (item.notes.includes("[النوع: فندق]") && (item.type === "apartment" || !item.type)) {
+          item.type = "hotel";
+        } else if (item.notes.includes("[النوع: شقة فندقية]") && (item.type === "hotel" || !item.type)) {
+          item.type = "apartment";
+        }
+        
+        // If serviceName is generic but specific place/hotel was recorded in notes
+        if (!item.serviceName || item.serviceName === "طلب حجز شقق فندقية" || item.serviceName === "طلب حجز فندق" || item.serviceName === "Hotel Booking Request" || item.serviceName === "Hotel Apartments Request") {
+          const placeMatch = item.notes.match(/\[المكان:\s*([^\]]+)\]/);
+          if (placeMatch && placeMatch[1] && placeMatch[1].trim() && placeMatch[1].trim() !== "غير محدد") {
+            item.serviceName = placeMatch[1].trim();
+          }
+        }
+      }
+      return item;
+    };
+
+    const result = bookings.map(({ _id, ...b }) => normalizeBooking(b));
     return result.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   } catch (error) {
     console.error("Failed to fetch bookings from DB, falling back to JSON:", error);
     const fallbackBookings = await readJsonFallback<Booking[]>("bookings.json");
     if (fallbackBookings) {
-      return fallbackBookings.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      return fallbackBookings.map((b: any) => {
+        const item = { ...b } as Booking;
+        if (item.notes) {
+          if (item.notes.includes("[النوع: فندق]")) item.type = "hotel";
+          if (item.notes.includes("[المكان:")) {
+            const m = item.notes.match(/\[المكان:\s*([^\]]+)\]/);
+            if (m && m[1] && m[1].trim() && m[1].trim() !== "غير محدد") item.serviceName = m[1].trim();
+          }
+        }
+        return item;
+      }).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     }
     return [];
   }

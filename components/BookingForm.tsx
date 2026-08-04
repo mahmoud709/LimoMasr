@@ -6,7 +6,20 @@ import { bookingMessage, buildWhatsappUrl } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
-import { FiCheckCircle } from "react-icons/fi";
+import { 
+  FiCheckCircle, 
+  FiCalendar, 
+  FiUsers, 
+  FiMapPin, 
+  FiBriefcase, 
+  FiGlobe, 
+  FiUser, 
+  FiRepeat, 
+  FiArrowRight, 
+  FiClock, 
+  FiNavigation, 
+  FiPhone 
+} from "react-icons/fi";
 import { LocationSearchModal } from "./LocationSearchModal";
 
 type BookingFormProps = {
@@ -32,30 +45,45 @@ export function BookingForm({
   currency = "EGP",
   exchangeRate = 1,
 }: BookingFormProps) {
+  // Common Contact Info
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [passengers, setPassengers] = useState(1);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
-  const [budget, setBudget] = useState(5000);
   const [bookingSource, setBookingSource] = useState<"web" | "whatsapp">("web");
   const [bookingSuccess, setBookingSuccess] = useState(false);
-  
+
+  // 1. Limousine (car) specific state
+  const [carDate, setCarDate] = useState("");
+  const [carLuggage, setCarLuggage] = useState(0);
+  const [carServiceType, setCarServiceType] = useState<"trip" | "daily">("trip");
+  const [carFrom, setCarFrom] = useState("");
+  const [carTo, setCarTo] = useState("");
+  const [carResidence, setCarResidence] = useState("");
+
+  // 2. Fast Track specific state
+  const [nationality, setNationality] = useState("");
+  const [fastTrackDate, setFastTrackDate] = useState("");
+  const [passengerNames, setPassengerNames] = useState<string[]>([""]);
+
+  // 3. Hotels & Hotel Apartments specific state
   const [accommodationType, setAccommodationType] = useState<"hotel" | "apartment">(type === "apartment" ? "apartment" : "hotel");
   const [hotelDetails, setHotelDetails] = useState("");
   const [apartmentArea, setApartmentArea] = useState("");
+  const [hotelDateFrom, setHotelDateFrom] = useState("");
+  const [hotelDateTo, setHotelDateTo] = useState("");
+  const [budget, setBudget] = useState(5000);
 
+  // 4. Flights specific state
+  const [flightTripType, setFlightTripType] = useState<"round_trip" | "one_way">("round_trip");
   const [flightFrom, setFlightFrom] = useState("");
   const [flightTo, setFlightTo] = useState("");
   const [flightDateFrom, setFlightDateFrom] = useState("");
   const [flightDateTo, setFlightDateTo] = useState("");
 
-  const [hotelSuggestions, setHotelSuggestions] = useState<any[]>([]);
-  const [isSearchingHotels, setIsSearchingHotels] = useState(false);
-  const [showHotelSuggestions, setShowHotelSuggestions] = useState(false);
-  const [selectedHotelIndex, setSelectedHotelIndex] = useState(-1);
-  
-  const [activeModal, setActiveModal] = useState<"hotel" | "flightFrom" | "flightTo" | null>(null);
+  // Modal selector state
+  const [activeModal, setActiveModal] = useState<"hotel" | "flightFrom" | "flightTo" | "carFrom" | "carTo" | "carResidence" | null>(null);
 
   // Detect locale based on props, pathname prefix, or cookie
   const isEn = locale ? locale === "en" : (typeof window !== "undefined" && (
@@ -78,82 +106,225 @@ export function BookingForm({
 
   useEffect(() => {
     if (user) {
-      setCustomerName(user.name);
-      setPhone(user.phone);
+      if (!customerName) setCustomerName(user.name);
+      if (!phone) setPhone(user.phone);
+      setPassengerNames((prev) => {
+        const next = [...prev];
+        if (!next[0]) next[0] = user.name;
+        return next;
+      });
     }
   }, [user]);
 
+  // Adjust passengerNames array length dynamically when passengers count changes
   useEffect(() => {
-    if (accommodationType !== "hotel" || hotelDetails.length < 3 || !showHotelSuggestions) {
-      setHotelSuggestions([]);
-      return;
-    }
-    
-    const delayDebounceFn = setTimeout(async () => {
-      setIsSearchingHotels(true);
-      try {
-        const query = encodeURIComponent(`${hotelDetails} hotel egypt`);
-        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=5&addressdetails=1&accept-language=${isEn ? 'en' : 'ar'}`);
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data = await res.json();
-        setHotelSuggestions(data);
-      } catch (err) {
-        console.error("Error fetching hotel suggestions", err);
-      } finally {
-        setIsSearchingHotels(false);
-      }
-    }, 500);
+    setPassengerNames((prev) => {
+      const updated = Array.from({ length: passengers }, (_, i) => prev[i] || (i === 0 && customerName ? customerName : ""));
+      return updated;
+    });
+  }, [passengers]);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [hotelDetails, accommodationType, showHotelSuggestions, isEn]);
+  // Calculate dynamic display price (especially for Fast Track per-person pricing)
+  const calculatedPrice = useMemo(() => {
+    if (!price) return undefined;
+    if (type === "fast_track") {
+      return price * passengers;
+    }
+    return price;
+  }, [price, type, passengers]);
+
+  // Determine the effective date string for the booking record
+  const bookingEffectiveDate = useMemo(() => {
+    if (type === "car") return carDate;
+    if (type === "fast_track") return fastTrackDate;
+    if (["hotel", "apartment"].includes(type)) {
+      if (hotelDateFrom && hotelDateTo) return `${hotelDateFrom} ${isEn ? "to" : "إلى"} ${hotelDateTo}`;
+      return hotelDateFrom || hotelDateTo || "";
+    }
+    if (type === "flight") {
+      if (flightTripType === "round_trip" && flightDateTo) {
+        return `${flightDateFrom} ${isEn ? "to" : "إلى"} ${flightDateTo}`;
+      }
+      return flightDateFrom || "";
+    }
+    return "";
+  }, [type, carDate, fastTrackDate, hotelDateFrom, hotelDateTo, flightTripType, flightDateFrom, flightDateTo, isEn]);
+
+  // Dynamic effective type & service name calculation based on actual user selection
+  const effectiveType = useMemo(() => {
+    if (["hotel", "apartment"].includes(type)) {
+      return accommodationType;
+    }
+    return type;
+  }, [type, accommodationType]);
+
+  const effectiveServiceName = useMemo(() => {
+    if (["hotel", "apartment"].includes(type)) {
+      if (accommodationType === "hotel") {
+        if (hotelDetails && hotelDetails.trim() && hotelDetails.trim() !== "غير محدد") {
+          return hotelDetails.trim();
+        }
+        return isEn ? "Hotel Booking Request" : "طلب حجز فندق";
+      } else {
+        if (apartmentArea && apartmentArea.trim() && apartmentArea.trim() !== "غير محدد") {
+          return isEn ? `Hotel Apartment (${apartmentArea.trim()})` : `شقة فندقية (${apartmentArea.trim()})`;
+        }
+        return isEn ? "Hotel Apartments Request" : "طلب حجز شقق فندقية";
+      }
+    }
+    if (type === "flight") {
+      if (flightFrom && flightTo) {
+        return isEn ? `Flight: ${flightFrom} to ${flightTo}` : `طيران: من ${flightFrom} إلى ${flightTo}`;
+      }
+    }
+    return serviceName;
+  }, [type, accommodationType, hotelDetails, apartmentArea, flightFrom, flightTo, serviceName, isEn]);
 
   const message = useMemo(() => {
-    let finalNotes = notes;
-    if (['hotel', 'apartment'].includes(type)) {
+    let detailsList: string[] = [];
+
+    if (type === "car") {
+      const serviceTypeStr = carServiceType === "trip"
+        ? (isEn ? "Transfer (Trip)" : "توصيلة")
+        : (isEn ? "Daily Rental Service" : "خدمة يومية");
+      
+      detailsList.push(isEn ? `• Service Type: ${serviceTypeStr}` : `• نوع الخدمة: ${serviceTypeStr}`);
+      if (carDate) detailsList.push(isEn ? `• Date: ${carDate}` : `• تاريخ الرحلة: ${carDate}`);
+      
+      if (carServiceType === "trip") {
+        if (carFrom) detailsList.push(isEn ? `• Pickup From: ${carFrom}` : `• الانطلاق من: ${carFrom}`);
+        if (carTo) detailsList.push(isEn ? `• Destination To: ${carTo}` : `• الوصول إلى: ${carTo}`);
+      } else {
+        if (carResidence) detailsList.push(isEn ? `• Residence / Accommodation: ${carResidence}` : `• مكان السكن / الإقامة: ${carResidence}`);
+      }
+      
+      detailsList.push(isEn ? `• Luggage Count: ${carLuggage}` : `• عدد الحقائب: ${carLuggage}`);
+      detailsList.push(isEn ? `• Passengers: ${passengers}` : `• عدد الركاب: ${passengers}`);
+    } else if (type === "fast_track") {
+      if (nationality) detailsList.push(isEn ? `• Nationality: ${nationality}` : `• الجنسية: ${nationality}`);
+      if (fastTrackDate) detailsList.push(isEn ? `• Date: ${fastTrackDate}` : `• تاريخ الخدمة: ${fastTrackDate}`);
+      detailsList.push(isEn ? `• Number of Travelers: ${passengers}` : `• عدد الأفراد: ${passengers}`);
+      
+      const filledNames = passengerNames.filter((n) => n.trim().length > 0);
+      if (filledNames.length > 0) {
+        const namesFormatted = filledNames.map((n, i) => `  ${i + 1}. ${n}`).join("\n");
+        detailsList.push(isEn ? `• Passenger Names:\n${namesFormatted}` : `• أسماء المسافرين:\n${namesFormatted}`);
+      }
+    } else if (["hotel", "apartment"].includes(type)) {
       const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
       const accDetails = accommodationType === "hotel" 
-        ? (isEn ? `Accommodation: Hotel\nGovernorate/Hotel Name: ${hotelDetails}` : `الإقامة: فنادق\nالمحافظة أو اسم الفندق: ${hotelDetails}`)
-        : (isEn ? `Accommodation: Hotel Apartment\nArea: ${apartmentArea}` : `الإقامة: شقق فندقية\nالمنطقة: ${apartmentArea}`);
+        ? (isEn ? `Accommodation: Hotel\nGovernorate/Hotel: ${hotelDetails || (isEn ? "Not specified" : "غير محدد")}` : `الإقامة: فنادق\nالمحافظة أو اسم الفندق: ${hotelDetails || "غير محدد"}`)
+        : (isEn ? `Accommodation: Hotel Apartment\nArea: ${apartmentArea || (isEn ? "Not specified" : "غير محدد")}` : `الإقامة: شقق فندقية\nالمنطقة: ${apartmentArea || "غير محدد"}`);
       
-      finalNotes = isEn
-        ? `${accDetails}\nExpected budget per night: ${formattedBudget}\n\nNotes:\n${notes}`
-        : `${accDetails}\nالميزانية المتوقعة لليلة: ${formattedBudget}\n\nالملاحظات:\n${notes}`;
-    } else if (type === 'flight') {
-      const flightDetails = isEn
-        ? `From: ${flightFrom}\nTo: ${flightTo}\nDate From: ${flightDateFrom}\nDate To: ${flightDateTo}`
-        : `من: ${flightFrom}\nإلى: ${flightTo}\nالتاريخ من: ${flightDateFrom}\nالتاريخ إلى: ${flightDateTo}`;
-      finalNotes = `${flightDetails}\n\n${isEn ? 'Notes' : 'الملاحظات'}:\n${notes}`;
+      detailsList.push(accDetails);
+      if (hotelDateFrom) detailsList.push(isEn ? `• Check-in Date: ${hotelDateFrom}` : `• تاريخ الوصول: ${hotelDateFrom}`);
+      if (hotelDateTo) detailsList.push(isEn ? `• Check-out Date: ${hotelDateTo}` : `• تاريخ المغادرة: ${hotelDateTo}`);
+      detailsList.push(isEn ? `• Number of Guests: ${passengers}` : `• عدد الأفراد: ${passengers}`);
+      detailsList.push(isEn ? `• Budget per night: ${formattedBudget}` : `• الميزانية المتوقعة لليلة: ${formattedBudget}`);
+    } else if (type === "flight") {
+      const tripTypeStr = flightTripType === "round_trip"
+        ? (isEn ? "Round Trip" : "ذهاب وعودة")
+        : (isEn ? "One Way" : "رحلة واحدة (ذهاب فقط)");
+      
+      detailsList.push(isEn ? `• Flight Type: ${tripTypeStr}` : `• نوع الرحلة: ${tripTypeStr}`);
+      if (flightFrom) detailsList.push(isEn ? `• From: ${flightFrom}` : `• من: ${flightFrom}`);
+      if (flightTo) detailsList.push(isEn ? `• To: ${flightTo}` : `• إلى: ${flightTo}`);
+      if (flightDateFrom) detailsList.push(isEn ? `• Departure Date: ${flightDateFrom}` : `• تاريخ الذهاب: ${flightDateFrom}`);
+      if (flightTripType === "round_trip" && flightDateTo) {
+        detailsList.push(isEn ? `• Return Date: ${flightDateTo}` : `• تاريخ العودة: ${flightDateTo}`);
+      }
+      detailsList.push(isEn ? `• Number of Passengers: ${passengers}` : `• عدد المسافرين: ${passengers}`);
     }
+
+    let finalNotes = detailsList.join("\n");
+    if (notes.trim()) {
+      finalNotes += isEn ? `\n\nAdditional Notes:\n${notes}` : `\n\nملاحظات إضافية:\n${notes}`;
+    }
+
     return bookingMessage({
-      serviceName,
-      customerName,
+      serviceName: effectiveServiceName,
+      customerName: type === "fast_track" && passengerNames[0] ? passengerNames[0] : customerName,
       phone,
       passengers,
+      date: bookingEffectiveDate,
       notes: finalNotes,
     }, isEn ? "en" : "ar");
-  }, [type, serviceName, customerName, phone, passengers, notes, budget, isEn, currency, exchangeRate, accommodationType, hotelDetails, apartmentArea, flightFrom, flightTo, flightDateFrom, flightDateTo]);
+  }, [
+    type,
+    serviceName,
+    effectiveServiceName,
+    customerName,
+    phone,
+    passengers,
+    notes,
+    budget,
+    isEn,
+    currency,
+    exchangeRate,
+    carDate,
+    carLuggage,
+    carServiceType,
+    carFrom,
+    carTo,
+    carResidence,
+    nationality,
+    fastTrackDate,
+    passengerNames,
+    accommodationType,
+    hotelDetails,
+    apartmentArea,
+    hotelDateFrom,
+    hotelDateTo,
+    flightTripType,
+    flightFrom,
+    flightTo,
+    flightDateFrom,
+    flightDateTo,
+    bookingEffectiveDate
+  ]);
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     try {
       const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
+      
+      // Build structured notes for admin and internal records
+      let structuredNotes = "";
+      if (type === "car") {
+        structuredNotes = `[نوع الخدمة: ${carServiceType === "trip" ? "توصيلة" : "يومية"}] [تاريخ الرحلة: ${carDate}] [عدد الحقائب: ${carLuggage}] ${
+          carServiceType === "trip" ? `[من: ${carFrom}] [إلى: ${carTo}]` : `[مكان السكن: ${carResidence}]`
+        } ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+      } else if (type === "fast_track") {
+        const namesStr = passengerNames.filter((n) => n.trim().length > 0).join(" | ");
+        structuredNotes = `[الجنسية: ${nationality}] [تاريخ الخدمة: ${fastTrackDate}] [أسماء المسافرين: ${namesStr}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+      } else if (["hotel", "apartment"].includes(type)) {
+        structuredNotes = `[النوع: ${accommodationType === "hotel" ? "فندق" : "شقة فندقية"}] [المكان: ${
+          accommodationType === "hotel" ? (hotelDetails || "غير محدد") : (apartmentArea || "غير محدد")
+        }] [تاريخ الوصول: ${hotelDateFrom}] [تاريخ المغادرة: ${hotelDateTo}] [الميزانية: ${formattedBudget}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+      } else if (type === "flight") {
+        structuredNotes = `[نوع الرحلة: ${flightTripType === "round_trip" ? "ذهاب وعودة" : "ذهاب فقط"}] [من: ${flightFrom}] [إلى: ${flightTo}] [تاريخ الذهاب: ${flightDateFrom}] ${
+          flightTripType === "round_trip" ? `[تاريخ العودة: ${flightDateTo}] ` : ""
+        }${notes ? `[ملاحظات: ${notes}]` : ""}`;
+      } else {
+        structuredNotes = notes;
+      }
+
+      const effectiveCustomerName = (type === "fast_track" && passengerNames[0]?.trim()) ? passengerNames[0].trim() : customerName;
+
       const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type,
-          customerName,
+          type: effectiveType,
+          customerName: effectiveCustomerName,
           phone,
           serviceRefId,
-          serviceName,
-          notes: ['hotel', 'apartment'].includes(type) 
-            ? `[Type: ${accommodationType === 'hotel' ? 'Hotel' : 'Apartment'}] [Details: ${accommodationType === 'hotel' ? hotelDetails : apartmentArea}] [Budget: ${formattedBudget}] ${notes}` 
-            : type === 'flight'
-            ? `[From: ${flightFrom}] [To: ${flightTo}] [DateFrom: ${flightDateFrom}] [DateTo: ${flightDateTo}] ${notes}`
-            : notes,
+          serviceName: effectiveServiceName,
+          date: bookingEffectiveDate,
+          notes: structuredNotes.trim(),
           passengers,
-          price,
+          price: calculatedPrice,
           source: bookingSource,
         }),
       });
@@ -164,12 +335,46 @@ export function BookingForm({
         }
         setBookingSuccess(true);
       }
-    } catch {
-      // fail silently or handle error
+    } catch (err) {
+      console.error("Booking error:", err);
     } finally {
       setSaving(false);
     }
   }
+
+  const resetForm = () => {
+    setBookingSuccess(false);
+    setNotes("");
+    setPassengers(1);
+    setCarDate("");
+    setCarLuggage(0);
+    setCarServiceType("trip");
+    setCarFrom("");
+    setCarTo("");
+    setCarResidence("");
+    setNationality("");
+    setFastTrackDate("");
+    setAccommodationType(type === "apartment" ? "apartment" : "hotel");
+    setHotelDetails("");
+    setApartmentArea("");
+    setHotelDateFrom("");
+    setHotelDateTo("");
+    setBudget(5000);
+    setFlightTripType("round_trip");
+    setFlightFrom("");
+    setFlightTo("");
+    setFlightDateFrom("");
+    setFlightDateTo("");
+    if (user) {
+      setCustomerName(user.name);
+      setPhone(user.phone);
+      setPassengerNames([user.name]);
+    } else {
+      setCustomerName("");
+      setPhone("");
+      setPassengerNames([""]);
+    }
+  };
 
   if (bookingSuccess) {
     return (
@@ -204,11 +409,8 @@ export function BookingForm({
           )}
           <button
             type="button"
-            onClick={() => {
-              setBookingSuccess(false);
-              setNotes("");
-            }}
-            className="text-xs font-bold text-[#1a2b3c]/50 hover:text-[#1a2b3c] transition-colors mt-2"
+            onClick={resetForm}
+            className="text-xs font-bold text-[#1a2b3c]/50 hover:text-[#1a2b3c] transition-colors mt-2 cursor-pointer"
           >
             {isEn ? "Make another booking" : "إجراء حجز آخر"}
           </button>
@@ -218,7 +420,7 @@ export function BookingForm({
   }
 
   return (
-    <form onSubmit={submitBooking} className="luxury-panel bg-white p-6 md:p-8 space-y-6">
+    <form onSubmit={submitBooking} className="luxury-panel bg-white p-6 md:p-8 space-y-6" dir={isEn ? "ltr" : "rtl"}>
       <div className="flex flex-col gap-1 border-b border-black/5 pb-4 mb-6">
         <div className="flex items-center gap-3">
           <span className="w-8 h-[1px] bg-[#d0a755]"></span>
@@ -230,61 +432,274 @@ export function BookingForm({
       </div>
       
       <div className="space-y-4">
-        <div className="relative">
-          <input
-            required
-            value={customerName}
-            onChange={(event) => setCustomerName(event.target.value)}
-            placeholder={isEn ? "Full Name" : "الاسم كاملًا"}
-            className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
-          />
-        </div>
-        
-        <div className="relative">
-          <input
-            required
-            type="tel"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-            placeholder={isEn ? "Phone Number" : "رقم الهاتف للتواصل"}
-            className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
-          />
-        </div>
-        
-        <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-          <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0">
-            {isEn 
-              ? (['hotel', 'apartment'].includes(type) ? 'Number of guests' : 'Number of passengers')
-              : (['hotel', 'apartment'].includes(type) ? 'عدد الأفراد' : 'عدد الركاب')}
-          </span>
-          <input
-            required
-            type="number"
-            min={1}
-            value={passengers}
-            onChange={(event) => {
-              const val = parseInt(event.target.value, 10);
-              if (isNaN(val) || val < 1) {
-                setPassengers(1);
-              } else {
-                setPassengers(val);
-              }
-            }}
-            className="w-full bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
-            dir="ltr"
-          />
-        </div>
+        {/* ========================================================================= */}
+        {/* 1. LIMOUSINE CAR FIELDS */}
+        {/* ========================================================================= */}
+        {type === "car" && (
+          <div className="space-y-4">
+            {/* Service Type Selection: Transfer vs Daily */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-[#1a2b3c]/70">
+                {isEn ? "Service Type" : "نوع الخدمة المطلوبة"}
+              </label>
+              <div className="grid grid-cols-2 gap-2 p-1.5 bg-[#F4F3EF] rounded-2xl border border-black/5">
+                <button
+                  type="button"
+                  onClick={() => setCarServiceType("trip")}
+                  className={`py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    carServiceType === "trip"
+                      ? "bg-[#1a2b3c] text-[#d0a755] shadow-md border border-[#d0a755]/20"
+                      : "bg-white/60 text-[#1a2b3c]/70 hover:bg-white hover:text-[#1a2b3c]"
+                  }`}
+                >
+                  <FiNavigation className={`w-4 h-4 shrink-0 ${carServiceType === "trip" ? "text-[#d0a755]" : "text-[#1a2b3c]/50"}`} />
+                  <span>{isEn ? "Transfer (Trip)" : "توصيلة"}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCarServiceType("daily")}
+                  className={`py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    carServiceType === "daily"
+                      ? "bg-[#1a2b3c] text-[#d0a755] shadow-md border border-[#d0a755]/20"
+                      : "bg-white/60 text-[#1a2b3c]/70 hover:bg-white hover:text-[#1a2b3c]"
+                  }`}
+                >
+                  <FiClock className={`w-4 h-4 shrink-0 ${carServiceType === "daily" ? "text-[#d0a755]" : "text-[#1a2b3c]/50"}`} />
+                  <span>{isEn ? "Daily Rental" : "خدمة يومية"}</span>
+                </button>
+              </div>
+            </div>
 
-        {['hotel', 'apartment'].includes(type) && (
-          <div className="space-y-4 py-2">
-            <div className="relative">
-              <label className="block text-sm font-bold text-[#1a2b3c] mb-2">
+            {/* If Transfer: From & To */}
+            {carServiceType === "trip" ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                    {isEn ? "Pickup Location (From)" : "مكان الانطلاق (من)"}
+                  </label>
+                  <div 
+                    onClick={() => setActiveModal("carFrom")}
+                    className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                  >
+                    <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
+                    <span className={`text-sm font-medium truncate ${carFrom ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
+                      {carFrom || (isEn ? "Select pickup location..." : "حدد مكان الانطلاق...")}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                    {isEn ? "Destination (To)" : "مكان الوصول (إلى)"}
+                  </label>
+                  <div 
+                    onClick={() => setActiveModal("carTo")}
+                    className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                  >
+                    <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
+                    <span className={`text-sm font-medium truncate ${carTo ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
+                      {carTo || (isEn ? "Select destination..." : "حدد مكان الوصول...")}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* If Daily: Residence Location */
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Accommodation / Residence Location" : "مكان السكن / الإقامة"}
+                </label>
+                <div 
+                  onClick={() => setActiveModal("carResidence")}
+                  className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                >
+                  <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <span className={`text-sm font-medium truncate ${carResidence ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
+                    {carResidence || (isEn ? "Select hotel or residence location..." : "حدد مكان السكن أو الفندق...")}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Date, Luggage & Passengers Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Trip Date" : "تاريخ الرحلة"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="date"
+                    value={carDate}
+                    onChange={(e) => setCarDate(e.target.value)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Luggage / Bags" : "عدد الحقائب"}
+                </label>
+                <div className="flex items-center rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiBriefcase className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="number"
+                    min={0}
+                    value={carLuggage}
+                    onChange={(e) => setCarLuggage(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                    className="w-full bg-transparent px-2 text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Passengers" : "عدد الركاب"}
+                </label>
+                <div className="flex items-center rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiUsers className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="number"
+                    min={1}
+                    value={passengers}
+                    onChange={(e) => setPassengers(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                    className="w-full bg-transparent px-2 text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* 2. FAST TRACK VIP FIELDS */}
+        {/* ========================================================================= */}
+        {type === "fast_track" && (
+          <div className="space-y-4">
+            {/* Nationality & Service Date */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Nationality" : "الجنسية"}
+                </label>
+                <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiGlobe className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="text"
+                    value={nationality}
+                    onChange={(e) => setNationality(e.target.value)}
+                    placeholder={isEn ? "e.g. Saudi, Emirati, Egyptian..." : "مثال: سعودي، إماراتي، مصري..."}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Service Date" : "تاريخ الخدمة"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="date"
+                    value={fastTrackDate}
+                    onChange={(e) => setFastTrackDate(e.target.value)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Number of Passengers */}
+            <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+              <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0 flex items-center gap-2">
+                <FiUsers className="w-4 h-4 text-[#d0a755]" />
+                {isEn ? "Number of travelers" : "عدد الأفراد / المسافرين"}
+              </span>
+              <input
+                required
+                type="number"
+                min={1}
+                max={25}
+                value={passengers}
+                onChange={(event) => {
+                  const val = parseInt(event.target.value, 10);
+                  if (isNaN(val) || val < 1) {
+                    setPassengers(1);
+                  } else {
+                    setPassengers(val);
+                  }
+                }}
+                className="w-24 bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
+                dir="ltr"
+              />
+            </div>
+
+            {/* Dynamic Names for Passengers */}
+            <div className="space-y-2.5 pt-1">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-black text-[#1a2b3c] uppercase tracking-wider">
+                  {isEn ? `Traveler Names (${passengers} persons)` : `أسماء المسافرين (${passengers} أفراد)`}
+                </label>
+                <span className="text-[11px] font-bold text-[#d0a755]">
+                  {isEn ? "Required for airport permits" : "مطلوبة لتصاريح المطار"}
+                </span>
+              </div>
+
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                {Array.from({ length: passengers }).map((_, index) => (
+                  <div key={index} className="relative">
+                    <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755] transition-all">
+                      <span className="w-6 h-6 rounded-full bg-[#1a2b3c] text-[#d0a755] text-xs font-black flex items-center justify-center shrink-0 shadow-xs">
+                        {index + 1}
+                      </span>
+                      <input
+                        required
+                        type="text"
+                        value={passengerNames[index] || ""}
+                        onChange={(e) => {
+                          const updated = [...passengerNames];
+                          updated[index] = e.target.value;
+                          setPassengerNames(updated);
+                          if (index === 0) {
+                            setCustomerName(e.target.value);
+                          }
+                        }}
+                        placeholder={
+                          isEn
+                            ? (index === 0 ? "Traveler 1 (Primary contact full name)" : `Traveler ${index + 1} full name`)
+                            : (index === 0 ? "المسافر 1 (الاسم الأساسي للتواصل)" : `اسم المسافر ${index + 1} بالكامل`)
+                        }
+                        className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* 3. HOTELS & HOTEL APARTMENTS FIELDS */}
+        {/* ========================================================================= */}
+        {["hotel", "apartment"].includes(type) && (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                 {isEn ? "Accommodation Type" : "نوع الإقامة"}
               </label>
               <select
                 value={accommodationType}
                 onChange={(e) => setAccommodationType(e.target.value as "hotel" | "apartment")}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
               >
                 <option value="hotel">{isEn ? "Hotels" : "فنادق"}</option>
                 <option value="apartment">{isEn ? "Hotel Apartments" : "شقق فندقية"}</option>
@@ -292,30 +707,96 @@ export function BookingForm({
             </div>
 
             {accommodationType === "hotel" ? (
-              <div className="relative">
-                <input
-                  readOnly
-                  value={hotelDetails}
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Hotel or Governorate" : "المحافظة أو اسم الفندق المطلوب"}
+                </label>
+                <div 
                   onClick={() => setActiveModal("hotel")}
-                  placeholder={isEn ? "Governorate or Hotel Name (Optional)" : "المحافظة أو اسم الفندق (اختياري)"}
-                  className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
-                />
+                  className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                >
+                  <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <span className={`text-sm font-medium truncate ${hotelDetails ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
+                    {hotelDetails || (isEn ? "Select hotel or city (Optional)" : "اختر الفندق أو المحافظة (اختياري)")}
+                  </span>
+                </div>
               </div>
             ) : (
-              <div className="relative">
-                <input
-                  value={apartmentArea}
-                  onChange={(event) => setApartmentArea(event.target.value)}
-                  placeholder={isEn ? "Area (Optional)" : "المنطقة (اختياري)"}
-                  className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
-                />
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Preferred Area" : "المنطقة المفضلة"}
+                </label>
+                <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    value={apartmentArea}
+                    onChange={(event) => setApartmentArea(event.target.value)}
+                    placeholder={isEn ? "e.g. New Cairo, Dokki, Zamalek..." : "مثال: التجمع الخامس، الدقي، الزمالك..."}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none"
+                  />
+                </div>
               </div>
             )}
 
+            {/* Check-in Date & Check-out Date (التاريخ من وإلى) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Check-in Date (From)" : "تاريخ الوصول (من)"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="date"
+                    value={hotelDateFrom}
+                    onChange={(e) => setHotelDateFrom(e.target.value)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Check-out Date (To)" : "تاريخ المغادرة (إلى)"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="date"
+                    value={hotelDateTo}
+                    onChange={(e) => setHotelDateTo(e.target.value)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Guests Count */}
+            <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+              <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0 flex items-center gap-2">
+                <FiUsers className="w-4 h-4 text-[#d0a755]" />
+                {isEn ? "Number of guests" : "عدد النزلاء / الأفراد"}
+              </span>
+              <input
+                required
+                type="number"
+                min={1}
+                value={passengers}
+                onChange={(event) => {
+                  const val = parseInt(event.target.value, 10);
+                  setPassengers(isNaN(val) || val < 1 ? 1 : val);
+                }}
+                className="w-24 bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
+                dir="ltr"
+              />
+            </div>
+
+            {/* Budget Range */}
             <div>
               <div className="flex justify-between items-end mb-2">
-                <p className="text-sm font-bold text-[#1a2b3c]">
-                  {isEn ? "Budget per night" : "الميزانية لليلة الواحدة"}
+                <p className="text-xs font-bold text-[#1a2b3c]/70">
+                  {isEn ? "Budget per night" : "الميزانية المتوقعة لليلة الواحدة"}
                 </p>
                 <p className="text-[#d0a755] font-black text-sm dir-ltr">
                   {currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP"}
@@ -324,96 +805,232 @@ export function BookingForm({
               <input 
                 type="range" 
                 min={500} 
-                max={20000} 
+                max={25000} 
                 step={500}
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
-                className="w-full accent-[#d0a755] h-1 bg-black/10 rounded-lg appearance-none cursor-pointer"
+                className="w-full accent-[#d0a755] h-1.5 bg-black/10 rounded-lg appearance-none cursor-pointer"
               />
             </div>
           </div>
         )}
 
-        {type === 'flight' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="relative">
-              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
-                {isEn ? "From" : "الواجهة من"}
+        {/* ========================================================================= */}
+        {/* 4. FLIGHTS FIELDS */}
+        {/* ========================================================================= */}
+        {type === "flight" && (
+          <div className="space-y-4">
+            {/* Flight Type: One-way vs Round-trip */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-[#1a2b3c]/70">
+                {isEn ? "Flight Type" : "نوع الرحلة"}
               </label>
-              <input
-                required
-                readOnly
-                value={flightFrom}
-                onClick={() => setActiveModal("flightFrom")}
-                placeholder={isEn ? "Departure City/Airport" : "مدينة/مطار المغادرة"}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
-              />
+              <div className="grid grid-cols-2 gap-2 p-1.5 bg-[#F4F3EF] rounded-2xl border border-black/5">
+                <button
+                  type="button"
+                  onClick={() => setFlightTripType("round_trip")}
+                  className={`py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    flightTripType === "round_trip"
+                      ? "bg-[#1a2b3c] text-[#d0a755] shadow-md border border-[#d0a755]/20"
+                      : "bg-white/60 text-[#1a2b3c]/70 hover:bg-white hover:text-[#1a2b3c]"
+                  }`}
+                >
+                  <FiRepeat className={`w-4 h-4 shrink-0 ${flightTripType === "round_trip" ? "text-[#d0a755]" : "text-[#1a2b3c]/50"}`} />
+                  <span>{isEn ? "Round Trip" : "ذهاب وعودة"}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFlightTripType("one_way")}
+                  className={`py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    flightTripType === "one_way"
+                      ? "bg-[#1a2b3c] text-[#d0a755] shadow-md border border-[#d0a755]/20"
+                      : "bg-white/60 text-[#1a2b3c]/70 hover:bg-white hover:text-[#1a2b3c]"
+                  }`}
+                >
+                  <FiArrowRight className={`w-4 h-4 shrink-0 ${isEn ? "" : "rotate-180"} ${flightTripType === "one_way" ? "text-[#d0a755]" : "text-[#1a2b3c]/50"}`} />
+                  <span>{isEn ? "One Way" : "رحلة واحدة (ذهاب فقط)"}</span>
+                </button>
+              </div>
             </div>
-            <div className="relative">
-              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
-                {isEn ? "To" : "الواجهة إلي"}
-              </label>
-              <input
-                required
-                readOnly
-                value={flightTo}
-                onClick={() => setActiveModal("flightTo")}
-                placeholder={isEn ? "Destination City/Airport" : "مدينة/مطار الوصول"}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] cursor-pointer"
-              />
+
+            {/* Departure & Destination Airports */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Departure (From)" : "الواجهة من"}
+                </label>
+                <div 
+                  onClick={() => setActiveModal("flightFrom")}
+                  className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                >
+                  <FiNavigation className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <span className={`text-sm font-medium truncate ${flightFrom ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
+                    {flightFrom || (isEn ? "Select departure airport..." : "مدينة/مطار المغادرة...")}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Destination (To)" : "الواجهة إلي"}
+                </label>
+                <div 
+                  onClick={() => setActiveModal("flightTo")}
+                  className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                >
+                  <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <span className={`text-sm font-medium truncate ${flightTo ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
+                    {flightTo || (isEn ? "Select destination airport..." : "مدينة/مطار الوصول...")}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="relative">
-              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
-                {isEn ? "Date From" : "التاريخ من"}
-              </label>
+
+            {/* Flight Dates */}
+            {flightTripType === "round_trip" ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                    {isEn ? "Departure Date" : "تاريخ الذهاب"}
+                  </label>
+                  <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                    <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                    <input
+                      required
+                      type="date"
+                      value={flightDateFrom}
+                      onChange={(event) => setFlightDateFrom(event.target.value)}
+                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                    {isEn ? "Return Date" : "تاريخ العودة"}
+                  </label>
+                  <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                    <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                    <input
+                      required
+                      type="date"
+                      value={flightDateTo}
+                      onChange={(event) => setFlightDateTo(event.target.value)}
+                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Flight Date" : "تاريخ السفر"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="date"
+                    value={flightDateFrom}
+                    onChange={(event) => setFlightDateFrom(event.target.value)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Passengers Count for Flights */}
+            <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+              <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0 flex items-center gap-2">
+                <FiUsers className="w-4 h-4 text-[#d0a755]" />
+                {isEn ? "Number of passengers" : "عدد المسافرين"}
+              </span>
               <input
                 required
-                type="date"
-                value={flightDateFrom}
-                onChange={(event) => setFlightDateFrom(event.target.value)}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
-              />
-            </div>
-            <div className="relative">
-              <label className="block text-sm font-bold text-[#1a2b3c]/70 mb-1">
-                {isEn ? "Date To" : "التاريخ إلي"}
-              </label>
-              <input
-                required
-                type="date"
-                value={flightDateTo}
-                onChange={(event) => setFlightDateTo(event.target.value)}
-                className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755]"
+                type="number"
+                min={1}
+                value={passengers}
+                onChange={(event) => {
+                  const val = parseInt(event.target.value, 10);
+                  setPassengers(isNaN(val) || val < 1 ? 1 : val);
+                }}
+                className="w-24 bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
+                dir="ltr"
               />
             </div>
           </div>
         )}
+
+        {/* ========================================================================= */}
+        {/* COMMON FIELDS: FULL NAME & PHONE NUMBER (For Non-FastTrack Or Primary Info) */}
+        {/* ========================================================================= */}
+        {type !== "fast_track" && (
+          <div className="space-y-4 pt-2 border-t border-black/5">
+            <div>
+              <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "Full Name" : "الاسم كاملًا"}
+              </label>
+              <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                <FiUser className="w-4 h-4 text-[#d0a755] shrink-0" />
+                <input
+                  required
+                  value={customerName}
+                  onChange={(event) => setCustomerName(event.target.value)}
+                  placeholder={isEn ? "Enter your full name" : "أدخل الاسم كاملًا"}
+                  className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Phone Number (Required for all services) */}
+        <div>
+          <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+            {isEn ? "Phone / WhatsApp Number" : "رقم الهاتف / الواتساب للتواصل"}
+          </label>
+          <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+            <FiPhone className="w-4 h-4 text-[#d0a755] shrink-0" />
+            <input
+              required
+              type="tel"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              placeholder={isEn ? "e.g. +201000000000" : "مثال: 01000000000"}
+              className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none text-left rtl:text-right"
+              dir="ltr"
+            />
+          </div>
+        </div>
         
+        {/* Additional Notes */}
         <div className="relative">
+          <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+            {isEn ? "Additional Notes / Special Requests" : "ملاحظات إضافية أو طلبات خاصة"}
+          </label>
           <textarea
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
             placeholder={
               isEn ? (
                 type === 'hotel' 
-                  ? "Additional notes (destination city, preferred hotels...)" 
+                  ? "Additional notes (preferred rooms, floor, special requests...)" 
                   : type === 'flight'
-                  ? "Additional notes (round trip destination, flight class, special requests...)"
+                  ? "Additional notes (preferred airline, flight class, special assistance...)"
                   : type === 'apartment'
-                  ? "Additional notes (destination city, number of rooms...)"
-                  : "Additional notes (stops, special requests...)"
+                  ? "Additional notes (number of rooms, amenities...)"
+                  : "Additional notes (flight number, pickup timing, special requests...)"
               ) : (
                 type === 'hotel' 
-                  ? "ملاحظات إضافية (المدينة المطلوبة، فنادق مفضلة...)" 
+                  ? "ملاحظات إضافية (الغرف المطلوبة، إطلالة مفضلة، طلبات خاصة...)" 
                   : type === 'flight'
-                  ? "ملاحظات إضافية (الوجهة ذهاب وعودة، درجة الطيران، طلبات خاصة...)"
+                  ? "ملاحظات إضافية (خطوط الطيران المفضلة، درجة السفر، طلبات خاصة...)"
                   : type === 'apartment'
-                  ? "ملاحظات إضافية (المدينة المطلوبة، عدد الغرف...)"
-                  : "ملاحظات إضافية (أماكن التوقف، طلبات خاصة...)"
+                  ? "ملاحظات إضافية (عدد الغرف، تجهيزات خاصة...)"
+                  : "ملاحظات إضافية (رقم الرحلة، توقيت الاستقبال، طلبات خاصة...)"
               )
             }
-            rows={3}
-            className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3.5 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] resize-none"
+            rows={2}
+            className="w-full rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none transition-all focus:border-[#d0a755] focus:bg-white focus:ring-1 focus:ring-[#d0a755] resize-none"
           />
         </div>
       </div>
@@ -473,7 +1090,7 @@ export function BookingForm({
         </div>
       )}
 
-      {/* Render the modal outside of normal document flow */}
+      {/* Render the Location Search Modal */}
       <LocationSearchModal
         isOpen={activeModal !== null}
         onClose={() => setActiveModal(null)}
@@ -484,10 +1101,36 @@ export function BookingForm({
             setFlightFrom(location);
           } else if (activeModal === "flightTo") {
             setFlightTo(location);
+          } else if (activeModal === "carFrom") {
+            setCarFrom(location);
+          } else if (activeModal === "carTo") {
+            setCarTo(location);
+          } else if (activeModal === "carResidence") {
+            setCarResidence(location);
           }
         }}
-        title={activeModal === "hotel" ? (isEn ? "Select Hotel" : "اختر الفندق") : (isEn ? "Select Airport" : "اختر المطار")}
-        placeholder={activeModal === "hotel" ? (isEn ? "Search for a hotel..." : "ابحث عن فندق...") : (isEn ? "Search for an airport..." : "ابحث عن مطار...")}
+        title={
+          activeModal === "hotel"
+            ? (isEn ? "Select Hotel / City" : "اختر الفندق أو المحافظة")
+            : activeModal === "flightFrom"
+            ? (isEn ? "Select Departure Airport" : "اختر مطار المغادرة")
+            : activeModal === "flightTo"
+            ? (isEn ? "Select Destination Airport" : "اختر مطار الوصول")
+            : activeModal === "carFrom"
+            ? (isEn ? "Select Pickup Location" : "اختر مكان الانطلاق")
+            : activeModal === "carTo"
+            ? (isEn ? "Select Destination Location" : "اختر مكان الوصول")
+            : activeModal === "carResidence"
+            ? (isEn ? "Select Residence Location" : "اختر مكان السكن أو الإقامة")
+            : (isEn ? "Select Location" : "اختر الموقع")
+        }
+        placeholder={
+          activeModal === "hotel"
+            ? (isEn ? "Search for a hotel or city..." : "ابحث عن فندق أو مدينة...")
+            : ["flightFrom", "flightTo"].includes(activeModal || "")
+            ? (isEn ? "Search for an airport or city..." : "ابحث عن مطار أو مدينة...")
+            : (isEn ? "Search for a location or address..." : "ابحث عن عنوان أو مكان...")
+        }
         isEn={isEn}
       />
     </form>

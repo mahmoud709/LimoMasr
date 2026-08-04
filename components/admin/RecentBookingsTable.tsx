@@ -1,8 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import type { Booking, Review } from "@/lib/types";
 import Link from "next/link";
-import { FiArrowRight, FiInbox, FiMessageCircle, FiUser } from "react-icons/fi";
+import { FiArrowRight, FiInbox, FiMessageCircle, FiUser, FiEye } from "react-icons/fi";
+import { BookingDetailsModal } from "@/components/admin/BookingDetailsModal";
+import { ServiceBadge } from "@/components/admin/ServiceBadge";
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; border: string }> = {
   new:       { label: "جديد",    color: "text-blue-700",    bg: "bg-blue-50",    border: "border-blue-200" },
@@ -11,15 +14,8 @@ const statusConfig: Record<string, { label: string; color: string; bg: string; b
   cancelled: { label: "ملغي",   color: "text-rose-700",    bg: "bg-rose-50",    border: "border-rose-200" },
 };
 
-const typeLabels: Record<string, string> = {
-  car: "سيارة ليموزين",
-  fast_track: "مسار سريع VIP",
-  hotel: "حجز فندق",
-  flight: "طيران",
-  apartment: "شقة فندقية",
-};
-
 export function RecentBookingsTable({ bookings }: { bookings: Booking[]; reviews?: Review[] }) {
+  const [selectedBookingForDetails, setSelectedBookingForDetails] = useState<Booking | null>(null);
   const recentBookings = bookings.slice(0, 8);
 
   return (
@@ -38,15 +34,15 @@ export function RecentBookingsTable({ bookings }: { bookings: Booking[]; reviews
         <table className="w-full text-sm text-right">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50/30">
-              {["العميل", "الخدمة المطلوبة", "فئة الحجز", "تاريخ التنفيذ", "تواصل سريع", "حالة الطلب"].map(h => (
-                <th key={h} className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">{h}</th>
+              {["العميل", "الخدمة المطلوبة", "فئة الحجز", "تاريخ التنفيذ", "تفاصيل الحجز", "تواصل سريع", "حالة الطلب"].map(h => (
+                <th key={h} className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
             {recentBookings.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-8 py-24">
+                <td colSpan={7} className="px-8 py-24">
                   <div className="flex flex-col items-center justify-center text-center">
                     <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-slate-100">
                       <FiInbox className="w-8 h-8 text-slate-300" strokeWidth={1.5} />
@@ -82,11 +78,28 @@ export function RecentBookingsTable({ bookings }: { bookings: Booking[]; reviews
                   </td>
                   <td className="px-8 py-5 text-slate-700 font-medium">{b.serviceName}</td>
                   <td className="px-8 py-5">
-                    <span className="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold tracking-wide">
-                      {typeLabels[b.type] ?? b.type}
-                    </span>
+                    <ServiceBadge type={b.type} />
                   </td>
                   <td className="px-8 py-5 text-slate-500 text-sm font-medium">{b.date}</td>
+                  
+                  {/* View Details Button */}
+                  <td className="px-8 py-5">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedBookingForDetails(b)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group/btn"
+                      title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
+                    >
+                      <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover/btn:text-[#1a2b3c]" />
+                      <span>التفاصيل</span>
+                      {b.passengers > 1 && (
+                        <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full mr-1">
+                          {b.passengers}
+                        </span>
+                      )}
+                    </button>
+                  </td>
+
                   <td className="px-8 py-5">
                     {cleanPhone ? (
                       <a 
@@ -112,6 +125,12 @@ export function RecentBookingsTable({ bookings }: { bookings: Booking[]; reviews
           </tbody>
         </table>
       </div>
+
+      {/* Details Modal */}
+      <BookingDetailsModal
+        booking={selectedBookingForDetails}
+        onClose={() => setSelectedBookingForDetails(null)}
+      />
     </div>
   );
 }

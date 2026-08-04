@@ -1,4 +1,4 @@
-import type { Car, FastTrackPackage, HotelOption, Locale, SiteSettings } from "./types";
+import type { Car, FastTrackPackage, HotelOption, HotelItem, FlightRoute, ApartmentItem, Locale, SiteSettings } from "./types";
 
 export const locales: Locale[] = ["ar", "en"];
 
@@ -289,6 +289,14 @@ export function localizePackage(item: FastTrackPackage, locale: Locale): FastTra
   return { ...item, ...item.translations?.[locale] };
 }
 
-export function localizeHotel(item: HotelOption, locale: Locale): HotelOption {
+export function localizeHotel(item: HotelItem, locale: Locale): HotelItem {
+  return { ...item, ...item.translations?.[locale] };
+}
+
+export function localizeFlight(item: FlightRoute, locale: Locale): FlightRoute {
+  return { ...item, ...item.translations?.[locale] };
+}
+
+export function localizeApartment(item: ApartmentItem, locale: Locale): ApartmentItem {
   return { ...item, ...item.translations?.[locale] };
 }

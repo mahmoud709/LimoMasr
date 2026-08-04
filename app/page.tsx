@@ -3,10 +3,13 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import { CarCarousel } from "@/components/CarCarousel";
 import { FastTrackCarousel } from "@/components/FastTrackCarousel";
+import { FlightCarousel } from "@/components/FlightCarousel";
+import { HotelsCarousel } from "@/components/HotelsCarousel";
+import { ApartmentsCarousel } from "@/components/ApartmentsCarousel";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
-import { getCars, getFastTrackPackages, getSiteSettings } from "@/lib/data";
+import { getCars, getFastTrackPackages, getSiteSettings, getFlights, getHotels, getHotelApartments } from "@/lib/data";
 import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaSnapchatGhost, FaTelegramPlane, FaCar, FaPlane, FaBed } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { ui, withLang } from "@/lib/i18n";
@@ -16,7 +19,14 @@ import { ArticlesSection } from "@/components/ArticlesSection";
 import { CorporateSection } from "@/components/CorporateSection";
 
 export default async function Home() {
-  const [settings, cars, packages] = await Promise.all([getSiteSettings(), getCars(), getFastTrackPackages()]);
+  const [settings, cars, packages, flights, hotels, apartments] = await Promise.all([
+    getSiteSettings(),
+    getCars(),
+    getFastTrackPackages(),
+    getFlights(),
+    getHotels(),
+    getHotelApartments(),
+  ]);
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
   const t = ui[locale];
@@ -99,9 +109,9 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Carousel Fleet Showcase Section */}
+        {/* Carousel Services Showcase Section */}
         <section className="relative py-24 border-y border-black/[0.05] bg-white">
-          <div className="mx-auto max-w-[1400px] pl-0 pr-8 md:px-8 relative z-10 flex flex-col gap-16">
+          <div className="mx-auto max-w-[1400px] pl-0 pr-8 md:px-8 relative z-10 flex flex-col gap-20">
             {/* Cars Carousel */}
             <CarCarousel
               cars={cars}
@@ -111,11 +121,42 @@ export default async function Home() {
               currency={currency}
               exchangeRate={exchangeRate}
             />
+
             {/* Fast Track Carousel */}
             <FastTrackCarousel
               packages={packages}
-              title={locale === "en" ? "Fast Track Services" : "المسار السريع"}
+              title={locale === "en" ? "Fast Track Services" : "المسار السريع بالمطارات"}
               viewAllText={locale === "en" ? "View All" : "عرض الباقات"}
+              locale={locale}
+              currency={currency}
+              exchangeRate={exchangeRate}
+            />
+
+            {/* Flight Bookings Carousel */}
+            <FlightCarousel
+              flights={flights}
+              title={locale === "en" ? "Flight Bookings & Airline Tickets" : "حجز وتذاكر الطيران"}
+              viewAllText={locale === "en" ? "Book Flight" : "احجز تذكرتك"}
+              locale={locale}
+              currency={currency}
+              exchangeRate={exchangeRate}
+            />
+
+            {/* Hotels & Resorts Carousel */}
+            <HotelsCarousel
+              hotels={hotels}
+              title={locale === "en" ? "Hotels & Luxury Resorts" : "الفنادق والمنتجعات الفاخرة"}
+              viewAllText={locale === "en" ? "View Hotels" : "عرض الفنادق"}
+              locale={locale}
+              currency={currency}
+              exchangeRate={exchangeRate}
+            />
+
+            {/* Hotel Apartments Carousel */}
+            <ApartmentsCarousel
+              apartments={apartments}
+              title={locale === "en" ? "Hotel Apartments & Suites" : "الشقق والأجنحة الفندقية"}
+              viewAllText={locale === "en" ? "View Apartments" : "عرض الشقق"}
               locale={locale}
               currency={currency}
               exchangeRate={exchangeRate}

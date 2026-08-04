@@ -1,13 +1,14 @@
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
-import { getSiteSettings } from "@/lib/data";
+import { getSiteSettings, getHotelApartments } from "@/lib/data";
 import { CinematicBackground } from "@/components/CinematicBackground";
+import { ApartmentsCarousel } from "@/components/ApartmentsCarousel";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
 export default async function HotelApartmentsPage() {
-  const settings = await getSiteSettings();
+  const [settings, apartments] = await Promise.all([getSiteSettings(), getHotelApartments()]);
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
@@ -90,6 +91,15 @@ export default async function HotelApartmentsPage() {
               exchangeRate={exchangeRate}
             />
           </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto w-full px-8 mt-16">
+          <ApartmentsCarousel
+            apartments={apartments}
+            locale={locale}
+            currency={currency}
+            exchangeRate={exchangeRate}
+          />
         </div>
       </main>
     </PublicLayout>

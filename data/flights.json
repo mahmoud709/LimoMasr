@@ -1,0 +1,217 @@
+[
+  {
+    "id": "flight-cairo-riyadh",
+    "fromCity": "القاهرة (CAI)",
+    "toCity": "الرياض (RUH)",
+    "flightType": "رحلات يومية مباشرة",
+    "price": 4500,
+    "image": "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1200&q=80",
+    "tag": "الأكثر طلباً",
+    "features": [
+      "رحلات مباشرة يومياً بدون ترانزيت",
+      "وزن أمتعة مجاني حتى 46 كجم",
+      "إمكانية اختيار المقعد والوجبة",
+      "تأكيد فوري ودعم حجز 24/7"
+    ],
+    "status": "available",
+    "sortOrder": 1,
+    "translations": {
+      "ar": {
+        "fromCity": "القاهرة (CAI)",
+        "toCity": "الرياض (RUH)",
+        "flightType": "رحلات يومية مباشرة",
+        "tag": "الأكثر طلباً",
+        "features": [
+          "رحلات مباشرة يومياً بدون ترانزيت",
+          "وزن أمتعة مجاني حتى 46 كجم",
+          "إمكانية اختيار المقعد والوجبة",
+          "تأكيد فوري ودعم حجز 24/7"
+        ]
+      },
+      "en": {
+        "fromCity": "Cairo (CAI)",
+        "toCity": "Riyadh (RUH)",
+        "flightType": "Daily Direct Flights",
+        "tag": "Most Popular",
+        "features": [
+          "Daily non-stop direct flights",
+          "Free luggage allowance up to 46kg",
+          "Free seat & meal selection",
+          "Instant confirmation & 24/7 support"
+        ]
+      }
+    }
+  },
+  {
+    "id": "flight-cairo-dubai",
+    "fromCity": "القاهرة (CAI)",
+    "toCity": "دبي (DXB)",
+    "flightType": "طيران الإمارات ومصر للطيران",
+    "price": 5200,
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+    "tag": "عروض حصرية",
+    "features": [
+      "أفضل مواعيد إقلاع ووصول",
+      "خيارات درجة رجال الأعمال والدرجة الأولى",
+      "مرونة عالية في تعديل المواعيد",
+      "أفضل باقات السفر السياحي"
+    ],
+    "status": "available",
+    "sortOrder": 2,
+    "translations": {
+      "ar": {
+        "fromCity": "القاهرة (CAI)",
+        "toCity": "دبي (DXB)",
+        "flightType": "طيران الإمارات ومصر للطيران",
+        "tag": "عروض حصرية",
+        "features": [
+          "أفضل مواعيد إقلاع ووصول",
+          "خيارات درجة رجال الأعمال والدرجة الأولى",
+          "مرونة عالية في تعديل المواعيد",
+          "أفضل باقات السفر السياحي"
+        ]
+      },
+      "en": {
+        "fromCity": "Cairo (CAI)",
+        "toCity": "Dubai (DXB)",
+        "flightType": "Emirates & EgyptAir",
+        "tag": "Special Offers",
+        "features": [
+          "Optimal departure & arrival timings",
+          "Business & First Class available",
+          "Flexible date change policy",
+          "Top tourism travel packages"
+        ]
+      }
+    }
+  },
+  {
+    "id": "flight-cairo-jeddah",
+    "fromCity": "القاهرة (CAI)",
+    "toCity": "جدة (JED)",
+    "flightType": "رحلات العمرة وزيارات العمل",
+    "price": 3900,
+    "image": "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=1200&q=80",
+    "tag": "رحلات مستمرة",
+    "features": [
+      "رحلات منتظمة طوال أيام الأسبوع",
+      "تسهيل إجراءات نقل ماء زمزم",
+      "أسعار خاصة للمجموعات والعائلات",
+      "مساعدة شاملة حتى صالة السفر"
+    ],
+    "status": "available",
+    "sortOrder": 3,
+    "translations": {
+      "ar": {
+        "fromCity": "القاهرة (CAI)",
+        "toCity": "جدة (JED)",
+        "flightType": "رحلات العمرة وزيارات العمل",
+        "tag": "رحلات مستمرة",
+        "features": [
+          "رحلات منتظمة طوال أيام الأسبوع",
+          "تسهيل إجراءات نقل ماء زمزم",
+          "أسعار خاصة للمجموعات والعائلات",
+          "مساعدة شاملة حتى صالة السفر"
+        ]
+      },
+      "en": {
+        "fromCity": "Cairo (CAI)",
+        "toCity": "Jeddah (JED)",
+        "flightType": "Umrah & Business Trips",
+        "tag": "Frequent Trips",
+        "features": [
+          "Regular flights all week long",
+          "Smooth Zamzam water transit",
+          "Family & group special rates",
+          "Assistance through boarding"
+        ]
+      }
+    }
+  },
+  {
+    "id": "flight-cairo-istanbul",
+    "fromCity": "القاهرة (CAI)",
+    "toCity": "إسطنبول (IST)",
+    "flightType": "رحلات السياحة والتسوق",
+    "price": 6100,
+    "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1200&q=80",
+    "tag": "عطلات مميزة",
+    "features": [
+      "رحلات مباشرة على أرقى الخطوط",
+      "تنسيق عروض الإقامة والتنقلات",
+      "إمكانية تقسيط تذاكر الطيران",
+      "إرشاد كامل لمتطلبات التأشيرة"
+    ],
+    "status": "available",
+    "sortOrder": 4,
+    "translations": {
+      "ar": {
+        "fromCity": "القاهرة (CAI)",
+        "toCity": "إسطنبول (IST)",
+        "flightType": "رحلات السياحة والتسوق",
+        "tag": "عطلات مميزة",
+        "features": [
+          "رحلات مباشرة على أرقى الخطوط",
+          "تنسيق عروض الإقامة والتنقلات",
+          "إمكانية تقسيط تذاكر الطيران",
+          "إرشاد كامل لمتطلبات التأشيرة"
+        ]
+      },
+      "en": {
+        "fromCity": "Cairo (CAI)",
+        "toCity": "Istanbul (IST)",
+        "flightType": "Tourism & Shopping Flights",
+        "tag": "Top Holiday",
+        "features": [
+          "Direct flights on top carriers",
+          "Flight + hotel combo support",
+          "Flexible payment options",
+          "Full visa requirement guidance"
+        ]
+      }
+    }
+  },
+  {
+    "id": "flight-cairo-domestic",
+    "fromCity": "القاهرة (CAI)",
+    "toCity": "شرم الشيخ / الغردقة / أسوان",
+    "flightType": "رحلات طيران داخلي سريع",
+    "price": 1900,
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    "tag": "طيران داخلي",
+    "features": [
+      "مدة الرحلة أقل من 60 دقيقة",
+      "تنقل سريع بدون إجهاد السفر البري",
+      "مواعيد متعددة على مدار اليوم",
+      "تنسيق استقبال ليموزين بالمطار"
+    ],
+    "status": "available",
+    "sortOrder": 5,
+    "translations": {
+      "ar": {
+        "fromCity": "القاهرة (CAI)",
+        "toCity": "شرم الشيخ / الغردقة / أسوان",
+        "flightType": "رحلات طيران داخلي سريع",
+        "tag": "طيران داخلي",
+        "features": [
+          "مدة الرحلة أقل من 60 دقيقة",
+          "تنقل سريع بدون إجهاد السفر البري",
+          "مواعيد متعددة على مدار اليوم",
+          "تنسيق استقبال ليموزين بالمطار"
+        ]
+      },
+      "en": {
+        "fromCity": "Cairo (CAI)",
+        "toCity": "Sharm / Hurghada / Aswan",
+        "flightType": "Fast Domestic Flights",
+        "tag": "Domestic",
+        "features": [
+          "Flight duration under 60 mins",
+          "Quick travel without road fatigue",
+          "Multiple daily departures",
+          "Airport limo pickup coordination"
+        ]
+      }
+    }
+  }
+]

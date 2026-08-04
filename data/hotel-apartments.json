@@ -1,0 +1,198 @@
+[
+  {
+    "id": "apt-tagamoa",
+    "name": "أجنحة وشقق فندقية بالتجمع الخامس",
+    "location": "القاهرة الجديدة",
+    "rooms": "2 إلى 4 غرف نوم",
+    "capacity": "مناسب للعائلات الكبيرة",
+    "price": 3200,
+    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "tag": "تشطيب فندقي فاخر",
+    "features": [
+      "فرش فندقي الترا مودرن ومكيف بالكامل",
+      "مطبخ مجهز بجميع الأجهزة الكهربائية",
+      "موقع حيوي قريب من المولات والجامعات",
+      "خدمة تنظيف دورية وأمن وحراسة 24/7"
+    ],
+    "description": "شقق وأجنحة فندقية راقية بأحدث التشطيبات ومجهزة بالكامل في أرقى أحياء التجمع الخامس.",
+    "status": "available",
+    "sortOrder": 1,
+    "translations": {
+      "ar": {
+        "name": "أجنحة وشقق فندقية بالتجمع الخامس",
+        "location": "القاهرة الجديدة",
+        "rooms": "2 إلى 4 غرف نوم",
+        "capacity": "مناسب للعائلات الكبيرة",
+        "tag": "تشطيب فندقي فاخر",
+        "features": [
+          "فرش فندقي الترا مودرن ومكيف بالكامل",
+          "مطبخ مجهز بجميع الأجهزة الكهربائية",
+          "موقع حيوي قريب من المولات والجامعات",
+          "خدمة تنظيف دورية وأمن وحراسة 24/7"
+        ],
+        "description": "شقق وأجنحة فندقية راقية بأحدث التشطيبات ومجهزة بالكامل في أرقى أحياء التجمع الخامس."
+      },
+      "en": {
+        "name": "Luxury Suites in 5th Settlement",
+        "location": "New Cairo",
+        "rooms": "2 to 4 Bedrooms",
+        "capacity": "Ideal for Large Families",
+        "tag": "Ultra Luxury Finish",
+        "features": [
+          "Ultra-modern luxury furnishings & AC",
+          "Fully equipped modern kitchen",
+          "Prime location near malls & clubs",
+          "Regular housekeeping & 24/7 security"
+        ],
+        "description": "Premium hotel apartments and suites fully equipped with modern amenities in New Cairo."
+      }
+    }
+  },
+  {
+    "id": "apt-zamalek-nile",
+    "name": "شقق فندقية بإطلالة نيلية بالزمالك",
+    "location": "الزمالك - النيل",
+    "rooms": "2 و 3 غرف نوم",
+    "capacity": "عائلات ودبلوماسيين",
+    "price": 4500,
+    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "tag": "إطلالة بانورامية على النيل",
+    "features": [
+      "شرفة واسعة بفيو مفتوح على نهر النيل",
+      "تصميم كلاسيكي راقي وأثاث فخم",
+      "أعلى درجات الخصوصية والأمان",
+      "خدمة صف السيارات ومساعد خاص"
+    ],
+    "description": "إطلالة ساحرة على نهر النيل وموقع مميز في أرقى أحياء القاهرة العريقة.",
+    "status": "available",
+    "sortOrder": 2,
+    "translations": {
+      "ar": {
+        "name": "شقق فندقية بإطلالة نيلية بالزمالك",
+        "location": "الزمالك - النيل",
+        "rooms": "2 و 3 غرف نوم",
+        "capacity": "عائلات ودبلوماسيين",
+        "tag": "إطلالة بانورامية على النيل",
+        "features": [
+          "شرفة واسعة بفيو مفتوح على نهر النيل",
+          "تصميم كلاسيكي راقي وأثاث فخم",
+          "أعلى درجات الخصوصية والأمان",
+          "خدمة صف السيارات ومساعد خاص"
+        ],
+        "description": "إطلالة ساحرة على نهر النيل وموقع مميز في أرقى أحياء القاهرة العريقة."
+      },
+      "en": {
+        "name": "Nile View Hotel Apartments in Zamalek",
+        "location": "Zamalek - Nile View",
+        "rooms": "2 & 3 Bedrooms",
+        "capacity": "Diplomats & Families",
+        "tag": "Panoramic Nile View",
+        "features": [
+          "Spacious open Nile-facing terrace",
+          "Classic upscale interior design",
+          "Maximum privacy & top security",
+          "Valet parking & dedicated assistance"
+        ],
+        "description": "Mesmerizing direct Nile views in Cairo's most prestigious diplomatic neighborhood."
+      }
+    }
+  },
+  {
+    "id": "apt-sheikh-zayed",
+    "name": "شقق فندقية بكمبوندات الشيخ زايد",
+    "location": "الشيخ زايد - 6 أكتوبر",
+    "rooms": "1 إلى 3 غرف نوم",
+    "capacity": "أفراد وعائلات",
+    "price": 2800,
+    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    "tag": "كمبوند هادئ وراقي",
+    "features": [
+      "إطلالة على مساحات خضراء وبحيرات",
+      "نوادي رياضية وحمامات سباحة مشتركة",
+      "واي فاي فائق السرعة وشاشات ذكية",
+      "قريب من مول مصر ومول العرب"
+    ],
+    "description": "إقامة هادئة وفاخرة داخل أفضل الكمبوندات السكنية المغلقة بالشيخ زايد.",
+    "status": "available",
+    "sortOrder": 3,
+    "translations": {
+      "ar": {
+        "name": "شقق فندقية بكمبوندات الشيخ زايد",
+        "location": "الشيخ زايد - 6 أكتوبر",
+        "rooms": "1 إلى 3 غرف نوم",
+        "capacity": "أفراد وعائلات",
+        "tag": "كمبوند هادئ وراقي",
+        "features": [
+          "إطلالة على مساحات خضراء وبحيرات",
+          "نوادي رياضية وحمامات سباحة مشتركة",
+          "واي فاي فائق السرعة وشاشات ذكية",
+          "قريب من مول مصر ومول العرب"
+        ],
+        "description": "إقامة هادئة وفاخرة داخل أفضل الكمبوندات السكنية المغلقة بالشيخ زايد."
+      },
+      "en": {
+        "name": "Hotel Apartments in Sheikh Zayed",
+        "location": "Sheikh Zayed - 6th October",
+        "rooms": "1 to 3 Bedrooms",
+        "capacity": "Solo & Families",
+        "tag": "Gated Community",
+        "features": [
+          "Overlooking gardens & water bodies",
+          "Shared fitness center & pool access",
+          "High-speed WiFi & Smart TVs",
+          "Close to Mall of Arabia & Egypt"
+        ],
+        "description": "Peaceful luxury living inside premier gated compounds in Sheikh Zayed & 6th of October."
+      }
+    }
+  },
+  {
+    "id": "apt-nasr-city",
+    "name": "شقق وأجنحة فندقية بمدينة نصر ومصر الجديدة",
+    "location": "مصر الجديدة ومدينة نصر",
+    "rooms": "1 إلى 3 غرف نوم",
+    "capacity": "قريب من المطار",
+    "price": 2400,
+    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "tag": "موقع استراتيجي",
+    "features": [
+      "10 دقائق فقط من مطار القاهرة الدولي",
+      "قريب من سيتي ستارز ومراكز التسوق",
+      "مناسب للإقامات الطويلة والقصيرة",
+      "تجهيزات فندقية كاملة تشمل الغسيل"
+    ],
+    "description": "موقع حيوي يربط بين المطار وأشهر مراكز الأعمال والتسوق بالقاهرة.",
+    "status": "available",
+    "sortOrder": 4,
+    "translations": {
+      "ar": {
+        "name": "شقق وأجنحة فندقية بمدينة نصر ومصر الجديدة",
+        "location": "مصر الجديدة ومدينة نصر",
+        "rooms": "1 إلى 3 غرف نوم",
+        "capacity": "قريب من المطار",
+        "tag": "موقع استراتيجي",
+        "features": [
+          "10 دقائق فقط من مطار القاهرة الدولي",
+          "قريب من سيتي ستارز ومراكز التسوق",
+          "مناسب للإقامات الطويلة والقصيرة",
+          "تجهيزات فندقية كاملة تشمل الغسيل"
+        ],
+        "description": "موقع حيوي يربط بين المطار وأشهر مراكز الأعمال والتسوق بالقاهرة."
+      },
+      "en": {
+        "name": "Hotel Suites in Nasr City & Heliopolis",
+        "location": "Heliopolis & Nasr City",
+        "rooms": "1 to 3 Bedrooms",
+        "capacity": "Close to Airport",
+        "tag": "Strategic Hub",
+        "features": [
+          "Only 10 mins from Cairo Airport",
+          "Close to Citystars & shopping centers",
+          "Ideal for short & extended stays",
+          "Full laundry & hotel amenities"
+        ],
+        "description": "Strategic hub between Cairo Airport and major business and shopping destinations."
+      }
+    }
+  }
+]

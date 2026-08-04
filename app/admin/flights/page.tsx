@@ -1,45 +1,43 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { HotelItem } from "@/lib/types";
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiMapPin, FiStar, FiCheck } from "react-icons/fi";
+import type { FlightRoute } from "@/lib/types";
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiCheck } from "react-icons/fi";
+import { FaPlane, FaPlaneDeparture, FaPlaneArrival } from "react-icons/fa";
 import ImageUploader from "@/components/admin/ImageUploader";
 
-const empty: Omit<HotelItem, "id"> = {
-  name: "",
-  city: "",
-  rating: 5,
-  price: 3500,
-  image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
-  images: [],
-  tag: "",
+const empty: Omit<FlightRoute, "id"> = {
+  fromCity: "القاهرة (CAI)",
+  toCity: "الرياض (RUH)",
+  flightType: "رحلات يومية مباشرة",
+  price: 4500,
+  image: "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=1200&q=80",
+  tag: "الأكثر طلباً",
   features: [],
-  description: "",
   status: "available",
   sortOrder: 0,
   translations: {
-    ar: { name: "", city: "", tag: "", features: [], description: "" },
-    en: { name: "", city: "", tag: "", features: [], description: "" },
+    ar: { fromCity: "", toCity: "", flightType: "", tag: "", features: [] },
+    en: { fromCity: "", toCity: "", flightType: "", tag: "", features: [] },
   }
 };
 
-export default function HotelsAdminPage() {
-  const [hotels, setHotels] = useState<HotelItem[]>([]);
+export default function FlightsAdminPage() {
+  const [flights, setFlights] = useState<FlightRoute[]>([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<"add" | "edit" | null>(null);
-  const [editing, setEditing] = useState<HotelItem | null>(null);
+  const [editing, setEditing] = useState<FlightRoute | null>(null);
   const [form, setForm] = useState(empty);
   const [saving, setSaving] = useState(false);
 
-  // Features temp strings for easy textarea line-by-line editing
   const [featuresArText, setFeaturesArText] = useState("");
   const [featuresEnText, setFeaturesEnText] = useState("");
 
   async function load() {
     setLoading(true);
-    const res = await fetch("/api/admin/hotels", { cache: "no-store" });
+    const res = await fetch("/api/admin/flights", { cache: "no-store" });
     if (res.ok) {
-      setHotels(await res.json());
+      setFlights(await res.json());
     }
     setLoading(false);
   }
@@ -51,10 +49,10 @@ export default function HotelsAdminPage() {
   function openAdd() {
     setForm({
       ...empty,
-      sortOrder: hotels.length + 1,
+      sortOrder: flights.length + 1,
       translations: {
-        ar: { name: "", city: "", tag: "", features: [], description: "" },
-        en: { name: "", city: "", tag: "", features: [], description: "" },
+        ar: { fromCity: "", toCity: "", flightType: "", tag: "", features: [] },
+        en: { fromCity: "", toCity: "", flightType: "", tag: "", features: [] },
       }
     });
     setFeaturesArText("");
@@ -63,90 +61,86 @@ export default function HotelsAdminPage() {
     setModal("add");
   }
 
-  function openEdit(h: HotelItem) {
-    const arFeatures = h.translations?.ar?.features || h.features || [];
-    const enFeatures = h.translations?.en?.features || [];
+  function openEdit(fRoute: FlightRoute) {
+    const arFeatures = fRoute.translations?.ar?.features || fRoute.features || [];
+    const enFeatures = fRoute.translations?.en?.features || [];
 
     setForm({
-      ...h,
+      ...fRoute,
       translations: {
         ar: {
-          name: h.translations?.ar?.name || h.name || "",
-          city: h.translations?.ar?.city || h.city || "",
-          tag: h.translations?.ar?.tag || h.tag || "",
+          fromCity: fRoute.translations?.ar?.fromCity || fRoute.fromCity || "",
+          toCity: fRoute.translations?.ar?.toCity || fRoute.toCity || "",
+          flightType: fRoute.translations?.ar?.flightType || fRoute.flightType || "",
+          tag: fRoute.translations?.ar?.tag || fRoute.tag || "",
           features: arFeatures,
-          description: h.translations?.ar?.description || h.description || "",
         },
         en: {
-          name: h.translations?.en?.name || "",
-          city: h.translations?.en?.city || "",
-          tag: h.translations?.en?.tag || "",
+          fromCity: fRoute.translations?.en?.fromCity || "",
+          toCity: fRoute.translations?.en?.toCity || "",
+          flightType: fRoute.translations?.en?.flightType || "",
+          tag: fRoute.translations?.en?.tag || "",
           features: enFeatures,
-          description: h.translations?.en?.description || "",
         }
       }
     });
     setFeaturesArText(arFeatures.join("\n"));
     setFeaturesEnText(enFeatures.join("\n"));
-    setEditing(h);
+    setEditing(fRoute);
     setModal("edit");
   }
 
   async function save() {
     setSaving(true);
 
-    const arName = form.translations?.ar?.name || form.name || "فندق فاخر";
-    const arCity = form.translations?.ar?.city || form.city || "القاهرة";
+    const arFrom = form.translations?.ar?.fromCity || form.fromCity || "القاهرة";
+    const arTo = form.translations?.ar?.toCity || form.toCity || "الرياض";
+    const arType = form.translations?.ar?.flightType || form.flightType || "رحلات مباشرة";
     const arTag = form.translations?.ar?.tag || form.tag || "";
-    const arDesc = form.translations?.ar?.description || form.description || "";
     const arFeatures = featuresArText.split("\n").map(s => s.trim()).filter(Boolean);
 
-    const enName = form.translations?.en?.name || arName;
-    const enCity = form.translations?.en?.city || arCity;
+    const enFrom = form.translations?.en?.fromCity || arFrom;
+    const enTo = form.translations?.en?.toCity || arTo;
+    const enType = form.translations?.en?.flightType || arType;
     const enTag = form.translations?.en?.tag || arTag;
-    const enDesc = form.translations?.en?.description || arDesc;
     const enFeatures = featuresEnText.split("\n").map(s => s.trim()).filter(Boolean);
 
-    const primaryImage = form.images && form.images.length > 0 ? form.images[0] : (form.image || "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80");
-
-    const data: HotelItem = {
+    const data: FlightRoute = {
       ...form,
-      id: editing?.id ?? `hotel-${Date.now()}`,
-      name: arName,
-      city: arCity,
+      id: editing?.id ?? `flight-${Date.now()}`,
+      fromCity: arFrom,
+      toCity: arTo,
+      flightType: arType,
       tag: arTag,
-      description: arDesc,
-      features: arFeatures.length > 0 ? arFeatures : ["خدمة 5 نجوم", "إطلالة بانورامية"],
-      image: primaryImage,
-      rating: Number(form.rating) || 5,
+      features: arFeatures.length > 0 ? arFeatures : ["رحلات مباشرة", "وزن أمتعة مجاني"],
       price: Number(form.price) || 0,
       sortOrder: Number(form.sortOrder) || 0,
       translations: {
         ar: {
-          name: arName,
-          city: arCity,
+          fromCity: arFrom,
+          toCity: arTo,
+          flightType: arType,
           tag: arTag,
           features: arFeatures,
-          description: arDesc,
         },
         en: {
-          name: enName,
-          city: enCity,
+          fromCity: enFrom,
+          toCity: enTo,
+          flightType: enType,
           tag: enTag,
           features: enFeatures.length > 0 ? enFeatures : arFeatures,
-          description: enDesc,
         }
       }
     };
 
     if (modal === "edit") {
-      await fetch(`/api/admin/hotels/${data.id}`, {
+      await fetch(`/api/admin/flights/${data.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } else {
-      await fetch("/api/admin/hotels", {
+      await fetch("/api/admin/flights", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -158,8 +152,8 @@ export default function HotelsAdminPage() {
   }
 
   async function del(id: string) {
-    if (!confirm("هل أنت متأكد من حذف هذا الفندق / الوجهة؟")) return;
-    await fetch(`/api/admin/hotels/${id}`, {
+    if (!confirm("هل أنت متأكد من حذف هذا المسار الجوي؟")) return;
+    await fetch(`/api/admin/flights/${id}`, {
       method: "DELETE"
     });
     load();
@@ -181,7 +175,7 @@ export default function HotelsAdminPage() {
     }));
   };
 
-  const imagesList = form.images && form.images.length > 0 ? form.images : (form.image ? [form.image] : []);
+  const imagesList = form.image ? [form.image] : [];
 
   return (
     <div className="flex-1 p-6 md:p-8">
@@ -189,61 +183,59 @@ export default function HotelsAdminPage() {
         <div>
           <h1 className="text-2xl md:text-3xl font-black text-[#1a2b3c] flex items-center gap-3">
             <span className="w-3 h-8 bg-[#d0a755] rounded-full" />
-            إدارة الفنادق والمنتجعات الفاخرة
+            إدارة مسارات وتذاكر الطيران
           </h1>
-          <p className="text-sm text-[#1a2b3c]/60 mt-1">التحكم في عروض الفنادق، الصور على Cloudinary، الأسعار، والميزات باللغتين</p>
+          <p className="text-sm text-[#1a2b3c]/60 mt-1">التحكم في وجهات السفر الجوي، الصور على Cloudinary، الأسعار، والمزايا باللغتين</p>
         </div>
         <button
           onClick={openAdd}
           className="flex items-center gap-2 bg-[#d0a755] text-[#1a2b3c] text-sm font-black px-5 py-3 rounded-xl hover:bg-[#b89040] transition-colors shadow-md"
         >
-          <FiPlus className="w-5 h-5" /> إضافة فندق / وجهة
+          <FiPlus className="w-5 h-5" /> إضافة مسار جوي
         </button>
       </div>
 
       {loading ? (
-        <div className="text-center py-20 text-[#1a2b3c]/40 font-bold">جاري تحميل الفنادق...</div>
+        <div className="text-center py-20 text-[#1a2b3c]/40 font-bold">جاري تحميل مسارات الطيران...</div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {hotels.map((hotel) => (
-            <div key={hotel.id} className="bg-white rounded-2xl border border-black/10 shadow-sm overflow-hidden flex flex-col group hover:shadow-lg transition-all duration-300">
-              {/* Hotel Image with Badges */}
+          {flights.map((flight) => (
+            <div key={flight.id} className="bg-white rounded-2xl border border-black/10 shadow-sm overflow-hidden flex flex-col group hover:shadow-lg transition-all duration-300">
+              {/* Flight Image with Badges */}
               <div className="relative h-48 w-full overflow-hidden bg-gray-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={hotel.image}
-                  alt={hotel.name}
+                  src={flight.image}
+                  alt={`${flight.fromCity} - ${flight.toCity}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-3 left-3 right-3 flex justify-between items-center pointer-events-none">
                   <span className="px-2.5 py-1 rounded-full bg-[#d0a755] text-white text-[10px] font-black shadow flex items-center gap-1">
-                    <FiStar className="w-3 h-3 fill-current" />
-                    {hotel.rating} نجوم
+                    <FaPlane className="w-2.5 h-2.5" />
+                    {flight.tag || "مباشر"}
                   </span>
-                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-black shadow ${hotel.status === "available" ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
-                    {hotel.status === "available" ? "متاح" : "غير متاح"}
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-black shadow ${flight.status === "available" ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
+                    {flight.status === "available" ? "متاح" : "غير متاح"}
                   </span>
+                </div>
+
+                <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm p-2 px-3 text-white text-xs font-black flex items-center justify-between">
+                  <span className="truncate">{flight.fromCity}</span>
+                  <span className="text-[#d0a755]">⇄</span>
+                  <span className="truncate">{flight.toCity}</span>
                 </div>
               </div>
 
               {/* Card Body */}
               <div className="p-5 flex flex-col flex-1">
-                <div className="flex items-center gap-1.5 text-xs text-[#d0a755] font-black uppercase mb-1">
-                  <FiMapPin className="w-3.5 h-3.5" />
-                  <span>{hotel.city}</span>
-                  {hotel.translations?.en?.city && (
-                    <span className="text-gray-400 font-bold">({hotel.translations.en.city})</span>
-                  )}
-                </div>
-
-                <h3 className="font-black text-[#1a2b3c] text-lg mb-1">{hotel.name}</h3>
-                {hotel.translations?.en?.name && (
-                  <p className="text-xs text-[#1a2b3c]/50 font-bold mb-3">{hotel.translations.en.name}</p>
-                )}
+                <p className="text-xs font-bold text-[#d0a755] uppercase mb-1">{flight.flightType}</p>
+                <h3 className="font-black text-[#1a2b3c] text-lg mb-2">
+                  {flight.fromCity} ⇄ {flight.toCity}
+                </h3>
 
                 {/* Features Snippet */}
                 <div className="space-y-1 mb-4 flex-1">
-                  {(hotel.features || []).slice(0, 3).map((f, i) => (
+                  {(flight.features || []).slice(0, 3).map((f, i) => (
                     <div key={i} className="flex items-center gap-1.5 text-xs text-[#1a2b3c]/70 font-medium">
                       <FiCheck className="w-3 h-3 text-[#d0a755] shrink-0" />
                       <span className="truncate">{f}</span>
@@ -255,18 +247,18 @@ export default function HotelsAdminPage() {
                 <div className="pt-3 border-t border-black/5 flex items-center justify-between">
                   <div>
                     <span className="text-xs text-[#1a2b3c]/50 font-bold">يبدأ من: </span>
-                    <span className="text-base font-black text-[#d0a755]">{hotel.price} ج.م</span>
+                    <span className="text-base font-black text-[#d0a755]">{flight.price} ج.م</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => openEdit(hotel)}
+                      onClick={() => openEdit(flight)}
                       className="p-2 rounded-xl border border-black/10 text-xs font-bold text-[#1a2b3c] hover:bg-[#d0a755] hover:text-white transition-colors"
                       title="تعديل"
                     >
                       <FiEdit2 className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => del(hotel.id)}
+                      onClick={() => del(flight.id)}
                       className="p-2 rounded-xl border border-red-200 text-xs font-bold text-red-500 hover:bg-red-500 hover:text-white transition-colors"
                       title="حذف"
                     >
@@ -287,7 +279,7 @@ export default function HotelsAdminPage() {
             {/* Modal Header */}
             <div className="sticky top-0 bg-white px-6 py-4 border-b border-black/10 flex items-center justify-between z-20">
               <h2 className="font-black text-[#1a2b3c] text-xl">
-                {modal === "add" ? "إضافة فندق / منتجع جديد" : "تعديل بيانات الفندق"}
+                {modal === "add" ? "إضافة مسار طيران جديد" : "تعديل بيانات رحلة الطيران"}
               </h2>
               <button
                 onClick={() => setModal(null)}
@@ -302,49 +294,64 @@ export default function HotelsAdminPage() {
               {/* Cloudinary Image Uploader */}
               <div className="bg-gray-50 p-5 rounded-2xl border border-black/5">
                 <label className="block text-xs font-black text-[#1a2b3c] mb-3 uppercase tracking-wider">
-                  صور الفندق / المنتجع (مرفوعة على Cloudinary)
+                  صورة وجهة الطيران (مرفوعة على Cloudinary)
                 </label>
                 <ImageUploader
                   images={imagesList}
                   onChange={(newImages) => {
                     setForm(prev => ({
                       ...prev,
-                      images: newImages,
                       image: newImages[0] || prev.image
                     }));
                   }}
                 />
               </div>
 
-              {/* Names (AR / EN) */}
+              {/* From City (AR / EN) */}
               <div className="grid md:grid-cols-2 gap-4">
                 <Field
-                  label="اسم الفندق / الباقة (عربي)"
-                  value={form.translations?.ar?.name || form.name || ""}
-                  onChange={v => fTrans("ar", "name", v)}
-                  placeholder="مثال: فنادق القاهرة والنيل 5 نجوم"
+                  label="مدينة الإقلاع / المطار (عربي)"
+                  value={form.translations?.ar?.fromCity || form.fromCity || ""}
+                  onChange={v => fTrans("ar", "fromCity", v)}
+                  placeholder="مثال: القاهرة (CAI)"
                 />
                 <Field
-                  label="اسم الفندق / الباقة (إنجليزي)"
-                  value={form.translations?.en?.name || ""}
-                  onChange={v => fTrans("en", "name", v)}
-                  placeholder="e.g. Cairo & Nile 5-Star Hotels"
+                  label="مدينة الإقلاع / المطار (إنجليزي)"
+                  value={form.translations?.en?.fromCity || ""}
+                  onChange={v => fTrans("en", "fromCity", v)}
+                  placeholder="e.g. Cairo (CAI)"
                 />
               </div>
 
-              {/* City / Location (AR / EN) */}
+              {/* To City (AR / EN) */}
               <div className="grid md:grid-cols-2 gap-4">
                 <Field
-                  label="المدينة / المنطقة (عربي)"
-                  value={form.translations?.ar?.city || form.city || ""}
-                  onChange={v => fTrans("ar", "city", v)}
-                  placeholder="مثال: القاهرة الكبرى"
+                  label="مدينة الوصول / المطار (عربي)"
+                  value={form.translations?.ar?.toCity || form.toCity || ""}
+                  onChange={v => fTrans("ar", "toCity", v)}
+                  placeholder="مثال: الرياض (RUH)"
                 />
                 <Field
-                  label="المدينة / المنطقة (إنجليزي)"
-                  value={form.translations?.en?.city || ""}
-                  onChange={v => fTrans("en", "city", v)}
-                  placeholder="e.g. Greater Cairo"
+                  label="مدينة الوصول / المطار (إنجليزي)"
+                  value={form.translations?.en?.toCity || ""}
+                  onChange={v => fTrans("en", "toCity", v)}
+                  placeholder="e.g. Riyadh (RUH)"
+                />
+              </div>
+
+              {/* Flight Type / Carrier (AR / EN) */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field
+                  label="نوع الرحلة / الطيران (عربي)"
+                  value={form.translations?.ar?.flightType || form.flightType || ""}
+                  onChange={v => fTrans("ar", "flightType", v)}
+                  placeholder="مثال: رحلات يومية مباشرة"
+                />
+                <Field
+                  label="نوع الرحلة / الطيران (إنجليزي)"
+                  value={form.translations?.en?.flightType || ""}
+                  onChange={v => fTrans("en", "flightType", v)}
+                  placeholder="e.g. Daily Direct Flights"
                 />
               </div>
 
@@ -354,34 +361,20 @@ export default function HotelsAdminPage() {
                   label="الشارة الترويجية (عربي)"
                   value={form.translations?.ar?.tag || form.tag || ""}
                   onChange={v => fTrans("ar", "tag", v)}
-                  placeholder="مثال: إطلالة نيلية ساحرة"
+                  placeholder="مثال: الأكثر طلباً"
                 />
                 <Field
                   label="الشارة الترويجية (إنجليزي)"
                   value={form.translations?.en?.tag || ""}
                   onChange={v => fTrans("en", "tag", v)}
-                  placeholder="e.g. Stunning Nile View"
+                  placeholder="e.g. Most Popular"
                 />
               </div>
 
-              {/* Rating, Price, Status, SortOrder */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-2xl border border-black/5">
+              {/* Price, Status, SortOrder */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-2xl border border-black/5">
                 <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/70 mb-1.5">التقييم (النجوم)</label>
-                  <select
-                    value={form.rating}
-                    onChange={e => f("rating", Number(e.target.value))}
-                    className="w-full bg-white border border-black/10 rounded-xl px-3 py-2.5 text-sm font-bold text-[#1a2b3c] outline-none"
-                  >
-                    <option value={5}>5 نجوم</option>
-                    <option value={4}>4 نجوم</option>
-                    <option value={3}>3 نجوم</option>
-                    <option value={7}>7 نجوم (فاخر جداً)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/70 mb-1.5">يبدأ السعر من (ج.م)</label>
+                  <label className="block text-xs font-black text-[#1a2b3c]/70 mb-1.5">يبدأ سعر التذكرة من (ج.م)</label>
                   <input
                     type="number"
                     value={form.price}
@@ -423,7 +416,7 @@ export default function HotelsAdminPage() {
                     value={featuresArText}
                     onChange={e => setFeaturesArText(e.target.value)}
                     rows={4}
-                    placeholder="إطلالة مباشرة على النيل&#10;إفطار بوفيه فاخر مفتوح&#10;سبا ونادي صحي متكامل"
+                    placeholder="رحلات مباشرة يومياً بدون ترانزيت&#10;وزن أمتعة مجاني حتى 46 كجم&#10;إمكانية اختيار المقعد والوجبة"
                     className="w-full bg-[#f0f2f5] rounded-xl p-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]"
                   />
                 </div>
@@ -436,29 +429,7 @@ export default function HotelsAdminPage() {
                     value={featuresEnText}
                     onChange={e => setFeaturesEnText(e.target.value)}
                     rows={4}
-                    placeholder="Direct Nile view&#10;Luxury open buffet breakfast&#10;Full wellness spa & club"
-                    className="w-full bg-[#f0f2f5] rounded-xl p-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]"
-                  />
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-black text-[#1a2b3c] mb-1.5">الوصف الترويجي (عربي)</label>
-                  <textarea
-                    value={form.translations?.ar?.description || form.description || ""}
-                    onChange={e => fTrans("ar", "description", e.target.value)}
-                    rows={2}
-                    className="w-full bg-[#f0f2f5] rounded-xl p-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-[#1a2b3c] mb-1.5">الوصف الترويجي (إنجليزي)</label>
-                  <textarea
-                    value={form.translations?.en?.description || ""}
-                    onChange={e => fTrans("en", "description", e.target.value)}
-                    rows={2}
+                    placeholder="Daily non-stop direct flights&#10;Free luggage allowance up to 46kg&#10;Instant confirmation & 24/7 support"
                     className="w-full bg-[#f0f2f5] rounded-xl p-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]"
                   />
                 </div>
@@ -479,7 +450,7 @@ export default function HotelsAdminPage() {
                 className="flex items-center gap-2 bg-[#d0a755] text-[#1a2b3c] font-black px-6 py-2.5 rounded-xl hover:bg-[#b89040] transition-colors disabled:opacity-50 shadow-md"
               >
                 <FiSave className="w-4 h-4" />
-                {saving ? "جاري الحفظ..." : "حفظ الفندق"}
+                {saving ? "جاري الحفظ..." : "حفظ مسار الطيران"}
               </button>
             </div>
           </div>

@@ -2,9 +2,11 @@
 
 import { useState, useMemo } from "react";
 import type { Booking, BookingStatus } from "@/lib/types";
-import { FiDownload, FiSearch, FiFilter, FiClock, FiMessageCircle, FiUser } from "react-icons/fi";
+import { FiDownload, FiSearch, FiFilter, FiClock, FiMessageCircle, FiUser, FiEye } from "react-icons/fi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
+import { BookingDetailsModal } from "@/components/admin/BookingDetailsModal";
+import { ServiceBadge } from "@/components/admin/ServiceBadge";
 import Link from "next/link";
 
 const statusConfig: Record<BookingStatus, { label: string; color: string; bg: string; border: string }> = {
@@ -12,14 +14,6 @@ const statusConfig: Record<BookingStatus, { label: string; color: string; bg: st
   confirmed: { label: "مؤكد",  color: "text-emerald-700", bg: "bg-emerald-50", border: "border-emerald-200" },
   cancelled: { label: "ملغي",  color: "text-rose-700",   bg: "bg-rose-50",   border: "border-rose-200" },
   completed: { label: "منتهي", color: "text-slate-600",  bg: "bg-slate-50",  border: "border-slate-200" },
-};
-
-const typeLabels: Record<string, string> = {
-  car: "سيارة ليموزين",
-  fast_track: "مسار سريع VIP",
-  hotel: "حجز فندق",
-  flight: "طيران",
-  apartment: "شقة فندقية",
 };
 
 function formatDateTime(val: string) {
@@ -47,6 +41,7 @@ export default function BookingsPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<BookingStatus | "all">("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [selectedBookingForDetails, setSelectedBookingForDetails] = useState<Booking | null>(null);
 
   // Fetch Bookings with React Query
   const { data: bookings = [], isLoading } = useQuery<Booking[]>({
@@ -90,7 +85,7 @@ export default function BookingsPage() {
 
   const filtered = useMemo(() =>
     bookings.filter(b => {
-      const matchSearch = !search || b.customerName.includes(search) || b.phone.includes(search) || b.serviceName.includes(search);
+      const matchSearch = !search || b.customerName?.includes(search) || b.phone?.includes(search) || b.serviceName?.includes(search);
       const matchStatus = statusFilter === "all" || b.status === statusFilter;
       const matchType   = typeFilter === "all" || b.type === typeFilter;
       return matchSearch && matchStatus && matchType;
@@ -151,19 +146,19 @@ export default function BookingsPage() {
       {/* Table */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-right min-w-[950px]">
+          <table className="w-full text-sm text-right min-w-[1000px]">
             <thead>
               <tr className="bg-slate-50/60 border-b border-slate-100">
-                {["العميل", "الهاتف والتواصل", "الخدمة المطلوبة", "فئة الخدمة", "التاريخ", "الحالة", "تعديل الحالة"].map(h => (
-                  <th key={h} className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">{h}</th>
+                {["العميل", "الهاتف والتواصل", "الخدمة المطلوبة", "فئة الخدمة", "التاريخ", "الحالة", "تفاصيل الحجز والمسافرين", "تعديل الحالة"].map(h => (
+                  <th key={h} className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {isLoading ? (
-                <tr><td colSpan={7} className="px-6 py-16 text-center text-slate-400 text-sm">جاري تحميل البيانات…</td></tr>
+                <tr><td colSpan={8} className="px-6 py-16 text-center text-slate-400 text-sm">جاري تحميل البيانات…</td></tr>
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={7} className="px-6 py-16 text-center text-slate-400 text-sm">لا توجد نتائج مطابقة للبحث</td></tr>
+                <tr><td colSpan={8} className="px-6 py-16 text-center text-slate-400 text-sm">لا توجد نتائج مطابقة للبحث</td></tr>
               ) : filtered.map(b => {
                 const s = statusConfig[b.status] || statusConfig.new;
                 const cleanPhone = b.phone ? b.phone.replace(/\D/g, "") : "";
@@ -205,9 +200,7 @@ export default function BookingsPage() {
 
                     <td className="px-6 py-4 text-slate-700 font-medium">{b.serviceName}</td>
                     <td className="px-6 py-4">
-                      <span className="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
-                        {typeLabels[b.type] ?? b.type}
-                      </span>
+                      <ServiceBadge type={b.type} />
                     </td>
                     <td className="px-6 py-4 text-slate-500 font-mono text-xs" dir="ltr">{formatDateTime(b.date)}</td>
                     <td className="px-6 py-4">
@@ -215,6 +208,25 @@ export default function BookingsPage() {
                         {s.label}
                       </span>
                     </td>
+
+                    {/* View Details Button */}
+                    <td className="px-6 py-4">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBookingForDetails(b)}
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group"
+                        title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
+                      >
+                        <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover:text-[#1a2b3c]" />
+                        <span>عرض التفاصيل</span>
+                        {b.passengers > 1 && (
+                          <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                            {b.passengers} أفراد
+                          </span>
+                        )}
+                      </button>
+                    </td>
+
                     <td className="px-6 py-4">
                       <select
                         value={b.status}
@@ -235,6 +247,12 @@ export default function BookingsPage() {
           </table>
         </div>
       </div>
+
+      {/* Booking Details Modal */}
+      <BookingDetailsModal
+        booking={selectedBookingForDetails}
+        onClose={() => setSelectedBookingForDetails(null)}
+      />
     </div>
   );
 }

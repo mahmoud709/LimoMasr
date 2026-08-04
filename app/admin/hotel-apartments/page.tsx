@@ -1,45 +1,46 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { HotelItem } from "@/lib/types";
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiMapPin, FiStar, FiCheck } from "react-icons/fi";
+import type { ApartmentItem } from "@/lib/types";
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiMapPin, FiCheck, FiUsers } from "react-icons/fi";
+import { FaBuilding } from "react-icons/fa";
 import ImageUploader from "@/components/admin/ImageUploader";
 
-const empty: Omit<HotelItem, "id"> = {
+const empty: Omit<ApartmentItem, "id"> = {
   name: "",
-  city: "",
-  rating: 5,
-  price: 3500,
-  image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+  location: "",
+  rooms: "2 إلى 4 غرف نوم",
+  capacity: "مناسب للعائلات",
+  price: 3200,
+  image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
   images: [],
-  tag: "",
+  tag: "تشطيب فندقي فاخر",
   features: [],
   description: "",
   status: "available",
   sortOrder: 0,
   translations: {
-    ar: { name: "", city: "", tag: "", features: [], description: "" },
-    en: { name: "", city: "", tag: "", features: [], description: "" },
+    ar: { name: "", location: "", rooms: "", capacity: "", tag: "", features: [], description: "" },
+    en: { name: "", location: "", rooms: "", capacity: "", tag: "", features: [], description: "" },
   }
 };
 
-export default function HotelsAdminPage() {
-  const [hotels, setHotels] = useState<HotelItem[]>([]);
+export default function HotelApartmentsAdminPage() {
+  const [apartments, setApartments] = useState<ApartmentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<"add" | "edit" | null>(null);
-  const [editing, setEditing] = useState<HotelItem | null>(null);
+  const [editing, setEditing] = useState<ApartmentItem | null>(null);
   const [form, setForm] = useState(empty);
   const [saving, setSaving] = useState(false);
 
-  // Features temp strings for easy textarea line-by-line editing
   const [featuresArText, setFeaturesArText] = useState("");
   const [featuresEnText, setFeaturesEnText] = useState("");
 
   async function load() {
     setLoading(true);
-    const res = await fetch("/api/admin/hotels", { cache: "no-store" });
+    const res = await fetch("/api/admin/hotel-apartments", { cache: "no-store" });
     if (res.ok) {
-      setHotels(await res.json());
+      setApartments(await res.json());
     }
     setLoading(false);
   }
@@ -51,10 +52,10 @@ export default function HotelsAdminPage() {
   function openAdd() {
     setForm({
       ...empty,
-      sortOrder: hotels.length + 1,
+      sortOrder: apartments.length + 1,
       translations: {
-        ar: { name: "", city: "", tag: "", features: [], description: "" },
-        en: { name: "", city: "", tag: "", features: [], description: "" },
+        ar: { name: "", location: "", rooms: "", capacity: "", tag: "", features: [], description: "" },
+        en: { name: "", location: "", rooms: "", capacity: "", tag: "", features: [], description: "" },
       }
     });
     setFeaturesArText("");
@@ -63,75 +64,88 @@ export default function HotelsAdminPage() {
     setModal("add");
   }
 
-  function openEdit(h: HotelItem) {
-    const arFeatures = h.translations?.ar?.features || h.features || [];
-    const enFeatures = h.translations?.en?.features || [];
+  function openEdit(apt: ApartmentItem) {
+    const arFeatures = apt.translations?.ar?.features || apt.features || [];
+    const enFeatures = apt.translations?.en?.features || [];
 
     setForm({
-      ...h,
+      ...apt,
       translations: {
         ar: {
-          name: h.translations?.ar?.name || h.name || "",
-          city: h.translations?.ar?.city || h.city || "",
-          tag: h.translations?.ar?.tag || h.tag || "",
+          name: apt.translations?.ar?.name || apt.name || "",
+          location: apt.translations?.ar?.location || apt.location || "",
+          rooms: apt.translations?.ar?.rooms || apt.rooms || "",
+          capacity: apt.translations?.ar?.capacity || apt.capacity || "",
+          tag: apt.translations?.ar?.tag || apt.tag || "",
           features: arFeatures,
-          description: h.translations?.ar?.description || h.description || "",
+          description: apt.translations?.ar?.description || apt.description || "",
         },
         en: {
-          name: h.translations?.en?.name || "",
-          city: h.translations?.en?.city || "",
-          tag: h.translations?.en?.tag || "",
+          name: apt.translations?.en?.name || "",
+          location: apt.translations?.en?.location || "",
+          rooms: apt.translations?.en?.rooms || "",
+          capacity: apt.translations?.en?.capacity || "",
+          tag: apt.translations?.en?.tag || "",
           features: enFeatures,
-          description: h.translations?.en?.description || "",
+          description: apt.translations?.en?.description || "",
         }
       }
     });
     setFeaturesArText(arFeatures.join("\n"));
     setFeaturesEnText(enFeatures.join("\n"));
-    setEditing(h);
+    setEditing(apt);
     setModal("edit");
   }
 
   async function save() {
     setSaving(true);
 
-    const arName = form.translations?.ar?.name || form.name || "فندق فاخر";
-    const arCity = form.translations?.ar?.city || form.city || "القاهرة";
+    const arName = form.translations?.ar?.name || form.name || "شقة فندقية فاخرة";
+    const arLocation = form.translations?.ar?.location || form.location || "القاهرة";
+    const arRooms = form.translations?.ar?.rooms || form.rooms || "2 غرف نوم";
+    const arCapacity = form.translations?.ar?.capacity || form.capacity || "عائلات";
     const arTag = form.translations?.ar?.tag || form.tag || "";
     const arDesc = form.translations?.ar?.description || form.description || "";
     const arFeatures = featuresArText.split("\n").map(s => s.trim()).filter(Boolean);
 
     const enName = form.translations?.en?.name || arName;
-    const enCity = form.translations?.en?.city || arCity;
+    const enLocation = form.translations?.en?.location || arLocation;
+    const enRooms = form.translations?.en?.rooms || arRooms;
+    const enCapacity = form.translations?.en?.capacity || arCapacity;
     const enTag = form.translations?.en?.tag || arTag;
     const enDesc = form.translations?.en?.description || arDesc;
     const enFeatures = featuresEnText.split("\n").map(s => s.trim()).filter(Boolean);
 
-    const primaryImage = form.images && form.images.length > 0 ? form.images[0] : (form.image || "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80");
+    const primaryImage = form.images && form.images.length > 0 ? form.images[0] : (form.image || "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80");
 
-    const data: HotelItem = {
+    const data: ApartmentItem = {
       ...form,
-      id: editing?.id ?? `hotel-${Date.now()}`,
+      id: editing?.id ?? `apt-${Date.now()}`,
       name: arName,
-      city: arCity,
+      location: arLocation,
+      rooms: arRooms,
+      capacity: arCapacity,
       tag: arTag,
       description: arDesc,
-      features: arFeatures.length > 0 ? arFeatures : ["خدمة 5 نجوم", "إطلالة بانورامية"],
+      features: arFeatures.length > 0 ? arFeatures : ["فرش فندقي راقي", "خدمة تنظيف 24/7"],
       image: primaryImage,
-      rating: Number(form.rating) || 5,
       price: Number(form.price) || 0,
       sortOrder: Number(form.sortOrder) || 0,
       translations: {
         ar: {
           name: arName,
-          city: arCity,
+          location: arLocation,
+          rooms: arRooms,
+          capacity: arCapacity,
           tag: arTag,
           features: arFeatures,
           description: arDesc,
         },
         en: {
           name: enName,
-          city: enCity,
+          location: enLocation,
+          rooms: enRooms,
+          capacity: enCapacity,
           tag: enTag,
           features: enFeatures.length > 0 ? enFeatures : arFeatures,
           description: enDesc,
@@ -140,13 +154,13 @@ export default function HotelsAdminPage() {
     };
 
     if (modal === "edit") {
-      await fetch(`/api/admin/hotels/${data.id}`, {
+      await fetch(`/api/admin/hotel-apartments/${data.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } else {
-      await fetch("/api/admin/hotels", {
+      await fetch("/api/admin/hotel-apartments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -158,8 +172,8 @@ export default function HotelsAdminPage() {
   }
 
   async function del(id: string) {
-    if (!confirm("هل أنت متأكد من حذف هذا الفندق / الوجهة؟")) return;
-    await fetch(`/api/admin/hotels/${id}`, {
+    if (!confirm("هل أنت متأكد من حذف هذه الشقة الفندقية؟")) return;
+    await fetch(`/api/admin/hotel-apartments/${id}`, {
       method: "DELETE"
     });
     load();
@@ -189,39 +203,39 @@ export default function HotelsAdminPage() {
         <div>
           <h1 className="text-2xl md:text-3xl font-black text-[#1a2b3c] flex items-center gap-3">
             <span className="w-3 h-8 bg-[#d0a755] rounded-full" />
-            إدارة الفنادق والمنتجعات الفاخرة
+            إدارة الشقق والأجنحة الفندقية
           </h1>
-          <p className="text-sm text-[#1a2b3c]/60 mt-1">التحكم في عروض الفنادق، الصور على Cloudinary، الأسعار، والميزات باللغتين</p>
+          <p className="text-sm text-[#1a2b3c]/60 mt-1">التحكم في الشقق الفاخرة، الصور على Cloudinary، الأسعار، والمواصفات باللغتين</p>
         </div>
         <button
           onClick={openAdd}
           className="flex items-center gap-2 bg-[#d0a755] text-[#1a2b3c] text-sm font-black px-5 py-3 rounded-xl hover:bg-[#b89040] transition-colors shadow-md"
         >
-          <FiPlus className="w-5 h-5" /> إضافة فندق / وجهة
+          <FiPlus className="w-5 h-5" /> إضافة شقة فندقية
         </button>
       </div>
 
       {loading ? (
-        <div className="text-center py-20 text-[#1a2b3c]/40 font-bold">جاري تحميل الفنادق...</div>
+        <div className="text-center py-20 text-[#1a2b3c]/40 font-bold">جاري تحميل الشقق الفندقية...</div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {hotels.map((hotel) => (
-            <div key={hotel.id} className="bg-white rounded-2xl border border-black/10 shadow-sm overflow-hidden flex flex-col group hover:shadow-lg transition-all duration-300">
-              {/* Hotel Image with Badges */}
+          {apartments.map((apt) => (
+            <div key={apt.id} className="bg-white rounded-2xl border border-black/10 shadow-sm overflow-hidden flex flex-col group hover:shadow-lg transition-all duration-300">
+              {/* Image with Badges */}
               <div className="relative h-48 w-full overflow-hidden bg-gray-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={hotel.image}
-                  alt={hotel.name}
+                  src={apt.image}
+                  alt={apt.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-3 left-3 right-3 flex justify-between items-center pointer-events-none">
                   <span className="px-2.5 py-1 rounded-full bg-[#d0a755] text-white text-[10px] font-black shadow flex items-center gap-1">
-                    <FiStar className="w-3 h-3 fill-current" />
-                    {hotel.rating} نجوم
+                    <FaBuilding className="w-2.5 h-2.5" />
+                    {apt.tag || "فاخر"}
                   </span>
-                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-black shadow ${hotel.status === "available" ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
-                    {hotel.status === "available" ? "متاح" : "غير متاح"}
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-black shadow ${apt.status === "available" ? "bg-green-500 text-white" : "bg-red-500 text-white"}`}>
+                    {apt.status === "available" ? "متاح" : "غير متاح"}
                   </span>
                 </div>
               </div>
@@ -230,20 +244,22 @@ export default function HotelsAdminPage() {
               <div className="p-5 flex flex-col flex-1">
                 <div className="flex items-center gap-1.5 text-xs text-[#d0a755] font-black uppercase mb-1">
                   <FiMapPin className="w-3.5 h-3.5" />
-                  <span>{hotel.city}</span>
-                  {hotel.translations?.en?.city && (
-                    <span className="text-gray-400 font-bold">({hotel.translations.en.city})</span>
-                  )}
+                  <span>{apt.location}</span>
                 </div>
 
-                <h3 className="font-black text-[#1a2b3c] text-lg mb-1">{hotel.name}</h3>
-                {hotel.translations?.en?.name && (
-                  <p className="text-xs text-[#1a2b3c]/50 font-bold mb-3">{hotel.translations.en.name}</p>
+                <h3 className="font-black text-[#1a2b3c] text-lg mb-1">{apt.name}</h3>
+                {apt.translations?.en?.name && (
+                  <p className="text-xs text-[#1a2b3c]/50 font-bold mb-2">{apt.translations.en.name}</p>
                 )}
+
+                <div className="flex items-center gap-4 text-xs text-gray-500 font-bold mb-3">
+                  <span>🛏️ {apt.rooms}</span>
+                  <span>👥 {apt.capacity}</span>
+                </div>
 
                 {/* Features Snippet */}
                 <div className="space-y-1 mb-4 flex-1">
-                  {(hotel.features || []).slice(0, 3).map((f, i) => (
+                  {(apt.features || []).slice(0, 3).map((f, i) => (
                     <div key={i} className="flex items-center gap-1.5 text-xs text-[#1a2b3c]/70 font-medium">
                       <FiCheck className="w-3 h-3 text-[#d0a755] shrink-0" />
                       <span className="truncate">{f}</span>
@@ -255,18 +271,18 @@ export default function HotelsAdminPage() {
                 <div className="pt-3 border-t border-black/5 flex items-center justify-between">
                   <div>
                     <span className="text-xs text-[#1a2b3c]/50 font-bold">يبدأ من: </span>
-                    <span className="text-base font-black text-[#d0a755]">{hotel.price} ج.م</span>
+                    <span className="text-base font-black text-[#d0a755]">{apt.price} ج.م/ليلة</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => openEdit(hotel)}
+                      onClick={() => openEdit(apt)}
                       className="p-2 rounded-xl border border-black/10 text-xs font-bold text-[#1a2b3c] hover:bg-[#d0a755] hover:text-white transition-colors"
                       title="تعديل"
                     >
                       <FiEdit2 className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => del(hotel.id)}
+                      onClick={() => del(apt.id)}
                       className="p-2 rounded-xl border border-red-200 text-xs font-bold text-red-500 hover:bg-red-500 hover:text-white transition-colors"
                       title="حذف"
                     >
@@ -287,7 +303,7 @@ export default function HotelsAdminPage() {
             {/* Modal Header */}
             <div className="sticky top-0 bg-white px-6 py-4 border-b border-black/10 flex items-center justify-between z-20">
               <h2 className="font-black text-[#1a2b3c] text-xl">
-                {modal === "add" ? "إضافة فندق / منتجع جديد" : "تعديل بيانات الفندق"}
+                {modal === "add" ? "إضافة شقة فندقية جديدة" : "تعديل بيانات الشقة الفندقية"}
               </h2>
               <button
                 onClick={() => setModal(null)}
@@ -302,7 +318,7 @@ export default function HotelsAdminPage() {
               {/* Cloudinary Image Uploader */}
               <div className="bg-gray-50 p-5 rounded-2xl border border-black/5">
                 <label className="block text-xs font-black text-[#1a2b3c] mb-3 uppercase tracking-wider">
-                  صور الفندق / المنتجع (مرفوعة على Cloudinary)
+                  صور الشقة الفندقية (مرفوعة على Cloudinary)
                 </label>
                 <ImageUploader
                   images={imagesList}
@@ -319,32 +335,54 @@ export default function HotelsAdminPage() {
               {/* Names (AR / EN) */}
               <div className="grid md:grid-cols-2 gap-4">
                 <Field
-                  label="اسم الفندق / الباقة (عربي)"
+                  label="عنوان / اسم الشقة (عربي)"
                   value={form.translations?.ar?.name || form.name || ""}
                   onChange={v => fTrans("ar", "name", v)}
-                  placeholder="مثال: فنادق القاهرة والنيل 5 نجوم"
+                  placeholder="مثال: أجنحة وشقق فندقية بالتجمع الخامس"
                 />
                 <Field
-                  label="اسم الفندق / الباقة (إنجليزي)"
+                  label="عنوان / اسم الشقة (إنجليزي)"
                   value={form.translations?.en?.name || ""}
                   onChange={v => fTrans("en", "name", v)}
-                  placeholder="e.g. Cairo & Nile 5-Star Hotels"
+                  placeholder="e.g. Luxury Suites in 5th Settlement"
                 />
               </div>
 
-              {/* City / Location (AR / EN) */}
+              {/* Location (AR / EN) */}
               <div className="grid md:grid-cols-2 gap-4">
                 <Field
-                  label="المدينة / المنطقة (عربي)"
-                  value={form.translations?.ar?.city || form.city || ""}
-                  onChange={v => fTrans("ar", "city", v)}
-                  placeholder="مثال: القاهرة الكبرى"
+                  label="الموقع / المنطقة (عربي)"
+                  value={form.translations?.ar?.location || form.location || ""}
+                  onChange={v => fTrans("ar", "location", v)}
+                  placeholder="مثال: القاهرة الجديدة"
                 />
                 <Field
-                  label="المدينة / المنطقة (إنجليزي)"
-                  value={form.translations?.en?.city || ""}
-                  onChange={v => fTrans("en", "city", v)}
-                  placeholder="e.g. Greater Cairo"
+                  label="الموقع / المنطقة (إنجليزي)"
+                  value={form.translations?.en?.location || ""}
+                  onChange={v => fTrans("en", "location", v)}
+                  placeholder="e.g. New Cairo"
+                />
+              </div>
+
+              {/* Rooms & Capacity */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field
+                  label="عدد الغرف (عربي / إنجليزي)"
+                  value={form.translations?.ar?.rooms || form.rooms || ""}
+                  onChange={v => {
+                    f("rooms", v);
+                    fTrans("ar", "rooms", v);
+                  }}
+                  placeholder="مثال: 2 إلى 4 غرف نوم"
+                />
+                <Field
+                  label="السعة والملائمة"
+                  value={form.translations?.ar?.capacity || form.capacity || ""}
+                  onChange={v => {
+                    f("capacity", v);
+                    fTrans("ar", "capacity", v);
+                  }}
+                  placeholder="مثال: مناسب للعائلات الكبيرة"
                 />
               </div>
 
@@ -354,34 +392,20 @@ export default function HotelsAdminPage() {
                   label="الشارة الترويجية (عربي)"
                   value={form.translations?.ar?.tag || form.tag || ""}
                   onChange={v => fTrans("ar", "tag", v)}
-                  placeholder="مثال: إطلالة نيلية ساحرة"
+                  placeholder="مثال: تشطيب فندقي فاخر"
                 />
                 <Field
                   label="الشارة الترويجية (إنجليزي)"
                   value={form.translations?.en?.tag || ""}
                   onChange={v => fTrans("en", "tag", v)}
-                  placeholder="e.g. Stunning Nile View"
+                  placeholder="e.g. Ultra Luxury Finish"
                 />
               </div>
 
-              {/* Rating, Price, Status, SortOrder */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-2xl border border-black/5">
+              {/* Price, Status, SortOrder */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-2xl border border-black/5">
                 <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/70 mb-1.5">التقييم (النجوم)</label>
-                  <select
-                    value={form.rating}
-                    onChange={e => f("rating", Number(e.target.value))}
-                    className="w-full bg-white border border-black/10 rounded-xl px-3 py-2.5 text-sm font-bold text-[#1a2b3c] outline-none"
-                  >
-                    <option value={5}>5 نجوم</option>
-                    <option value={4}>4 نجوم</option>
-                    <option value={3}>3 نجوم</option>
-                    <option value={7}>7 نجوم (فاخر جداً)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/70 mb-1.5">يبدأ السعر من (ج.م)</label>
+                  <label className="block text-xs font-black text-[#1a2b3c]/70 mb-1.5">السعر في الليلة (ج.م)</label>
                   <input
                     type="number"
                     value={form.price}
@@ -423,7 +447,7 @@ export default function HotelsAdminPage() {
                     value={featuresArText}
                     onChange={e => setFeaturesArText(e.target.value)}
                     rows={4}
-                    placeholder="إطلالة مباشرة على النيل&#10;إفطار بوفيه فاخر مفتوح&#10;سبا ونادي صحي متكامل"
+                    placeholder="فرش فندقي الترا مودرن ومكيف بالكامل&#10;مطبخ مجهز بجميع الأجهزة الكهربائية&#10;خدمة تنظيف دورية وأمن 24/7"
                     className="w-full bg-[#f0f2f5] rounded-xl p-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]"
                   />
                 </div>
@@ -436,7 +460,7 @@ export default function HotelsAdminPage() {
                     value={featuresEnText}
                     onChange={e => setFeaturesEnText(e.target.value)}
                     rows={4}
-                    placeholder="Direct Nile view&#10;Luxury open buffet breakfast&#10;Full wellness spa & club"
+                    placeholder="Ultra-modern luxury furnishings & AC&#10;Fully equipped modern kitchen&#10;Regular housekeeping & 24/7 security"
                     className="w-full bg-[#f0f2f5] rounded-xl p-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]"
                   />
                 </div>
@@ -479,7 +503,7 @@ export default function HotelsAdminPage() {
                 className="flex items-center gap-2 bg-[#d0a755] text-[#1a2b3c] font-black px-6 py-2.5 rounded-xl hover:bg-[#b89040] transition-colors disabled:opacity-50 shadow-md"
               >
                 <FiSave className="w-4 h-4" />
-                {saving ? "جاري الحفظ..." : "حفظ الفندق"}
+                {saving ? "جاري الحفظ..." : "حفظ الشقة"}
               </button>
             </div>
           </div>
