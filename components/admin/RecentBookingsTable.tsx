@@ -92,7 +92,7 @@ export function RecentBookingsTable({ bookings }: { bookings: Booking[]; reviews
                     >
                       <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover/btn:text-[#1a2b3c]" />
                       <span>التفاصيل</span>
-                      {b.passengers > 1 && (
+                      {(b.passengers ?? 0) > 1 && (
                         <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full mr-1">
                           {b.passengers}
                         </span>

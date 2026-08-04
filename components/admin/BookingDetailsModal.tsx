@@ -245,7 +245,9 @@ export function BookingDetailsModal({
               <span className="text-[11px] font-bold text-slate-400 block mb-1 flex items-center gap-1">
                 <FiUsers className="w-3.5 h-3.5 text-[#d0a755]" /> عدد الأفراد
               </span>
-              <span className="text-xs md:text-sm font-black text-[#1a2b3c]">{booking.passengers} أفراد</span>
+              <span className="text-xs md:text-sm font-black text-[#1a2b3c]">
+                {booking.passengers || (parsed?.passengersList?.length ?? 1)} أفراد
+              </span>
             </div>
 
             {parsed.nationality && (
