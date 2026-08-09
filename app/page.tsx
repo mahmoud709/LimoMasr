@@ -132,16 +132,6 @@ export default async function Home() {
               exchangeRate={exchangeRate}
             />
 
-            {/* Flight Bookings Carousel */}
-            <FlightCarousel
-              flights={flights}
-              title={locale === "en" ? "Flight Bookings & Airline Tickets" : "حجز وتذاكر الطيران"}
-              viewAllText={locale === "en" ? "Book Flight" : "احجز تذكرتك"}
-              locale={locale}
-              currency={currency}
-              exchangeRate={exchangeRate}
-            />
-
             {/* Hotels & Resorts Carousel */}
             <HotelsCarousel
               hotels={hotels}
@@ -157,6 +147,16 @@ export default async function Home() {
               apartments={apartments}
               title={locale === "en" ? "Hotel Apartments & Suites" : "الشقق والأجنحة الفندقية"}
               viewAllText={locale === "en" ? "View Apartments" : "عرض الشقق"}
+              locale={locale}
+              currency={currency}
+              exchangeRate={exchangeRate}
+            />
+
+            {/* Flight Bookings Carousel */}
+            <FlightCarousel
+              flights={flights}
+              title={locale === "en" ? "Flight Bookings & Airline Tickets" : "حجز وتذاكر الطيران"}
+              viewAllText={locale === "en" ? "Book Flight" : "احجز تذكرتك"}
               locale={locale}
               currency={currency}
               exchangeRate={exchangeRate}

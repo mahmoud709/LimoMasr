@@ -3978,3 +3978,23 @@
 2026-08-09T12:11:15.576Z - REWRITE: /ar/hotel-apartments -> /hotel-apartments?__locale=ar
 2026-08-09T12:11:15.603Z - INCOMING: /ar/hotel-apartments | isRewritten: false | hasLocaleParam: false
 2026-08-09T12:11:15.627Z - INCOMING: /ar/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:16:07.199Z - REWRITE: /ar/hotel-apartments -> /hotel-apartments?__locale=ar
+2026-08-09T12:16:07.225Z - INCOMING: /ar/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:16:08.426Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:16:08.449Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:16:09.947Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:16:09.978Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:18:00.519Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:18:00.546Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:20:22.336Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:20:22.373Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:21:16.458Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:21:16.485Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:22:54.333Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:22:54.483Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:22:54.890Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:22:55.004Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:24:12.166Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:24:12.213Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:24:12.613Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:24:12.732Z - REWRITE: /ar -> /?__locale=ar
