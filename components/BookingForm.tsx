@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState, useEffect } from "react";
+import { FormEvent, useMemo, useState, useEffect, useRef } from "react";
 import type { ServiceType } from "@/lib/types";
 import { bookingMessage, buildWhatsappUrl } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -18,9 +18,12 @@ import {
   FiArrowRight, 
   FiClock, 
   FiNavigation, 
-  FiPhone 
+  FiPhone,
+  FiImage,
+  FiX
 } from "react-icons/fi";
 import { LocationSearchModal } from "./LocationSearchModal";
+import { NationalitySearchModal } from "./NationalitySearchModal";
 
 type BookingFormProps = {
   type: ServiceType;
@@ -48,7 +51,7 @@ export function BookingForm({
   // Common Contact Info
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
-  const [passengers, setPassengers] = useState(1);
+  const [passengers, setPassengers] = useState<any>(1);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [bookingSource, setBookingSource] = useState<"web" | "whatsapp">("web");
@@ -56,7 +59,7 @@ export function BookingForm({
 
   // 1. Limousine (car) specific state
   const [carDate, setCarDate] = useState("");
-  const [carLuggage, setCarLuggage] = useState(0);
+  const [carLuggage, setCarLuggage] = useState<any>(0);
   const [carServiceType, setCarServiceType] = useState<"trip" | "daily">("trip");
   const [carFrom, setCarFrom] = useState("");
   const [carTo, setCarTo] = useState("");
@@ -64,7 +67,12 @@ export function BookingForm({
 
   // 2. Fast Track specific state
   const [nationality, setNationality] = useState("");
+  const [nationalityModalOpen, setNationalityModalOpen] = useState(false);
+  const [isCustomNationality, setIsCustomNationality] = useState(false);
   const [fastTrackDate, setFastTrackDate] = useState("");
+  const [fastTrackTime, setFastTrackTime] = useState("");
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
+  const attachmentInputRef = useRef<HTMLInputElement>(null);
   const [passengerNames, setPassengerNames] = useState<string[]>([""]);
 
   // 3. Hotels & Hotel Apartments specific state
@@ -74,6 +82,13 @@ export function BookingForm({
   const [hotelDateFrom, setHotelDateFrom] = useState("");
   const [hotelDateTo, setHotelDateTo] = useState("");
   const [budget, setBudget] = useState(5000);
+
+  // Sync accommodationType if the parent type prop changes
+  useEffect(() => {
+    if (type === "apartment" || type === "hotel") {
+      setAccommodationType(type);
+    }
+  }, [type]);
 
   // 4. Flights specific state
   const [flightTripType, setFlightTripType] = useState<"round_trip" | "one_way">("round_trip");
@@ -203,6 +218,7 @@ export function BookingForm({
     } else if (type === "fast_track") {
       if (nationality) detailsList.push(isEn ? `• Nationality: ${nationality}` : `• الجنسية: ${nationality}`);
       if (fastTrackDate) detailsList.push(isEn ? `• Date: ${fastTrackDate}` : `• تاريخ الخدمة: ${fastTrackDate}`);
+      if (fastTrackTime) detailsList.push(isEn ? `• Time: ${fastTrackTime}` : `• وقت الخدمة: ${fastTrackTime}`);
       detailsList.push(isEn ? `• Number of Travelers: ${passengers}` : `• عدد الأفراد: ${passengers}`);
       
       const filledNames = passengerNames.filter((n) => n.trim().length > 0);
@@ -217,6 +233,7 @@ export function BookingForm({
         : (isEn ? `Accommodation: Hotel Apartment\nArea: ${apartmentArea || (isEn ? "Not specified" : "غير محدد")}` : `الإقامة: شقق فندقية\nالمنطقة: ${apartmentArea || "غير محدد"}`);
       
       detailsList.push(accDetails);
+      if (nationality) detailsList.push(isEn ? `• Nationality: ${nationality}` : `• الجنسية: ${nationality}`);
       if (hotelDateFrom) detailsList.push(isEn ? `• Check-in Date: ${hotelDateFrom}` : `• تاريخ الوصول: ${hotelDateFrom}`);
       if (hotelDateTo) detailsList.push(isEn ? `• Check-out Date: ${hotelDateTo}` : `• تاريخ المغادرة: ${hotelDateTo}`);
       detailsList.push(isEn ? `• Number of Guests: ${passengers}` : `• عدد الأفراد: ${passengers}`);
@@ -287,6 +304,20 @@ export function BookingForm({
     event.preventDefault();
     setSaving(true);
     try {
+      let uploadedAttachmentUrl = "";
+      if (attachmentFile) {
+        try {
+          const formData = new FormData();
+          formData.append("file", attachmentFile);
+          const uploadRes = await fetch("/api/upload", { method: "POST", body: formData });
+          if (uploadRes.ok) {
+            const data = await uploadRes.json();
+            uploadedAttachmentUrl = data.url;
+          }
+        } catch (err) {
+          console.error("Upload failed", err);
+        }
+      }
       const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
       
       // Build structured notes for admin and internal records
@@ -297,11 +328,11 @@ export function BookingForm({
         } ${notes ? `[ملاحظات: ${notes}]` : ""}`;
       } else if (type === "fast_track") {
         const namesStr = passengerNames.filter((n) => n.trim().length > 0).join(" | ");
-        structuredNotes = `[الجنسية: ${nationality}] [تاريخ الخدمة: ${fastTrackDate}] [أسماء المسافرين: ${namesStr}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+        structuredNotes = `[الجنسية: ${nationality}] [تاريخ الخدمة: ${fastTrackDate}] ${fastTrackTime ? `[الوقت: ${fastTrackTime}]` : ""} [أسماء المسافرين: ${namesStr}] ${notes ? `[ملاحظات: ${notes}]` : ""} ${uploadedAttachmentUrl ? `[المرفقات: ${uploadedAttachmentUrl}]` : ""}`;
       } else if (["hotel", "apartment"].includes(type)) {
         structuredNotes = `[النوع: ${accommodationType === "hotel" ? "فندق" : "شقة فندقية"}] [المكان: ${
           accommodationType === "hotel" ? (hotelDetails || "غير محدد") : (apartmentArea || "غير محدد")
-        }] [تاريخ الوصول: ${hotelDateFrom}] [تاريخ المغادرة: ${hotelDateTo}] [الميزانية: ${formattedBudget}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+        }] [الجنسية: ${nationality || "غير محدد"}] [تاريخ الوصول: ${hotelDateFrom}] [تاريخ المغادرة: ${hotelDateTo}] [الميزانية: ${formattedBudget}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
       } else if (type === "flight") {
         structuredNotes = `[نوع الرحلة: ${flightTripType === "round_trip" ? "ذهاب وعودة" : "ذهاب فقط"}] [من: ${flightFrom}] [إلى: ${flightTo}] [تاريخ الذهاب: ${flightDateFrom}] ${
           flightTripType === "round_trip" ? `[تاريخ العودة: ${flightDateTo}] ` : ""
@@ -354,6 +385,8 @@ export function BookingForm({
     setCarResidence("");
     setNationality("");
     setFastTrackDate("");
+    setFastTrackTime("");
+    setAttachmentFile(null);
     setAccommodationType(type === "apartment" ? "apartment" : "hotel");
     setHotelDetails("");
     setApartmentArea("");
@@ -420,7 +453,8 @@ export function BookingForm({
   }
 
   return (
-    <form onSubmit={submitBooking} className="luxury-panel bg-white p-6 md:p-8 space-y-6" dir={isEn ? "ltr" : "rtl"}>
+    <>
+      <form onSubmit={submitBooking} className="luxury-panel bg-white p-6 md:p-8 space-y-6" dir={isEn ? "ltr" : "rtl"}>
       <div className="flex flex-col gap-1 border-b border-black/5 pb-4 mb-6">
         <div className="flex items-center gap-3">
           <span className="w-8 h-[1px] bg-[#d0a755]"></span>
@@ -550,7 +584,13 @@ export function BookingForm({
                     type="number"
                     min={0}
                     value={carLuggage}
-                    onChange={(e) => setCarLuggage(Math.max(0, parseInt(e.target.value, 10) || 0))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setCarLuggage(val === "" ? "" : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (carLuggage === "" || carLuggage < 0) setCarLuggage(0);
+                    }}
                     className="w-full bg-transparent px-2 text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
                   />
                 </div>
@@ -567,7 +607,13 @@ export function BookingForm({
                     type="number"
                     min={1}
                     value={passengers}
-                    onChange={(e) => setPassengers(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setPassengers(val === "" ? "" : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (passengers === "" || passengers < 1) setPassengers(1);
+                    }}
                     className="w-full bg-transparent px-2 text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
                   />
                 </div>
@@ -589,14 +635,15 @@ export function BookingForm({
                 </label>
                 <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiGlobe className="w-4 h-4 text-[#d0a755] shrink-0" />
-                  <input
-                    required
-                    type="text"
-                    value={nationality}
-                    onChange={(e) => setNationality(e.target.value)}
-                    placeholder={isEn ? "e.g. Saudi, Emirati, Egyptian..." : "مثال: سعودي، إماراتي، مصري..."}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none"
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setNationalityModalOpen(true)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-start flex items-center justify-between"
+                  >
+                    <span className={nationality ? "" : "text-[#1a2b3c]/40"}>
+                      {nationality || (isEn ? "Select Nationality..." : "اختر الجنسية...")}
+                    </span>
+                  </button>
                 </div>
               </div>
 
@@ -617,6 +664,53 @@ export function BookingForm({
               </div>
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Service Time (Optional)" : "وقت الخدمة (اختياري)"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiClock className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    type="time"
+                    value={fastTrackTime}
+                    onChange={(e) => setFastTrackTime(e.target.value)}
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Passport / Ticket (Optional)" : "صورة الجواز / التذكرة (اختياري)"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiImage className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    ref={attachmentInputRef}
+                    type="file"
+                    accept="image/*,.pdf"
+                    onChange={(e) => setAttachmentFile(e.target.files?.[0] || null)}
+                    className="w-full bg-transparent text-xs font-medium text-[#1a2b3c] outline-none file:mr-2 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:bg-[#d0a755]/10 file:text-[#d0a755] hover:file:bg-[#d0a755]/20 cursor-pointer ltr:file:mr-2 rtl:file:ml-2"
+                  />
+                  {attachmentFile && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAttachmentFile(null);
+                        if (attachmentInputRef.current) {
+                          attachmentInputRef.current.value = "";
+                        }
+                      }}
+                      className="shrink-0 p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 transition-colors"
+                      title={isEn ? "Remove file" : "إزالة الملف"}
+                    >
+                      <FiX className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
             {/* Number of Passengers */}
             <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
               <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0 flex items-center gap-2">
@@ -629,13 +723,12 @@ export function BookingForm({
                 min={1}
                 max={25}
                 value={passengers}
-                onChange={(event) => {
-                  const val = parseInt(event.target.value, 10);
-                  if (isNaN(val) || val < 1) {
-                    setPassengers(1);
-                  } else {
-                    setPassengers(val);
-                  }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setPassengers(val === "" ? "" : parseInt(val, 10));
+                }}
+                onBlur={() => {
+                  if (passengers === "" || passengers < 1) setPassengers(1);
                 }}
                 className="w-24 bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
                 dir="ltr"
@@ -772,6 +865,25 @@ export function BookingForm({
               </div>
             </div>
 
+            {/* Nationality */}
+            <div>
+              <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "Nationality" : "الجنسية"}
+              </label>
+              <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                <FiGlobe className="w-4 h-4 text-[#d0a755] shrink-0" />
+                <button
+                  type="button"
+                  onClick={() => setNationalityModalOpen(true)}
+                  className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-start flex items-center justify-between"
+                >
+                  <span className={nationality ? "" : "text-[#1a2b3c]/40"}>
+                    {nationality || (isEn ? "Select Nationality..." : "اختر الجنسية...")}
+                  </span>
+                </button>
+              </div>
+            </div>
+
             {/* Guests Count */}
             <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
               <span className="text-sm font-bold text-[#1a2b3c]/70 whitespace-nowrap shrink-0 flex items-center gap-2">
@@ -783,9 +895,12 @@ export function BookingForm({
                 type="number"
                 min={1}
                 value={passengers}
-                onChange={(event) => {
-                  const val = parseInt(event.target.value, 10);
-                  setPassengers(isNaN(val) || val < 1 ? 1 : val);
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setPassengers(val === "" ? "" : parseInt(val, 10));
+                }}
+                onBlur={() => {
+                  if (passengers === "" || passengers < 1) setPassengers(1);
                 }}
                 className="w-24 bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
                 dir="ltr"
@@ -805,7 +920,7 @@ export function BookingForm({
               <input 
                 type="range" 
                 min={500} 
-                max={25000} 
+                max={250000} 
                 step={500}
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
@@ -949,9 +1064,12 @@ export function BookingForm({
                 type="number"
                 min={1}
                 value={passengers}
-                onChange={(event) => {
-                  const val = parseInt(event.target.value, 10);
-                  setPassengers(isNaN(val) || val < 1 ? 1 : val);
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setPassengers(val === "" ? "" : parseInt(val, 10));
+                }}
+                onBlur={() => {
+                  if (passengers === "" || passengers < 1) setPassengers(1);
                 }}
                 className="w-24 bg-transparent text-left ltr:text-right rtl:text-left text-base font-black text-[#1a2b3c] outline-none"
                 dir="ltr"
@@ -996,7 +1114,7 @@ export function BookingForm({
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               placeholder={isEn ? "e.g. +201000000000" : "مثال: 01000000000"}
-              className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none text-left rtl:text-right"
+              className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none text-left"
               dir="ltr"
             />
           </div>
@@ -1133,6 +1251,18 @@ export function BookingForm({
         }
         isEn={isEn}
       />
-    </form>
+      </form>
+      <NationalitySearchModal
+        isOpen={nationalityModalOpen}
+        onClose={() => setNationalityModalOpen(false)}
+        onSelect={(nat, code) => {
+          setNationality(nat);
+          if (code) setPhone(code + " ");
+        }}
+        title={isEn ? "Nationality" : "الجنسية"}
+        placeholder={isEn ? "Search countries..." : "ابحث عن دولة..."}
+        isEn={isEn}
+      />
+    </>
   );
 }

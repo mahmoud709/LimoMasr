@@ -80,8 +80,8 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
           </>
         )}
         
-        {/* Top Right Badges */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2 items-end z-10 pointer-events-none">
+        {/* Top Badges - centered */}
+        <div className="absolute top-3 left-0 right-0 flex flex-col gap-1.5 items-center z-10 pointer-events-none">
           <span className="bg-[#d0a755] text-[#1a2b3c] text-[10px] font-black px-3 py-1 rounded-full shadow-md">
             {locale === "en" ? "Most Booked" : "الأكثر حجزاً"}
           </span>

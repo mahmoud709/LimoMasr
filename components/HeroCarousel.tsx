@@ -71,7 +71,7 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           </button>
 
           {/* Mobile Controls (grouped bottom-left, above floating WhatsApp) */}
-          <div className="absolute bottom-24 left-6 flex gap-4 z-30 md:hidden pointer-events-auto">
+          <div className="absolute bottom-6 left-6 flex gap-4 z-30 md:hidden pointer-events-auto">
             <button
               onClick={prev}
               aria-label="Previous"

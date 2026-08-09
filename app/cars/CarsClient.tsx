@@ -15,7 +15,7 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
 
   const minPricePossible = 500;
   const maxPriceRaw = cars.length > 0 ? Math.max(...cars.map(c => c.price)) : 10000;
-  const maxPricePossible = Math.ceil(maxPriceRaw / 500) * 500;
+  const maxPricePossible = 50000;
   const [maxPrice, setMaxPrice] = useState<number>(maxPricePossible);
   const deferredMaxPrice = useDeferredValue(maxPrice);
 

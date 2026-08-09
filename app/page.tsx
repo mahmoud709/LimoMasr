@@ -74,7 +74,7 @@ export default async function Home() {
                     {
                       title: t.bookingSection.hotelsTitle,
                       subtitle: t.bookingSection.hotelsSubtitle,
-                      href: "/hotels",
+                      href: "/stays",
                       icon: <FaBed className="w-5 h-5 text-[#d0a755]" />
                     },
                     {

@@ -100,7 +100,7 @@ export function FastTrackClient({
           );
         })}
       </section>
-      <div className="luxury-panel p-8 h-fit sticky top-32 transition-all duration-500">
+      <div className="h-fit sticky top-32 transition-all duration-500">
         <BookingForm 
           type="fast_track" 
           serviceRefId={selectedPackage?.id ?? "fast-track"} 

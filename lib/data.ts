@@ -504,7 +504,8 @@ export async function deleteBooking(id: string) {
 export async function getLiveExchangeRates() {
   try {
     const res = await fetch("https://api.exchangerate-api.com/v4/latest/EGP", {
-      next: { revalidate: 3600 }
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(2000) // Fail fast (2 seconds) if network is blocked or slow
     });
     if (!res.ok) throw new Error("Failed to fetch rates");
     const data = await res.json();

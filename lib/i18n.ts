@@ -27,7 +27,7 @@ export const ui = {
     serviceCards: [
       ["ليموزين", "اختيار السيارة والتاريخ وعدد الركاب.", "/cars"],
       ["المسار السريع", "استقبال ومرافقة داخل المطارات.", "/fast-track"],
-      ["فنادق", "طلب عرض إقامة حسب المدينة والميزانية.", "/hotels"],
+      ["فنادق", "طلب عرض إقامة حسب المدينة والميزانية.", "/stays"],
     ],
     stats: [["24/7", "استقبال طلبات طوال اليوم"], ["3 خطوات", "اختيار الخدمة ثم البيانات ثم واتساب"], ["رقمان", "توجيه العميل للرقم الصحيح حسب الخدمة"]],
     seats: "حتى {count} ركاب",
@@ -153,7 +153,7 @@ export const ui = {
     serviceCards: [
       ["Limousine", "Choose car, date, and passenger count.", "/cars"],
       ["Fast Track", "Airport meet-and-assist services.", "/fast-track"],
-      ["Hotels", "Request a stay offer by city and budget.", "/hotels"],
+      ["Hotels", "Request a stay offer by city and budget.", "/stays"],
     ],
     stats: [["24/7", "Requests received all day"], ["3 steps", "Choose, fill details, then WhatsApp"], ["2 numbers", "Customers reach the right team"]],
     seats: "Up to {count} passengers",

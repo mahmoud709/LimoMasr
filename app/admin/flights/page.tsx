@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import type { FlightRoute } from "@/lib/types";
-import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiCheck } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiX, FiSave, FiCheck, FiAlertTriangle } from "react-icons/fi";
 import { FaPlane, FaPlaneDeparture, FaPlaneArrival } from "react-icons/fa";
 import ImageUploader from "@/components/admin/ImageUploader";
 
@@ -29,6 +29,7 @@ export default function FlightsAdminPage() {
   const [editing, setEditing] = useState<FlightRoute | null>(null);
   const [form, setForm] = useState(empty);
   const [saving, setSaving] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   const [featuresArText, setFeaturesArText] = useState("");
   const [featuresEnText, setFeaturesEnText] = useState("");
@@ -151,11 +152,14 @@ export default function FlightsAdminPage() {
     load();
   }
 
-  async function del(id: string) {
-    if (!confirm("هل أنت متأكد من حذف هذا المسار الجوي؟")) return;
-    await fetch(`/api/admin/flights/${id}`, {
-      method: "DELETE"
-    });
+  function del(id: string) {
+    setDeleteConfirm(id);
+  }
+
+  async function confirmDelete() {
+    if (!deleteConfirm) return;
+    await fetch(`/api/admin/flights/${deleteConfirm}`, { method: "DELETE" });
+    setDeleteConfirm(null);
     load();
   }
 
@@ -269,6 +273,29 @@ export default function FlightsAdminPage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0F1115]/80 backdrop-blur-md">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+            <div className="p-8 text-center flex flex-col items-center">
+              <div className="w-16 h-16 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center mb-5">
+                <FiAlertTriangle className="w-8 h-8" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-xl font-black text-[#1a2b3c] mb-2">تأكيد الحذف</h3>
+              <p className="text-sm text-slate-500 mb-8 font-medium">هل أنت متأكد من رغبتك في حذف هذا المسار الجوي بشكل نهائي؟ لا يمكن التراجع عن هذه الخطوة.</p>
+              <div className="flex gap-3 w-full">
+                <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3.5 rounded-xl font-black text-[#1a2b3c] bg-slate-100 hover:bg-slate-200 transition-colors">
+                  إلغاء
+                </button>
+                <button onClick={confirmDelete} className="flex-1 py-3.5 rounded-xl font-black text-white bg-rose-500 hover:bg-rose-600 shadow-md transition-all">
+                  نعم، احذف
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

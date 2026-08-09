@@ -14,7 +14,7 @@ export default async function FastTrackPage() {
   
   return (
     <PublicLayout settings={settings} whatsappType="fast_track" locale={locale}>
-      <main className="mx-auto max-w-7xl px-8 py-32 relative z-10">
+      <main className="mx-auto w-full max-w-7xl px-6 md:px-8 py-32 relative z-10 flex flex-col overflow-hidden">
         <div className="animate-reveal-1">
           <SectionHeader 
             eyebrow={locale === 'ar' ? "المسار السريع" : "Fast Track"} 

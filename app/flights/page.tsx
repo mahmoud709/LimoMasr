@@ -4,6 +4,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { getSiteSettings, getFlights } from "@/lib/data";
 import { CinematicBackground } from "@/components/CinematicBackground";
 import { FlightCarousel } from "@/components/FlightCarousel";
+import { AirlineMarquee } from "@/components/AirlineMarquee";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
@@ -16,7 +17,7 @@ export default async function FlightsPage() {
 
   return (
     <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
-      <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-24">
+      <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-8">
         <div className="animate-reveal-1 px-8 max-w-7xl mx-auto w-full">
           <SectionHeader 
             eyebrow={locale === "en" ? "Flight Booking" : "حجز طيران"} 
@@ -78,7 +79,7 @@ export default async function FlightsPage() {
             </div>
           </section>
           
-          <div className="luxury-panel p-8 h-fit sticky top-32">
+          <div className="h-fit sticky top-32">
             <BookingForm 
               type="flight" 
               serviceRefId="flight-request" 
@@ -91,13 +92,17 @@ export default async function FlightsPage() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto w-full px-8 mt-16">
+        <div className="max-w-7xl mx-auto w-full px-8 mt-16 mb-16">
           <FlightCarousel
             flights={flights}
             locale={locale}
             currency={currency}
             exchangeRate={exchangeRate}
           />
+        </div>
+
+        <div className="mb-12">
+          <AirlineMarquee locale={locale} />
         </div>
       </main>
     </PublicLayout>
