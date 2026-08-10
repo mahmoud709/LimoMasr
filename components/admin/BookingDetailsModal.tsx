@@ -5,7 +5,7 @@ import type { Booking, BookingStatus } from "@/lib/types";
 import { 
   FiX, FiUser, FiPhone, FiCalendar, FiClock, FiMapPin, 
   FiUsers, FiBriefcase, FiGlobe, FiDollarSign, FiMessageCircle, 
-  FiCheckCircle, FiAlertCircle, FiXCircle, FiTruck, FiSend
+  FiCheckCircle, FiAlertCircle, FiXCircle, FiTruck, FiSend, FiPaperclip
 } from "react-icons/fi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
@@ -42,6 +42,7 @@ export interface ParsedBookingInfo {
   returnDate?: string;
   hotelOrPlace?: string;
   additionalNotes?: string;
+  attachmentUrl?: string;
 }
 
 export function parseBookingNotes(notes?: string, primaryName?: string): ParsedBookingInfo {
@@ -114,6 +115,10 @@ export function parseBookingNotes(notes?: string, primaryName?: string): ParsedB
 
   const budMatch = notes.match(/\[الميزانية:\s*([^\]]+)\]/);
   if (budMatch && budMatch[1]) info.budget = budMatch[1].trim();
+
+  // Extract Attachment
+  const attachMatch = notes.match(/\[المرفقات:\s*([^\]]+)\]/);
+  if (attachMatch && attachMatch[1]) info.attachmentUrl = attachMatch[1].trim();
 
   // Extract extra free-text notes
   const notesMatch = notes.match(/\[ملاحظات:\s*([^\]]+)\]/);
@@ -350,6 +355,23 @@ export function BookingDetailsModal({
               <p className="text-xs text-slate-700 font-medium leading-relaxed whitespace-pre-wrap">
                 {parsed.additionalNotes}
               </p>
+            </div>
+          )}
+
+          {/* Attachment Box */}
+          {parsed.attachmentUrl && (
+            <div className="space-y-2 bg-purple-50/40 p-4 rounded-2xl border border-purple-100">
+              <h4 className="font-black text-xs text-purple-900 flex items-center gap-1.5 mb-2">
+                <FiPaperclip className="w-3.5 h-3.5 text-purple-600" /> المرفقات (صورة الجواز / التذكرة)
+              </h4>
+              <a 
+                href={parsed.attachmentUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-800 text-xs font-black rounded-xl transition-colors w-fit"
+              >
+                عرض الملف المرفق
+              </a>
             </div>
           )}
 

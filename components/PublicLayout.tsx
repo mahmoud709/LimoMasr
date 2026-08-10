@@ -63,7 +63,7 @@ export async function PublicLayout({
   const whatsappUrl = buildWhatsappUrl(
     phone,
     locale === "en"
-      ? "Hello Limo Masr, I want to ask about booking."
+      ? "Hello Limo Egypt, I want to ask about booking."
       : "مرحبًا ليمو مصر، أريد الاستفسار عن الحجز.",
   );
 
@@ -136,13 +136,13 @@ export async function PublicLayout({
             {/* Brand & Description */}
             <div className="lg:col-span-4 flex flex-col">
               <Link href={withLang("/", locale)} className="text-4xl font-black tracking-tighter text-white mb-6 flex items-center gap-3 w-fit">
-                <span className="text-[#d0a755]">|</span> {content.brand}
+                <span className="text-[#d0a755]">|</span> {locale === "en" ? "Limo Egypt" : content.brand}
               </Link>
               <div className="text-sm leading-[2] text-white/60 font-light mb-8 max-w-sm space-y-4">
                 <p>{content.footerText}</p>
                 <p>
                   {locale === "en"
-                    ? "Limo Masr is your premier choice for luxury limousine and tourist transportation services. We provide a modern fleet of vehicles with professional drivers to ensure your comfort and safety on every journey, whether for city transits or airport transfers."
+                    ? "Limo Egypt is your premier choice for luxury limousine and tourist transportation services. We provide a modern fleet of vehicles with professional drivers to ensure your comfort and safety on every journey, whether for city transits or airport transfers."
                     : "ليمو مصر هي خيارك الأول لخدمات الليموزين الفاخرة والنقل السياحي. نقدم أسطولاً حديثاً من السيارات مع سائقين محترفين لضمان راحتك وأمانك في كل رحلة، سواء كانت تنقلات داخل المدينة أو استقبال من المطار."}
                 </p>
               </div>
@@ -228,7 +228,7 @@ export async function PublicLayout({
           </div>
           
           <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-white/40 font-light">
-            <p>© {new Date().getFullYear()} {content.brand}. {locale === "en" ? "All rights reserved." : "جميع الحقوق محفوظة."}</p>
+            <p>© {new Date().getFullYear()} {locale === "en" ? "Limo Egypt" : content.brand}. {locale === "en" ? "All rights reserved." : "جميع الحقوق محفوظة."}</p>
             <p className="mt-4 md:mt-0 uppercase tracking-[0.2em] text-[11px] font-bold">Designed for Excellence</p>
           </div>
         </div>

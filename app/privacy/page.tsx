@@ -16,7 +16,7 @@ export default async function PrivacyPage({ searchParams }: { searchParams?: Pro
   const defaultContentEn = [
     {
       title: "Data Collection & Purpose",
-      content: "Limo Masr collects essential contact details (customer name, phone number, flight number, pickup/drop-off locations) strictly for booking execution, driver coordination, and customer support."
+      content: "Limo Egypt collects essential contact details (customer name, phone number, flight number, pickup/drop-off locations) strictly for booking execution, driver coordination, and customer support."
     },
     {
       title: "Absolute Confidentiality",
@@ -66,7 +66,7 @@ export default async function PrivacyPage({ searchParams }: { searchParams?: Pro
             </h1>
             <p className="text-gray-500 font-medium text-sm md:text-base mt-3 max-w-2xl">
               {isEn 
-                ? "Our commitment to protecting your privacy and managing personal data securely at Limo Masr."
+                ? "Our commitment to protecting your privacy and managing personal data securely at Limo Egypt."
                 : "التزامنا التام بحماية خصوصيتك وإدارة البيانات الشخصية بأعلى مستويات الأمان لدى ليمو مصر."}
             </p>
           </div>

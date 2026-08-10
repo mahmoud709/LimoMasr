@@ -16,7 +16,7 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
   const defaultContentEn = [
     {
       title: "Service Scope & Overview",
-      content: "Limo Masr delivers premier luxury transportation across Egypt, specializing in airport transfers (Cairo, Sharm El Sheikh, Hurghada, Borg El Arab), intercity chauffeur services, VIP Fast Track airport assistance, and corporate fleet management."
+      content: "Limo Egypt delivers premier luxury transportation across Egypt, specializing in airport transfers (Cairo, Sharm El Sheikh, Hurghada, Borg El Arab), intercity chauffeur services, VIP Fast Track airport assistance, and corporate fleet management."
     },
     {
       title: "Booking & Instant Confirmation",
@@ -36,7 +36,7 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
     },
     {
       title: "Vehicle Integrity & Safety Standards",
-      content: "To maintain maximum comfort and hygiene for all distinguished guests, smoking is strictly prohibited inside all Limo Masr vehicles. Luggage volume must align with the booked vehicle category capacity."
+      content: "To maintain maximum comfort and hygiene for all distinguished guests, smoking is strictly prohibited inside all Limo Egypt vehicles. Luggage volume must align with the booked vehicle category capacity."
     }
   ];
 
@@ -82,7 +82,7 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
             </h1>
             <p className="text-gray-500 font-medium text-sm md:text-base mt-3 max-w-2xl">
               {isEn 
-                ? "Guidelines and operational policies governing luxury limousine, airport transfers, and VIP services at Limo Masr."
+                ? "Guidelines and operational policies governing luxury limousine, airport transfers, and VIP services at Limo Egypt."
                 : "القواعد والسياسات المنظمة لخدمات الليموزين الفاخرة، تنقلات المطارات، والمسار السريع لدى ليمو مصر."}
             </p>
           </div>

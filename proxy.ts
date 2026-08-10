@@ -28,25 +28,33 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Normalize path for admin check
+  let normalizedPath = pathname;
+  const hasEnPrefix = pathname.startsWith("/en");
+  const hasArPrefix = pathname.startsWith("/ar");
+
+  if (hasEnPrefix || hasArPrefix) {
+    normalizedPath = pathname.substring(3);
+    if (normalizedPath === "") normalizedPath = "/";
+  }
+
   // 2. Protect Admin dashboard
-  if (pathname.startsWith("/admin")) {
-    if (pathname === "/admin/login") {
+  if (normalizedPath.startsWith("/admin")) {
+    if (normalizedPath === "/admin/login") {
       logDebug(`ADMIN LOGIN: ${pathname}`);
-      return NextResponse.next();
+    } else {
+      const token = req.cookies.get("admin-token")?.value;
+      if (!token) {
+        logDebug(`ADMIN REDIRECT: ${pathname} -> /admin/login`);
+        const locale = hasEnPrefix ? "en" : "ar";
+        const loginUrl = new URL(`/${locale}/admin/login`, req.url);
+        return NextResponse.redirect(loginUrl);
+      }
+      logDebug(`ADMIN PASSTHROUGH: ${pathname}`);
     }
-    const token = req.cookies.get("admin-token")?.value;
-    if (!token) {
-      logDebug(`ADMIN REDIRECT: ${pathname} -> /admin/login`);
-      const loginUrl = new URL("/admin/login", req.url);
-      return NextResponse.redirect(loginUrl);
-    }
-    logDebug(`ADMIN PASSTHROUGH: ${pathname}`);
-    return NextResponse.next();
   }
 
   // 3. Detect and handle path-prefixed locale routing (/en/... or /ar/...)
-  const hasEnPrefix = pathname.startsWith("/en");
-  const hasArPrefix = pathname.startsWith("/ar");
 
   if (hasEnPrefix || hasArPrefix) {
     const locale = hasEnPrefix ? "en" : "ar";

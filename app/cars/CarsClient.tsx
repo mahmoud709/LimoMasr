@@ -73,26 +73,25 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
 
   return (
     <div className="w-full flex flex-col gap-8">
-      {/* Category Pills */}
-      <div className="flex overflow-x-auto snap-x scrollbar-hide gap-3 pb-2 -mx-6 px-6 md:mx-0 md:px-0 animate-reveal-1">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
-            className={`shrink-0 snap-start px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${activeCategory === cat.id ? "bg-[#1a2b3c] text-white border-[#1a2b3c] shadow-md" : "bg-white text-[#1a2b3c] border-black/10 hover:border-[#d0a755] hover:bg-[#F9F8F6]"}`}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
 
       {/* Filters Bar */}
       <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-black/5 flex flex-col lg:flex-row items-center justify-between gap-6 animate-reveal-2">
         <div className="flex flex-wrap items-center gap-4 w-full lg:w-auto">
           <div className="flex items-center gap-2">
              <FiFilter className="text-[#d0a755]" />
-             <span className="font-bold text-sm text-[#1a2b3c]">{locale === "en" ? "Sort by:" : "ترتيب حسب:"}</span>
+             <span className="font-bold text-sm text-[#1a2b3c]">{locale === "en" ? "Filter & Sort:" : "تصفية وترتيب:"}</span>
           </div>
+          
+          <select 
+            value={activeCategory}
+            onChange={(e) => setActiveCategory(e.target.value)}
+            className="bg-[#F9F8F6] border-none text-sm font-medium rounded-lg px-4 py-2 text-[#1a2b3c] focus:ring-2 focus:ring-[#d0a755] outline-none cursor-pointer"
+          >
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ))}
+          </select>
+
           <select 
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}

@@ -43,7 +43,7 @@ export function CorporateSection({ locale }: { locale: Locale }) {
         modalContent: (
           <div className="space-y-4">
             <p className="text-sm text-[#1a2b3c]/80 leading-relaxed font-medium">
-              {locale === "ar" ? "نقدم لك في ليمو مصر حلولاً متكاملة لتنقلات شركتك عبر عقود مرنة تضمن لك:" : "At Limo Masr, we provide integrated solutions for your corporate mobility through flexible contracts ensuring:"}
+              {locale === "ar" ? "نقدم لك في ليمو مصر حلولاً متكاملة لتنقلات شركتك عبر عقود مرنة تضمن لك:" : "At Limo Egypt, we provide integrated solutions for your corporate mobility through flexible contracts ensuring:"}
             </p>
             <ul className="list-disc list-inside text-sm pr-2 pl-2 space-y-2 text-[#1a2b3c]/80 marker:text-[#d0a755]">
               <li>{locale === "ar" ? "تأمين تنقلات الموظفين والمديرين بأعلى مستويات الراحة والأمان." : "Securing mobility for employees and executives with utmost comfort and safety."}</li>

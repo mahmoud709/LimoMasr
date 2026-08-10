@@ -3998,3 +3998,11 @@
 2026-08-09T12:24:12.213Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-08-09T12:24:12.613Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-08-09T12:24:12.732Z - REWRITE: /ar -> /?__locale=ar
+2026-08-09T12:25:02.629Z - INCOMING: /ar/stays | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:25:02.652Z - REWRITE: /ar/stays -> /stays?__locale=ar
+2026-08-09T12:25:05.571Z - INCOMING: /ar/stays?type=apartments | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:25:05.594Z - REWRITE: /ar/stays -> /stays?type=apartments&__locale=ar
+2026-08-09T12:25:13.497Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-09T12:25:13.526Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:25:26.252Z - INCOMING: /ar/fast-track | isRewritten: false | hasLocaleParam: false
+2026-08-09T12:25:26.281Z - REWRITE: /ar/fast-track -> /fast-track?__locale=ar

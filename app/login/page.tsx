@@ -37,7 +37,7 @@ function LoginFormContent() {
     },
     en: {
       title: "Log In",
-      subtitle: "Welcome back to Limo Masr, your premier destination for luxury transport.",
+      subtitle: "Welcome back to Limo Egypt, your premier destination for luxury transport.",
       phone: "Phone Number",
       phonePlaceholder: "e.g., 01012345678",
       password: "Password",
@@ -49,7 +49,7 @@ function LoginFormContent() {
       error: "Invalid phone number or password",
       back: "Back to Home",
       welcomeTitle1: "Welcome to",
-      welcomeTitle2: "Limo Masr",
+      welcomeTitle2: "Limo Egypt",
       welcomeText: "Experience the ultimate luxury in transportation. Book your ride, track your journey, and manage everything in one place.",
     }
   }[lang];
@@ -186,7 +186,7 @@ function LoginFormContent() {
         <div className="absolute inset-0 z-0">
           <Image 
             src="/images/hero/carhero1avif.avif" 
-            alt="Limo Masr Luxury Car" 
+            alt="Limo Egypt Luxury Car" 
             fill 
             className="object-cover object-center opacity-50 scale-105 animate-slow-pan" 
             priority

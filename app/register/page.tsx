@@ -40,7 +40,7 @@ function RegisterFormContent() {
     },
     en: {
       title: "Create Account",
-      subtitle: "Join Limo Masr and enjoy a seamless booking experience",
+      subtitle: "Join Limo Egypt and enjoy a seamless booking experience",
       name: "Full Name",
       namePlaceholder: "Enter your full name",
       phone: "Phone Number",
@@ -55,7 +55,7 @@ function RegisterFormContent() {
       back: "Back to Home",
       welcomeTitle1: "Start Your Journey",
       welcomeTitle2: "With Us Now",
-      welcomeText: "Join thousands of distinguished clients who trust Limo Masr for their daily commutes and special trips. Luxury and safety are just a click away.",
+      welcomeText: "Join thousands of distinguished clients who trust Limo Egypt for their daily commutes and special trips. Luxury and safety are just a click away.",
     }
   }[lang];
 
@@ -208,7 +208,7 @@ function RegisterFormContent() {
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/hero/car1.AVIF"
-            alt="Limo Masr Luxury Car"
+            alt="Limo Egypt Luxury Car"
             fill
             className="object-cover object-center opacity-50 scale-105 animate-slow-pan"
             priority

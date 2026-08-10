@@ -39,7 +39,7 @@ export default async function FlightsPage() {
                 
                 <h2 className="text-3xl md:text-5xl font-black text-white leading-[1.3] mb-6 drop-shadow-lg rtl:text-right ltr:text-left">
                   {locale === "en" ? (
-                    <>Book Your Next Journey with <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">Limo Masr</span></>
+                    <>Book Your Next Journey with <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">Limo Egypt</span></>
                   ) : (
                     <>احجز رحلتك القادمة مع <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#d0a755] to-[#f4d58d]">ليمو مصر</span></>
                   )}

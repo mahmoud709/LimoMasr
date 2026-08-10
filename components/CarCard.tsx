@@ -40,8 +40,8 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
   };
   
   return (
-    <article className={`flex ${viewMode === "grid" ? "flex-col" : "flex-col sm:flex-row items-stretch sm:items-center"} w-full h-full luxury-panel p-4 md:p-5 group transition-all duration-500 hover:-translate-y-2 gap-4 md:gap-6`}>
-      <div className={`relative ${viewMode === "grid" ? "aspect-[16/10] w-full mb-2" : "w-full sm:w-[45%] aspect-[16/10] sm:aspect-square md:aspect-[4/3]"} overflow-hidden rounded-xl bg-[#1a2b3c]/5 shrink-0`}>
+    <article className={`flex ${viewMode === "grid" ? "flex-col" : "flex-col sm:flex-row items-stretch"} w-full h-full luxury-panel overflow-hidden group transition-all duration-500 hover:-translate-y-2`}>
+      <div className={`relative ${viewMode === "grid" ? "h-[220px] sm:h-[240px] w-full" : "w-full sm:w-[45%] h-[220px] sm:h-auto sm:aspect-square md:aspect-[4/3]"} bg-[#1a2b3c]/5 shrink-0`}>
         
         {/* Carousel Container */}
         <div 
@@ -107,7 +107,7 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
         )}
       </div>
       
-      <div className={`flex flex-col flex-grow rtl:text-right ltr:text-left w-full h-full justify-between ${viewMode === "list" ? "py-2" : "mb-5"}`}>
+      <div className={`flex flex-col flex-grow rtl:text-right ltr:text-left w-full h-full justify-between p-4 md:p-5`}>
         <div className="flex flex-col gap-2">
         <div className="flex items-start justify-between mb-3">
           <h3 className="font-black text-[#1a2b3c] text-lg md:text-xl tracking-tight truncate max-w-[200px]">

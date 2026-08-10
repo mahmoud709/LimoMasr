@@ -59,6 +59,7 @@ export function BookingForm({
 
   // 1. Limousine (car) specific state
   const [carDate, setCarDate] = useState("");
+  const [carTime, setCarTime] = useState("");
   const [carLuggage, setCarLuggage] = useState<any>(0);
   const [carServiceType, setCarServiceType] = useState<"trip" | "daily">("trip");
   const [carFrom, setCarFrom] = useState("");
@@ -150,8 +151,8 @@ export function BookingForm({
 
   // Determine the effective date string for the booking record
   const bookingEffectiveDate = useMemo(() => {
-    if (type === "car") return carDate;
-    if (type === "fast_track") return fastTrackDate;
+    if (type === "car") return carTime ? `${carDate} (${carTime})` : carDate;
+    if (type === "fast_track") return fastTrackTime ? `${fastTrackDate} (${fastTrackTime})` : fastTrackDate;
     if (["hotel", "apartment"].includes(type)) {
       if (hotelDateFrom && hotelDateTo) return `${hotelDateFrom} ${isEn ? "to" : "إلى"} ${hotelDateTo}`;
       return hotelDateFrom || hotelDateTo || "";
@@ -163,7 +164,7 @@ export function BookingForm({
       return flightDateFrom || "";
     }
     return "";
-  }, [type, carDate, fastTrackDate, hotelDateFrom, hotelDateTo, flightTripType, flightDateFrom, flightDateTo, isEn]);
+  }, [type, carDate, carTime, fastTrackDate, fastTrackTime, hotelDateFrom, hotelDateTo, flightTripType, flightDateFrom, flightDateTo, isEn]);
 
   // Dynamic effective type & service name calculation based on actual user selection
   const effectiveType = useMemo(() => {
@@ -205,6 +206,7 @@ export function BookingForm({
       
       detailsList.push(isEn ? `• Service Type: ${serviceTypeStr}` : `• نوع الخدمة: ${serviceTypeStr}`);
       if (carDate) detailsList.push(isEn ? `• Date: ${carDate}` : `• تاريخ الرحلة: ${carDate}`);
+      if (carTime) detailsList.push(isEn ? `• Time: ${carTime}` : `• وقت الرحلة: ${carTime}`);
       
       if (carServiceType === "trip") {
         if (carFrom) detailsList.push(isEn ? `• Pickup From: ${carFrom}` : `• الانطلاق من: ${carFrom}`);
@@ -461,7 +463,7 @@ export function BookingForm({
           <h2 className="text-2xl font-black text-[#1a2b3c]">{isEn ? "Confirm Booking" : "تأكيد الحجز"}</h2>
         </div>
         <p className="text-sm font-bold text-[#d0a755] mt-1 pr-11 rtl:pr-11 ltr:pl-11">
-          {isEn ? "Service:" : "الخدمة:"} {serviceName}
+          {isEn ? "Service:" : "الخدمة:"} {effectiveServiceName}
         </p>
       </div>
       
@@ -555,20 +557,63 @@ export function BookingForm({
               </div>
             )}
 
-            {/* Date, Luggage & Passengers Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Date & Time Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Trip Date" : "تاريخ الرحلة"}
                 </label>
-                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <input
                     required
                     type="date"
                     value={carDate}
                     onChange={(e) => setCarDate(e.target.value)}
+                    dir="ltr"
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Trip Time" : "وقت الرحلة"}
+                </label>
+                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiClock className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="time"
+                    value={carTime}
+                    onChange={(e) => setCarTime(e.target.value)}
                     className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Passengers & Luggage Row */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                  {isEn ? "Passengers" : "عدد الركاب"}
+                </label>
+                <div className="flex items-center rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <FiUsers className="w-4 h-4 text-[#d0a755] shrink-0" />
+                  <input
+                    required
+                    type="number"
+                    min={1}
+                    value={passengers}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setPassengers(val === "" ? "" : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (passengers === "" || passengers < 1) setPassengers(1);
+                    }}
+                    className="w-full bg-transparent px-2 text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
                   />
                 </div>
               </div>
@@ -595,29 +640,6 @@ export function BookingForm({
                   />
                 </div>
               </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                  {isEn ? "Passengers" : "عدد الركاب"}
-                </label>
-                <div className="flex items-center rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-                  <FiUsers className="w-4 h-4 text-[#d0a755] shrink-0" />
-                  <input
-                    required
-                    type="number"
-                    min={1}
-                    value={passengers}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setPassengers(val === "" ? "" : parseInt(val, 10));
-                    }}
-                    onBlur={() => {
-                      if (passengers === "" || passengers < 1) setPassengers(1);
-                    }}
-                    className="w-full bg-transparent px-2 text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
-                  />
-                </div>
-              </div>
             </div>
           </div>
         )}
@@ -627,26 +649,8 @@ export function BookingForm({
         {/* ========================================================================= */}
         {type === "fast_track" && (
           <div className="space-y-4">
-            {/* Nationality & Service Date */}
+            {/* Service Date & Time */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                  {isEn ? "Nationality" : "الجنسية"}
-                </label>
-                <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-                  <FiGlobe className="w-4 h-4 text-[#d0a755] shrink-0" />
-                  <button
-                    type="button"
-                    onClick={() => setNationalityModalOpen(true)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-start flex items-center justify-between"
-                  >
-                    <span className={nationality ? "" : "text-[#1a2b3c]/40"}>
-                      {nationality || (isEn ? "Select Nationality..." : "اختر الجنسية...")}
-                    </span>
-                  </button>
-                </div>
-              </div>
-
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Service Date" : "تاريخ الخدمة"}
@@ -658,13 +662,11 @@ export function BookingForm({
                     type="date"
                     value={fastTrackDate}
                     onChange={(e) => setFastTrackDate(e.target.value)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    dir="ltr"
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Service Time (Optional)" : "وقت الخدمة (اختياري)"}
@@ -679,11 +681,13 @@ export function BookingForm({
                   />
                 </div>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                  {isEn ? "Passport / Ticket (Optional)" : "صورة الجواز / التذكرة (اختياري)"}
-                </label>
-                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                {isEn ? "Passport / Ticket (Optional)" : "صورة الجواز / التذكرة (اختياري)"}
+              </label>
+              <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiImage className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <input
                     ref={attachmentInputRef}
@@ -709,7 +713,7 @@ export function BookingForm({
                   )}
                 </div>
               </div>
-            </div>
+
 
             {/* Number of Passengers */}
             <div className="relative flex items-center justify-between gap-4 rounded-xl border border-black/10 bg-[#F9F8F6] px-4 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
@@ -837,14 +841,15 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Check-in Date (From)" : "تاريخ الوصول (من)"}
                 </label>
-                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <input
                     required
                     type="date"
                     value={hotelDateFrom}
                     onChange={(e) => setHotelDateFrom(e.target.value)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    dir="ltr"
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>
@@ -852,35 +857,17 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Check-out Date (To)" : "تاريخ المغادرة (إلى)"}
                 </label>
-                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <input
                     required
                     type="date"
                     value={hotelDateTo}
                     onChange={(e) => setHotelDateTo(e.target.value)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    dir="ltr"
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
-              </div>
-            </div>
-
-            {/* Nationality */}
-            <div>
-              <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                {isEn ? "Nationality" : "الجنسية"}
-              </label>
-              <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-                <FiGlobe className="w-4 h-4 text-[#d0a755] shrink-0" />
-                <button
-                  type="button"
-                  onClick={() => setNationalityModalOpen(true)}
-                  className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-start flex items-center justify-between"
-                >
-                  <span className={nationality ? "" : "text-[#1a2b3c]/40"}>
-                    {nationality || (isEn ? "Select Nationality..." : "اختر الجنسية...")}
-                  </span>
-                </button>
               </div>
             </div>
 
@@ -1008,14 +995,15 @@ export function BookingForm({
                   <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                     {isEn ? "Departure Date" : "تاريخ الذهاب"}
                   </label>
-                  <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                     <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                     <input
                       required
                       type="date"
                       value={flightDateFrom}
                       onChange={(event) => setFlightDateFrom(event.target.value)}
-                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                      dir="ltr"
+                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1023,14 +1011,15 @@ export function BookingForm({
                   <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                     {isEn ? "Return Date" : "تاريخ العودة"}
                   </label>
-                  <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                  <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                     <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                     <input
                       required
                       type="date"
                       value={flightDateTo}
                       onChange={(event) => setFlightDateTo(event.target.value)}
-                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                      dir="ltr"
+                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1040,14 +1029,15 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Flight Date" : "تاريخ السفر"}
                 </label>
-                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <input
                     required
                     type="date"
                     value={flightDateFrom}
                     onChange={(event) => setFlightDateFrom(event.target.value)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    dir="ltr"
+                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>
@@ -1101,22 +1091,41 @@ export function BookingForm({
           </div>
         )}
 
-        {/* Phone Number (Required for all services) */}
-        <div>
-          <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-            {isEn ? "Phone / WhatsApp Number" : "رقم الهاتف / الواتساب للتواصل"}
-          </label>
-          <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-            <FiPhone className="w-4 h-4 text-[#d0a755] shrink-0" />
-            <input
-              required
-              type="tel"
-              value={phone}
-              onChange={(event) => setPhone(event.target.value)}
-              placeholder={isEn ? "e.g. +201000000000" : "مثال: 01000000000"}
-              className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none text-left"
-              dir="ltr"
-            />
+        {/* Nationality & Phone Number (Required for all services) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+              {isEn ? "Nationality" : "الجنسية"}
+            </label>
+            <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+              <FiGlobe className="w-4 h-4 text-[#d0a755] shrink-0" />
+              <button
+                type="button"
+                onClick={() => setNationalityModalOpen(true)}
+                className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-start flex items-center justify-between"
+              >
+                <span className={nationality ? "" : "text-[#1a2b3c]/40"}>
+                  {nationality || (isEn ? "Select Nationality..." : "اختر الجنسية...")}
+                </span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+              {isEn ? "Phone / WhatsApp Number" : "رقم الهاتف / الواتساب للتواصل"}
+            </label>
+            <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+              <FiPhone className="w-4 h-4 text-[#d0a755] shrink-0" />
+              <input
+                required
+                type="tel"
+                value={phone}
+                onChange={(event) => setPhone(event.target.value)}
+                placeholder={isEn ? "e.g. +201000000000" : "مثال: 01000000000"}
+                className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
         </div>
         

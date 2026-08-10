@@ -42,7 +42,7 @@ export default function ImageUploader({
   }
 
   async function removeImage(index: number, url: string) {
-    if (url.startsWith("/uploads/")) {
+    if (url.startsWith("/uploads/") || url.includes("cloudinary.com")) {
       try {
         await fetch("/api/admin/upload", {
           method: "DELETE",

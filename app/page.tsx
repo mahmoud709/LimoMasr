@@ -51,12 +51,12 @@ export default async function Home() {
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.2] mb-8 animate-reveal-2 drop-shadow-lg">
                 {t.hero.title1} <br/> <span className="text-white">{t.hero.title2}.</span>
               </h1>
-              <p className="text-white/90 text-lg md:text-xl leading-[1.8] mb-12 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
+              <p className="text-white/90 text-lg md:text-xl leading-[1.8] mb-3 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
                 {t.hero.text}
               </p>
 
               {/* Sleek, Compact Booking Cards Row - 4 Cards Layout */}
-              <div className="w-full animate-reveal-3 mt-4">
+              <div className="w-full animate-reveal-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                   {[
                     {
@@ -115,7 +115,7 @@ export default async function Home() {
             {/* Cars Carousel */}
             <CarCarousel
               cars={cars}
-              title={locale === "en" ? "Limo Masr Fleet" : "أسطول ليمو مصر"}
+              title={locale === "en" ? "Limo Egypt Fleet" : "أسطول ليمو مصر"}
               viewAllText={locale === "en" ? "View All" : "عرض الكل"}
               locale={locale}
               currency={currency}

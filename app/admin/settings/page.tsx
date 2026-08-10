@@ -16,6 +16,10 @@ export default function SettingsPage() {
   const [migrating, setMigrating] = useState(false);
   const [migrationResult, setMigrationResult] = useState<any>(null);
 
+  // Password change state
+  const [newPassword, setNewPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+
   useEffect(() => {
     fetch("/api/admin/settings", { cache: "no-store" })
       .then(r => r.json())
@@ -54,6 +58,32 @@ export default function SettingsPage() {
     }
   }
 
+  async function changePassword() {
+    if (!newPassword || newPassword.length < 6) {
+      toast.error("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+      return;
+    }
+    setChangingPassword(true);
+    try {
+      const res = await fetch("/api/admin/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newPassword }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success("تم تغيير كلمة المرور بنجاح");
+        setNewPassword("");
+      } else {
+        toast.error(data.error || "فشلت عملية تغيير كلمة المرور");
+      }
+    } catch (err) {
+      toast.error("حدث خطأ في الاتصال بالخادم");
+    } finally {
+      setChangingPassword(false);
+    }
+  }
+
   const f = (path: string, value: string) => {
     setSettings(prev => {
       if (!prev) return prev;
@@ -86,6 +116,31 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-6">
+
+        {/* Security / Change Password */}
+        <Card title="أمان الحساب">
+          <div className="space-y-4">
+            <p className="text-xs text-[#1a2b3c]/60 font-medium">قم بتحديث كلمة مرور الإدارة الخاصة بك بانتظام لضمان حماية النظام بنسبة 100%.</p>
+            <div className="flex items-end gap-4 max-w-sm">
+              <div className="flex-1">
+                <Field 
+                  label="كلمة المرور الجديدة" 
+                  value={newPassword} 
+                  onChange={setNewPassword} 
+                  type="password" 
+                  dir="ltr" 
+                />
+              </div>
+              <button
+                onClick={changePassword}
+                disabled={changingPassword || newPassword.length < 6}
+                className="px-5 py-2.5 rounded-xl bg-[#1a2b3c] hover:bg-[#1a2b3c]/90 text-white text-sm font-black transition-all shadow-sm disabled:opacity-50 h-[42px]"
+              >
+                {changingPassword ? "جاري التغيير..." : "تحديث كلمة المرور"}
+              </button>
+            </div>
+          </div>
+        </Card>
 
         {/* Cloudinary Automatic Migration Section */}
         <Card title="مزامنة ميديا الخادم إلى Cloudinary">

@@ -69,7 +69,7 @@ export function buildWhatsappUrl(phone: string, message: string) {
 export function bookingMessage(booking: Partial<Booking>, locale: Locale = "ar") {
   if (locale === "en") {
     return [
-      "Hello Limo Masr, I want to confirm a booking:",
+      "Hello Limo Egypt, I want to confirm a booking:",
       `Service: ${booking.serviceName ?? ""}`,
       `Name: ${booking.customerName ?? ""}`,
       `Phone: ${booking.phone ?? ""}`,

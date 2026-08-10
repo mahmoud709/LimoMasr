@@ -27,7 +27,7 @@ export default async function CarsPage() {
                 <span className="w-8 h-[1px] bg-[#d0a755]"></span>
                 <span className="text-[#d0a755] font-bold tracking-widest text-xs uppercase">{locale === "en" ? "Our Fleet" : "الأسطول"}</span>
               </span>
-              <h1 className="text-4xl md:text-5xl font-black text-[#1a2b3c] tracking-tight">{locale === "en" ? "Limo Masr Fleet" : "أسطول ليمو مصر"}</h1>
+              <h1 className="text-4xl md:text-5xl font-black text-[#1a2b3c] tracking-tight">{locale === "en" ? "Limo Egypt Fleet" : "أسطول ليمو مصر"}</h1>
             </div>
           </div>
           

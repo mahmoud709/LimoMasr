@@ -30,7 +30,7 @@ export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: Flo
   }, []);
 
   const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(
-    locale === "en" ? "Hello Limo Masr, I want to ask about booking." : "مرحبًا ليمو مصر، أريد الاستفسار عن الحجز."
+    locale === "en" ? "Hello Limo Egypt, I want to ask about booking." : "مرحبًا ليمو مصر، أريد الاستفسار عن الحجز."
   )}`;
 
   // Define social menu items

@@ -19,7 +19,7 @@ export default async function AboutPage({ searchParams }: { searchParams?: Promi
         <div className="animate-reveal-1">
           <SectionHeader 
             eyebrow={locale === "en" ? "About Us" : "من نحن"} 
-            title={locale === "en" ? "Limo Masr Company" : "شركة ليمو مصر"} 
+            title={locale === "en" ? "Limo Egypt Company" : "شركة ليمو مصر"} 
             text={locale === "en" ? "A transport and travel services company in Egypt focused on price transparency, fast booking confirmation, and a comfortable experience for visitors and tourists." : "شركة نقل وخدمات سفر في مصر تركز على وضوح السعر وسرعة تأكيد الحجز وتجربة مريحة للزوار والسياح."} 
           />
         </div>
@@ -90,7 +90,7 @@ export default async function AboutPage({ searchParams }: { searchParams?: Promi
         <div className="animate-reveal-3">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-[#1a2b3c] mb-4">
-              {locale === "en" ? "Why Choose Limo Masr?" : "لماذا تختار ليمو مصر؟"}
+              {locale === "en" ? "Why Choose Limo Egypt?" : "لماذا تختار ليمو مصر؟"}
             </h2>
             <div className="h-1 w-20 bg-[#d0a755] mx-auto rounded-full"></div>
           </div>

@@ -27,7 +27,7 @@ export default async function ContactPage({
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop" 
-              alt="Limo Masr Contact" 
+              alt="Limo Egypt Contact" 
               className="w-full h-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-black/60"></div>

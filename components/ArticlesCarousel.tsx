@@ -82,7 +82,7 @@ export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn
             </span>
           </span>
           <h2 className="text-3xl md:text-5xl font-black text-[#1a2b3c] tracking-tight">
-            {isEn ? "From Limo Masr Blog" : "من مدونة ليمو مصر"}
+            {isEn ? "From Limo Egypt Blog" : "من مدونة ليمو مصر"}
           </h2>
         </div>
         <div className="flex flex-row items-center justify-between md:justify-end gap-4 md:gap-6 w-full md:w-auto">
@@ -142,13 +142,19 @@ export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn
               className="snap-center shrink-0 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] bg-white rounded-[2rem] overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(208,167,85,0.15)] transition-all duration-500 hover:-translate-y-2 group block"
             >
               <div className="relative h-64 overflow-hidden">
-                <Image 
-                  src={article.image}
-                  alt={title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+                {article.image ? (
+                  <Image 
+                    src={article.image}
+                    alt={title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#1a2b3c]/5 flex items-center justify-center p-6 text-center">
+                    <span className="text-[#1a2b3c]/40 font-black text-lg leading-tight line-clamp-3">{title}</span>
+                  </div>
+                )}
                 <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-black text-[#1a2b3c] tracking-widest shadow-lg">
                   {category}
                 </div>

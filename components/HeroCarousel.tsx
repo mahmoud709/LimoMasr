@@ -71,7 +71,7 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           </button>
 
           {/* Mobile Controls (grouped bottom-left, above floating WhatsApp) */}
-          <div className="absolute bottom-6 left-6 flex gap-4 z-30 md:hidden pointer-events-auto">
+          <div className="absolute bottom-3 left-6 flex gap-4 z-30 md:hidden pointer-events-auto">
             <button
               onClick={prev}
               aria-label="Previous"
@@ -89,7 +89,7 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           </div>
 
           {/* Dot indicators */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-30 pointer-events-auto" dir="ltr">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-30 pointer-events-auto" dir="ltr">
             {slides.map((_, i) => (
               <button
                 key={i}
