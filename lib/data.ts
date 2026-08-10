@@ -37,15 +37,6 @@ export async function getArticles(onlyPublished = false): Promise<Article[]> {
     
     let articles = await collection.find({}).toArray();
     
-    if (articles.length === 0) {
-      const fallbackArticles = await readJsonFallback<Article[]>("articles.json");
-      if (fallbackArticles && fallbackArticles.length > 0) {
-        const toInsert = fallbackArticles.map(({ ...a }) => a);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding articles:", err));
-        articles = await collection.find({}).toArray();
-      }
-    }
-    
     const result = articles.map(({ _id, ...article }) => article as Article);
     if (onlyPublished) {
       return result.filter(a => a.published !== false);
@@ -105,17 +96,6 @@ export async function getCars(): Promise<Car[]> {
     // Find all cars
     let cars = await collection.find({}).toArray();
     
-    // If collection is empty, seed it from JSON file
-    if (cars.length === 0) {
-      const fallbackCars = await readJsonFallback<Car[]>("cars.json");
-      if (fallbackCars && fallbackCars.length > 0) {
-        // Remove mongo internal _id properties if any exist in the json array (unlikely but safe)
-        const toInsert = fallbackCars.map(({ ...c }) => c);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding cars:", err));
-        cars = await collection.find({}).toArray();
-      }
-    }
-    
     // Strip _id before returning to avoid TS issues or return with standard formatting
     const result = cars.map(({ _id, ...car }) => car as Car);
     return result.sort((a, b) => a.sortOrder - b.sortOrder);
@@ -168,22 +148,6 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
     
     let packages = await collection.find({}).toArray();
     
-    // Check if we have duplicate ids in the database and clean them up
-    const ids = packages.map(p => p.id);
-    const hasDuplicates = ids.some((id, index) => ids.indexOf(id) !== index);
-    
-    // Check if we have old seed data (containing "cairo-standard" or USD currency or old image paths) or if it's empty
-    const hasOldData = packages.some(p => p.id === "cairo-standard" || p.currency === "USD" || p.image?.startsWith("/airport_") || p.image?.startsWith("/vip_"));
-    if (packages.length === 0 || hasOldData || hasDuplicates) {
-      const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
-      if (fallbackPackages && fallbackPackages.length > 0) {
-        await collection.deleteMany({});
-        const toInsert = fallbackPackages.map(({ ...p }) => p);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding fast-track packages:", err));
-        packages = await collection.find({}).toArray();
-      }
-    }
-    
     const result = packages.map(({ _id, ...p }) => p as FastTrackPackage);
     return result.sort((a, b) => a.sortOrder - b.sortOrder);
   } catch (error) {
@@ -232,18 +196,6 @@ export async function getHotels(): Promise<HotelItem[]> {
     const collection = db.collection<HotelItem>("hotels");
     
     let hotels = await collection.find({}).toArray();
-    
-    // Reseed if empty or old simple structure without price
-    const hasOldData = hotels.some(h => typeof h.price !== "number" || !h.features);
-    if (hotels.length === 0 || hasOldData) {
-      const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
-      if (fallbackHotels && fallbackHotels.length > 0) {
-        await collection.deleteMany({});
-        const toInsert = fallbackHotels.map(({ ...h }) => h);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotels:", err));
-        hotels = await collection.find({}).toArray();
-      }
-    }
     
     const result = hotels.map(({ _id, ...h }) => h as HotelItem);
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
