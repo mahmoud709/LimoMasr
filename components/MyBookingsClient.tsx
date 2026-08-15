@@ -61,6 +61,21 @@ function formatBookingDate(dateStr: string, lang: "ar" | "en") {
   }
 }
 
+// Parse structured bracket-format notes into clean fields
+function parseNotes(notes?: string) {
+  if (!notes) return { clean: "", attachment: "" };
+  const get = (key: string) => {
+    const m = notes.match(new RegExp(`\\[${key}:\\s*([^\\]]+)\\]`));
+    return m ? m[1].trim() : "";
+  };
+  const attachment = get("المرفقات");
+  // Remove all bracket-wrapped tokens and the attachment URL from display
+  const clean = notes
+    .replace(/\[[^\]]+\]/g, "")
+    .trim();
+  return { attachment, clean };
+}
+
 export function MyBookingsClient() {
   const router = useRouter();
   const pathname = usePathname();
@@ -138,7 +153,7 @@ export function MyBookingsClient() {
   const { data: bookingsData = { bookings: [], total: 0, totalPages: 0 }, isLoading: bookingsLoading } = useQuery({
     queryKey: ["customerBookings", page],
     queryFn: async () => {
-      const res = await fetch(`/api/customer/bookings?page=${page}&limit=12`);
+      const res = await fetch(`/api/customer/bookings?page=${page}&limit=10`);
       if (!res.ok) throw new Error("فشل تحميل الحجوزات");
       return res.json();
     },
@@ -280,11 +295,59 @@ export function MyBookingsClient() {
                           <p>{t.price} <span className="text-[#d0a755] font-black">{booking.price.toLocaleString(lang === "en" ? "en-US" : "ar-EG")} {t.egp}</span></p>
                         )}
 
-                        {booking.notes && (
-                          <p className="text-xs text-[#1a2b3c]/50 font-medium bg-[#f9f8f6] p-2.5 rounded-lg mt-2">
-                            {t.notes}{booking.notes}
-                          </p>
-                        )}
+                        {booking.notes && (() => {
+                          const { attachment } = parseNotes(booking.notes);
+                          // Build a readable summary from bracket keys
+                          const summarize = (notes: string) => {
+                            const pairs: { label: string; value: string }[] = [];
+                            const keys = [
+                              { key: "نوع الخدمة", label: "نوع الخدمة" },
+                              { key: "الجنسية", label: "الجنسية" },
+                              { key: "تاريخ البداية", label: "من" },
+                              { key: "تاريخ النهاية", label: "إلى" },
+                              { key: "عدد الأيام", label: "الأيام" },
+                              { key: "مكان السكن", label: "مكان السكن" },
+                              { key: "من", label: "من" },
+                              { key: "إلى", label: "إلى" },
+                              { key: "عدد الحقائب", label: "الحقائب" },
+                              { key: "تاريخ الخدمة", label: "التاريخ" },
+                              { key: "المكان", label: "المكان" },
+                              { key: "الميزانية", label: "الميزانية" },
+                              { key: "أسماء المسافرين", label: "المسافرون" },
+                              { key: "ملاحظات", label: "ملاحظات" },
+                            ];
+                            keys.forEach(({ key, label }) => {
+                              const m = notes.match(new RegExp(`\\[${key}:\\s*([^\\]]+)\\]`));
+                              if (m && m[1].trim()) pairs.push({ label, value: m[1].trim() });
+                            });
+                            return pairs;
+                          };
+                          const details = summarize(booking.notes);
+                          return (
+                            <div className="mt-2 space-y-1">
+                              {details.length > 0 && (
+                                <div className="bg-[#f9f8f6] rounded-lg p-2.5 space-y-1">
+                                  {details.map((d, i) => (
+                                    <p key={i} className="text-xs text-[#1a2b3c]/70">
+                                      <span className="font-bold text-[#1a2b3c]/50">{d.label}: </span>
+                                      <span className="font-bold text-[#1a2b3c]">{d.value}</span>
+                                    </p>
+                                  ))}
+                                </div>
+                              )}
+                              {attachment && (
+                                <a
+                                  href={attachment}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#d0a755] hover:underline mt-1"
+                                >
+                                  📎 {lang === "en" ? "View Attachment" : "عرض المرفق"}
+                                </a>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
 

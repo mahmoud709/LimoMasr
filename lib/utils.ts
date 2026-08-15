@@ -39,11 +39,13 @@ export function priceUnitLabel(unit: PriceUnit, locale: Locale = "ar") {
       per_hour: "لكل ساعة",
       per_trip: "للرحلة",
       per_person: "للفرد",
+      per_day: "لليوم",
     },
     en: {
       per_hour: "per hour",
       per_trip: "per trip",
       per_person: "per person",
+      per_day: "per day",
     },
   };
   return labels[locale][unit];

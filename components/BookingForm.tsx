@@ -58,13 +58,15 @@ export function BookingForm({
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
   // 1. Limousine (car) specific state
-  const [carDate, setCarDate] = useState("");
+  const [carDate, setCarDate] = useState("");          // تاريخ التوصيلة
   const [carTime, setCarTime] = useState("");
   const [carLuggage, setCarLuggage] = useState<any>(0);
   const [carServiceType, setCarServiceType] = useState<"trip" | "daily">("trip");
   const [carFrom, setCarFrom] = useState("");
   const [carTo, setCarTo] = useState("");
   const [carResidence, setCarResidence] = useState("");
+  const [carDateFrom, setCarDateFrom] = useState("");  // تاريخ بداية الخدمة اليومية
+  const [carDateTo, setCarDateTo] = useState("");      // تاريخ نهاية الخدمة اليومية
 
   // 2. Fast Track specific state
   const [nationality, setNationality] = useState("");
@@ -140,18 +142,31 @@ export function BookingForm({
     });
   }, [passengers]);
 
-  // Calculate dynamic display price (especially for Fast Track per-person pricing)
+  // Calculate total days for daily car service
+  const carTotalDays = useMemo(() => {
+    if (type !== "car" || carServiceType !== "daily" || !carDateFrom || !carDateTo) return 0;
+    const from = new Date(carDateFrom);
+    const to = new Date(carDateTo);
+    const diff = Math.ceil((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
+    return diff > 0 ? diff : 0;
+  }, [type, carServiceType, carDateFrom, carDateTo]);
+
+  // Calculate dynamic display price
   const calculatedPrice = useMemo(() => {
     if (!price) return undefined;
-    if (type === "fast_track") {
-      return price * passengers;
-    }
+    if (type === "fast_track") return price * passengers;
+    if (type === "car" && carServiceType === "daily" && carTotalDays > 0) return price * carTotalDays;
     return price;
-  }, [price, type, passengers]);
+  }, [price, type, passengers, carServiceType, carTotalDays]);
 
   // Determine the effective date string for the booking record
   const bookingEffectiveDate = useMemo(() => {
-    if (type === "car") return carTime ? `${carDate} (${carTime})` : carDate;
+    if (type === "car") {
+      if (carServiceType === "daily" && carDateFrom && carDateTo) {
+        return `${carDateFrom} ${isEn ? "to" : "إلى"} ${carDateTo}`;
+      }
+      return carTime ? `${carDate} (${carTime})` : carDate;
+    }
     if (type === "fast_track") return fastTrackTime ? `${fastTrackDate} (${fastTrackTime})` : fastTrackDate;
     if (["hotel", "apartment"].includes(type)) {
       if (hotelDateFrom && hotelDateTo) return `${hotelDateFrom} ${isEn ? "to" : "إلى"} ${hotelDateTo}`;
@@ -164,7 +179,7 @@ export function BookingForm({
       return flightDateFrom || "";
     }
     return "";
-  }, [type, carDate, carTime, fastTrackDate, fastTrackTime, hotelDateFrom, hotelDateTo, flightTripType, flightDateFrom, flightDateTo, isEn]);
+  }, [type, carServiceType, carDate, carTime, carDateFrom, carDateTo, fastTrackDate, fastTrackTime, hotelDateFrom, hotelDateTo, flightTripType, flightDateFrom, flightDateTo, isEn]);
 
   // Dynamic effective type & service name calculation based on actual user selection
   const effectiveType = useMemo(() => {
@@ -205,14 +220,18 @@ export function BookingForm({
         : (isEn ? "Daily Rental Service" : "خدمة يومية");
       
       detailsList.push(isEn ? `• Service Type: ${serviceTypeStr}` : `• نوع الخدمة: ${serviceTypeStr}`);
-      if (carDate) detailsList.push(isEn ? `• Date: ${carDate}` : `• تاريخ الرحلة: ${carDate}`);
-      if (carTime) detailsList.push(isEn ? `• Time: ${carTime}` : `• وقت الرحلة: ${carTime}`);
-      
+
       if (carServiceType === "trip") {
+        if (carDate) detailsList.push(isEn ? `• Date: ${carDate}` : `• تاريخ الرحلة: ${carDate}`);
+        if (carTime) detailsList.push(isEn ? `• Time: ${carTime}` : `• وقت الرحلة: ${carTime}`);
         if (carFrom) detailsList.push(isEn ? `• Pickup From: ${carFrom}` : `• الانطلاق من: ${carFrom}`);
         if (carTo) detailsList.push(isEn ? `• Destination To: ${carTo}` : `• الوصول إلى: ${carTo}`);
       } else {
+        if (carDateFrom) detailsList.push(isEn ? `• From Date: ${carDateFrom}` : `• تاريخ البداية: ${carDateFrom}`);
+        if (carDateTo) detailsList.push(isEn ? `• To Date: ${carDateTo}` : `• تاريخ النهاية: ${carDateTo}`);
+        if (carTotalDays > 0) detailsList.push(isEn ? `• Total Days: ${carTotalDays} days` : `• إجمالي الأيام: ${carTotalDays} يوم`);
         if (carResidence) detailsList.push(isEn ? `• Residence / Accommodation: ${carResidence}` : `• مكان السكن / الإقامة: ${carResidence}`);
+        if (calculatedPrice) detailsList.push(isEn ? `• Total Price: ${calculatedPrice} EGP` : `• السعر الإجمالي: ${calculatedPrice} ج.م`);
       }
       
       detailsList.push(isEn ? `• Luggage Count: ${carLuggage}` : `• عدد الحقائب: ${carLuggage}`);
@@ -286,6 +305,10 @@ export function BookingForm({
     carFrom,
     carTo,
     carResidence,
+    carDateFrom,
+    carDateTo,
+    carTotalDays,
+    calculatedPrice,
     nationality,
     fastTrackDate,
     passengerNames,
@@ -325,9 +348,11 @@ export function BookingForm({
       // Build structured notes for admin and internal records
       let structuredNotes = "";
       if (type === "car") {
-        structuredNotes = `[نوع الخدمة: ${carServiceType === "trip" ? "توصيلة" : "يومية"}] [تاريخ الرحلة: ${carDate}] [عدد الحقائب: ${carLuggage}] ${
-          carServiceType === "trip" ? `[من: ${carFrom}] [إلى: ${carTo}]` : `[مكان السكن: ${carResidence}]`
-        } ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+        if (carServiceType === "trip") {
+          structuredNotes = `[نوع الخدمة: توصيلة] [تاريخ الرحلة: ${carDate}] [عدد الحقائب: ${carLuggage}] [من: ${carFrom}] [إلى: ${carTo}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+        } else {
+          structuredNotes = `[نوع الخدمة: يومية] [تاريخ البداية: ${carDateFrom}] [تاريخ النهاية: ${carDateTo}] [عدد الأيام: ${carTotalDays}] [مكان السكن: ${carResidence}] [عدد الحقائب: ${carLuggage}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+        }
       } else if (type === "fast_track") {
         const namesStr = passengerNames.filter((n) => n.trim().length > 0).join(" | ");
         structuredNotes = `[الجنسية: ${nationality}] [تاريخ الخدمة: ${fastTrackDate}] ${fastTrackTime ? `[الوقت: ${fastTrackTime}]` : ""} [أسماء المسافرين: ${namesStr}] ${notes ? `[ملاحظات: ${notes}]` : ""} ${uploadedAttachmentUrl ? `[المرفقات: ${uploadedAttachmentUrl}]` : ""}`;
@@ -355,9 +380,12 @@ export function BookingForm({
           serviceRefId,
           serviceName: effectiveServiceName,
           date: bookingEffectiveDate,
+          dateFrom: type === "car" && carServiceType === "daily" ? carDateFrom : undefined,
+          dateTo: type === "car" && carServiceType === "daily" ? carDateTo : undefined,
           notes: structuredNotes.trim(),
           passengers,
-          price: calculatedPrice,
+          price: type === "car" && carServiceType === "daily" ? price : calculatedPrice,
+          totalPrice: type === "car" && carServiceType === "daily" ? calculatedPrice : undefined,
           source: bookingSource,
         }),
       });
@@ -380,6 +408,8 @@ export function BookingForm({
     setNotes("");
     setPassengers(1);
     setCarDate("");
+    setCarDateFrom("");
+    setCarDateTo("");
     setCarLuggage(0);
     setCarServiceType("trip");
     setCarFrom("");
@@ -557,41 +587,99 @@ export function BookingForm({
               </div>
             )}
 
-            {/* Date & Time Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                  {isEn ? "Trip Date" : "تاريخ الرحلة"}
-                </label>
-                <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-                  <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
-                  <input
-                    required
-                    type="date"
-                    value={carDate}
-                    onChange={(e) => setCarDate(e.target.value)}
-                    dir="ltr"
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
-                  />
+            {/* Date & Time Row — conditional based on service type */}
+            {carServiceType === "trip" ? (
+              /* Trip: single date + time */
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                    {isEn ? "Trip Date" : "تاريخ الرحلة"}
+                  </label>
+                  <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                    <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                    <input
+                      required
+                      type="date"
+                      value={carDate}
+                      onChange={(e) => setCarDate(e.target.value)}
+                      dir="ltr"
+                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                  {isEn ? "Trip Time" : "وقت الرحلة"}
-                </label>
-                <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
-                  <FiClock className="w-4 h-4 text-[#d0a755] shrink-0" />
-                  <input
-                    required
-                    type="time"
-                    value={carTime}
-                    onChange={(e) => setCarTime(e.target.value)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
-                  />
+                <div>
+                  <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                    {isEn ? "Trip Time" : "وقت الرحلة"}
+                  </label>
+                  <div className="flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                    <FiClock className="w-4 h-4 text-[#d0a755] shrink-0" />
+                    <input
+                      required
+                      type="time"
+                      value={carTime}
+                      onChange={(e) => setCarTime(e.target.value)}
+                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              /* Daily: date range from → to + auto total days & price */
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                      {isEn ? "Start Date (From)" : "تاريخ البداية (من)"}
+                    </label>
+                    <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                      <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                      <input
+                        required
+                        type="date"
+                        value={carDateFrom}
+                        onChange={(e) => setCarDateFrom(e.target.value)}
+                        dir="ltr"
+                        className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+                      {isEn ? "End Date (To)" : "تاريخ النهاية (إلى)"}
+                    </label>
+                    <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3 py-2.5 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
+                      <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
+                      <input
+                        required
+                        type="date"
+                        value={carDateTo}
+                        min={carDateFrom || undefined}
+                        onChange={(e) => setCarDateTo(e.target.value)}
+                        dir="ltr"
+                        className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Total days & price summary */}
+                {carTotalDays > 0 && (
+                  <div className="flex items-center justify-between bg-[#1a2b3c]/5 rounded-xl px-4 py-3 border border-[#d0a755]/20">
+                    <span className="text-xs font-bold text-[#1a2b3c]/70 flex items-center gap-1.5">
+                      <FiCalendar className="w-3.5 h-3.5 text-[#d0a755]" />
+                      {isEn ? `Total: ${carTotalDays} day${carTotalDays !== 1 ? "s" : ""}` : `الإجمالي: ${carTotalDays} يوم`}
+                    </span>
+                    {calculatedPrice && (
+                      <span className="text-sm font-black text-[#d0a755]">
+                        {new Intl.NumberFormat("ar-EG").format(calculatedPrice)} {isEn ? "EGP" : "ج.م"}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Passengers & Luggage Row */}
             <div className="grid grid-cols-2 gap-3">

@@ -4,7 +4,7 @@ export type AvailabilityStatus = "available" | "unavailable";
 
 export type BookingStatus = "new" | "confirmed" | "cancelled" | "completed";
 
-export type PriceUnit = "per_hour" | "per_trip" | "per_person";
+export type PriceUnit = "per_hour" | "per_trip" | "per_person" | "per_day";
 
 export type AdminUserRole = "super_admin" | "sales";
 
@@ -191,9 +191,12 @@ export type Booking = {
   serviceRefId: string;
   serviceName: string;
   date: string;
+  dateFrom?: string;  // تاريخ بداية الرحلة (للخدمة اليومية)
+  dateTo?: string;    // تاريخ نهاية الرحلة (للخدمة اليومية)
   notes: string;
   passengers?: number;
   price?: number;
+  totalPrice?: number; // السعر الإجمالي (عدد الأيام × السعر اليومي)
   status: BookingStatus;
   source: "whatsapp" | "web";
   createdAt: string;

@@ -43,6 +43,10 @@ export interface ParsedBookingInfo {
   hotelOrPlace?: string;
   additionalNotes?: string;
   attachmentUrl?: string;
+  // خدمة يومية
+  startDate?: string;
+  endDate?: string;
+  totalDays?: string;
 }
 
 export function parseBookingNotes(notes?: string, primaryName?: string): ParsedBookingInfo {
@@ -115,6 +119,16 @@ export function parseBookingNotes(notes?: string, primaryName?: string): ParsedB
 
   const budMatch = notes.match(/\[الميزانية:\s*([^\]]+)\]/);
   if (budMatch && budMatch[1]) info.budget = budMatch[1].trim();
+
+  // Extract daily service dates
+  const startDateMatch = notes.match(/\[تاريخ البداية:\s*([^\]]+)\]/);
+  if (startDateMatch && startDateMatch[1]) info.startDate = startDateMatch[1].trim();
+
+  const endDateMatch = notes.match(/\[تاريخ النهاية:\s*([^\]]+)\]/);
+  if (endDateMatch && endDateMatch[1]) info.endDate = endDateMatch[1].trim();
+
+  const totalDaysMatch = notes.match(/\[عدد الأيام:\s*([^\]]+)\]/);
+  if (totalDaysMatch && totalDaysMatch[1]) info.totalDays = totalDaysMatch[1].trim();
 
   // Extract Attachment
   const attachMatch = notes.match(/\[المرفقات:\s*([^\]]+)\]/);
@@ -264,7 +278,50 @@ export function BookingDetailsModal({
               </div>
             )}
 
-            {booking.price !== undefined && (
+            {/* Daily car service: show date range + total days */}
+            {(parsed.startDate || booking.dateFrom) && (
+              <div className="col-span-2 sm:col-span-3 bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                <span className="text-[11px] font-bold text-amber-700 block mb-2 flex items-center gap-1">
+                  <FiCalendar className="w-3.5 h-3.5" /> مدة الخدمة اليومية
+                </span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-slate-400">من</span>
+                    <span className="text-sm font-black text-[#1a2b3c]">{parsed.startDate || booking.dateFrom}</span>
+                  </div>
+                  <span className="text-[#d0a755] font-black">←</span>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-slate-400">إلى</span>
+                    <span className="text-sm font-black text-[#1a2b3c]">{parsed.endDate || booking.dateTo}</span>
+                  </div>
+                  {(parsed.totalDays) && (
+                    <span className="mr-auto bg-[#1a2b3c] text-[#d0a755] text-xs font-black px-3 py-1.5 rounded-lg">
+                      {parsed.totalDays} يوم
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Total price (daily service) — shown prominently */}
+            {booking.totalPrice !== undefined && (
+              <div className="col-span-2 sm:col-span-1 bg-[#1a2b3c] p-4 rounded-xl border border-[#d0a755]/20">
+                <span className="text-[11px] font-bold text-white/60 block mb-1 flex items-center gap-1">
+                  <FiDollarSign className="w-3.5 h-3.5 text-[#d0a755]" /> السعر الإجمالي
+                </span>
+                <span className="text-base md:text-lg font-black text-[#d0a755]">
+                  {new Intl.NumberFormat("ar-EG").format(booking.totalPrice)} ج.م
+                </span>
+                {booking.price !== undefined && (
+                  <span className="text-[10px] text-white/40 block mt-0.5">
+                    ({new Intl.NumberFormat("ar-EG").format(booking.price)} ج.م / يوم)
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Regular price (non-daily) */}
+            {booking.price !== undefined && booking.totalPrice === undefined && (
               <div className="bg-[#F9F8F6] p-4 rounded-xl border border-black/5">
                 <span className="text-[11px] font-bold text-slate-400 block mb-1 flex items-center gap-1">
                   <FiDollarSign className="w-3.5 h-3.5 text-[#d0a755]" /> القيمة المقدرة
