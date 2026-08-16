@@ -309,14 +309,15 @@ export default async function Home() {
             </div>
             
             {/* Image Content */}
-            <div className="relative animate-reveal-2 h-[400px] md:h-[500px] w-full rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group">
+            <div className="relative animate-reveal-2 h-100 md:h-125 w-full rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group">
               <Image 
                 src="/team.png" 
                 alt="سائق محترف" 
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover object-top md:object-center transition-transform duration-1000 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a2b3c]/80 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-[#1a2b3c]/80 via-transparent to-transparent"></div>
               
               <div className="absolute z-10 bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8 text-center p-4 md:p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl">
                 <p className="text-white opacity-100 text-sm md:text-base font-bold leading-relaxed drop-shadow-md">

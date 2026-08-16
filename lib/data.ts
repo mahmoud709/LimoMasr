@@ -569,7 +569,7 @@ export async function saveSiteSettings(settings: SiteSettings) {
   
   await collection.replaceOne(
     { _id: "site-settings" },
-    { _id: "site-settings", ...settings },
+    settings,
     { upsert: true }
   );
 }

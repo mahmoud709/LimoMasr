@@ -27,7 +27,7 @@ export async function GET() {
     let changed = 0;
     
     for (const relPath of targetFiles) {
-      const filePath = path.join(rootDir, relPath);
+      const filePath = path.join(/*turbopackIgnore: true*/ rootDir, relPath);
       try {
         const content = await fs.readFile(filePath, "utf8");
         if (content.includes("Limo Masr")) {
