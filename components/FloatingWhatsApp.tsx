@@ -49,41 +49,41 @@ export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: Flo
       color: "bg-[#1a2b3c] border border-[#d0a755]/50 shadow-black/20",
       href: `tel:${phone}`,
     },
-    ...(socialLinks.telegram ? [{
+    {
       id: "telegram",
       name: locale === "en" ? "Telegram" : "تليجرام",
       icon: <FaTelegramPlane className="w-5 h-5 text-white" />,
       color: "bg-[#0088cc] shadow-[#0088cc]/30",
-      href: socialLinks.telegram,
-    }] : []),
-    ...(socialLinks.instagram ? [{
+      href: socialLinks.telegram || "#",
+    },
+    {
       id: "instagram",
       name: locale === "en" ? "Instagram" : "إنستغرام",
       icon: <FaInstagram className="w-5 h-5 text-white" />,
       color: "bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] shadow-[#dc2743]/20",
-      href: socialLinks.instagram,
-    }] : []),
-    ...(socialLinks.tiktok ? [{
+      href: socialLinks.instagram || "#",
+    },
+    {
       id: "tiktok",
       name: locale === "en" ? "TikTok" : "تيك توك",
       icon: <FaTiktok className="w-4 h-4 text-white" />,
       color: "bg-black shadow-black/40",
-      href: socialLinks.tiktok,
-    }] : []),
-    ...(socialLinks.snapchat ? [{
+      href: socialLinks.tiktok || "#",
+    },
+    {
       id: "snapchat",
       name: locale === "en" ? "Snapchat" : "سناب شات",
       icon: <FaSnapchatGhost className="w-4 h-4 text-black" />,
       color: "bg-[#FFFC00] shadow-[#FFFC00]/30",
-      href: socialLinks.snapchat,
-    }] : []),
-    ...(socialLinks.facebook ? [{
+      href: socialLinks.snapchat || "#",
+    },
+    {
       id: "facebook",
       name: locale === "en" ? "Facebook" : "فيسبوك",
       icon: <FaFacebookF className="w-4 h-4 text-white" />,
       color: "bg-[#1877F2] shadow-[#1877F2]/30",
-      href: socialLinks.facebook,
-    }] : []),
+      href: socialLinks.facebook || "#",
+    }
   ];
 
   return (

@@ -47,8 +47,8 @@ export async function processAndUploadImage(imgUrl: string, folder = "limo-masr"
       console.log(`Migrated local public image (${relativePath}) to Cloudinary: ${cloudinaryUrl}`);
       return cloudinaryUrl;
     }
-  } catch (err) {
-    console.error(`Failed to migrate image (${imgUrl.slice(0, 50)}...) to Cloudinary:`, err);
+  } catch (err: any) {
+    console.warn(`⚠️ Skipped migrating image (${imgUrl.slice(0, 60)}...) - ${err.message || "Upload failed"}`);
   }
 
   return imgUrl;

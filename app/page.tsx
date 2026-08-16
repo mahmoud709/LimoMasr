@@ -44,7 +44,7 @@ export default async function Home() {
 
           <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
             {/* Text Content */}
-            <div className="flex flex-col items-start text-start max-w-4xl py-16 md:py-24 pointer-events-auto">
+            <div className="flex flex-col items-start text-start max-w-4xl py-16 md:py-24 pointer-events-auto mb-28 md:mb-0">
               <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-6 animate-reveal-1 drop-shadow-md uppercase">
                 {t.hero.eyebrow}
               </p>
@@ -155,7 +155,7 @@ export default async function Home() {
             {/* Flight Bookings Carousel */}
             <FlightCarousel
               flights={flights}
-              title={locale === "en" ? "Flight Bookings & Airline Tickets" : "حجز وتذاكر الطيران"}
+              title={locale === "en" ? "Flight Bookings & Airline Tickets" : "حجز تذاكر الطيران"}
               viewAllText={locale === "en" ? "Book Flight" : "احجز تذكرتك"}
               locale={locale}
               currency={currency}
@@ -231,6 +231,8 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <CorporateSection locale={locale} />
 
         {/* Professional Drivers Section */}
         <section className="relative w-full bg-[#1a2b3c] py-24 overflow-hidden text-white border-b border-white/5">
@@ -325,7 +327,9 @@ export default async function Home() {
           </div>
         </section>
 
-        <CorporateSection locale={locale} />
+        <ReviewsSection locale={locale} />
+
+        <ArticlesSection locale={locale} />
 
         {/* Car Brands Marquee Section */}
         <section className="relative w-full bg-white py-32 overflow-hidden">
@@ -389,8 +393,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <ArticlesSection locale={locale} />
-
         {/* Social Media Section */}
         <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">
           <div className="mx-auto max-w-[1200px] px-8 relative z-10 flex flex-col items-center">
@@ -432,8 +434,6 @@ export default async function Home() {
             </div>
           </div>
         </section>
-
-        <ReviewsSection locale={locale} />
       </main>
     </PublicLayout>
   );

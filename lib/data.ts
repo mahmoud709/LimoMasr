@@ -5,7 +5,6 @@ import type {
   Booking,
   Car,
   FastTrackPackage,
-  HotelOption,
   HotelItem,
   FlightRoute,
   ApartmentItem,
@@ -93,8 +92,16 @@ export async function getCars(): Promise<Car[]> {
     const db = await getDb();
     const collection = db.collection<Car>("cars");
     
-    // Find all cars
     let cars = await collection.find({}).toArray();
+    
+    if (cars.length === 0) {
+      const fallbackCars = await readJsonFallback<Car[]>("cars.json");
+      if (fallbackCars && fallbackCars.length > 0) {
+        const toInsert = fallbackCars.map(({ ...c }) => c);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding cars:", err));
+        cars = await collection.find({}).toArray();
+      }
+    }
     
     // Strip _id before returning to avoid TS issues or return with standard formatting
     const result = cars.map(({ _id, ...car }) => car as Car);
@@ -148,6 +155,15 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
     
     let packages = await collection.find({}).toArray();
     
+    if (packages.length === 0) {
+      const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
+      if (fallbackPackages && fallbackPackages.length > 0) {
+        const toInsert = fallbackPackages.map(({ ...p }) => p);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding fast-track packages:", err));
+        packages = await collection.find({}).toArray();
+      }
+    }
+    
     const result = packages.map(({ _id, ...p }) => p as FastTrackPackage);
     return result.sort((a, b) => a.sortOrder - b.sortOrder);
   } catch (error) {
@@ -196,6 +212,15 @@ export async function getHotels(): Promise<HotelItem[]> {
     const collection = db.collection<HotelItem>("hotels");
     
     let hotels = await collection.find({}).toArray();
+    
+    if (hotels.length === 0) {
+      const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
+      if (fallbackHotels && fallbackHotels.length > 0) {
+        const toInsert = fallbackHotels.map(({ ...h }) => h);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotels:", err));
+        hotels = await collection.find({}).toArray();
+      }
+    }
     
     const result = hotels.map(({ _id, ...h }) => h as HotelItem);
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -457,7 +482,7 @@ export async function getLiveExchangeRates() {
   try {
     const res = await fetch("https://api.exchangerate-api.com/v4/latest/EGP", {
       next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(2000) // Fail fast (2 seconds) if network is blocked or slow
+      signal: AbortSignal.timeout(5000) // Fail fast (5 seconds) if network is blocked or slow
     });
     if (!res.ok) throw new Error("Failed to fetch rates");
     const data = await res.json();
@@ -469,8 +494,12 @@ export async function getLiveExchangeRates() {
       kwdRate: data.rates.KWD ? Number((1 / data.rates.KWD).toFixed(2)) : undefined,
       bhdRate: data.rates.BHD ? Number((1 / data.rates.BHD).toFixed(2)) : undefined,
     };
-  } catch (err) {
-    console.error("Error fetching live rates:", err);
+  } catch (err: any) {
+    if (err.name === 'TimeoutError') {
+      console.warn("⚠️ Live exchange rates API timed out. Using fallback rates.");
+    } else {
+      console.error("⚠️ Error fetching live rates:", err.message || "Unknown error");
+    }
     return {};
   }
 }
@@ -479,20 +508,20 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   let settingsToReturn: SiteSettings | null = null;
   try {
     const db = await getDb();
-    const collection = db.collection("settings");
+    const collection = db.collection<SiteSettings & { _id: string }>("settings");
     
     // Settings is a single object stored with _id = "site-settings"
-    const settingsDoc = await collection.findOne({ _id: "site-settings" as any });
+    const settingsDoc = await collection.findOne({ _id: "site-settings" });
     
     if (settingsDoc) {
-      const { _id, ...settings } = settingsDoc as any;
+      const { _id, ...settings } = settingsDoc;
       settingsToReturn = settings as SiteSettings;
     }
     
     if (!settingsToReturn) {
     const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
       if (fallbackSettings) {
-        const doc = { _id: "site-settings" as any, ...fallbackSettings };
+        const doc = { _id: "site-settings", ...fallbackSettings };
         await collection.insertOne(doc).catch(err => console.error("Error seeding site settings:", err));
         settingsToReturn = fallbackSettings;
       }
@@ -536,11 +565,11 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
 export async function saveSiteSettings(settings: SiteSettings) {
   const db = await getDb();
-  const collection = db.collection("settings");
+  const collection = db.collection<SiteSettings & { _id: string }>("settings");
   
   await collection.replaceOne(
-    { _id: "site-settings" as any },
-    { _id: "site-settings" as any, ...settings },
+    { _id: "site-settings" },
+    { _id: "site-settings", ...settings },
     { upsert: true }
   );
 }

@@ -83,7 +83,7 @@ export function BookingForm({
   const [hotelDetails, setHotelDetails] = useState("");
   const [apartmentArea, setApartmentArea] = useState("");
   const [hotelDateFrom, setHotelDateFrom] = useState("");
-  const [hotelDateTo, setHotelDateTo] = useState("");
+  const [hotelNights, setHotelNights] = useState<any>(1);
   const [budget, setBudget] = useState(5000);
 
   // Sync accommodationType if the parent type prop changes
@@ -169,8 +169,8 @@ export function BookingForm({
     }
     if (type === "fast_track") return fastTrackTime ? `${fastTrackDate} (${fastTrackTime})` : fastTrackDate;
     if (["hotel", "apartment"].includes(type)) {
-      if (hotelDateFrom && hotelDateTo) return `${hotelDateFrom} ${isEn ? "to" : "إلى"} ${hotelDateTo}`;
-      return hotelDateFrom || hotelDateTo || "";
+      if (hotelDateFrom && hotelNights) return `${hotelDateFrom} (${hotelNights} ${isEn ? "nights" : "ليالي"})`;
+      return hotelDateFrom || "";
     }
     if (type === "flight") {
       if (flightTripType === "round_trip" && flightDateTo) {
@@ -179,7 +179,7 @@ export function BookingForm({
       return flightDateFrom || "";
     }
     return "";
-  }, [type, carServiceType, carDate, carTime, carDateFrom, carDateTo, fastTrackDate, fastTrackTime, hotelDateFrom, hotelDateTo, flightTripType, flightDateFrom, flightDateTo, isEn]);
+  }, [type, carServiceType, carDate, carTime, carDateFrom, carDateTo, fastTrackDate, fastTrackTime, hotelDateFrom, hotelNights, flightTripType, flightDateFrom, flightDateTo, isEn]);
 
   // Dynamic effective type & service name calculation based on actual user selection
   const effectiveType = useMemo(() => {
@@ -256,9 +256,12 @@ export function BookingForm({
       detailsList.push(accDetails);
       if (nationality) detailsList.push(isEn ? `• Nationality: ${nationality}` : `• الجنسية: ${nationality}`);
       if (hotelDateFrom) detailsList.push(isEn ? `• Check-in Date: ${hotelDateFrom}` : `• تاريخ الوصول: ${hotelDateFrom}`);
-      if (hotelDateTo) detailsList.push(isEn ? `• Check-out Date: ${hotelDateTo}` : `• تاريخ المغادرة: ${hotelDateTo}`);
+      if (hotelNights) detailsList.push(isEn ? `• Number of Nights: ${hotelNights}` : `• عدد الليالي: ${hotelNights}`);
       detailsList.push(isEn ? `• Number of Guests: ${passengers}` : `• عدد الأفراد: ${passengers}`);
+      
+      const totalBudget = currency !== "EGP" ? ((budget * hotelNights) / exchangeRate).toFixed(2) + ` ${currency}` : (budget * hotelNights) + " EGP";
       detailsList.push(isEn ? `• Budget per night: ${formattedBudget}` : `• الميزانية المتوقعة لليلة: ${formattedBudget}`);
+      detailsList.push(isEn ? `• Total Budget: ${totalBudget}` : `• إجمالي الميزانية المتوقعة: ${totalBudget}`);
     } else if (type === "flight") {
       const tripTypeStr = flightTripType === "round_trip"
         ? (isEn ? "Round Trip" : "ذهاب وعودة")
@@ -316,7 +319,7 @@ export function BookingForm({
     hotelDetails,
     apartmentArea,
     hotelDateFrom,
-    hotelDateTo,
+    hotelNights,
     flightTripType,
     flightFrom,
     flightTo,
@@ -357,9 +360,10 @@ export function BookingForm({
         const namesStr = passengerNames.filter((n) => n.trim().length > 0).join(" | ");
         structuredNotes = `[الجنسية: ${nationality}] [تاريخ الخدمة: ${fastTrackDate}] ${fastTrackTime ? `[الوقت: ${fastTrackTime}]` : ""} [أسماء المسافرين: ${namesStr}] ${notes ? `[ملاحظات: ${notes}]` : ""} ${uploadedAttachmentUrl ? `[المرفقات: ${uploadedAttachmentUrl}]` : ""}`;
       } else if (["hotel", "apartment"].includes(type)) {
+        const totalBudgetEgp = budget * (hotelNights || 1);
         structuredNotes = `[النوع: ${accommodationType === "hotel" ? "فندق" : "شقة فندقية"}] [المكان: ${
           accommodationType === "hotel" ? (hotelDetails || "غير محدد") : (apartmentArea || "غير محدد")
-        }] [الجنسية: ${nationality || "غير محدد"}] [تاريخ الوصول: ${hotelDateFrom}] [تاريخ المغادرة: ${hotelDateTo}] [الميزانية: ${formattedBudget}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+        }] [الجنسية: ${nationality || "غير محدد"}] [تاريخ الوصول: ${hotelDateFrom}] [عدد الليالي: ${hotelNights}] [إجمالي الميزانية: ${totalBudgetEgp} ج.م] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
       } else if (type === "flight") {
         structuredNotes = `[نوع الرحلة: ${flightTripType === "round_trip" ? "ذهاب وعودة" : "ذهاب فقط"}] [من: ${flightFrom}] [إلى: ${flightTo}] [تاريخ الذهاب: ${flightDateFrom}] ${
           flightTripType === "round_trip" ? `[تاريخ العودة: ${flightDateTo}] ` : ""
@@ -423,7 +427,7 @@ export function BookingForm({
     setHotelDetails("");
     setApartmentArea("");
     setHotelDateFrom("");
-    setHotelDateTo("");
+    setHotelNights(1);
     setBudget(5000);
     setFlightTripType("round_trip");
     setFlightFrom("");
@@ -943,17 +947,24 @@ export function BookingForm({
               </div>
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                  {isEn ? "Check-out Date (To)" : "تاريخ المغادرة (إلى)"}
+                  {isEn ? "Number of Nights" : "عدد الليالي"}
                 </label>
                 <div className="relative flex items-center gap-2 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
                   <FiCalendar className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <input
                     required
-                    type="date"
-                    value={hotelDateTo}
-                    onChange={(e) => setHotelDateTo(e.target.value)}
+                    type="number"
+                    min={1}
+                    value={hotelNights}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setHotelNights(val === "" ? "" : parseInt(val, 10));
+                    }}
+                    onBlur={() => {
+                      if (hotelNights === "" || hotelNights < 1) setHotelNights(1);
+                    }}
+                    className="w-full bg-transparent text-sm font-black text-[#1a2b3c] outline-none text-left rtl:text-right"
                     dir="ltr"
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>
@@ -1002,6 +1013,19 @@ export function BookingForm({
                 className="w-full accent-[#d0a755] h-1.5 bg-black/10 rounded-lg appearance-none cursor-pointer"
               />
             </div>
+
+            {/* Total Budget summary */}
+            {hotelNights > 0 && (
+              <div className="flex items-center justify-between bg-[#1a2b3c]/5 rounded-xl px-4 py-3 border border-[#d0a755]/20 mt-2">
+                <span className="text-xs font-bold text-[#1a2b3c]/70 flex items-center gap-1.5">
+                  <FiCalendar className="w-3.5 h-3.5 text-[#d0a755]" />
+                  {isEn ? `Total Budget (${hotelNights} nights)` : `إجمالي الميزانية (${hotelNights} ليالي)`}
+                </span>
+                <span className="text-sm font-black text-[#d0a755]">
+                  {currency !== "EGP" ? ((budget * hotelNights) / exchangeRate).toFixed(2) + ` ${currency}` : new Intl.NumberFormat("ar-EG").format(budget * hotelNights) + " ج.م"}
+                </span>
+              </div>
+            )}
           </div>
         )}
 

@@ -189,7 +189,7 @@ export function FlightCarousel({
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl md:text-3xl font-black text-[#1a2b3c] flex items-center gap-3">
           <span className="text-[#f0a500] text-2xl md:text-3xl leading-none">|</span>{" "}
-          {title || (isEn ? "Flight Bookings & Airline Tickets" : "حجز وتذاكر الطيران")}
+          {title || (isEn ? "Flight Bookings & Airline Tickets" : "حجز تذاكر الطيران")}
         </h2>
 
         <div className="flex items-center gap-5">
