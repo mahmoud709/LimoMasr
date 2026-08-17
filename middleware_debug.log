@@ -4925,3 +4925,47 @@
 2026-08-17T06:43:05.042Z - REWRITE: /ar/cars -> /cars?__locale=ar
 2026-08-17T06:43:27.984Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
 2026-08-17T06:43:27.999Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-17T06:48:27.254Z - INCOMING: /ar/cars/luxury-family | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:48:27.269Z - REWRITE: /ar/cars/luxury-family -> /cars/luxury-family?__locale=ar
+2026-08-17T06:53:40.327Z - INCOMING: /ar/cars/luxury-family | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:53:40.351Z - REWRITE: /ar/cars/luxury-family -> /cars/luxury-family?__locale=ar
+2026-08-17T06:53:58.454Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:53:58.481Z - REDIRECT: / -> /ar
+2026-08-17T06:53:58.530Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:53:58.554Z - REWRITE: /ar -> /?__locale=ar
+2026-08-17T06:54:15.867Z - INCOMING: /ar/privacy | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:15.895Z - REWRITE: /ar/privacy -> /privacy?__locale=ar
+2026-08-17T06:54:16.906Z - INCOMING: /ar/policies | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:16.930Z - REWRITE: /ar/policies -> /policies?__locale=ar
+2026-08-17T06:54:18.082Z - INCOMING: /ar/policies | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:18.103Z - REWRITE: /ar/policies -> /policies?__locale=ar
+2026-08-17T06:54:18.421Z - INCOMING: /ar/policies | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:18.445Z - REWRITE: /ar/policies -> /policies?__locale=ar
+2026-08-17T06:54:18.533Z - REWRITE: /ar/policies -> /policies?__locale=ar
+2026-08-17T06:54:18.558Z - INCOMING: /ar/policies | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:23.113Z - INCOMING: /ar/policies | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:23.144Z - REWRITE: /ar/policies -> /policies?__locale=ar
+2026-08-17T06:54:50.599Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:54:50.624Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T06:56:23.781Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:56:23.823Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T06:56:29.398Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:56:29.425Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T06:56:29.446Z - INCOMING: /ar/cars/luxury-family | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:56:29.468Z - REWRITE: /ar/cars/luxury-family -> /cars/luxury-family?__locale=ar
+2026-08-17T06:56:29.923Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:56:29.948Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T06:56:30.113Z - INCOMING: /ar/cars/luxury-family | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:56:30.140Z - REWRITE: /ar/cars/luxury-family -> /cars/luxury-family?__locale=ar
+2026-08-17T06:56:38.287Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:56:38.314Z - REWRITE: /ar -> /?__locale=ar
+2026-08-17T06:58:32.616Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:58:32.733Z - REWRITE: /ar -> /?__locale=ar
+2026-08-17T06:58:32.755Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T06:58:32.776Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:58:33.332Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:58:33.357Z - REWRITE: /ar -> /?__locale=ar
+2026-08-17T06:58:33.409Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:58:33.431Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T06:59:06.877Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-17T06:59:06.905Z - REWRITE: /ar/about -> /about?__locale=ar

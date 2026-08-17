@@ -1,8 +1,11 @@
 import { MongoClient } from 'mongodb';
+import dns from 'dns';
 
+// Force Google DNS to bypass local Windows DNS SRV timeout issues
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 async function migrate() {
-  // Use the URI from your .env but without the database name at the end
-  const uri = 'mongodb+srv://mahmoudshalaby:mahmoud1300@limocluster.oss54j9.mongodb.net/limo';
+  // Bypassing DNS SRV and TXT records entirely by using the direct cluster nodes!
+  const uri = 'mongodb://mahmoudshalaby:mahmoud1300@limocluster-shard-00-00.oss54j9.mongodb.net:27017,limocluster-shard-00-01.oss54j9.mongodb.net:27017,limocluster-shard-00-02.oss54j9.mongodb.net:27017/limo?ssl=true&authSource=admin';
   const client = new MongoClient(uri);
 
   try {

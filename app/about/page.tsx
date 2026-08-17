@@ -1,7 +1,7 @@
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getSiteSettings } from "@/lib/data";
-import { FaCar, FaPlaneDeparture, FaHotel, FaRegClock, FaShieldAlt, FaHeadset } from "react-icons/fa";
+import { FaCar, FaPlaneDeparture, FaHotel, FaRegClock, FaShieldAlt, FaHeadset, FaBriefcase } from "react-icons/fa";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
@@ -41,7 +41,7 @@ export default async function AboutPage({ searchParams }: { searchParams?: Promi
             </h2>
             <div className="h-1 w-20 bg-[#d0a755] mx-auto rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="luxury-panel p-8 flex flex-col items-center text-center transition-transform hover:-translate-y-2">
               <div className="w-20 h-20 bg-[#1a2b3c] rounded-2xl flex items-center justify-center text-[#d0a755] mb-6 shadow-lg rotate-3 hover:rotate-0 transition-transform">
                 <FaCar className="w-10 h-10" />
@@ -81,6 +81,48 @@ export default async function AboutPage({ searchParams }: { searchParams?: Promi
                 {locale === "en"
                   ? "Strategic partnerships with the finest hotels in Egypt to secure your stay at the best available prices, with options suitable for individuals, families, and leisure trips."
                   : "شراكات استراتيجية مع أرقى فنادق مصر لتأمين إقامتك بأفضل الأسعار المتاحة، مع خيارات تناسب الأفراد، العائلات، والرحلات الترفيهية."}
+              </p>
+            </div>
+
+            <div className="luxury-panel p-8 flex flex-col items-center text-center transition-transform hover:-translate-y-2">
+              <div className="w-20 h-20 bg-[#1a2b3c] rounded-2xl flex items-center justify-center text-[#d0a755] mb-6 shadow-lg -rotate-3 hover:rotate-0 transition-transform">
+                <FaHotel className="w-10 h-10" />
+              </div>
+              <h3 className="text-xl font-black text-[#1a2b3c] mb-4">
+                {locale === "en" ? "Hotel Apartments" : "الشقق والأجنحة الفندقية"}
+              </h3>
+              <p className="text-[#1a2b3c]/70 leading-relaxed font-light text-base">
+                {locale === "en"
+                  ? "Luxury furnished apartments and hotel suites tailored for families and long stays, providing the ultimate privacy and comfort."
+                  : "شقق مفروشة وأجنحة فندقية فاخرة مصممة خصيصاً للعائلات والإقامات الطويلة، توفر أقصى درجات الخصوصية والراحة."}
+              </p>
+            </div>
+
+            <div className="luxury-panel p-8 flex flex-col items-center text-center transition-transform hover:-translate-y-2">
+              <div className="w-20 h-20 bg-[#1a2b3c] rounded-2xl flex items-center justify-center text-[#d0a755] mb-6 shadow-lg rotate-3 hover:rotate-0 transition-transform">
+                <FaPlaneDeparture className="w-10 h-10" />
+              </div>
+              <h3 className="text-xl font-black text-[#1a2b3c] mb-4">
+                {locale === "en" ? "Flight Bookings" : "حجز تذاكر الطيران"}
+              </h3>
+              <p className="text-[#1a2b3c]/70 leading-relaxed font-light text-base">
+                {locale === "en"
+                  ? "We provide flight booking services with major airlines at competitive prices, offering flexible scheduling to suit your travel plans."
+                  : "نوفر خدمات حجز تذاكر الطيران على كبرى الخطوط الجوية بأسعار تنافسية، مع توفير خيارات مرنة تناسب خطط سفرك."}
+              </p>
+            </div>
+
+            <div className="luxury-panel p-8 flex flex-col items-center text-center transition-transform hover:-translate-y-2">
+              <div className="w-20 h-20 bg-[#1a2b3c] rounded-2xl flex items-center justify-center text-[#d0a755] mb-6 shadow-lg -rotate-3 hover:rotate-0 transition-transform">
+                <FaBriefcase className="w-10 h-10" />
+              </div>
+              <h3 className="text-xl font-black text-[#1a2b3c] mb-4">
+                {locale === "en" ? "Corporate & Conferences" : "خدمات الشركات والمؤتمرات"}
+              </h3>
+              <p className="text-[#1a2b3c]/70 leading-relaxed font-light text-base">
+                {locale === "en"
+                  ? "We offer comprehensive solutions for corporations, including fleet allocation and complete logistical support to ensure the success of major events and conferences."
+                  : "نقدم حلولاً متكاملة تلبي تطلعات الشركات ونضمن نجاح الفعاليات والمؤتمرات الكبرى بفضل أسطولنا المميز وفريقنا المحترف."}
               </p>
             </div>
           </div>

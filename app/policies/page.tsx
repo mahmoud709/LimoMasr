@@ -31,8 +31,12 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
       content: "Our operational team actively tracks incoming flight status in real-time. International arrivals include up to 60 minutes of complimentary waiting time post-landing, and 30 minutes for domestic arrivals."
     },
     {
-      title: "Cancellation & Flexibility Policy",
-      content: "We understand travel plans can change. Cancellations or schedule modifications made at least 24 hours prior to the scheduled pickup time are processed free of charge."
+      title: "Cancellation & Refund Policy",
+      content: "We understand travel plans can change. Cancellations or schedule modifications made at least 24 hours prior to the scheduled pickup time are processed free of charge and eligible for a full refund. Late cancellations may be subject to partial fees."
+    },
+    {
+      title: "Delivery & Service Fulfillment Policy",
+      content: "As a transportation and travel service provider, our 'delivery' occurs when our chauffeur meets you at the designated pickup location and time. Booking confirmations are delivered digitally via email or WhatsApp immediately upon successful payment."
     },
     {
       title: "Vehicle Integrity & Safety Standards",
@@ -58,8 +62,12 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
       content: "يقوم فريق التشغيل بمتابعة حركة الطيران حياً عبر رقم الرحلة المزود. تتضمن الرحلات الدولية فترة انتظار مجانية تصل إلى 60 دقيقة بعد الهبوط، و30 دقيقة للرحلات الداخلية."
     },
     {
-      title: "سياسة الإلغاء والتعديل المرنة",
-      content: "ندرك إمكانية تغيير خطط السفر. يمكن تعديل الموعد أو إلغاء الحجز مجاناً وبدون أي رسوم قبل 24 ساعة من موعد الانطلاق المحدد."
+      title: "سياسة الإلغاء والاسترجاع",
+      content: "ندرك إمكانية تغيير خطط السفر. يمكن تعديل الموعد أو إلغاء الحجز واسترجاع المبلغ بالكامل مجاناً وبدون أي رسوم قبل 24 ساعة من موعد الانطلاق المحدد. الإلغاء المتأخر قد يخضع لرسوم جزئية."
+    },
+    {
+      title: "سياسة التوصيل وتنفيذ الخدمة",
+      content: "بصفتنا مزود خدمات نقل، يتم 'توصيل' الخدمة بمجرد وصول السائق في الوقت والمكان المحددين مسبقاً. يتم تسليم تأكيدات الحجز والفواتير بشكل رقمي وفوري عبر البريد الإلكتروني أو واتساب بعد الدفع."
     },
     {
       title: "قواعد السلامة والحفاظ على أسطول السيارات",
