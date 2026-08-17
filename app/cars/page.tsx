@@ -21,7 +21,7 @@ export default async function CarsPage() {
     <PublicLayout settings={settings} locale={locale}>
       <div className="pt-32 pb-24 min-h-screen bg-[#F9F8F6]">
         <div className="mx-auto max-w-[1400px] px-6 md:px-8">
-          <div className="mb-16 flex flex-col md:flex-row items-end justify-between gap-6">
+          <div className="mb-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
             <div className="animate-reveal-1">
               <span className="flex items-center gap-4 mb-4">
                 <span className="w-8 h-[1px] bg-[#d0a755]"></span>
