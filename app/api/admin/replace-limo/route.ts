@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 const targetFiles = [
   "lib/utils.ts",
@@ -22,6 +23,9 @@ const targetFiles = [
 ];
 
 export async function GET() {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const rootDir = process.cwd();
     let changed = 0;

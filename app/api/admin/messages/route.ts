@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { getContactMessages, deleteContactMessage, updateContactMessage } from "@/lib/data";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function GET(req: Request) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
@@ -15,6 +19,9 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const { id, read } = await req.json();
     if (!id) return NextResponse.json({ error: "ID is required" }, { status: 400 });
@@ -27,6 +34,9 @@ export async function PUT(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");

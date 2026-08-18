@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { promises as fs } from "fs";
 import path from "path";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function GET() {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const db = await getDb();
     const collection = db.collection("articles");

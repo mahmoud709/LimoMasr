@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { cookies } from "next/headers";
+import { verifyAdminToken } from "@/lib/admin-auth";
+import { AuthRedirect } from "@/components/admin/AuthRedirect";
 
 export const metadata = {
   title: "لوحة التحكم — ليمو مصر",
@@ -9,10 +11,16 @@ export const metadata = {
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const cookieStore = await cookies();
-  const isAuthenticated = cookieStore.has("admin-token");
+  const token = cookieStore.get("admin-token")?.value;
+  const isAuthenticated = token ? verifyAdminToken(token) : false;
 
   if (!isAuthenticated) {
-    return <div className="min-h-screen bg-[#1a2b3c]" dir="rtl">{children}</div>;
+    return (
+      <div className="min-h-screen bg-[#1a2b3c]" dir="rtl">
+        <AuthRedirect isAuthenticated={false} />
+        {children}
+      </div>
+    );
   }
 
   return (

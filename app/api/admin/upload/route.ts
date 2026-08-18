@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
@@ -25,6 +29,9 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   try {
     const body = await request.json();
     const { url } = body;

@@ -1,3 +1,4 @@
+import { sanitizeHtml } from "@/lib/sanitize";
 import { PublicLayout } from "@/components/PublicLayout";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -85,7 +86,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
           <div 
             className={`prose prose-lg prose-slate prose-headings:font-black prose-headings:text-[#1a2b3c] prose-a:text-[#d0a755] prose-img:rounded-3xl max-w-none mb-16 ${isEn ? "text-left" : "text-right"}`}
-            dangerouslySetInnerHTML={{ __html: content }} 
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} 
           />
 
         </article>

@@ -1,14 +1,20 @@
 import { NextResponse } from 'next/server';
 import { MongoClient } from 'mongodb';
 import dns from 'dns';
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 // Force Google DNS to bypass local ISP / Windows DNS SRV timeout issues
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 export async function GET() {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   let client;
   try {
-    const uri = process.env.MONGODB_URI || "mongodb+srv://mahmoudshalaby:mahmoud1300@limocluster.oss54j9.mongodb.net/limo";
+    const uri = process.env.MONGODB_URI;
+    if (!uri) throw new Error("MONGODB_URI is not set.");
+    
     // We instantiate the client *after* setting the DNS servers
     client = new MongoClient(uri);
     await client.connect();

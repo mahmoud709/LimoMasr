@@ -1,6 +1,7 @@
 import { MongoClient, Db } from "mongodb";
 
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/limo-masr";
+const uri = process.env.MONGODB_URI || (process.env.NODE_ENV === "development" ? "mongodb://localhost:27017/limo-masr" : "");
+if (!uri) throw new Error("MONGODB_URI is not set.");
 const options = {};
 
 let client: MongoClient;

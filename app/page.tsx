@@ -21,7 +21,7 @@ import { CorporateSection } from "@/components/CorporateSection";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  let [settings, rawCars, packages, flights, hotels, apartments] = await Promise.all([
+  const [settings, rawCars, packages, flights, hotels, apartments] = await Promise.all([
     getSiteSettings(),
     getCars(),
     getFastTrackPackages(),
@@ -404,7 +404,7 @@ export default async function Home() {
         <ReviewsSection locale={locale} />
 
         {/* Social Media Section */}
-        <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">
+        <section className="relative w-full bg-[#F9F8F6] py-24 overflow-hidden border-t border-black/5">
           <div className="mx-auto max-w-[1200px] px-8 relative z-10 flex flex-col items-center">
             <div className="text-center animate-reveal-1 mb-16">
               <span className="flex items-center justify-center gap-4 mb-4">
@@ -436,7 +436,7 @@ export default async function Home() {
                   key={idx}
                   href={social.href}
                   target="_blank"
-                  className={`w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] bg-[#F9F8F6] text-[#1a2b3c]/60 flex items-center justify-center transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 border border-black/5 ${social.color}`}
+                  className={`w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] bg-white text-[#1a2b3c]/60 flex items-center justify-center transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 border border-black/5 ${social.color}`}
                 >
                   {social.icon}
                 </Link>

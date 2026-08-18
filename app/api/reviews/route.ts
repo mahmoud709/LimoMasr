@@ -14,8 +14,32 @@ export async function GET(request: Request) {
   }
 }
 
+// In-memory rate limiting store
+const rateLimitMap = new Map<string, number>();
+const RATE_LIMIT_MS = 60 * 1000; // 1 minute
+
 export async function POST(request: Request) {
   try {
+    // Basic IP-based rate limiting
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
+    const now = Date.now();
+    const lastRequest = rateLimitMap.get(ip);
+    
+    if (lastRequest && now - lastRequest < RATE_LIMIT_MS) {
+      return NextResponse.json({ error: "الرجاء الانتظار قليلاً قبل إضافة تقييم آخر" }, { status: 429 });
+    }
+    
+    // Cleanup old entries randomly to prevent memory leak
+    if (Math.random() < 0.1) {
+      for (const [key, timestamp] of rateLimitMap.entries()) {
+        if (now - timestamp > RATE_LIMIT_MS) {
+          rateLimitMap.delete(key);
+        }
+      }
+    }
+    
+    rateLimitMap.set(ip, now);
+
     const body = await request.json();
     
     if (!body.name || !body.text || !body.rating) {

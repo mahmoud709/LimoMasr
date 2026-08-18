@@ -1,9 +1,13 @@
 import { eventEmitter } from "@/lib/eventEmitter";
 import { NextResponse } from "next/server";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
+
   const encoder = new TextEncoder();
   
   const stream = new ReadableStream({

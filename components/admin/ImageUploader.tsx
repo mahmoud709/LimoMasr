@@ -17,6 +17,7 @@ export default function ImageUploader({
 
     setUploading(true);
     const newImages = [...images];
+    let hasError = false;
 
     for (let i = 0; i < files.length; i++) {
       const formData = new FormData();
@@ -30,10 +31,18 @@ export default function ImageUploader({
         if (res.ok) {
           const data = await res.json();
           newImages.push(data.url);
+        } else {
+          hasError = true;
+          console.error("Upload failed", await res.text());
         }
       } catch (err) {
+        hasError = true;
         console.error("Upload failed", err);
       }
+    }
+
+    if (hasError) {
+      alert("حدث خطأ أثناء رفع بعض الصور. تأكد أن حجم الصورة أقل من 4 ميجابايت.");
     }
 
     onChange(newImages);

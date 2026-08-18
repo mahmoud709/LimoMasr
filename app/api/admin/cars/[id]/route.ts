@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { getCars, updateCar, deleteCar } from "@/lib/data";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
+import { requireAdminAuth } from "@/lib/admin-auth";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
   const payload = await request.json();
   const { id } = await params;
   await updateCar(id, payload);
@@ -10,6 +13,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 }
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const unauth = await requireAdminAuth();
+  if (unauth) return unauth;
   const { id } = await params;
   
   // Find car to clean up Cloudinary images before deletion
