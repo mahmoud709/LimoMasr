@@ -4969,3 +4969,177 @@
 2026-08-17T06:58:33.431Z - REWRITE: /ar/about -> /about?__locale=ar
 2026-08-17T06:59:06.877Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
 2026-08-17T06:59:06.905Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-17T07:00:42.107Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-17T07:00:42.135Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:05:21.866Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:05:21.997Z - REDIRECT: / -> /ar
+2026-08-18T15:05:22.029Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:05:22.068Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:07:44.959Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:07:44.985Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:07:47.564Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:07:47.599Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:08:54.670Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:08:54.702Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:09:00.712Z - INCOMING: /ar/cars/economy-sedan | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:09:00.738Z - REWRITE: /ar/cars/economy-sedan -> /cars/economy-sedan?__locale=ar
+2026-08-18T15:09:15.374Z - INCOMING: /ar/cars/economy-sedan | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:09:15.411Z - REWRITE: /ar/cars/economy-sedan -> /cars/economy-sedan?__locale=ar
+2026-08-18T15:09:16.426Z - INCOMING: /ar/cars/economy-sedan | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:09:16.451Z - REWRITE: /ar/cars/economy-sedan -> /cars/economy-sedan?__locale=ar
+2026-08-18T15:09:21.603Z - INCOMING: /ar/cars/economy-sedan | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:09:21.640Z - REWRITE: /ar/cars/economy-sedan -> /cars/economy-sedan?__locale=ar
+2026-08-18T15:10:19.818Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:10:19.850Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:11:17.510Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:11:17.539Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:11:17.608Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:11:17.632Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:11:18.312Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:11:18.398Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:11:18.481Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:11:18.504Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:11:18.537Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:11:18.572Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:11:18.600Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:11:18.625Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:13.678Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:13.703Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:13.805Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:13.827Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:14.555Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:14.575Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:14.655Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:14.738Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:14.760Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:14.784Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:14.837Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:14.856Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:36.693Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:36.740Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:36.800Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:36.822Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:37.463Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:37.485Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:37.613Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:37.638Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:37.677Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:37.698Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:37.730Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:37.758Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:59.089Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:59.132Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:59.433Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:12:59.460Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:12:59.981Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:13:00.006Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:13:00.171Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:13:00.227Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:13:00.249Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:13:00.273Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:13:00.303Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:13:00.336Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:13:37.385Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:13:37.406Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:14:06.656Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:14:06.688Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:15:25.757Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:15:25.783Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:15:29.791Z - INCOMING: /ar/cars/coaster-bus | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:15:29.814Z - REWRITE: /ar/cars/coaster-bus -> /cars/coaster-bus?__locale=ar
+2026-08-18T15:15:37.380Z - INCOMING: /ar/fast-track | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:15:37.405Z - REWRITE: /ar/fast-track -> /fast-track?__locale=ar
+2026-08-18T15:15:49.475Z - INCOMING: /ar/hotels | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:15:49.497Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
+2026-08-18T15:16:49.080Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:16:49.101Z - ADMIN REDIRECT: /ar/admin -> /admin/login
+2026-08-18T15:16:49.162Z - INCOMING: /ar/admin/login | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:16:49.185Z - ADMIN LOGIN: /ar/admin/login
+2026-08-18T15:16:49.220Z - REWRITE: /ar/admin/login -> /admin/login?__locale=ar
+2026-08-18T15:16:59.110Z - INCOMING: /admin | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:16:59.127Z - ADMIN PASSTHROUGH: /admin
+2026-08-18T15:16:59.156Z - REDIRECT: /admin -> /ar/admin
+2026-08-18T15:16:59.218Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:16:59.239Z - ADMIN PASSTHROUGH: /ar/admin
+2026-08-18T15:16:59.271Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-08-18T15:17:00.001Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:17:00.046Z - ADMIN PASSTHROUGH: /ar/admin
+2026-08-18T15:17:00.088Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-08-18T15:18:00.760Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:18:00.793Z - ADMIN PASSTHROUGH: /ar/admin
+2026-08-18T15:18:00.824Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-08-18T15:19:51.910Z - ADMIN PASSTHROUGH: /admin/articles
+2026-08-18T15:19:51.937Z - INCOMING: /admin/articles | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:19:51.965Z - REDIRECT: /admin/articles -> /ar/admin/articles
+2026-08-18T15:19:52.032Z - INCOMING: /ar/admin/articles | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:19:52.059Z - ADMIN PASSTHROUGH: /ar/admin/articles
+2026-08-18T15:19:52.092Z - REWRITE: /ar/admin/articles -> /admin/articles?__locale=ar
+2026-08-18T15:21:25.782Z - INCOMING: /admin/bookings | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:21:25.802Z - ADMIN PASSTHROUGH: /admin/bookings
+2026-08-18T15:21:25.827Z - REDIRECT: /admin/bookings -> /ar/admin/bookings
+2026-08-18T15:21:25.882Z - INCOMING: /ar/admin/bookings | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:21:25.901Z - ADMIN PASSTHROUGH: /ar/admin/bookings
+2026-08-18T15:21:25.926Z - REWRITE: /ar/admin/bookings -> /admin/bookings?__locale=ar
+2026-08-18T15:22:11.982Z - INCOMING: /a%D9%82 | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:22:12.006Z - REDIRECT: /a%D9%82 -> /ar/a%D9%82
+2026-08-18T15:22:12.063Z - INCOMING: /ar/a%D9%82 | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:22:12.085Z - REWRITE: /ar/a%D9%82 -> /a%D9%82?__locale=ar
+2026-08-18T15:22:16.677Z - INCOMING: /ar/ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:22:16.699Z - REWRITE: /ar/ar -> /ar?__locale=ar
+2026-08-18T15:22:28.405Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:22:28.438Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:26:30.129Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:26:30.150Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:28:48.090Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:28:48.114Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:29:19.688Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:29:19.717Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:37:41.148Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:37:41.167Z - ADMIN PASSTHROUGH: /ar/admin
+2026-08-18T15:37:41.886Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-08-18T15:37:44.786Z - INCOMING: /admin/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:37:44.806Z - ADMIN PASSTHROUGH: /admin/cars
+2026-08-18T15:37:44.830Z - REDIRECT: /admin/cars -> /ar/admin/cars
+2026-08-18T15:37:44.883Z - INCOMING: /ar/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:37:44.907Z - ADMIN PASSTHROUGH: /ar/admin/cars
+2026-08-18T15:37:44.929Z - REWRITE: /ar/admin/cars -> /admin/cars?__locale=ar
+2026-08-18T15:39:04.879Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:39:04.904Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:44:30.384Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:44:30.404Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:45:35.380Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:45:35.418Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:46:25.485Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:46:25.506Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:46:36.737Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:46:36.763Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:47:09.792Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:47:09.816Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T15:50:28.064Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:50:28.083Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:50:34.052Z - INCOMING: /en/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:50:34.075Z - REWRITE: /en/cars -> /cars?__locale=en
+2026-08-18T15:50:34.144Z - INCOMING: /en/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:50:34.168Z - REWRITE: /en/cars -> /cars?__locale=en
+2026-08-18T15:51:23.957Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:51:23.979Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:51:24.096Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:51:24.132Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-18T15:51:27.110Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T15:51:27.130Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T16:15:27.337Z - INCOMING: /ar/about | isRewritten: false | hasLocaleParam: false
+2026-08-18T16:15:27.355Z - REWRITE: /ar/about -> /about?__locale=ar
+2026-08-18T16:25:13.620Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T16:25:13.630Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T16:27:33.475Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T16:27:33.551Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T16:27:33.572Z - INCOMING: /ar/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T16:27:33.594Z - REWRITE: /ar/admin/cars -> /admin/cars?__locale=ar
+2026-08-18T16:27:33.618Z - ADMIN PASSTHROUGH: /ar/admin/cars
+2026-08-18T16:27:33.718Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-18T16:27:33.739Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T16:27:33.760Z - INCOMING: /ar/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-08-18T16:27:33.782Z - ADMIN PASSTHROUGH: /ar/admin/cars
+2026-08-18T16:27:33.805Z - REWRITE: /ar/admin/cars -> /admin/cars?__locale=ar
+2026-08-18T16:28:01.839Z - REWRITE: /ar -> /?__locale=ar
+2026-08-18T16:28:01.927Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false

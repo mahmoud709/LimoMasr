@@ -91,9 +91,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-center text-white/20 text-xs mt-6">
-          كلمة المرور الافتراضية: <span className="font-mono text-white/40">admin123</span>
-        </p>
+
       </div>
     </div>
   );

@@ -19,18 +19,45 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
   const [maxPrice, setMaxPrice] = useState<number>(maxPricePossible);
   const deferredMaxPrice = useDeferredValue(maxPrice);
 
+  // Derive vehicle types for backward compatibility and robust grouping
+  const processedCars = useMemo(() => {
+    return cars.map(c => {
+      let typeId = c.vehicleType?.trim();
+      let typeName = c.translations?.[locale]?.vehicleType || c.vehicleType;
+      
+      if (!typeId) {
+        const text = (c.categoryName + " " + (c.subtitle || "")).toLowerCase();
+        if (text.includes("suv") || text.includes("توسان") || text.includes("سبورتاج") || text.includes("جيب") || text.includes("كيا")) {
+          typeId = "suv";
+          typeName = locale === "en" ? "SUV" : "سيارات عائلية (SUV)";
+        } else if (text.includes("فان") || text.includes("h1") || text.includes("hiace") || text.includes("باص") || text.includes("ميكروباص")) {
+          typeId = "van";
+          typeName = locale === "en" ? "Van / Bus" : "فان / باص";
+        } else if (text.includes("مرسيدس") || text.includes("bmw") || text.includes("luxury") || text.includes("vip")) {
+          typeId = "luxury";
+          typeName = locale === "en" ? "Luxury (VIP)" : "فارهة (VIP)";
+        } else {
+          typeId = "sedan";
+          typeName = locale === "en" ? "Sedan" : "سيدان";
+        }
+      }
+      return { ...c, derivedTypeId: typeId, derivedTypeName: typeName };
+    });
+  }, [cars, locale]);
+
   const categories = useMemo(() => {
     const catsMap = new Map<string, string>();
-    cars.forEach(c => {
-      const locName = c.translations?.[locale]?.categoryName || c.categoryName;
-      catsMap.set(c.categoryName, locName);
+    processedCars.forEach(c => {
+      if (c.derivedTypeId) {
+        catsMap.set(c.derivedTypeId, c.derivedTypeName!);
+      }
     });
     const result = [{ id: "all", name: locale === "en" ? "All Cars" : "كل السيارات" }];
     catsMap.forEach((name, id) => {
       result.push({ id, name });
     });
     return result;
-  }, [cars, locale]);
+  }, [processedCars, locale]);
 
   const faqs = [
     {
@@ -48,14 +75,14 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
   ];
 
   const filteredCars = useMemo(() => {
-    let result = [...cars];
+    let result = [...processedCars];
     
     if (minSeats > 0) {
       result = result.filter(c => c.seats >= minSeats);
     }
     
     if (activeCategory !== "all") {
-      result = result.filter(c => c.categoryName === activeCategory);
+      result = result.filter(c => c.derivedTypeId === activeCategory);
     }
 
     result = result.filter(c => c.price <= deferredMaxPrice);

@@ -594,7 +594,7 @@ export function BookingForm({
             {/* Date & Time Row — conditional based on service type */}
             {carServiceType === "trip" ? (
               /* Trip: single date + time */
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                     {isEn ? "Trip Date" : "تاريخ الرحلة"}
@@ -607,7 +607,7 @@ export function BookingForm({
                       value={carDate}
                       onChange={(e) => setCarDate(e.target.value)}
                       dir="ltr"
-                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                     />
                   </div>
                 </div>
@@ -623,7 +623,8 @@ export function BookingForm({
                       type="time"
                       value={carTime}
                       onChange={(e) => setCarTime(e.target.value)}
-                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                      dir="ltr"
+                      className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center"
                     />
                   </div>
                 </div>
@@ -631,7 +632,7 @@ export function BookingForm({
             ) : (
               /* Daily: date range from → to + auto total days & price */
               <div className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                       {isEn ? "Start Date (From)" : "تاريخ البداية (من)"}
@@ -644,7 +645,7 @@ export function BookingForm({
                         value={carDateFrom}
                         onChange={(e) => setCarDateFrom(e.target.value)}
                         dir="ltr"
-                        className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                        className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                       />
                     </div>
                   </div>
@@ -662,7 +663,7 @@ export function BookingForm({
                         min={carDateFrom || undefined}
                         onChange={(e) => setCarDateTo(e.target.value)}
                         dir="ltr"
-                        className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                        className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                       />
                     </div>
                   </div>
@@ -742,7 +743,7 @@ export function BookingForm({
         {type === "fast_track" && (
           <div className="space-y-4">
             {/* Service Date & Time */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Service Date" : "تاريخ الخدمة"}
@@ -755,7 +756,7 @@ export function BookingForm({
                     value={fastTrackDate}
                     onChange={(e) => setFastTrackDate(e.target.value)}
                     dir="ltr"
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>
@@ -769,7 +770,8 @@ export function BookingForm({
                     type="time"
                     value={fastTrackTime}
                     onChange={(e) => setFastTrackTime(e.target.value)}
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none"
+                    dir="ltr"
+                    className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center"
                   />
                 </div>
               </div>
@@ -928,7 +930,7 @@ export function BookingForm({
             )}
 
             {/* Check-in Date & Check-out Date (التاريخ من وإلى) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Check-in Date (From)" : "تاريخ الوصول (من)"}
@@ -941,7 +943,7 @@ export function BookingForm({
                     value={hotelDateFrom}
                     onChange={(e) => setHotelDateFrom(e.target.value)}
                     dir="ltr"
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>
@@ -1102,7 +1104,7 @@ export function BookingForm({
 
             {/* Flight Dates */}
             {flightTripType === "round_trip" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                     {isEn ? "Departure Date" : "تاريخ الذهاب"}
@@ -1115,7 +1117,7 @@ export function BookingForm({
                       value={flightDateFrom}
                       onChange={(event) => setFlightDateFrom(event.target.value)}
                       dir="ltr"
-                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1131,7 +1133,7 @@ export function BookingForm({
                       value={flightDateTo}
                       onChange={(event) => setFlightDateTo(event.target.value)}
                       dir="ltr"
-                      className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                      className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1149,7 +1151,7 @@ export function BookingForm({
                     value={flightDateFrom}
                     onChange={(event) => setFlightDateFrom(event.target.value)}
                     dir="ltr"
-                    className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] outline-none text-right rtl:text-right [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    className="w-full bg-transparent text-xs sm:text-sm font-medium text-[#1a2b3c] outline-none text-center [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
                 </div>
               </div>

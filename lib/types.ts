@@ -50,6 +50,7 @@ export type Car = {
   id: string;
   slug: string;
   categoryName: string;
+  vehicleType?: string;
   subtitle: string;
   models: string[];
   year: string;
@@ -62,8 +63,8 @@ export type Car = {
   sortOrder: number;
   notes?: string;
   translations?: {
-    ar?: Partial<Pick<Car, "categoryName" | "subtitle" | "models" | "tag" | "notes">>;
-    en?: Partial<Pick<Car, "categoryName" | "subtitle" | "models" | "tag" | "notes">>;
+    ar?: Partial<Pick<Car, "categoryName" | "vehicleType" | "subtitle" | "models" | "tag" | "notes">>;
+    en?: Partial<Pick<Car, "categoryName" | "vehicleType" | "subtitle" | "models" | "tag" | "notes">>;
   };
 };
 

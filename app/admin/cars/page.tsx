@@ -9,6 +9,7 @@ import ImageUploader from "@/components/admin/ImageUploader";
 
 const emptyForm: Omit<Car, "id" | "slug"> = {
   categoryName: "",
+  vehicleType: "",
   subtitle: "",
   models: [],
   year: new Date().getFullYear().toString(),
@@ -21,8 +22,8 @@ const emptyForm: Omit<Car, "id" | "slug"> = {
   tag: "",
   notes: "",
   translations: {
-    ar: { categoryName: "", subtitle: "", tag: "", notes: "" },
-    en: { categoryName: "", subtitle: "", tag: "", notes: "" },
+    ar: { categoryName: "", vehicleType: "", subtitle: "", tag: "", notes: "" },
+    en: { categoryName: "", vehicleType: "", subtitle: "", tag: "", notes: "" },
   }
 };
 
@@ -50,8 +51,8 @@ export default function CarsPage() {
     setForm({
       ...emptyForm,
       translations: {
-        ar: { categoryName: "", subtitle: "", tag: "", notes: "" },
-        en: { categoryName: "", subtitle: "", tag: "", notes: "" },
+        ar: { categoryName: "", vehicleType: "", subtitle: "", tag: "", notes: "" },
+        en: { categoryName: "", vehicleType: "", subtitle: "", tag: "", notes: "" },
       }
     });
     setModelsText("");
@@ -65,12 +66,14 @@ export default function CarsPage() {
       translations: {
         ar: {
           categoryName: car.translations?.ar?.categoryName || car.categoryName || "",
+          vehicleType: car.translations?.ar?.vehicleType || car.vehicleType || "",
           subtitle: car.translations?.ar?.subtitle || car.subtitle || "",
           tag: car.translations?.ar?.tag || car.tag || "",
           notes: car.translations?.ar?.notes || car.notes || "",
         },
         en: {
           categoryName: car.translations?.en?.categoryName || "",
+          vehicleType: car.translations?.en?.vehicleType || "",
           subtitle: car.translations?.en?.subtitle || "",
           tag: car.translations?.en?.tag || "",
           notes: car.translations?.en?.notes || "",
@@ -127,11 +130,13 @@ export default function CarsPage() {
     setSaving(true);
     
     const arName = form.translations?.ar?.categoryName || form.categoryName || "سيارة جديدة";
+    const arType = form.translations?.ar?.vehicleType || form.vehicleType || "";
     const arSubtitle = form.translations?.ar?.subtitle || form.subtitle || "";
     const arTag = form.translations?.ar?.tag || form.tag || "";
     const arNotes = form.translations?.ar?.notes || form.notes || "";
 
     const enName = form.translations?.en?.categoryName || arName;
+    const enType = form.translations?.en?.vehicleType || arType;
     const enSubtitle = form.translations?.en?.subtitle || arSubtitle;
     const enTag = form.translations?.en?.tag || arTag;
     const enNotes = form.translations?.en?.notes || arNotes;
@@ -139,6 +144,7 @@ export default function CarsPage() {
     const data: Car = {
       ...form,
       categoryName: arName,
+      vehicleType: arType,
       subtitle: arSubtitle,
       tag: arTag,
       notes: arNotes,
@@ -147,8 +153,8 @@ export default function CarsPage() {
       models: modelsText.split("\n").map(s => s.trim()).filter(Boolean),
       images: form.images,
       translations: {
-        ar: { categoryName: arName, subtitle: arSubtitle, tag: arTag, notes: arNotes },
-        en: { categoryName: enName, subtitle: enSubtitle, tag: enTag, notes: enNotes }
+        ar: { categoryName: arName, vehicleType: arType, subtitle: arSubtitle, tag: arTag, notes: arNotes },
+        en: { categoryName: enName, vehicleType: enType, subtitle: enSubtitle, tag: enTag, notes: enNotes }
       }
     };
 
@@ -294,8 +300,13 @@ export default function CarsPage() {
             <div className="p-8 overflow-y-auto space-y-6 flex-1">
               
               <div className="grid grid-cols-2 gap-5">
-                <Field label="اسم الفئة (عربي)" value={form.translations?.ar?.categoryName || ""} onChange={v => fTrans("ar", "categoryName", v)} />
-                <Field label="اسم الفئة (إنجليزي)" value={form.translations?.en?.categoryName || ""} onChange={v => fTrans("en", "categoryName", v)} />
+                <Field label="اسم السيارة (عربي)" value={form.translations?.ar?.categoryName || ""} onChange={v => fTrans("ar", "categoryName", v)} />
+                <Field label="اسم السيارة (إنجليزي)" value={form.translations?.en?.categoryName || ""} onChange={v => fTrans("en", "categoryName", v)} />
+              </div>
+
+              <div className="grid grid-cols-2 gap-5">
+                <Field label="فئة السيارة (عربي) مثل سيدان، SUV" value={form.translations?.ar?.vehicleType || ""} onChange={v => fTrans("ar", "vehicleType", v)} />
+                <Field label="فئة السيارة (إنجليزي) e.g. Sedan, SUV" value={form.translations?.en?.vehicleType || ""} onChange={v => fTrans("en", "vehicleType", v)} />
               </div>
 
               <div className="grid grid-cols-2 gap-5">

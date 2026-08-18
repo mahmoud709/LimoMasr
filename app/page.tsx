@@ -38,20 +38,19 @@ export default async function Home() {
     <PublicLayout settings={settings} locale={locale}>
       <main className="flex flex-col w-full overflow-hidden">
         {/* Exact Layout Hero Section */}
-        <section className="relative min-h-screen w-full flex items-center pt-24 overflow-hidden">
+        <section className="relative min-h-screen w-full flex items-center pt-16 md:pt-24 pb-32 md:pb-0 overflow-hidden">
           {/* Background Image Carousel */}
           <HeroCarousel images={settings.heroImages || (settings.heroImage ? [settings.heroImage] : [])} />
 
           <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
-            {/* Text Content */}
-            <div className="flex flex-col items-start text-start max-w-4xl py-16 md:py-24 pointer-events-auto mb-28 md:mb-0">
-              <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-6 animate-reveal-1 drop-shadow-md uppercase">
+            <div className="flex flex-col items-start text-start max-w-4xl py-8 md:py-24 pointer-events-auto mb-12 md:mb-0 mt-4 md:mt-0">
+              <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-3 md:mb-6 animate-reveal-1 drop-shadow-md uppercase">
                 {t.hero.eyebrow}
               </p>
-              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.2] mb-8 animate-reveal-2 drop-shadow-lg">
-                {t.hero.title1} <br/> <span className="text-white">{t.hero.title2}.</span>
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.3] md:leading-[1.2] mb-4 md:mb-8 animate-reveal-2 drop-shadow-lg">
+                {t.hero.title1} <br className="hidden md:block" /> <span className="text-white">{t.hero.title2}.</span>
               </h1>
-              <p className="text-white/90 text-lg md:text-xl leading-[1.8] mb-3 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
+              <p className="text-white/90 text-sm md:text-xl leading-[1.6] md:leading-[1.8] mb-6 md:mb-8 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
                 {t.hero.text}
               </p>
 
@@ -327,10 +326,9 @@ export default async function Home() {
             </div>
           </div>
         </section>
+        <ArticlesSection locale={locale} />
 
         <ReviewsSection locale={locale} />
-
-        <ArticlesSection locale={locale} />
 
         {/* Car Brands Marquee Section */}
         <section className="relative w-full bg-white py-32 overflow-hidden">

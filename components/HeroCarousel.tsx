@@ -71,20 +71,20 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           </button>
 
           {/* Mobile Controls (grouped bottom-left, above floating WhatsApp) */}
-          <div className="absolute bottom-24 left-6 flex gap-4 z-30 md:hidden pointer-events-auto">
+          <div className="absolute bottom-32 left-4 flex gap-3 z-30 md:hidden pointer-events-auto">
             <button
               onClick={prev}
               aria-label="Previous"
-              className="w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:scale-110 cursor-pointer"
+              className="w-12 h-12 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:scale-110 cursor-pointer"
             >
-              <FiChevronRight className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
+              <FiChevronRight className="w-6 h-6 rtl:rotate-0 ltr:rotate-180" />
             </button>
             <button
               onClick={next}
               aria-label="Next"
-              className="w-14 h-14 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:scale-110 cursor-pointer"
+              className="w-12 h-12 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-[#d0a755] hover:border-[#d0a755] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.3)] hover:scale-110 cursor-pointer"
             >
-              <FiChevronLeft className="w-8 h-8 rtl:rotate-0 ltr:rotate-180" />
+              <FiChevronLeft className="w-6 h-6 rtl:rotate-0 ltr:rotate-180" />
             </button>
           </div>
 
