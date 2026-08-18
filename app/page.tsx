@@ -18,6 +18,8 @@ import { ReviewsSection } from "@/components/ReviewsSection";
 import { ArticlesSection } from "@/components/ArticlesSection";
 import { CorporateSection } from "@/components/CorporateSection";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const [settings, cars, packages, flights, hotels, apartments] = await Promise.all([
     getSiteSettings(),
@@ -163,12 +165,17 @@ export default async function Home() {
           </div>
         </section>
 
+        <CorporateSection locale={locale} />
+        <ArticlesSection locale={locale} />
+        <ReviewsSection locale={locale} />
+
         {/* Why Choose Us - Interconnected Grid */}
-        <section className="relative mx-auto max-w-[1200px] px-8 py-24 w-full bg-[#F9F8F6] overflow-hidden">
-          <div className="text-center mb-20 animate-reveal-1 relative z-20">
-            <p className="text-[#d0a755] font-bold tracking-[0.2em] text-xs md:text-sm mb-3 uppercase">{t.whyChooseUs.eyebrow}</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1a2b3c]">{t.whyChooseUs.title}</h2>
-          </div>
+        <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">
+          <div className="mx-auto max-w-[1200px] px-8 relative z-20">
+            <div className="text-center mb-20 animate-reveal-1">
+              <p className="text-[#d0a755] font-bold tracking-[0.2em] text-xs md:text-sm mb-3 uppercase">{t.whyChooseUs.eyebrow}</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1a2b3c]">{t.whyChooseUs.title}</h2>
+            </div>
 
           <div className="relative w-full mx-auto">
             {/* The Dashed Connecting Rectangle (Desktop only) */}
@@ -229,9 +236,9 @@ export default async function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <CorporateSection locale={locale} />
 
         {/* Professional Drivers Section */}
         <section className="relative w-full bg-[#1a2b3c] py-24 overflow-hidden text-white border-b border-white/5">
@@ -326,12 +333,9 @@ export default async function Home() {
             </div>
           </div>
         </section>
-        <ArticlesSection locale={locale} />
-
-        <ReviewsSection locale={locale} />
 
         {/* Car Brands Marquee Section */}
-        <section className="relative w-full bg-white py-32 overflow-hidden">
+        <section className="relative w-full bg-[#F9F8F6] py-32 overflow-hidden">
           {/* Subtle top divider */}
           <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-[#d0a755]/20 to-transparent"></div>
 

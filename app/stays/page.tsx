@@ -11,6 +11,8 @@ import type { Locale } from "@/lib/types";
 import Link from "next/link";
 import { withLang } from "@/lib/i18n";
 
+export const dynamic = "force-dynamic";
+
 export default async function StaysPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
   const [settings, hotels, apartments, resolvedSearchParams] = await Promise.all([getSiteSettings(), getHotels(), getHotelApartments(), searchParams]);
   const cookieStore = await cookies();

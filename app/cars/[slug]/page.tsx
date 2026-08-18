@@ -6,6 +6,8 @@ import { formatCurrency, priceUnitLabel } from "@/lib/utils";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function CarDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const [{ slug }, settings, cars] = await Promise.all([params, getSiteSettings(), getCars()]);
   const car = cars.find((item) => item.slug === slug);

@@ -139,7 +139,7 @@ export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn
             <Link 
               href={isEn ? `/en/blog/${article.slug}` : `/blog/${article.slug}`} 
               key={article.id}
-              className="snap-center shrink-0 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] bg-white rounded-[2rem] overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(208,167,85,0.15)] transition-all duration-500 hover:-translate-y-2 group block"
+              className="snap-center shrink-0 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] bg-white border border-black/5 rounded-[2rem] overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(208,167,85,0.15)] hover:border-[#d0a755]/30 transition-all duration-500 hover:-translate-y-2 group block"
             >
               <div className="relative h-64 overflow-hidden">
                 {article.image ? (

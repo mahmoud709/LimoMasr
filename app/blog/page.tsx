@@ -11,6 +11,8 @@ export const metadata = {
   description: "أدلة وقصص من الداخل - من مدونة ليمو مصر",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function BlogPage() {
   const [settings, articles] = await Promise.all([getSiteSettings(), getArticles(true)]);
   const cookieStore = await cookies();

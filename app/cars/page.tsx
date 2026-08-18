@@ -6,6 +6,8 @@ import { ui } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export default async function CarsPage() {
   const cars = await getCars();
   const settings = await getSiteSettings();

@@ -8,6 +8,8 @@ import { AirlineMarquee } from "@/components/AirlineMarquee";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function FlightsPage() {
   const [settings, flights] = await Promise.all([getSiteSettings(), getFlights()]);
   const cookieStore = await cookies();

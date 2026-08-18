@@ -7,12 +7,7 @@ import Image from "next/image";
 import { getSiteSettings, getArticles, getArticleBySlug } from "@/lib/data";
 import { formatArticleDate, formatArticleReadTime } from "@/lib/utils";
 
-export async function generateStaticParams() {
-  const articles = await getArticles(true);
-  return articles.map((article) => ({
-    slug: article.slug,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

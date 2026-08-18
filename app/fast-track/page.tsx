@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 import { FastTrackClient } from "./FastTrackClient";
 import type { Locale } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export default async function FastTrackPage() {
   const [settings, packages] = await Promise.all([getSiteSettings(), getFastTrackPackages()]);
   const cookieStore = await cookies();
