@@ -10,7 +10,10 @@ export const dynamic = "force-dynamic";
 
 export default async function CarDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const [{ slug }, settings, cars] = await Promise.all([params, getSiteSettings(), getCars()]);
-  const car = cars.find((item) => item.slug === slug);
+  let car = cars.find((item) => item.slug === slug);
+  if (car) {
+    car = { ...car, price: car.price * (settings.usdRate || 50) };
+  }
   if (!car) notFound();
 
   const cookieStore = await cookies();

@@ -9,8 +9,11 @@ import { cookies } from "next/headers";
 export const dynamic = "force-dynamic";
 
 export default async function CarsPage() {
-  const cars = await getCars();
   const settings = await getSiteSettings();
+  const cars = (await getCars()).map(car => ({
+    ...car,
+    price: car.price * (settings.usdRate || 50)
+  }));
   
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;

@@ -21,7 +21,7 @@ import { CorporateSection } from "@/components/CorporateSection";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [settings, cars, packages, flights, hotels, apartments] = await Promise.all([
+  let [settings, rawCars, packages, flights, hotels, apartments] = await Promise.all([
     getSiteSettings(),
     getCars(),
     getFastTrackPackages(),
@@ -29,6 +29,12 @@ export default async function Home() {
     getHotels(),
     getHotelApartments(),
   ]);
+
+  const cars = rawCars.map(car => ({
+    ...car,
+    price: car.price * (settings.usdRate || 50)
+  }));
+
   const cookieStore = await cookies();
   const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
   const t = ui[locale];
@@ -167,11 +173,10 @@ export default async function Home() {
 
         <CorporateSection locale={locale} />
         <ArticlesSection locale={locale} />
-        <ReviewsSection locale={locale} />
 
         {/* Why Choose Us - Interconnected Grid */}
         <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">
-          <div className="mx-auto max-w-[1200px] px-8 relative z-20">
+          <div className="mx-auto max-w-300 px-8 relative z-20">
             <div className="text-center mb-20 animate-reveal-1">
               <p className="text-[#d0a755] font-bold tracking-[0.2em] text-xs md:text-sm mb-3 uppercase">{t.whyChooseUs.eyebrow}</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1a2b3c]">{t.whyChooseUs.title}</h2>
@@ -249,11 +254,11 @@ export default async function Home() {
             </svg>
           </div>
           
-          <div className="mx-auto max-w-[1200px] px-8 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+          <div className="mx-auto max-w-300 px-8 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
             {/* Text Content */}
             <div className="animate-reveal-1">
               <span className="flex items-center gap-4 mb-4">
-                <span className="w-8 h-[1px] bg-[#d0a755]"></span>
+                <span className="w-8 h-px bg-[#d0a755]"></span>
                 <span className="text-[#d0a755] font-bold tracking-widest text-xs uppercase">{t.drivers.eyebrow}</span>
               </span>
               <h2 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
@@ -395,6 +400,8 @@ export default async function Home() {
             </div>
           </div>
         </section>
+
+        <ReviewsSection locale={locale} />
 
         {/* Social Media Section */}
         <section className="relative w-full bg-white py-24 overflow-hidden border-t border-black/5">

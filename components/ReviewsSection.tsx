@@ -60,7 +60,7 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
   };
 
   return (
-    <section className="relative w-full pt-16 pb-8 bg-[#F9F8F6] overflow-hidden border-t border-black/5">
+    <section className="relative w-full pt-16 pb-8 bg-white overflow-hidden border-t border-black/5">
       <div className="mx-auto max-w-[1400px] px-6 md:px-8 relative z-10">
         
         {/* Header */}
