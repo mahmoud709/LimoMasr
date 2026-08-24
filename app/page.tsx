@@ -10,8 +10,7 @@ import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getCars, getFastTrackPackages, getSiteSettings, getFlights, getHotels, getHotelApartments } from "@/lib/data";
-import { FaWhatsapp, FaFacebookF, FaTiktok, FaInstagram, FaLinkedinIn, FaYoutube, FaSnapchatGhost, FaTelegramPlane, FaCar, FaPlane, FaBed } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
+import { FaCar, FaPlane, FaBed } from 'react-icons/fa';
 import { ui, withLang } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
 import { ReviewsSection } from "@/components/ReviewsSection";
@@ -402,48 +401,6 @@ export default async function Home() {
         </section>
 
         <ReviewsSection locale={locale} />
-
-        {/* Social Media Section */}
-        <section className="relative w-full bg-[#F9F8F6] py-24 overflow-hidden border-t border-black/5">
-          <div className="mx-auto max-w-[1200px] px-8 relative z-10 flex flex-col items-center">
-            <div className="text-center animate-reveal-1 mb-16">
-              <span className="flex items-center justify-center gap-4 mb-4">
-                <span className="w-10 h-[1px] bg-[#d0a755]/50"></span>
-                <span className="text-[#d0a755] font-bold tracking-[0.2em] text-xs uppercase">{t.contact}</span>
-                <span className="w-10 h-[1px] bg-[#d0a755]/50"></span>
-              </span>
-              <h2 className="text-4xl md:text-5xl font-black text-[#1a2b3c] mb-5 tracking-tight">
-                {t.social.title}
-              </h2>
-              <p className="text-[#1a2b3c]/60 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
-                {t.social.text}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 animate-reveal-2">
-              {[
-                { icon: <FaWhatsapp className="w-8 h-8" />, color: "hover:bg-[#25D366] hover:text-white", href: settings.socialLinks?.whatsapp || "#" },
-                { icon: <FaFacebookF className="w-7 h-7" />, color: "hover:bg-[#1877F2] hover:text-white", href: settings.socialLinks?.facebook || "#" },
-                { icon: <FaInstagram className="w-8 h-8" />, color: "hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white border-transparent", href: settings.socialLinks?.instagram || "#" },
-                { icon: <FaTiktok className="w-7 h-7" />, color: "hover:bg-black hover:text-white", href: settings.socialLinks?.tiktok || "#" },
-                { icon: <FaSnapchatGhost className="w-7 h-7" />, color: "hover:bg-[#FFFC00] hover:text-black", href: settings.socialLinks?.snapchat || "#" },
-                { icon: <FaTelegramPlane className="w-8 h-8" />, color: "hover:bg-[#0088cc] hover:text-white", href: settings.socialLinks?.telegram || "#" },
-                { icon: <FaYoutube className="w-8 h-8" />, color: "hover:bg-[#FF0000] hover:text-white", href: settings.socialLinks?.youtube || "#" },
-                { icon: <FaXTwitter className="w-7 h-7" />, color: "hover:bg-black hover:text-white", href: settings.socialLinks?.x || "#" },
-                { icon: <FaLinkedinIn className="w-7 h-7" />, color: "hover:bg-[#0A66C2] hover:text-white", href: settings.socialLinks?.linkedin || "#" },
-              ].map((social, idx) => (
-                <Link
-                  key={idx}
-                  href={social.href}
-                  target="_blank"
-                  className={`w-16 h-16 md:w-20 md:h-20 rounded-[1.5rem] bg-white text-[#1a2b3c]/60 flex items-center justify-center transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 border border-black/5 ${social.color}`}
-                >
-                  {social.icon}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
       </main>
     </PublicLayout>
   );

@@ -6387,3 +6387,53 @@
 2026-08-18T19:45:11.085Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-08-18T19:46:03.341Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-08-18T19:46:03.372Z - REWRITE: /ar -> /?__locale=ar
+2026-08-23T08:57:52.419Z - REDIRECT: / -> /ar
+2026-08-23T08:57:52.475Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-23T08:57:52.500Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-08-23T08:57:52.518Z - REWRITE: /ar -> /?__locale=ar
+2026-08-23T09:02:47.899Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-23T09:02:47.926Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-23T09:02:53.544Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-23T09:02:53.589Z - REWRITE: /ar -> /?__locale=ar
+2026-08-23T09:02:58.197Z - INCOMING: /ar/cars/economy-sedan | isRewritten: false | hasLocaleParam: false
+2026-08-23T09:02:58.227Z - REWRITE: /ar/cars/economy-sedan -> /cars/economy-sedan?__locale=ar
+2026-08-23T09:16:38.450Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-23T09:16:38.469Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:13:44.472Z - REDIRECT: / -> /ar
+2026-08-24T07:13:44.944Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:13:44.957Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:13:44.970Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:13.758Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:13.833Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:18.204Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:18.221Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:18.616Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:18.638Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:18.689Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:18.703Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:18.716Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:18.728Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:18.740Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:18.760Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:19.186Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:19.203Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:19.380Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:19.392Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:19.535Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:19.547Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:19.697Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:19.735Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:19.747Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:19.760Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:19.854Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:19.867Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:20.421Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:20.439Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:20.630Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:20.650Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:20.821Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:25:20.886Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:21.062Z - REWRITE: /ar -> /?__locale=ar
+2026-08-24T07:25:21.083Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:28:02.268Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:28:02.317Z - REWRITE: /ar/cars -> /cars?__locale=ar

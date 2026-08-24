@@ -147,20 +147,20 @@ export async function PublicLayout({
                 </p>
               </div>
               
-              {/* Social Icons - forcing defaults if empty */}
+              {/* Social Icons */}
               <div className="flex flex-wrap gap-3 mt-auto">
                 {[
-                  { name: 'youtube', url: settings.socialLinks?.youtube || '#' },
                   { name: 'linkedin', url: settings.socialLinks?.linkedin || '#' },
-                  { name: 'tiktok', url: settings.socialLinks?.tiktok || '#' },
-                  { name: 'instagram', url: settings.socialLinks?.instagram || '#' },
-                  { name: 'facebook', url: settings.socialLinks?.facebook || '#' },
-                  { name: 'whatsapp', url: settings.socialLinks?.whatsapp || '#' },
-                  { name: 'snapchat', url: settings.socialLinks?.snapchat || '#' },
-                  { name: 'telegram', url: settings.socialLinks?.telegram || '#' },
                   { name: 'x', url: settings.socialLinks?.x || '#' },
-                ].filter(s => s.url && s.url !== '#').map(({ name, url }) => (
-                  <Link key={name} href={url} target="_blank" className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/80 hover:bg-[#d0a755] hover:border-[#d0a755] hover:text-[#1a2b3c] hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                  { name: 'telegram', url: settings.socialLinks?.telegram || '#' },
+                  { name: 'snapchat', url: settings.socialLinks?.snapchat || '#' },
+                  { name: 'facebook', url: settings.socialLinks?.facebook || '#' },
+                  { name: 'instagram', url: settings.socialLinks?.instagram || '#' },
+                  { name: 'tiktok', url: settings.socialLinks?.tiktok || '#' },
+                  { name: 'youtube', url: settings.socialLinks?.youtube || '#' },
+                  { name: 'whatsapp', url: settings.socialLinks?.whatsapp || buildWhatsappUrl(settings.whatsappCarNumber, "") },
+                ].map(({ name, url }) => (
+                  <Link key={name} href={url} target={url === '#' ? undefined : "_blank"} className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/80 hover:bg-[#d0a755] hover:border-[#d0a755] hover:text-[#1a2b3c] hover:-translate-y-1 transition-all duration-300 shadow-sm" aria-label={name}>
                     {socialIconsMap[name]}
                   </Link>
                 ))}
