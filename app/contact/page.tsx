@@ -9,10 +9,12 @@ import type { Locale } from "@/lib/types";
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const searchParamsResolved = await (searchParams ?? Promise.resolve({}));
   const settings = await getSiteSettings();
-  const locale = getLocale(searchParams?.lang) as Locale;
+  const cookieStore = await cookies();
+  const locale = (((searchParamsResolved?.__locale as string) || (searchParamsResolved?.lang as string) || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const content = siteText(settings, locale);
   const t = ui[locale];
   

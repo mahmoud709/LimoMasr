@@ -8,7 +8,6 @@ import { HotelsCarousel } from "@/components/HotelsCarousel";
 import { ApartmentsCarousel } from "@/components/ApartmentsCarousel";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
-import { SectionHeader } from "@/components/SectionHeader";
 import { getCars, getFastTrackPackages, getSiteSettings, getFlights, getHotels, getHotelApartments } from "@/lib/data";
 import { FaCar, FaPlane, FaBed } from 'react-icons/fa';
 import { ui, withLang } from "@/lib/i18n";
@@ -19,8 +18,9 @@ import { CorporateSection } from "@/components/CorporateSection";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const [settings, rawCars, packages, flights, hotels, apartments] = await Promise.all([
+export default async function Home({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
+  const [searchParamsResolved, settings, rawCars, packages, flights, hotels, apartments] = await Promise.all([
+    searchParams ?? Promise.resolve<{ __locale?: string }>({}),
     getSiteSettings(),
     getCars(),
     getFastTrackPackages(),
@@ -35,7 +35,7 @@ export default async function Home() {
   }));
 
   const cookieStore = await cookies();
-  const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
+  const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const t = ui[locale];
   const isRtl = locale === "ar";
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
@@ -50,7 +50,7 @@ export default async function Home() {
           <HeroCarousel images={settings.heroImages || (settings.heroImage ? [settings.heroImage] : [])} />
 
           <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
-            <div className="flex flex-col items-start text-start max-w-4xl py-8 md:py-24 pointer-events-auto mb-12 md:mb-0 mt-4 md:mt-0">
+            <div className="flex flex-col items-start text-start max-w-4xl py-8 md:py-24 mb-12 md:mb-0 mt-4 md:mt-0 pointer-events-none">
               <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-3 md:mb-6 animate-reveal-1 drop-shadow-md uppercase">
                 {t.hero.eyebrow}
               </p>
@@ -62,7 +62,7 @@ export default async function Home() {
               </p>
 
               {/* Sleek, Compact Booking Cards Row - 4 Cards Layout */}
-              <div className="w-full animate-reveal-3">
+              <div className="w-full animate-reveal-3 pointer-events-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                   {[
                     {

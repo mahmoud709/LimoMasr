@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Car } from "@/lib/types";
-import { FiPlus, FiEdit2, FiTrash2, FiUsers, FiTag, FiX, FiSave, FiAlertTriangle } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiUsers, FiTag, FiX, FiSave, FiAlertTriangle, FiRefreshCw } from "react-icons/fi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
 import ImageUploader from "@/components/admin/ImageUploader";
@@ -37,6 +37,10 @@ export default function CarsPage() {
   const [saving, setSaving] = useState(false);
   const [modelsText, setModelsText] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [priceUSD, setPriceUSD] = useState<string>("");
+  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
+  const [rateLoading, setRateLoading] = useState(false);
+  const [rateError, setRateError] = useState(false);
 
   const { data: cars = [], isLoading: loading } = useQuery<Car[]>({
     queryKey: ["cars"],
@@ -47,6 +51,24 @@ export default function CarsPage() {
     }
   });
 
+  async function fetchExchangeRate() {
+    setRateLoading(true);
+    setRateError(false);
+    try {
+      const res = await fetch("https://open.er-api.com/v6/latest/USD");
+      const data = await res.json();
+      if (data?.rates?.EGP) {
+        setExchangeRate(data.rates.EGP);
+      } else {
+        setRateError(true);
+      }
+    } catch {
+      setRateError(true);
+    } finally {
+      setRateLoading(false);
+    }
+  }
+
   function openAdd() {
     setForm({
       ...emptyForm,
@@ -56,8 +78,10 @@ export default function CarsPage() {
       }
     });
     setModelsText("");
+    setPriceUSD("");
     setEditing(null);
     setModal("add");
+    fetchExchangeRate();
   }
 
   function openEdit(car: Car) {
@@ -81,8 +105,10 @@ export default function CarsPage() {
       }
     });
     setModelsText(car.models.join("\n"));
+    setPriceUSD("");
     setEditing(car);
     setModal("edit");
+    fetchExchangeRate();
   }
 
   const saveMutation = useMutation({
@@ -225,7 +251,7 @@ export default function CarsPage() {
                 <span className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-black shadow-sm backdrop-blur-md ${car.status === "available" ? "bg-emerald-500/90 text-white" : "bg-rose-500/90 text-white"}`}>
                   {car.status === "available" ? "متاح للحجز" : "غير متاح"}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0F1115]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-[#0F1115]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
               </div>
 
               {/* Info */}
@@ -324,10 +350,81 @@ export default function CarsPage() {
                 <Field label="ملاحظات (إنجليزي)" value={form.translations?.en?.notes || ""} onChange={v => fTrans("en", "notes", v)} />
               </div>
 
-              <div className="grid grid-cols-3 gap-4 border-t border-slate-100 pt-6">
+              <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-6">
                 <Field label="سنة الصنع" value={form.year} onChange={v => f("year", v)} />
                 <FieldNum label="عدد المقاعد" value={form.seats} onChange={v => f("seats", v)} />
-                <FieldNum label="التسعير (ج.م)" value={form.price} onChange={v => f("price", v)} />
+              </div>
+
+              {/* USD → EGP Converter */}
+              <div className="rounded-2xl border border-[#BCA37F]/30 bg-gradient-to-br from-[#BCA37F]/5 to-amber-50/50 p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black text-[#BCA37F] uppercase tracking-widest">محول العملة — التسعير</span>
+                  <div className="flex items-center gap-2">
+                    {rateLoading ? (
+                      <span className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
+                        <FiRefreshCw className="w-3 h-3 animate-spin" /> جاري تحميل سعر الصرف...
+                      </span>
+                    ) : rateError ? (
+                      <button onClick={fetchExchangeRate} className="flex items-center gap-1.5 text-[11px] font-bold text-rose-500 hover:text-rose-700 transition-colors">
+                        <FiRefreshCw className="w-3 h-3" /> فشل التحميل — إعادة المحاولة
+                      </button>
+                    ) : exchangeRate ? (
+                      <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span>
+                        1 $ = {exchangeRate.toFixed(2)} ج.م
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {/* USD Input */}
+                  <div>
+                    <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">السعر بالدولار ($)</label>
+                    <div className="relative">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-black text-[#BCA37F]">$</span>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={priceUSD}
+                        placeholder="0.00"
+                        onChange={e => {
+                          const usd = e.target.value;
+                          setPriceUSD(usd);
+                          if (exchangeRate && usd) {
+                            const egp = Math.round(parseFloat(usd) * exchangeRate);
+                            f("price", isNaN(egp) ? 0 : egp);
+                          }
+                        }}
+                        className="w-full bg-white border border-slate-200 rounded-xl pr-8 pl-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* EGP Result */}
+                  <div>
+                    <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">التسعير (ج.م)</label>
+                    <div className="relative">
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-black text-slate-400">ج</span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={form.price}
+                        onChange={e => {
+                          f("price", Number(e.target.value));
+                          setPriceUSD(""); // clear USD if EGP edited manually
+                        }}
+                        className="w-full bg-white border border-slate-200 rounded-xl pr-8 pl-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all"
+                      />
+                    </div>
+                    {priceUSD && exchangeRate && (
+                      <p className="mt-1.5 text-[11px] text-slate-400 font-bold">
+                        {parseFloat(priceUSD).toFixed(2)} $ × {exchangeRate.toFixed(2)} = {form.price.toLocaleString("ar-EG")} ج.م
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-5">
@@ -343,7 +440,7 @@ export default function CarsPage() {
                   <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">حالة السيارة</label>
                   <select value={form.status} onChange={e => f("status", e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all">
                     <option value="available">متاح للحجز المباشر</option>
-                    <option value="unavailable">مغلق / صيانة</option>
+                    <option value="unavailable">غير متاحة للحجز</option>
                   </select>
                 </div>
               </div>

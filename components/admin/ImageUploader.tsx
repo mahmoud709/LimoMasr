@@ -11,6 +11,34 @@ export default function ImageUploader({
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Drag and drop refs
+  const dragItem = useRef<number | null>(null);
+  const dragOverItem = useRef<number | null>(null);
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+    dragItem.current = position;
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, position: number) => {
+    dragOverItem.current = position;
+  };
+
+  const handleDragEnd = () => {
+    if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) {
+      const _images = [...images];
+      const draggedItemContent = _images.splice(dragItem.current, 1)[0];
+      _images.splice(dragOverItem.current, 0, draggedItemContent);
+      onChange(_images);
+    }
+    dragItem.current = null;
+    dragOverItem.current = null;
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault(); // Necessary to allow dropping
+  };
+
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -116,9 +144,22 @@ export default function ImageUploader({
       {images.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           {images.map((img, idx) => (
-            <div key={idx} className="relative group rounded-2xl overflow-hidden border border-slate-200 aspect-[4/3] bg-slate-100 shadow-sm">
+            <div 
+              key={`${img}-${idx}`} 
+              draggable
+              onDragStart={(e) => handleDragStart(e, idx)}
+              onDragEnter={(e) => handleDragEnter(e, idx)}
+              onDragEnd={handleDragEnd}
+              onDragOver={handleDragOver}
+              className="relative group rounded-2xl overflow-hidden border border-slate-200 aspect-[4/3] bg-slate-100 shadow-sm cursor-grab active:cursor-grabbing"
+            >
+              {/* Image Number Badge */}
+              <div className="absolute top-2 right-2 z-10 w-6 h-6 rounded-full bg-[#1a2b3c]/70 backdrop-blur-sm text-white flex items-center justify-center text-xs font-bold pointer-events-none shadow-sm">
+                {idx + 1}
+              </div>
+
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={img} alt={`Car ${idx}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" />
+              <img src={img} alt={`Car ${idx}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out pointer-events-none" />
               
               {/* Glassmorphism Delete Overlay */}
               <div className="absolute inset-0 bg-[#0F1115]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">

@@ -8,15 +8,15 @@ import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
-export default async function CarsPage() {
-  const settings = await getSiteSettings();
-  const cars = (await getCars()).map(car => ({
-    ...car,
-    price: car.price * (settings.usdRate || 50)
-  }));
+export default async function CarsPage({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
+  const [searchParamsResolved, settings, cars] = await Promise.all([
+    searchParams ?? Promise.resolve<{ __locale?: string }>({}),
+    getSiteSettings(),
+    getCars()
+  ]);
   
   const cookieStore = await cookies();
-  const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
+  const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const cookieCurrency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
   const exchangeRate = cookieCurrency === "USD" ? (settings.usdRate || 50) : cookieCurrency === "EUR" ? (settings.eurRate || 55) : cookieCurrency === "SAR" ? (settings.sarRate || 13) : cookieCurrency === "QAR" ? (settings.qarRate || 13) : cookieCurrency === "KWD" ? (settings.kwdRate || 160) : cookieCurrency === "BHD" ? (settings.bhdRate || 130) : 1;
   

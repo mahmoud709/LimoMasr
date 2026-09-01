@@ -282,7 +282,87 @@ export function siteText(settings: SiteSettings, locale: Locale) {
 }
 
 export function localizeCar(car: Car, locale: Locale): Car {
-  return { ...car, ...car.translations?.[locale] };
+  const trans = car.translations?.[locale];
+  let localized = { ...car, ...trans };
+
+  if (locale === "en") {
+    if (!trans?.categoryName) {
+      const catMap: Record<string, string> = {
+        "سيارات صغيرة": "Economy Cars",
+        "سيارات متوسطة": "Mid-size SUVs",
+        "سيارات عائلية فاخرة": "Luxury Family Vans",
+        "فان متوسط": "Medium Van",
+        "باص كبير": "Large Bus",
+        "سياره كيا": "Kia Car",
+        "سيارة كيا": "Kia Car",
+        "سيارات فاخرة": "Luxury Cars",
+        "سيدان": "Sedan",
+      };
+      if (catMap[car.categoryName]) {
+        localized.categoryName = catMap[car.categoryName];
+      } else if (car.subtitle && /^[A-Za-z0-9\s/\\-_]+$/.test(car.subtitle)) {
+        localized.categoryName = car.subtitle;
+      }
+    }
+
+    if (!trans?.subtitle) {
+      const subMap: Record<string, string> = {
+        "سيدان اقتصادي": "Economy Sedan",
+        "SUV / كروس أوفر": "SUV / Crossover",
+        "Hyundai H1": "Hyundai H1",
+        "Toyota Hiace": "Toyota Hiace",
+        "Toyota Coaster": "Toyota Coaster",
+      };
+      if (subMap[car.subtitle]) {
+        localized.subtitle = subMap[car.subtitle];
+      }
+    }
+
+    if (!trans?.tag && car.tag) {
+      const tagMap: Record<string, string> = {
+        "الأكثر حجزًا": "Most Booked",
+        "الأكثر حجزاً": "Most Booked",
+        "الأكثر طلباً": "Most Popular",
+        "مناسب للعائلات": "Family Friendly",
+        "فاخرة": "Luxury",
+        "للمجموعات": "For Groups",
+        "للرحلات": "For Trips",
+      };
+      if (tagMap[car.tag]) {
+        localized.tag = tagMap[car.tag];
+      }
+    }
+
+    if (!trans?.notes && car.notes) {
+      const notesMap: Record<string, string> = {
+        "اختيار عملي وسريع للمشاوير داخل القاهرة والمطار.": "Practical and fast choice for trips within Cairo and airport.",
+        "مساحة مريحة للحقائب والعائلات الصغيرة.": "Comfortable space for luggage and small families.",
+        "راحة أعلى للمجموعات العائلية والتنقلات الطويلة.": "Higher comfort for family groups and long distance trips.",
+        "مناسب للمجموعات والوفود مع حقائب متعددة.": "Suitable for groups and delegations with multiple luggage.",
+        "اختيار عملي للرحلات والوفود الكبيرة.": "Practical choice for trips and large delegations.",
+      };
+      if (notesMap[car.notes]) {
+        localized.notes = notesMap[car.notes];
+      }
+    }
+
+    if (!trans?.models && car.models) {
+      const modelMap: Record<string, string> = {
+        "هيونداي النترا": "Hyundai Elantra",
+        "تويوتا كورولا": "Toyota Corolla",
+        "كيا جراند سيراتو": "Kia Grand Cerato",
+        "ميتسوبيشي إكسباندر": "Mitsubishi Xpander",
+        "جيتور": "Jetour",
+        "جلوري": "Glory",
+        "هيونداي اتش وان H1": "Hyundai H1",
+        "تويوتا هاي إيس": "Toyota Hiace",
+        "تويوتا كوستر": "Toyota Coaster",
+      };
+      localized.models = car.models.map(m => modelMap[m] || m);
+    }
+  }
+
+  return localized;
 }
 
 export function localizePackage(item: FastTrackPackage, locale: Locale): FastTrackPackage {

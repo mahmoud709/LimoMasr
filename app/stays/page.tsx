@@ -13,10 +13,10 @@ import { withLang } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
-export default async function StaysPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
+export default async function StaysPage({ searchParams }: { searchParams: Promise<{ type?: string; __locale?: string }> }) {
   const [settings, hotels, apartments, resolvedSearchParams] = await Promise.all([getSiteSettings(), getHotels(), getHotelApartments(), searchParams]);
   const cookieStore = await cookies();
-  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
+  const locale = ((resolvedSearchParams?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
   const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
 

@@ -6437,3 +6437,88 @@
 2026-08-24T07:25:21.083Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-08-24T07:28:02.268Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
 2026-08-24T07:28:02.317Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-08-24T07:28:51.932Z - REWRITE: /ar/cars/economy-sedan -> /cars/economy-sedan?__locale=ar
+2026-08-24T07:28:51.964Z - INCOMING: /ar/cars/economy-sedan | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:29:13.721Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:29:13.747Z - REDIRECT: / -> /ar
+2026-08-24T07:29:13.804Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-24T07:29:13.839Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:16:26.748Z - REWRITE: /ar/login -> /login?__locale=ar
+2026-08-25T15:16:26.821Z - INCOMING: /ar/login | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:16:26.848Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:16:26.877Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:17:51.596Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:17:53.285Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:17:57.234Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:17:57.263Z - ADMIN PASSTHROUGH: /ar/admin
+2026-08-25T15:17:57.291Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-08-25T15:18:01.062Z - INCOMING: /admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:18:01.098Z - ADMIN PASSTHROUGH: /admin/settings
+2026-08-25T15:18:01.141Z - REDIRECT: /admin/settings -> /ar/admin/settings
+2026-08-25T15:18:01.850Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:18:01.880Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:18:01.906Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:19:53.380Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:19:53.418Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:30.431Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:30.513Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:30.532Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:20:30.638Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:30.657Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:31.039Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:31.061Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:31.083Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:31.107Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:31.128Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:20:31.313Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:31.391Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:31.601Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:31.619Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:31.725Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:31.747Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:32.224Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:32.245Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:32.593Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:32.616Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:20:33.008Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:33.030Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:33.071Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:20:33.478Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:33.502Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:33.579Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:20:33.602Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:33.663Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:33.687Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:20:33.983Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:34.003Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:34.027Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:20:34.157Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:20:34.180Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:20:34.221Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:26:48.580Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:26:48.612Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:30:02.231Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:30:02.253Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:30:02.274Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:30:02.297Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:30:02.318Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:30:06.645Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:30:06.670Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:30:06.744Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T15:30:06.764Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:30:06.786Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T15:30:44.581Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:30:44.603Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:39:53.022Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:39:53.049Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T15:57:19.072Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T15:57:19.087Z - REWRITE: /ar -> /?__locale=ar
+2026-08-25T16:00:27.182Z - ADMIN PASSTHROUGH: /ar/admin/settings
+2026-08-25T16:00:27.332Z - INCOMING: /ar/admin/settings | isRewritten: false | hasLocaleParam: false
+2026-08-25T16:00:27.357Z - REWRITE: /ar/admin/settings -> /admin/settings?__locale=ar
+2026-08-25T16:00:27.415Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-08-25T16:00:27.457Z - REWRITE: /ar -> /?__locale=ar
+2026-08-31T10:27:41.777Z - REWRITE: /ar -> /?__locale=ar
+2026-08-31T10:27:41.832Z - REDIRECT: / -> /ar
+2026-08-31T10:27:41.858Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-08-31T10:27:41.884Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false

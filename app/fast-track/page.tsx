@@ -7,10 +7,14 @@ import type { Locale } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-export default async function FastTrackPage() {
-  const [settings, packages] = await Promise.all([getSiteSettings(), getFastTrackPackages()]);
+export default async function FastTrackPage({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
+  const [searchParamsResolved, settings, packages] = await Promise.all([
+    searchParams ?? Promise.resolve<{ __locale?: string }>({}),
+    getSiteSettings(),
+    getFastTrackPackages()
+  ]);
   const cookieStore = await cookies();
-  const locale = (cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale;
+  const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
   const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
   

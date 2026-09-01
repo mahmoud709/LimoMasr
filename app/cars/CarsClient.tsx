@@ -13,9 +13,10 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
-  const minPricePossible = 500;
+  const minPricePossible = 0;
   const maxPriceRaw = cars.length > 0 ? Math.max(...cars.map(c => c.price)) : 10000;
-  const maxPricePossible = 50000;
+  // Dynamic ceiling: round up to nearest 5,000 so no car is ever filtered out by default
+  const maxPricePossible = Math.max(50000, Math.ceil(maxPriceRaw / 5000) * 5000);
   const [maxPrice, setMaxPrice] = useState<number>(maxPricePossible);
   const deferredMaxPrice = useDeferredValue(maxPrice);
 

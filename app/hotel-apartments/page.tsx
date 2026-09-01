@@ -7,10 +7,14 @@ import { ApartmentsCarousel } from "@/components/ApartmentsCarousel";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 
-export default async function HotelApartmentsPage() {
-  const [settings, apartments] = await Promise.all([getSiteSettings(), getHotelApartments()]);
+export default async function HotelApartmentsPage({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
+  const [searchParamsResolved, settings, apartments] = await Promise.all([
+    searchParams ?? Promise.resolve<{ __locale?: string }>({}),
+    getSiteSettings(),
+    getHotelApartments()
+  ]);
   const cookieStore = await cookies();
-  const locale = (cookieStore.get('NEXT_LOCALE')?.value as Locale) || 'ar';
+  const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
   const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
 

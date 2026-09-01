@@ -13,14 +13,16 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function BlogPage() {
-  const [settings, articles] = await Promise.all([getSiteSettings(), getArticles(true)]);
+export default async function BlogPage({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
+  const [searchParamsResolved, settings, articles] = await Promise.all([
+    searchParams ?? Promise.resolve<{ __locale?: string }>({}),
+    getSiteSettings(),
+    getArticles(true)
+  ]);
   const cookieStore = await cookies();
-  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'ar';
+  const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const isEn = locale === "en";
-
-  const articlesWithImages = articles.filter(a => !!a.image);
-  const articlesWithoutImages = articles.filter(a => !a.image);
+  const articlesWithoutImages: typeof articles = [];
 
   return (
     <PublicLayout settings={settings}>
@@ -34,10 +36,10 @@ export default async function BlogPage() {
             </p>
           </div>
 
-          {/* Section 1: Main Blog Articles (With Images) */}
-          {articlesWithImages.length > 0 && (
+          {/* Blog Articles */}
+          {articles.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-32">
-              {articlesWithImages.map((article) => {
+              {articles.map((article) => {
                 const title = isEn && article.translations?.en?.title ? article.translations.en.title : article.title;
                 const excerpt = isEn && article.translations?.en?.excerpt ? article.translations.en.excerpt : article.excerpt;
                 const category = isEn && article.translations?.en?.category ? article.translations.en.category : article.category;
@@ -51,13 +53,19 @@ export default async function BlogPage() {
                     className="bg-white rounded-[2rem] overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(208,167,85,0.15)] transition-all duration-500 hover:-translate-y-2 group block"
                   >
                     <div className="relative h-64 overflow-hidden">
-                      <Image 
-                        src={article.image}
-                        alt={title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
+                      {article.image ? (
+                        <Image 
+                          src={article.image}
+                          alt={title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-[#1a2b3c]/5 flex items-center justify-center p-6 text-center">
+                          <span className="text-[#1a2b3c]/40 font-black text-lg leading-tight line-clamp-3">{title}</span>
+                        </div>
+                      )}
                       <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-black text-[#1a2b3c] tracking-widest shadow-lg">
                         {category}
                       </div>
