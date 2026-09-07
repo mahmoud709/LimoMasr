@@ -36,7 +36,10 @@ export async function getArticles(onlyPublished = false): Promise<Article[]> {
     
     let articles = await collection.find({}).toArray();
     
-    const result = articles.map(({ _id, ...article }) => article as Article);
+    const result = articles
+      .map(({ _id, ...article }) => article as Article)
+      .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
+
     if (onlyPublished) {
       return result.filter(a => a.published !== false);
     }
@@ -44,7 +47,7 @@ export async function getArticles(onlyPublished = false): Promise<Article[]> {
   } catch (error) {
     console.error("Failed to fetch articles from DB, falling back to JSON:", error);
     const fallbackArticles = await readJsonFallback<Article[]>("articles.json");
-    const list = fallbackArticles || [];
+    const list = (fallbackArticles || []).sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
     if (onlyPublished) {
       return list.filter(a => a.published !== false);
     }

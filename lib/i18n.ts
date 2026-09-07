@@ -270,7 +270,7 @@ export function withLang(href: string, locale: Locale) {
 export function siteText(settings: SiteSettings, locale: Locale) {
   const translated = settings.translations?.[locale];
   return {
-    brand: translated?.brand ?? settings.heroTitle,
+    brand: translated?.brand ?? (locale === "en" ? "Limo Egypt" : settings.heroTitle),
     address: translated?.address ?? settings.address,
     heroTitle: translated?.heroTitle ?? settings.heroTitle,
     heroSubtitle: translated?.heroSubtitle ?? settings.heroSubtitle,

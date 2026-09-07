@@ -29,10 +29,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
     getHotelApartments(),
   ]);
 
-  const cars = rawCars.map(car => ({
-    ...car,
-    price: car.price * (settings.usdRate || 50)
-  }));
+  const cars = rawCars;
 
   const cookieStore = await cookies();
   const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);

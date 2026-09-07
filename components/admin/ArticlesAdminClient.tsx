@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { Article } from "@/lib/types";
-import { FiPlus, FiEdit2, FiTrash2, FiAlertTriangle, FiX, FiSave, FiRefreshCw } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiAlertTriangle, FiX, FiSave, FiRefreshCw, FiMove } from "react-icons/fi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/admin/ToastProvider";
 import ImageUploader from "@/components/admin/ImageUploader";
@@ -30,15 +30,79 @@ export function ArticlesAdminClient() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [activeLang, setActiveLang] = useState<"ar" | "en">("ar");
 
+  // Drag & Drop state
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [localOrder, setLocalOrder] = useState<Article[] | null>(null);
+  const [isSavingOrder, setIsSavingOrder] = useState(false);
+  const dragNode = useRef<HTMLDivElement | null>(null);
+
   const { data: articles = [], isLoading: loading } = useQuery<Article[]>({
     queryKey: ["articles"],
     queryFn: async () => {
       const res = await fetch("/api/admin/articles");
       if (!res.ok) throw new Error("فشل في جلب البيانات");
       return res.json();
-    }
+    },
   });
 
+  // Reset local drag order whenever fresh server data arrives
+  useEffect(() => {
+    setLocalOrder(null);
+  }, [articles]);
+
+  // The displayed list: localOrder (during drag) or server articles
+  const displayedArticles = localOrder ?? articles;
+
+  // ─── Drag & Drop handlers ─────────────────────────────────────────────────
+  function handleDragStart(e: React.DragEvent<HTMLDivElement>, id: string) {
+    setDraggedId(id);
+    e.dataTransfer.effectAllowed = "move";
+    // Slight opacity via state is handled via className
+  }
+
+  function handleDragEnter(id: string) {
+    if (id === draggedId) return;
+    setDragOverId(id);
+
+    // Reorder locally for live preview
+    setLocalOrder(prev => {
+      const list = prev ?? articles;
+      const from = list.findIndex(a => a.id === draggedId);
+      const to = list.findIndex(a => a.id === id);
+      if (from === -1 || to === -1) return list;
+      const next = [...list];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+  }
+
+  function handleDragEnd() {
+    setDraggedId(null);
+    setDragOverId(null);
+  }
+
+  async function saveOrder() {
+    if (!localOrder) return;
+    setIsSavingOrder(true);
+    try {
+      const res = await fetch("/api/admin/articles/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderedIds: localOrder.map(a => a.id) }),
+      });
+      if (!res.ok) throw new Error("فشل حفظ الترتيب");
+      toast.success("تم حفظ الترتيب بنجاح ✓");
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+    } catch {
+      toast.error("فشل حفظ الترتيب");
+    } finally {
+      setIsSavingOrder(false);
+    }
+  }
+
+  // ─── CRUD ─────────────────────────────────────────────────────────────────
   function openAdd() {
     setForm({
       ...emptyForm,
@@ -80,13 +144,11 @@ export function ArticlesAdminClient() {
       const isEdit = modal === "edit";
       const url = isEdit ? `/api/admin/articles/${data.id}` : "/api/admin/articles";
       const method = isEdit ? "PATCH" : "POST";
-      
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      
       if (!res.ok) throw new Error("حدث خطأ أثناء الحفظ");
       return res.json();
     },
@@ -95,9 +157,7 @@ export function ArticlesAdminClient() {
       toast.success(modal === "edit" ? "تم تحديث المقال بنجاح" : "تمت إضافة المقال بنجاح");
       setModal(null);
     },
-    onError: (err: any) => {
-      toast.error(err.message || "فشل الحفظ");
-    },
+    onError: (err: any) => { toast.error(err.message || "فشل الحفظ"); },
     onSettled: () => setSaving(false)
   });
 
@@ -111,9 +171,7 @@ export function ArticlesAdminClient() {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("تم حذف المقال بنجاح");
     },
-    onError: (err: any) => {
-      toast.error(err.message || "فشل الحذف");
-    }
+    onError: (err: any) => { toast.error(err.message || "فشل الحذف"); }
   });
 
   const seedMutation = useMutation({
@@ -126,14 +184,11 @@ export function ArticlesAdminClient() {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success(data.message || "تم حفظ واستيراد المقالات في قاعدة البيانات");
     },
-    onError: (err: any) => {
-      toast.error(err.message || "فشلت المزامنة");
-    }
+    onError: (err: any) => { toast.error(err.message || "فشلت المزامنة"); }
   });
 
   async function save() {
     setSaving(true);
-    
     const arTitle = form.translations?.ar?.title || form.title;
     const arExcerpt = form.translations?.ar?.excerpt || form.excerpt;
     const arContent = form.translations?.ar?.content || form.content;
@@ -149,7 +204,6 @@ export function ArticlesAdminClient() {
       slug: editing?.slug ?? arTitle.replace(/\s+/g, "-").toLowerCase(),
       translations: form.translations
     };
-
     saveMutation.mutate(data);
   }
 
@@ -165,31 +219,27 @@ export function ArticlesAdminClient() {
       ...prev,
       translations: {
         ...prev.translations,
-        [activeLang]: {
-          ...prev.translations?.[activeLang],
-          [key]: value
-        }
+        [activeLang]: { ...prev.translations?.[activeLang], [key]: value }
       }
     }));
   };
+  const getTransVal = (key: "title" | "excerpt" | "content" | "category") =>
+    form.translations?.[activeLang]?.[key] || "";
 
-  const getTransVal = (key: "title" | "excerpt" | "content" | "category") => {
-    return form.translations?.[activeLang]?.[key] || "";
-  };
-
+  // ─── Render ───────────────────────────────────────────────────────────────
   return (
     <div className="flex-1 p-8 lg:px-12 xl:px-16 max-w-7xl mx-auto w-full space-y-6 relative">
-      <div className="flex items-center justify-between mb-10">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-black text-[#0F1115] tracking-tight">إدارة المقالات</h1>
           <p className="text-sm font-medium text-slate-500 mt-2">{articles.length} مقال في المدونة</p>
         </div>
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => seedMutation.mutate()} 
+          <button
+            onClick={() => seedMutation.mutate()}
             disabled={seedMutation.isPending}
             className="flex items-center gap-2 bg-slate-100 text-[#0F1115] text-sm font-black px-4 py-3 rounded-xl hover:bg-slate-200 transition-all duration-300 border border-slate-200/80 disabled:opacity-50"
-            title="مزامنة المقالات وتخزينها في قاعدة البيانات"
           >
             <FiRefreshCw className={`w-4 h-4 ${seedMutation.isPending ? "animate-spin" : ""}`} />
             استيراد لقاعدة البيانات
@@ -201,19 +251,70 @@ export function ArticlesAdminClient() {
         </div>
       </div>
 
+      {/* Drag hint + Save order button */}
+      <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3">
+        <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+          <FiMove className="w-4 h-4 text-[#BCA37F]" />
+          <span>اسحب البطاقات لتغيير ترتيب عرض المقالات</span>
+        </div>
+        {localOrder && (
+          <button
+            onClick={saveOrder}
+            disabled={isSavingOrder}
+            className="flex items-center gap-2 bg-[#0F1115] text-white text-sm font-black px-5 py-2.5 rounded-xl hover:bg-[#BCA37F] transition-all duration-300 disabled:opacity-50 shadow"
+          >
+            <FiSave className="w-4 h-4" />
+            {isSavingOrder ? "جاري الحفظ..." : "حفظ الترتيب"}
+          </button>
+        )}
+      </div>
+
+      {/* Articles Grid */}
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-          {[1,2,3].map(i => (
+          {[1, 2, 3].map(i => (
             <div key={i} className="h-80 bg-white rounded-3xl border border-slate-100 shadow-sm p-4">
-              <div className="w-full h-40 bg-slate-100 rounded-2xl mb-4"></div>
-              <div className="w-3/4 h-6 bg-slate-100 rounded-md mb-2"></div>
+              <div className="w-full h-40 bg-slate-100 rounded-2xl mb-4" />
+              <div className="w-3/4 h-6 bg-slate-100 rounded-md mb-2" />
             </div>
           ))}
         </div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map(article => (
-            <div key={article.id} className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+          {displayedArticles.map((article, index) => (
+            <div
+              key={article.id}
+              ref={draggedId === article.id ? dragNode : null}
+              draggable
+              onDragStart={e => handleDragStart(e, article.id)}
+              onDragEnter={() => handleDragEnter(article.id)}
+              onDragOver={e => e.preventDefault()}
+              onDragEnd={handleDragEnd}
+              className={`
+                bg-white rounded-3xl border shadow-sm overflow-hidden flex flex-col
+                transition-all duration-200 group relative
+                ${draggedId === article.id
+                  ? "opacity-40 scale-95 border-[#BCA37F] shadow-none"
+                  : dragOverId === article.id
+                    ? "border-[#BCA37F] shadow-xl ring-2 ring-[#BCA37F]/30 scale-[1.02]"
+                    : "border-slate-100 hover:shadow-xl hover:-translate-y-1"
+                }
+              `}
+            >
+              {/* Drag handle + order badge */}
+              <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+                <span className="w-6 h-6 bg-[#0F1115]/70 text-white text-[10px] font-black rounded-full flex items-center justify-center backdrop-blur-sm">
+                  {index + 1}
+                </span>
+                <span
+                  className="w-7 h-7 bg-white/80 backdrop-blur-sm rounded-xl flex items-center justify-center text-slate-400 hover:text-[#BCA37F] cursor-grab active:cursor-grabbing shadow-sm border border-slate-100 transition-colors"
+                  title="اسحب لتغيير الترتيب"
+                >
+                  <FiMove className="w-3.5 h-3.5" />
+                </span>
+              </div>
+
+              {/* Image */}
               <div className="h-48 bg-slate-50 overflow-hidden relative">
                 {article.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -229,12 +330,11 @@ export function ArticlesAdminClient() {
                 </span>
               </div>
 
+              {/* Content */}
               <div className="p-6 flex flex-col flex-1">
-                <h3 className="font-black text-[#0F1115] text-lg leading-tight tracking-tight mb-2">
-                  {article.title}
-                </h3>
+                <h3 className="font-black text-[#0F1115] text-lg leading-tight tracking-tight mb-2">{article.title}</h3>
                 <p className="text-sm text-slate-500 mb-5 font-medium line-clamp-2">{article.excerpt}</p>
-                
+
                 <div className="flex gap-3 pt-4 border-t border-slate-100 mt-auto">
                   <button onClick={() => openEdit(article)} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-50 text-xs font-black text-[#0F1115] hover:bg-[#0F1115] hover:text-white transition-all duration-300">
                     <FiEdit2 className="w-4 h-4" /> تعديل
@@ -259,14 +359,9 @@ export function ArticlesAdminClient() {
               </div>
               <h3 className="text-xl font-black text-[#0F1115] mb-2">تأكيد الحذف</h3>
               <p className="text-sm text-slate-500 mb-8 font-medium">هل أنت متأكد من رغبتك في حذف هذا المقال بشكل نهائي؟</p>
-              
               <div className="flex gap-3 w-full">
-                <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3.5 rounded-xl font-black text-[#0F1115] bg-slate-100 hover:bg-slate-200 transition-colors">
-                  إلغاء
-                </button>
-                <button onClick={confirmDelete} className="flex-1 py-3.5 rounded-xl font-black text-white bg-rose-500 hover:bg-rose-600 shadow-md hover:shadow-lg transition-all">
-                  نعم، احذف
-                </button>
+                <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-3.5 rounded-xl font-black text-[#0F1115] bg-slate-100 hover:bg-slate-200 transition-colors">إلغاء</button>
+                <button onClick={confirmDelete} className="flex-1 py-3.5 rounded-xl font-black text-white bg-rose-500 hover:bg-rose-600 shadow-md hover:shadow-lg transition-all">نعم، احذف</button>
               </div>
             </div>
           </div>
@@ -283,28 +378,14 @@ export function ArticlesAdminClient() {
                 <FiX className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="p-8 overflow-y-auto space-y-6 flex-1">
               {/* Language Switcher */}
               <div className="flex bg-slate-100/50 p-1 rounded-2xl w-full max-w-xs mx-auto border border-slate-200/50 shadow-inner mb-6">
-                <button
-                  onClick={() => setActiveLang("ar")}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center justify-center gap-2 ${
-                    activeLang === "ar"
-                      ? "bg-white text-[#0F1115] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
-                      : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/30"
-                  }`}
-                >
+                <button onClick={() => setActiveLang("ar")} className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center justify-center gap-2 ${activeLang === "ar" ? "bg-white text-[#0F1115] shadow-[0_2px_10px_rgba(0,0,0,0.06)]" : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/30"}`}>
                   <span className="text-lg">🇸🇦</span> العربية
                 </button>
-                <button
-                  onClick={() => setActiveLang("en")}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center justify-center gap-2 ${
-                    activeLang === "en"
-                      ? "bg-white text-[#0F1115] shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
-                      : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/30"
-                  }`}
-                >
+                <button onClick={() => setActiveLang("en")} className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center justify-center gap-2 ${activeLang === "en" ? "bg-white text-[#0F1115] shadow-[0_2px_10px_rgba(0,0,0,0.06)]" : "text-slate-400 hover:text-slate-600 hover:bg-slate-200/30"}`}>
                   <span className="text-lg">🇬🇧</span> English
                 </button>
               </div>
@@ -321,47 +402,29 @@ export function ArticlesAdminClient() {
 
               <div>
                 <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">نبذة مختصرة ({activeLang === "ar" ? "عربي" : "إنجليزي"})</label>
-                <textarea 
-                  value={getTransVal("excerpt")} 
-                  onChange={e => fTrans("excerpt", e.target.value)} 
-                  rows={2} 
-                  dir={activeLang === "en" ? "ltr" : "rtl"}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all resize-none leading-relaxed" 
-                />
+                <textarea value={getTransVal("excerpt")} onChange={e => fTrans("excerpt", e.target.value)} rows={2} dir={activeLang === "en" ? "ltr" : "rtl"} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all resize-none leading-relaxed" />
               </div>
 
               <div>
                 <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">المحتوى ({activeLang === "ar" ? "عربي" : "إنجليزي"})</label>
-                <RichTextEditor 
-                  value={getTransVal("content")} 
-                  onChange={v => fTrans("content", v)} 
-                  placeholder={activeLang === "ar" ? "اكتب محتوى المقال هنا..." : "Write the article content here..."}
-                  isEn={activeLang === "en"}
-                />
+                <RichTextEditor value={getTransVal("content")} onChange={v => fTrans("content", v)} placeholder={activeLang === "ar" ? "اكتب محتوى المقال هنا..." : "Write the article content here..."} isEn={activeLang === "en"} />
               </div>
 
               <div className="grid grid-cols-2 gap-5 border-t border-slate-100 pt-6">
                 <div>
                   <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">صورة المقال (واحدة فقط)</label>
-                  <ImageUploader 
-                    images={form.image ? [form.image] : []} 
-                    onChange={imgs => f("image", imgs[0] || "")} 
-                  />
+                  <ImageUploader images={form.image ? [form.image] : []} onChange={imgs => f("image", imgs[0] || "")} />
                 </div>
                 <div>
                   <label className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">حالة النشر</label>
-                  <select 
-                    value={form.published ? "true" : "false"} 
-                    onChange={e => f("published", e.target.value === "true")} 
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all"
-                  >
+                  <select value={form.published ? "true" : "false"} onChange={e => f("published", e.target.value === "true")} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold text-[#0F1115] outline-none focus:ring-2 focus:ring-[#BCA37F] focus:border-transparent transition-all">
                     <option value="true">منشور ومرئي للزوار</option>
                     <option value="false">مسودة (غير مرئي)</option>
                   </select>
                 </div>
               </div>
             </div>
-            
+
             <div className="p-6 border-t border-slate-100 bg-slate-50/50">
               <button onClick={save} disabled={saving} className="w-full flex items-center justify-center gap-2 bg-[#0F1115] text-white font-black py-4 rounded-xl hover:bg-[#BCA37F] transition-colors duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
                 <FiSave className="w-5 h-5" />

@@ -26,6 +26,7 @@ export type Article = {
   date: string;
   readTime: string;
   published: boolean;
+  sortOrder?: number;
   translations?: {
     ar?: {
       title?: string;
