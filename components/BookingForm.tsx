@@ -1018,14 +1018,21 @@ export function BookingForm({
 
             {/* Total Budget summary */}
             {hotelNights > 0 && (
-              <div className="flex items-center justify-between bg-[#1a2b3c]/5 rounded-xl px-4 py-3 border border-[#d0a755]/20 mt-2">
-                <span className="text-xs font-bold text-[#1a2b3c]/70 flex items-center gap-1.5">
-                  <FiCalendar className="w-3.5 h-3.5 text-[#d0a755]" />
-                  {isEn ? `Total Budget (${hotelNights} nights)` : `إجمالي الميزانية (${hotelNights} ليالي)`}
-                </span>
-                <span className="text-sm font-black text-[#d0a755]">
-                  {currency !== "EGP" ? ((budget * hotelNights) / exchangeRate).toFixed(2) + ` ${currency}` : new Intl.NumberFormat("ar-EG").format(budget * hotelNights) + " ج.م"}
-                </span>
+              <div className="space-y-2 mt-2">
+                <div className="flex items-center justify-between bg-[#1a2b3c]/5 rounded-xl px-4 py-3 border border-[#d0a755]/20">
+                  <span className="text-xs font-bold text-[#1a2b3c]/70 flex items-center gap-1.5">
+                    <FiCalendar className="w-3.5 h-3.5 text-[#d0a755]" />
+                    {isEn ? `Total Expected Budget (${hotelNights} nights)` : `إجمالي الميزانية المتوقعة (${hotelNights} ليالي)`}
+                  </span>
+                  <span className="text-sm font-black text-[#d0a755]">
+                    {currency !== "EGP" ? ((budget * hotelNights) / exchangeRate).toFixed(2) + ` ${currency}` : new Intl.NumberFormat("ar-EG").format(budget * hotelNights) + " ج.م"}
+                  </span>
+                </div>
+                <p className="text-[11px] font-medium text-[#1a2b3c]/60 leading-relaxed px-1">
+                  {isEn 
+                    ? "✨ Hotel rates fluctuate dynamically. Our team will verify live availability & present the best luxury deal matching your budget."
+                    : "✨ تتغير أسعار الإقامة حسب الموسم والتوافر، يقوم فريقنا بمراجعة العروض المتاحة فوراً وتأكيد أفضل سعر يناسب ميزانيتك."}
+                </p>
               </div>
             )}
           </div>

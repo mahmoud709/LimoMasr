@@ -273,20 +273,26 @@ export function HotelsCarousel({
 
                 {/* Price and CTA */}
                 <div className="mt-6 pt-4 border-t border-black/5 flex flex-wrap items-center justify-between gap-2 relative z-10">
-                  <div className="flex items-baseline gap-1" dir="rtl">
-                    <span className="text-xs font-bold text-[#1a2b3c]/50">{isEn ? "From" : "يبدأ من"}</span>
-                    <span className="text-xl font-black text-[#d0a755]">
-                      {formatCurrency(item.price, "EGP", locale, currency, exchangeRate)}
+                  <div className="flex flex-col" dir={isEn ? "ltr" : "rtl"}>
+                    <span className="text-[10px] font-bold text-[#1a2b3c]/50 uppercase tracking-wider">
+                      {isEn ? "Best Live Rates" : "أفضل الأسعار المتاحة"}
                     </span>
-                    <span className="text-[10px] font-bold text-[#1a2b3c]/40">
-                      {isEn ? "/ night" : "/ ليلة"}
+                    <span className="text-sm font-black text-[#d0a755]">
+                      {isEn ? "Price on Request" : "السعر عند الطلب"}
                     </span>
                   </div>
                   <Link
-                    href={isEn ? "/en/hotels" : "/hotels"}
-                    className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-4 py-2 rounded-xl text-[11px] font-bold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
+                    href={isEn ? "/en/hotels#booking-form" : "/hotels#booking-form"}
+                    onClick={(e) => {
+                      const formElement = document.getElementById("booking-form") || document.querySelector("form");
+                      if (formElement) {
+                        e.preventDefault();
+                        formElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                      }
+                    }}
+                    className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-4 py-2 rounded-xl text-[11px] font-bold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer"
                   >
-                    {isEn ? "Book Stay" : "احجز إقامتك"}
+                    {isEn ? "Request Quote" : "اطلب عرض سعر"}
                   </Link>
                 </div>
               </article>

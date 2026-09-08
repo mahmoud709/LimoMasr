@@ -2,8 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { FiX, FiSearch, FiMapPin, FiClock } from "react-icons/fi";
-import { FaGlobeAmericas } from "react-icons/fa";
+import { FiX, FiSearch, FiMapPin, FiClock, FiNavigation } from "react-icons/fi";
 
 type LocationSearchModalProps = {
   isOpen: boolean;
@@ -55,6 +54,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -134,6 +134,52 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
     onClose();
   };
 
+  const handleUseCurrentLocation = () => {
+    if (typeof window === "undefined" || !navigator.geolocation) {
+      handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=${isEn ? "en" : "ar"}`
+          );
+          if (res.ok) {
+            const data = await res.json();
+            const addr = data.address || {};
+            const mainName = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.city || data.name || data.display_name?.split(",")[0];
+            const city = addr.city || addr.state || addr.governorate;
+
+            let locationStr = mainName;
+            if (city && mainName && !mainName.includes(city)) {
+              locationStr = isEn ? `${mainName}, ${city}` : `${mainName}، ${city}`;
+            }
+            if (!locationStr) {
+              locationStr = isEn ? "Current Location" : "موقعي الحالي";
+            }
+            handleSelect(locationStr.trim());
+          } else {
+            handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+          }
+        } catch (err) {
+          handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        console.warn("Geolocation error:", error);
+        setIsLocating(false);
+        handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+      },
+      { timeout: 8000, enableHighAccuracy: true }
+    );
+  };
+
   const removeRecent = (e: React.MouseEvent, loc: string) => {
     e.stopPropagation();
     const updated = recentSearches.filter(l => l !== loc);
@@ -180,11 +226,18 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
           </div>
           
           <button 
-            onClick={() => handleSelect(isEn ? "Any Location" : "أي مكان")}
-            className="w-full mt-3 py-4 rounded-2xl border border-slate-200 hover:border-[#d0a755] hover:bg-[#d0a755]/5 flex items-center justify-center gap-2 text-[#1a2b3c] font-black text-sm transition-all"
+            type="button"
+            onClick={handleUseCurrentLocation}
+            disabled={isLocating}
+            className="w-full mt-3 py-3.5 rounded-2xl border border-slate-200 hover:border-[#d0a755] hover:bg-[#d0a755]/5 flex items-center justify-center gap-2.5 text-[#1a2b3c] font-black text-sm transition-all disabled:opacity-60 cursor-pointer"
           >
-            <FaGlobeAmericas className="w-4 h-4 text-[#d0a755]" />
-            {isEn ? "Any Location" : "أي مكان"}
+            <FiNavigation className={`w-4 h-4 text-[#d0a755] ${isLocating ? "animate-spin" : ""}`} />
+            <span>
+              {isLocating 
+                ? (isEn ? "Detecting your location..." : "جاري تحديد موقعك...")
+                : (isEn ? "Use My Current Location" : "استخدام موقعي الحالي")
+              }
+            </span>
           </button>
         </div>
 

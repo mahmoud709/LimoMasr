@@ -117,7 +117,7 @@ export default async function StaysPage({ searchParams }: { searchParams: Promis
                   </div>
                 </div>
               </section>
-              <div className="h-fit sticky top-32">
+              <div id="booking-form" className="h-fit sticky top-32">
                 <BookingForm 
                   type="hotel" 
                   serviceRefId="hotel-request" 
@@ -195,7 +195,7 @@ export default async function StaysPage({ searchParams }: { searchParams: Promis
                   </div>
                 </div>
               </section>
-              <div className="h-fit sticky top-32">
+              <div id="booking-form" className="h-fit sticky top-32">
                 <BookingForm 
                   type="apartment" 
                   serviceRefId="hotel-apartments-request" 

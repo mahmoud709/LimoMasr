@@ -92,7 +92,7 @@ export default async function HotelsPage({ searchParams }: { searchParams?: Prom
               </div>
             </div>
           </section>
-          <div className="luxury-panel p-8 h-fit sticky top-32">
+          <div id="booking-form" className="luxury-panel p-8 h-fit sticky top-32">
             <BookingForm 
               type="hotel" 
               serviceRefId="hotel-request" 

@@ -84,7 +84,7 @@ export default async function HotelApartmentsPage({ searchParams }: { searchPara
             </div>
           </section>
           
-          <div className="luxury-panel p-8 h-fit sticky top-32">
+          <div id="booking-form" className="luxury-panel p-8 h-fit sticky top-32">
             <BookingForm 
               type="apartment" 
               serviceRefId="hotel-apartments-request" 
