@@ -393,6 +393,34 @@ export async function deleteHotelApartment(id: string) {
   await collection.deleteOne({ id });
 }
 
+function normalizeBooking(b: any): Booking {
+  const item = { ...b } as Booking;
+  if (item.notes) {
+    if (item.notes.includes("[النوع: فندق]") && (item.type === "apartment" || !item.type)) {
+      item.type = "hotel";
+    } else if (item.notes.includes("[النوع: شقة فندقية]") && (item.type === "hotel" || !item.type)) {
+      item.type = "apartment";
+    }
+    
+    // If serviceName is generic but specific place/hotel was recorded in notes
+    if (!item.serviceName || item.serviceName === "طلب حجز شقق فندقية" || item.serviceName === "طلب حجز فندق" || item.serviceName === "Hotel Booking Request" || item.serviceName === "Hotel Apartments Request") {
+      const placeMatch = item.notes.match(/\[المكان:\s*([^\]]+)\]/);
+      if (placeMatch && placeMatch[1] && placeMatch[1].trim() && placeMatch[1].trim() !== "غير محدد") {
+        item.serviceName = placeMatch[1].trim();
+      }
+    }
+
+    if (item.notes.includes("[حجز للغير: نعم]")) item.isForOther = true;
+    const nameM = item.notes.match(/\[اسم المستفيد:\s*([^\]]+)\]/);
+    if (nameM && nameM[1]) item.otherPersonName = nameM[1].trim();
+    const phoneM = item.notes.match(/\[رقم هاتف المستفيد:\s*([^\]]+)\]/);
+    if (phoneM && phoneM[1]) item.otherPersonPhone = phoneM[1].trim();
+    const locM = item.notes.match(/\[موقع المستفيد:\s*([^\]]+)\]/);
+    if (locM && locM[1]) item.otherPersonLocation = locM[1].trim();
+  }
+  return item;
+}
+
 export async function getBookings(): Promise<Booking[]> {
   try {
     const db = await getDb();
@@ -409,34 +437,6 @@ export async function getBookings(): Promise<Booking[]> {
       }
     }
     
-    const normalizeBooking = (b: any): Booking => {
-      const item = { ...b } as Booking;
-      if (item.notes) {
-        if (item.notes.includes("[النوع: فندق]") && (item.type === "apartment" || !item.type)) {
-          item.type = "hotel";
-        } else if (item.notes.includes("[النوع: شقة فندقية]") && (item.type === "hotel" || !item.type)) {
-          item.type = "apartment";
-        }
-        
-        // If serviceName is generic but specific place/hotel was recorded in notes
-        if (!item.serviceName || item.serviceName === "طلب حجز شقق فندقية" || item.serviceName === "طلب حجز فندق" || item.serviceName === "Hotel Booking Request" || item.serviceName === "Hotel Apartments Request") {
-          const placeMatch = item.notes.match(/\[المكان:\s*([^\]]+)\]/);
-          if (placeMatch && placeMatch[1] && placeMatch[1].trim() && placeMatch[1].trim() !== "غير محدد") {
-            item.serviceName = placeMatch[1].trim();
-          }
-        }
-
-        if (item.notes.includes("[حجز للغير: نعم]")) item.isForOther = true;
-        const nameM = item.notes.match(/\[اسم المستفيد:\s*([^\]]+)\]/);
-        if (nameM && nameM[1]) item.otherPersonName = nameM[1].trim();
-        const phoneM = item.notes.match(/\[رقم هاتف المستفيد:\s*([^\]]+)\]/);
-        if (phoneM && phoneM[1]) item.otherPersonPhone = phoneM[1].trim();
-        const locM = item.notes.match(/\[موقع المستفيد:\s*([^\]]+)\]/);
-        if (locM && locM[1]) item.otherPersonLocation = locM[1].trim();
-      }
-      return item;
-    };
-
     const result = bookings.map(({ _id, ...b }) => normalizeBooking(b));
     return result.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   } catch (error) {
