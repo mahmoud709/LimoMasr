@@ -100,8 +100,14 @@ export function BookingForm({
   const [flightDateFrom, setFlightDateFrom] = useState("");
   const [flightDateTo, setFlightDateTo] = useState("");
 
+  // Booking for someone else state (حجز للغير)
+  const [isForOther, setIsForOther] = useState(false);
+  const [otherPersonName, setOtherPersonName] = useState("");
+  const [otherPersonPhone, setOtherPersonPhone] = useState("");
+  const [otherPersonLocation, setOtherPersonLocation] = useState("");
+
   // Modal selector state
-  const [activeModal, setActiveModal] = useState<"hotel" | "flightFrom" | "flightTo" | "carFrom" | "carTo" | "carResidence" | null>(null);
+  const [activeModal, setActiveModal] = useState<"hotel" | "flightFrom" | "flightTo" | "carFrom" | "carTo" | "carResidence" | "otherPersonLocation" | null>(null);
 
   // Detect locale based on props, pathname prefix, or cookie
   const isEn = locale ? locale === "en" : (typeof window !== "undefined" && (
@@ -277,6 +283,13 @@ export function BookingForm({
       detailsList.push(isEn ? `• Number of Passengers: ${passengers}` : `• عدد المسافرين: ${passengers}`);
     }
 
+    if (isForOther) {
+      detailsList.push(isEn ? `• Booking for Someone Else: Yes` : `• حجز لحساب شخص آخر: نعم`);
+      if (otherPersonName) detailsList.push(isEn ? `• Passenger/Beneficiary Name: ${otherPersonName}` : `• اسم المستفيد/الراكب: ${otherPersonName}`);
+      if (otherPersonPhone) detailsList.push(isEn ? `• Passenger/Beneficiary Phone: ${otherPersonPhone}` : `• رقم هاتف المستفيد: ${otherPersonPhone}`);
+      if (otherPersonLocation) detailsList.push(isEn ? `• Passenger/Beneficiary Location: ${otherPersonLocation}` : `• موقع/عنوان المستفيد: ${otherPersonLocation}`);
+    }
+
     let finalNotes = detailsList.join("\n");
     if (notes.trim()) {
       finalNotes += isEn ? `\n\nAdditional Notes:\n${notes}` : `\n\nملاحظات إضافية:\n${notes}`;
@@ -325,7 +338,11 @@ export function BookingForm({
     flightTo,
     flightDateFrom,
     flightDateTo,
-    bookingEffectiveDate
+    bookingEffectiveDate,
+    isForOther,
+    otherPersonName,
+    otherPersonPhone,
+    otherPersonLocation,
   ]);
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
@@ -372,6 +389,10 @@ export function BookingForm({
         structuredNotes = notes;
       }
 
+      if (isForOther) {
+        structuredNotes += ` [حجز للغير: نعم]${otherPersonName ? ` [اسم المستفيد: ${otherPersonName}]` : ""}${otherPersonPhone ? ` [رقم هاتف المستفيد: ${otherPersonPhone}]` : ""}${otherPersonLocation ? ` [موقع المستفيد: ${otherPersonLocation}]` : ""}`;
+      }
+
       const effectiveCustomerName = (type === "fast_track" && passengerNames[0]?.trim()) ? passengerNames[0].trim() : customerName;
 
       const res = await fetch("/api/bookings", {
@@ -381,6 +402,10 @@ export function BookingForm({
           type: effectiveType,
           customerName: effectiveCustomerName,
           phone,
+          isForOther,
+          otherPersonName: isForOther ? otherPersonName : undefined,
+          otherPersonPhone: isForOther ? otherPersonPhone : undefined,
+          otherPersonLocation: isForOther ? otherPersonLocation : undefined,
           serviceRefId,
           serviceName: effectiveServiceName,
           date: bookingEffectiveDate,
@@ -434,6 +459,10 @@ export function BookingForm({
     setFlightTo("");
     setFlightDateFrom("");
     setFlightDateTo("");
+    setIsForOther(false);
+    setOtherPersonName("");
+    setOtherPersonPhone("");
+    setOtherPersonLocation("");
     if (user) {
       setCustomerName(user.name);
       setPhone(user.phone);
@@ -1249,6 +1278,8 @@ export function BookingForm({
             </div>
           </div>
         </div>
+
+
         
         {/* Additional Notes */}
         <div className="relative">
@@ -1355,6 +1386,8 @@ export function BookingForm({
             setCarTo(location);
           } else if (activeModal === "carResidence") {
             setCarResidence(location);
+          } else if (activeModal === "otherPersonLocation") {
+            setOtherPersonLocation(location);
           }
         }}
         title={
@@ -1370,6 +1403,8 @@ export function BookingForm({
             ? (isEn ? "Select Destination Location" : "اختر مكان الوصول")
             : activeModal === "carResidence"
             ? (isEn ? "Select Residence Location" : "اختر مكان السكن أو الإقامة")
+            : activeModal === "otherPersonLocation"
+            ? (isEn ? "Select Passenger Location" : "اختر مكان الانطلاق/موقع الشخص المستفيد")
             : (isEn ? "Select Location" : "اختر الموقع")
         }
         placeholder={

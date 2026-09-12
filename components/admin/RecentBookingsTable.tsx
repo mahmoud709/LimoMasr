@@ -84,20 +84,27 @@ export function RecentBookingsTable({ bookings }: { bookings: Booking[]; reviews
                   
                   {/* View Details Button */}
                   <td className="px-8 py-5">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedBookingForDetails(b)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group/btn"
-                      title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
-                    >
-                      <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover/btn:text-[#1a2b3c]" />
-                      <span>التفاصيل</span>
-                      {(b.passengers ?? 0) > 1 && (
-                        <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full mr-1">
-                          {b.passengers}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBookingForDetails(b)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group/btn"
+                        title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
+                      >
+                        <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover/btn:text-[#1a2b3c]" />
+                        <span>التفاصيل</span>
+                        {(b.passengers ?? 0) > 1 && (
+                          <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full mr-1">
+                            {b.passengers}
+                          </span>
+                        )}
+                      </button>
+                      {(b.isForOther || b.notes?.includes("[حجز للغير: نعم]")) && (
+                        <span className="px-2 py-0.5 rounded-lg text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300 whitespace-nowrap">
+                          حجز للغير
                         </span>
                       )}
-                    </button>
+                    </div>
                   </td>
 
                   <td className="px-8 py-5">

@@ -297,30 +297,53 @@ export function ArticleClient({
               
               {/* Table of Contents Box */}
               {toc.length > 0 && (
-                <div className="bg-white p-6 rounded-3xl border border-black/5 shadow-xl space-y-4">
-                  <div className="flex items-center gap-2 pb-3 border-b border-black/5 text-[#1a2b3c]">
-                    <FiList className="w-4 h-4 text-[#d0a755]" />
-                    <h3 className="font-black text-sm uppercase tracking-wider">
-                      {isEn ? "Table of Contents" : "فهرس المقال"}
-                    </h3>
+                <div className="bg-white/95 backdrop-blur-md p-6 rounded-3xl border border-black/5 shadow-[0_15px_35px_rgba(26,43,60,0.06)] hover:shadow-[0_20px_45px_rgba(208,167,85,0.12)] transition-all duration-300 space-y-4">
+                  {/* Header */}
+                  <div className="flex items-center justify-between pb-3 border-b border-black/5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-[#d0a755]/15 text-[#d0a755] flex items-center justify-center font-black">
+                        <FiList className="w-4 h-4" />
+                      </div>
+                      <h3 className="font-black text-sm text-[#1a2b3c] uppercase tracking-wider">
+                        {isEn ? "Table of Contents" : "فهرس المقال"}
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-[#1a2b3c]/5 text-[#d0a755] border border-[#d0a755]/20">
+                      {toc.length} {isEn ? "topics" : "عناوين"}
+                    </span>
                   </div>
 
-                  <ul className="space-y-2 text-xs font-bold text-slate-600 max-h-[340px] overflow-y-auto pr-1">
-                    {toc.map((item) => (
-                      <li key={item.id}>
-                        <button
-                          onClick={() => scrollToHeading(item.id)}
-                          className={`text-right w-full py-1.5 px-3 rounded-xl transition-all flex items-center gap-2 ${
-                            activeTocId === item.id 
-                              ? "bg-[#d0a755]/15 text-[#1a2b3c] font-black border-r-4 border-[#d0a755]" 
-                              : "hover:bg-slate-50 hover:text-[#1a2b3c]"
-                          }`}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#d0a755] shrink-0" />
-                          <span className="line-clamp-1">{item.text}</span>
-                        </button>
-                      </li>
-                    ))}
+                  {/* TOC Links List with Styled Scrollbar */}
+                  <ul className="space-y-1.5 text-xs font-bold text-slate-600 max-h-[360px] overflow-y-auto pr-1.5 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-slate-100 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#d0a755]/40 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-[#d0a755]">
+                    {toc.map((item) => {
+                      const isActive = activeTocId === item.id;
+                      const isH3 = item.level === 3;
+                      return (
+                        <li key={item.id} className={isH3 ? (isEn ? "pl-3" : "pr-3") : ""}>
+                          <button
+                            onClick={() => scrollToHeading(item.id)}
+                            className={`w-full py-2 px-3 rounded-xl transition-all duration-300 flex items-center gap-2.5 cursor-pointer ${
+                              isEn ? "text-left" : "text-right"
+                            } ${
+                              isActive
+                                ? isEn 
+                                  ? "bg-gradient-to-r from-[#d0a755]/20 via-[#d0a755]/10 to-transparent text-[#1a2b3c] font-black border-l-4 border-[#d0a755] shadow-xs"
+                                  : "bg-gradient-to-l from-[#d0a755]/20 via-[#d0a755]/10 to-transparent text-[#1a2b3c] font-black border-r-4 border-[#d0a755] shadow-xs"
+                                : "hover:bg-[#d0a755]/10 hover:text-[#1a2b3c] text-slate-600"
+                            }`}
+                          >
+                            <span 
+                              className={`w-2 h-2 rounded-full shrink-0 transition-all duration-300 ${
+                                isActive 
+                                  ? "bg-[#d0a755] scale-125 shadow-[0_0_8px_rgba(208,167,85,0.8)]" 
+                                  : "bg-slate-300"
+                              }`} 
+                            />
+                            <span className="line-clamp-1 leading-snug">{item.text}</span>
+                          </button>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}

@@ -425,6 +425,14 @@ export async function getBookings(): Promise<Booking[]> {
             item.serviceName = placeMatch[1].trim();
           }
         }
+
+        if (item.notes.includes("[حجز للغير: نعم]")) item.isForOther = true;
+        const nameM = item.notes.match(/\[اسم المستفيد:\s*([^\]]+)\]/);
+        if (nameM && nameM[1]) item.otherPersonName = nameM[1].trim();
+        const phoneM = item.notes.match(/\[رقم هاتف المستفيد:\s*([^\]]+)\]/);
+        if (phoneM && phoneM[1]) item.otherPersonPhone = phoneM[1].trim();
+        const locM = item.notes.match(/\[موقع المستفيد:\s*([^\]]+)\]/);
+        if (locM && locM[1]) item.otherPersonLocation = locM[1].trim();
       }
       return item;
     };
@@ -435,17 +443,7 @@ export async function getBookings(): Promise<Booking[]> {
     console.error("Failed to fetch bookings from DB, falling back to JSON:", error);
     const fallbackBookings = await readJsonFallback<Booking[]>("bookings.json");
     if (fallbackBookings) {
-      return fallbackBookings.map((b: any) => {
-        const item = { ...b } as Booking;
-        if (item.notes) {
-          if (item.notes.includes("[النوع: فندق]")) item.type = "hotel";
-          if (item.notes.includes("[المكان:")) {
-            const m = item.notes.match(/\[المكان:\s*([^\]]+)\]/);
-            if (m && m[1] && m[1].trim() && m[1].trim() !== "غير محدد") item.serviceName = m[1].trim();
-          }
-        }
-        return item;
-      }).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      return fallbackBookings.map((b: any) => normalizeBooking(b)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     }
     return [];
   }

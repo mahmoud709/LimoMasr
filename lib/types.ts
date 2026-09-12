@@ -199,6 +199,10 @@ export type Booking = {
   passengers?: number;
   price?: number;
   totalPrice?: number; // السعر الإجمالي (عدد الأيام × السعر اليومي)
+  isForOther?: boolean;
+  otherPersonName?: string;
+  otherPersonPhone?: string;
+  otherPersonLocation?: string;
   status: BookingStatus;
   source: "whatsapp" | "web";
   createdAt: string;

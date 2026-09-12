@@ -47,6 +47,11 @@ export interface ParsedBookingInfo {
   startDate?: string;
   endDate?: string;
   totalDays?: string;
+  // حجز للغير
+  isForOther?: boolean;
+  otherPersonName?: string;
+  otherPersonPhone?: string;
+  otherPersonLocation?: string;
 }
 
 export function parseBookingNotes(notes?: string, primaryName?: string): ParsedBookingInfo {
@@ -58,6 +63,18 @@ export function parseBookingNotes(notes?: string, primaryName?: string): ParsedB
     if (primaryName) info.passengersList.push(primaryName);
     return info;
   }
+
+  // Extract [حجز للغير: نعم]
+  if (notes.includes("[حجز للغير: نعم]")) info.isForOther = true;
+
+  const oNameMatch = notes.match(/\[اسم المستفيد:\s*([^\]]+)\]/);
+  if (oNameMatch && oNameMatch[1]) info.otherPersonName = oNameMatch[1].trim();
+
+  const oPhoneMatch = notes.match(/\[رقم هاتف المستفيد:\s*([^\]]+)\]/);
+  if (oPhoneMatch && oPhoneMatch[1]) info.otherPersonPhone = oPhoneMatch[1].trim();
+
+  const oLocMatch = notes.match(/\[موقع المستفيد:\s*([^\]]+)\]/);
+  if (oLocMatch && oLocMatch[1]) info.otherPersonLocation = oLocMatch[1].trim();
 
   // Extract [أسماء المسافرين: ...]
   const namesMatch = notes.match(/\[أسماء المسافرين:\s*([^\]]+)\]/);
@@ -380,24 +397,152 @@ export function BookingDetailsModal({
             </div>
           )}
 
-          {/* Route or Location Details */}
-          {(parsed.from || parsed.to || parsed.residence || parsed.hotelOrPlace) && (
-            <div className="space-y-2 bg-slate-50 p-4 rounded-2xl border border-slate-100 text-xs font-medium">
-              <h4 className="font-black text-xs text-[#1a2b3c] mb-2 flex items-center gap-1.5">
-                <FiMapPin className="w-3.5 h-3.5 text-[#d0a755]" /> تفاصيل الوجهات والموقع
-              </h4>
-              <div className="space-y-1.5">
-                {parsed.hotelOrPlace && (
-                  <p><span className="font-bold text-slate-500">اسم الفندق / الإقامة:</span> <span className="font-black text-[#1a2b3c]">{parsed.hotelOrPlace}</span></p>
+          {/* Booking for Someone Else Card (حجز للغير) */}
+          {(booking.isForOther || parsed.isForOther || booking.otherPersonName || parsed.otherPersonName) && (
+            <div className="space-y-3 bg-amber-500/10 p-5 rounded-2xl border border-[#d0a755]/40 shadow-xs">
+              <div className="flex items-center justify-between">
+                <h4 className="font-black text-sm text-[#1a2b3c] flex items-center gap-2">
+                  <FiUsers className="w-4.5 h-4.5 text-[#d0a755]" />
+                  حجز لحساب شخص آخر (الراكب/المستفيد من الخدمة)
+                </h4>
+                <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-[#d0a755] text-[#1a2b3c]">
+                  حجز للغير VIP
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                {/* Beneficiary Name */}
+                <div className="bg-white p-3 rounded-xl border border-amber-200/80">
+                  <span className="text-[10px] font-bold text-slate-400 block mb-0.5">اسم الشخص المستفيد (الراكب)</span>
+                  <span className="text-xs sm:text-sm font-black text-[#1a2b3c]">
+                    {booking.otherPersonName || parsed.otherPersonName || "غير محدد"}
+                  </span>
+                </div>
+
+                {/* Beneficiary Phone & Direct Action Buttons */}
+                <div className="bg-white p-3 rounded-xl border border-amber-200/80">
+                  <span className="text-[10px] font-bold text-slate-400 block mb-0.5">رقم هاتف المستفيد</span>
+                  <div className="flex items-center justify-between gap-2 mt-0.5">
+                    <span className="text-xs sm:text-sm font-black text-[#1a2b3c] dir-ltr font-mono">
+                      {booking.otherPersonPhone || parsed.otherPersonPhone || "غير محدد"}
+                    </span>
+                    {(booking.otherPersonPhone || parsed.otherPersonPhone) && (
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <a
+                          href={`tel:${booking.otherPersonPhone || parsed.otherPersonPhone}`}
+                          className="p-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors"
+                          title="اتصال مباشر بالمستفيد"
+                        >
+                          <FiPhone className="w-3.5 h-3.5" />
+                        </a>
+                        <a
+                          href={`https://wa.me/${(booking.otherPersonPhone || parsed.otherPersonPhone || "").replace(/\D/g, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-colors"
+                          title="واتساب مباشر للمستفيد"
+                        >
+                          <FiMessageCircle className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Beneficiary Location */}
+              {(booking.otherPersonLocation || parsed.otherPersonLocation) && (
+                <div className="bg-white p-3 rounded-xl border border-amber-200/80 flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 block mb-0.5">موقع/مكان الانطلاق المستفيد</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#1a2b3c] flex items-center gap-1">
+                      <FiMapPin className="w-3.5 h-3.5 text-[#d0a755] shrink-0" />
+                      {booking.otherPersonLocation || parsed.otherPersonLocation}
+                    </span>
+                  </div>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.otherPersonLocation || parsed.otherPersonLocation || "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-[#1a2b3c] text-[#d0a755] text-xs font-black hover:bg-[#d0a755] hover:text-[#1a2b3c] transition-colors shrink-0 flex items-center gap-1"
+                  >
+                    <FiMapPin className="w-3.5 h-3.5" /> فتح في الخريطة
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Driver Transit & Map Navigation */}
+          {(parsed.from || parsed.to || parsed.residence || parsed.hotelOrPlace || parsed.otherPersonLocation || booking.otherPersonLocation) && (
+            <div className="space-y-3 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
+              <div className="flex items-center justify-between">
+                <h4 className="font-black text-xs sm:text-sm text-[#1a2b3c] flex items-center gap-2">
+                  <FiMapPin className="w-4 h-4 text-[#d0a755]" />
+                  مسار وتفاصيل الانطلاق والتوصيل للسائقين
+                </h4>
+                <span className="text-[10px] font-bold text-slate-400">روابط توجيه الخرائط المباشرة</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Pickup Location */}
+                {(parsed.from || parsed.otherPersonLocation || booking.otherPersonLocation) && (
+                  <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 block mb-1">📍 نقطة الانطلاق (Pickup Location)</span>
+                      <span className="text-xs sm:text-sm font-black text-[#1a2b3c] block">
+                        {parsed.from || parsed.otherPersonLocation || booking.otherPersonLocation}
+                      </span>
+                    </div>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((parsed.from || parsed.otherPersonLocation || booking.otherPersonLocation) ?? "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2.5 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-black hover:bg-emerald-600 hover:text-white transition-colors"
+                    >
+                      <FiMapPin className="w-3.5 h-3.5" /> توجيه الخريطة للسائق
+                    </a>
+                  </div>
                 )}
-                {parsed.from && (
-                  <p><span className="font-bold text-slate-500">نقطة الانطلاق (من):</span> <span className="font-black text-[#1a2b3c]">{parsed.from}</span></p>
-                )}
+
+                {/* Dropoff Location */}
                 {parsed.to && (
-                  <p><span className="font-bold text-slate-500">الوجهة المقصودة (إلى):</span> <span className="font-black text-[#1a2b3c]">{parsed.to}</span></p>
+                  <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 block mb-1">🏁 نقطة التوصيل (Dropoff Location)</span>
+                      <span className="text-xs sm:text-sm font-black text-[#1a2b3c] block">
+                        {parsed.to}
+                      </span>
+                    </div>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(parsed.to)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2.5 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black hover:bg-blue-600 hover:text-white transition-colors"
+                    >
+                      <FiMapPin className="w-3.5 h-3.5" /> فتح موقع التوصيل
+                    </a>
+                  </div>
                 )}
-                {parsed.residence && (
-                  <p><span className="font-bold text-slate-500">مكان السكن / الإقامة:</span> <span className="font-black text-[#1a2b3c]">{parsed.residence}</span></p>
+
+                {/* Residence / Hotel */}
+                {(parsed.residence || parsed.hotelOrPlace) && (
+                  <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between sm:col-span-2">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 block mb-1">🏨 مكان الإقامة / السكن / الفندق</span>
+                      <span className="text-xs sm:text-sm font-black text-[#1a2b3c] block">
+                        {parsed.residence || parsed.hotelOrPlace}
+                      </span>
+                    </div>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((parsed.residence || parsed.hotelOrPlace) ?? "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2.5 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 text-xs font-black hover:bg-[#d0a755] hover:text-[#1a2b3c] transition-colors"
+                    >
+                      <FiMapPin className="w-3.5 h-3.5" /> فتح عنوان السكن في الخريطة
+                    </a>
+                  </div>
                 )}
               </div>
             </div>

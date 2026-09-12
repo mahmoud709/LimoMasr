@@ -6685,3 +6685,5 @@
 2026-09-08T18:43:35.649Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
 2026-09-08T19:28:04.417Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-09-08T19:28:04.438Z - REWRITE: /ar -> /?__locale=ar
+2026-09-08T19:47:39.462Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-09-08T19:47:39.481Z - REWRITE: /ar -> /?__locale=ar

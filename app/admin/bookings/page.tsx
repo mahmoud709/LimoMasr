@@ -85,7 +85,14 @@ export default function BookingsPage() {
 
   const filtered = useMemo(() =>
     bookings.filter(b => {
-      const matchSearch = !search || b.customerName?.includes(search) || b.phone?.includes(search) || b.serviceName?.includes(search);
+      const matchSearch = !search || 
+        b.customerName?.includes(search) || 
+        b.phone?.includes(search) || 
+        b.serviceName?.includes(search) ||
+        b.otherPersonName?.includes(search) ||
+        b.otherPersonPhone?.includes(search) ||
+        b.otherPersonLocation?.includes(search) ||
+        b.notes?.includes(search);
       const matchStatus = statusFilter === "all" || b.status === statusFilter;
       const matchType   = typeFilter === "all" || b.type === typeFilter;
       return matchSearch && matchStatus && matchType;
@@ -211,20 +218,27 @@ export default function BookingsPage() {
 
                     {/* View Details Button */}
                     <td className="px-6 py-4">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedBookingForDetails(b)}
-                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group"
-                        title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
-                      >
-                        <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover:text-[#1a2b3c]" />
-                        <span>عرض التفاصيل</span>
-                        {(b.passengers ?? 0) > 1 && (
-                          <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                            {b.passengers} أفراد
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedBookingForDetails(b)}
+                          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-amber-50 text-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] border border-amber-200/80 text-xs font-black transition-all shadow-xs cursor-pointer group"
+                          title="عرض أسماء المسافرين والملاحظات وكافة التفاصيل"
+                        >
+                          <FiEye className="w-3.5 h-3.5 text-[#d0a755] group-hover:text-[#1a2b3c]" />
+                          <span>عرض التفاصيل</span>
+                          {(b.passengers ?? 0) > 1 && (
+                            <span className="bg-[#1a2b3c] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                              {b.passengers} أفراد
+                            </span>
+                          )}
+                        </button>
+                        {(b.isForOther || b.notes?.includes("[حجز للغير: نعم]")) && (
+                          <span className="px-2.5 py-1 rounded-xl text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300 whitespace-nowrap">
+                            حجز للغير
                           </span>
                         )}
-                      </button>
+                      </div>
                     </td>
 
                     <td className="px-6 py-4">
