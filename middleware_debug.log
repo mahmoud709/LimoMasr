@@ -12503,3 +12503,8 @@
 2026-09-15T11:51:33.762Z - REWRITE: /en/flights -> /flights?__locale=en
 2026-09-15T11:51:41.214Z - INCOMING: /en | isRewritten: false | hasLocaleParam: false
 2026-09-15T11:51:41.237Z - REWRITE: /en -> /?__locale=en
+2026-09-15T12:01:26.783Z - INCOMING: /en/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-09-15T12:01:26.807Z - ADMIN PASSTHROUGH: /en/admin/cars
+2026-09-15T12:01:26.860Z - REWRITE: /en/admin/cars -> /admin/cars?__locale=en
+2026-09-15T12:01:26.921Z - INCOMING: /en | isRewritten: false | hasLocaleParam: false
+2026-09-15T12:01:26.951Z - REWRITE: /en -> /?__locale=en
