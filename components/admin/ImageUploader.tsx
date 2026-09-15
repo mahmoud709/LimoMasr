@@ -166,10 +166,11 @@ export default function ImageUploader({
                 <button
                   type="button"
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     removeImage(idx, img);
                   }}
-                  className="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-rose-500 hover:border-rose-500 transition-all duration-300 shadow-lg hover:scale-110"
+                  className="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-rose-500 hover:border-rose-500 transition-all duration-300 shadow-lg hover:scale-110 cursor-pointer"
                 >
                   <FiX className="w-5 h-5" strokeWidth={3} />
                 </button>

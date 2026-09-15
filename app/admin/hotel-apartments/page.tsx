@@ -353,7 +353,7 @@ export default function HotelApartmentsAdminPage() {
                     setForm(prev => ({
                       ...prev,
                       images: newImages,
-                      image: newImages[0] || prev.image
+                      image: newImages.length > 0 ? newImages[0] : ""
                     }));
                   }}
                 />

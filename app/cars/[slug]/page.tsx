@@ -31,7 +31,8 @@ export default async function CarDetailsPage({
   const cookieStore = await cookies();
   const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
-  const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
+  // Always use usdRate for the exchange calc — formatCurrency needs USD→EGP rate regardless of display currency
+  const exchangeRate = settings.usdRate || 50;
 
   const car = localizeCar(rawCar, locale);
 
@@ -61,7 +62,7 @@ export default async function CarDetailsPage({
                 {locale === "en" ? "Booking Price" : "سعر الحجز"}
               </span>
               <p className="text-3xl font-black text-[#d0a755]" dir={locale === "ar" ? "rtl" : "ltr"}>
-                {formatCurrency(car.price, "EGP", locale, currency, exchangeRate)}{" "}
+                {formatCurrency(car.price, "USD", locale, currency, exchangeRate)}{" "}
                 <span className="text-sm font-light text-white/60">
                   / {priceUnitLabel(car.priceUnit, locale)}
                 </span>
@@ -225,7 +226,7 @@ export default async function CarDetailsPage({
                   whatsappNumber={settings.whatsappCarNumber}
                   price={car.price}
                   locale={locale}
-                  baseCurrency="EGP"
+                  baseCurrency="USD"
                   currency={currency}
                   exchangeRate={exchangeRate}
                 />

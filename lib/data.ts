@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { getDb } from "./mongodb";
+import { deleteFromCloudinary } from "./cloudinary";
 import type {
   Booking,
   Car,
@@ -97,24 +98,10 @@ export async function getCars(): Promise<Car[]> {
     
     let cars = await collection.find({}).toArray();
     
-    if (cars.length === 0) {
-      const fallbackCars = await readJsonFallback<Car[]>("cars.json");
-      if (fallbackCars && fallbackCars.length > 0) {
-        const toInsert = fallbackCars.map(({ ...c }) => c);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding cars:", err));
-        cars = await collection.find({}).toArray();
-      }
-    }
-    
-    // Strip _id before returning to avoid TS issues or return with standard formatting
     const result = cars.map(({ _id, ...car }) => car as Car);
-    return result.sort((a, b) => a.sortOrder - b.sortOrder);
+    return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
-    console.error("Failed to fetch cars from DB, falling back to JSON:", error);
-    const fallbackCars = await readJsonFallback<Car[]>("cars.json");
-    if (fallbackCars) {
-      return fallbackCars.sort((a, b) => a.sortOrder - b.sortOrder);
-    }
+    console.error("Failed to fetch cars from DB:", error);
     return [];
   }
 }
@@ -145,36 +132,114 @@ export async function updateCar(id: string, car: Partial<Car>) {
   await collection.updateOne({ id }, { $set: updateData });
 }
 
+async function removeItemWithCloudinaryCleanup(collectionName: string, jsonFileName: string, id: string) {
+  try {
+    const db = await getDb();
+    const collection = db.collection(collectionName);
+    
+    // 1. Clean up Cloudinary images
+    const item = await collection.findOne({ id });
+    if (item) {
+      const anyItem = item as any;
+      if (anyItem.image) await deleteFromCloudinary(anyItem.image).catch(() => {});
+      if (Array.isArray(anyItem.images)) {
+        for (const img of anyItem.images) {
+          await deleteFromCloudinary(img).catch(() => {});
+        }
+      }
+    }
+
+    // 2. Delete document from MongoDB
+    await collection.deleteOne({ id });
+
+    // 3. Sync local JSON backup file
+    const filePath = path.join(process.cwd(), "data", jsonFileName);
+    const raw = await fs.readFile(filePath, "utf8").catch(() => "");
+    if (raw) {
+      const list = JSON.parse(raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw);
+      if (Array.isArray(list)) {
+        const filtered = list.filter((x: any) => x.id !== id);
+        await fs.writeFile(filePath, JSON.stringify(filtered, null, 2), "utf8");
+      }
+    }
+  } catch (err) {
+    console.error(`Error deleting item ${id} from ${collectionName}:`, err);
+  }
+}
+
 export async function deleteCar(id: string) {
+  await removeItemWithCloudinaryCleanup("cars", "cars.json", id);
+}
+
+export async function batchDeleteCars(ids: string[]) {
+  for (const id of ids) {
+    await deleteCar(id);
+  }
+}
+
+export async function batchAddCars(carsList: Car[]) {
   const db = await getDb();
   const collection = db.collection("cars");
-  await collection.deleteOne({ id });
+  if (carsList.length > 0) {
+    await collection.insertMany(carsList.map(({ ...c }) => c));
+    
+    // Sync JSON
+    try {
+      const filePath = path.join(process.cwd(), "data", "cars.json");
+      const raw = await fs.readFile(filePath, "utf8").catch(() => "[]");
+      const list = JSON.parse(raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw);
+      const updated = [...list, ...carsList];
+      await fs.writeFile(filePath, JSON.stringify(updated, null, 2), "utf8");
+    } catch (err) {
+      console.error("Error updating cars.json on batch add:", err);
+    }
+  }
+}
+
+export async function reorderCars(orderedItems: { id: string; sortOrder: number }[]) {
+  const db = await getDb();
+  const collection = db.collection("cars");
+  
+  for (const item of orderedItems) {
+    await collection.updateOne({ id: item.id }, { $set: { sortOrder: item.sortOrder } });
+  }
+
+  try {
+    const filePath = path.join(process.cwd(), "data", "cars.json");
+    const raw = await fs.readFile(filePath, "utf8").catch(() => "");
+    if (raw) {
+      const list = JSON.parse(raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw);
+      const orderMap = new Map(orderedItems.map(i => [i.id, i.sortOrder]));
+      for (const car of list) {
+        if (orderMap.has(car.id)) {
+          car.sortOrder = orderMap.get(car.id);
+        }
+      }
+      list.sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      await fs.writeFile(filePath, JSON.stringify(list, null, 2), "utf8");
+    }
+  } catch (err) {
+    console.error("Error updating cars.json on reorder:", err);
+  }
 }
 
 export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
   try {
     const db = await getDb();
     const collection = db.collection<FastTrackPackage>("fast-track");
+    const packages = await collection.find({}).toArray();
     
-    let packages = await collection.find({}).toArray();
-    
-    if (packages.length === 0) {
-      const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
-      if (fallbackPackages && fallbackPackages.length > 0) {
-        const toInsert = fallbackPackages.map(({ ...p }) => p);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding fast-track packages:", err));
-        packages = await collection.find({}).toArray();
+    const uniqueMap = new Map();
+    for (const p of packages) {
+      if (p.id && !uniqueMap.has(p.id)) {
+        const { _id, ...cleanP } = p as any;
+        uniqueMap.set(p.id, cleanP as FastTrackPackage);
       }
     }
-    
-    const result = packages.map(({ _id, ...p }) => p as FastTrackPackage);
-    return result.sort((a, b) => a.sortOrder - b.sortOrder);
+    const result = Array.from(uniqueMap.values());
+    return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
-    console.error("Failed to fetch fast-track packages from DB, falling back to JSON:", error);
-    const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
-    if (fallbackPackages) {
-      return fallbackPackages.sort((a, b) => a.sortOrder - b.sortOrder);
-    }
+    console.error("Failed to fetch fast-track packages from DB:", error);
     return [];
   }
 }
@@ -204,35 +269,26 @@ export async function updateFastTrackPackage(id: string, pkg: Partial<FastTrackP
 }
 
 export async function deleteFastTrackPackage(id: string) {
-  const db = await getDb();
-  const collection = db.collection("fast-track");
-  await collection.deleteOne({ id });
+  await removeItemWithCloudinaryCleanup("fast-track", "fast-track.json", id);
 }
 
 export async function getHotels(): Promise<HotelItem[]> {
   try {
     const db = await getDb();
     const collection = db.collection<HotelItem>("hotels");
+    const hotels = await collection.find({}).toArray();
     
-    let hotels = await collection.find({}).toArray();
-    
-    if (hotels.length === 0) {
-      const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
-      if (fallbackHotels && fallbackHotels.length > 0) {
-        const toInsert = fallbackHotels.map(({ ...h }) => h);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotels:", err));
-        hotels = await collection.find({}).toArray();
+    const uniqueMap = new Map();
+    for (const h of hotels) {
+      if (h.id && !uniqueMap.has(h.id)) {
+        const { _id, ...cleanH } = h as any;
+        uniqueMap.set(h.id, cleanH as HotelItem);
       }
     }
-    
-    const result = hotels.map(({ _id, ...h }) => h as HotelItem);
+    const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
-    console.error("Failed to fetch hotels from DB, falling back to JSON:", error);
-    const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
-    if (fallbackHotels) {
-      return fallbackHotels.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-    }
+    console.error("Failed to fetch hotels from DB:", error);
     return [];
   }
 }
@@ -262,9 +318,7 @@ export async function updateHotel(id: string, hotel: Partial<HotelItem>) {
 }
 
 export async function deleteHotel(id: string) {
-  const db = await getDb();
-  const collection = db.collection("hotels");
-  await collection.deleteOne({ id });
+  await removeItemWithCloudinaryCleanup("hotels", "hotels.json", id);
 }
 
 /* =========================================================================
@@ -275,27 +329,19 @@ export async function getFlights(): Promise<FlightRoute[]> {
   try {
     const db = await getDb();
     const collection = db.collection<FlightRoute>("flights");
+    const flights = await collection.find({}).toArray();
     
-    let flights = await collection.find({}).toArray();
-    
-    if (flights.length === 0) {
-      const fallbackFlights = await readJsonFallback<FlightRoute[]>("flights.json");
-      if (fallbackFlights && fallbackFlights.length > 0) {
-        await collection.deleteMany({});
-        const toInsert = fallbackFlights.map(({ ...f }) => f);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding flights:", err));
-        flights = await collection.find({}).toArray();
+    const uniqueMap = new Map();
+    for (const f of flights) {
+      if (f.id && !uniqueMap.has(f.id)) {
+        const { _id, ...cleanF } = f as any;
+        uniqueMap.set(f.id, cleanF as FlightRoute);
       }
     }
-    
-    const result = flights.map(({ _id, ...f }) => f as FlightRoute);
+    const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
-    console.error("Failed to fetch flights from DB, falling back to JSON:", error);
-    const fallbackFlights = await readJsonFallback<FlightRoute[]>("flights.json");
-    if (fallbackFlights) {
-      return fallbackFlights.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-    }
+    console.error("Failed to fetch flights from DB:", error);
     return [];
   }
 }
@@ -325,9 +371,7 @@ export async function updateFlight(id: string, flight: Partial<FlightRoute>) {
 }
 
 export async function deleteFlight(id: string) {
-  const db = await getDb();
-  const collection = db.collection("flights");
-  await collection.deleteOne({ id });
+  await removeItemWithCloudinaryCleanup("flights", "flights.json", id);
 }
 
 /* =========================================================================
@@ -338,20 +382,16 @@ export async function getHotelApartments(): Promise<ApartmentItem[]> {
   try {
     const db = await getDb();
     const collection = db.collection<ApartmentItem>("hotel_apartments");
+    const apartments = await collection.find({}).toArray();
     
-    let apartments = await collection.find({}).toArray();
-    
-    if (apartments.length === 0) {
-      const fallbackApartments = await readJsonFallback<ApartmentItem[]>("hotel-apartments.json");
-      if (fallbackApartments && fallbackApartments.length > 0) {
-        await collection.deleteMany({});
-        const toInsert = fallbackApartments.map(({ ...a }) => a);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotel apartments:", err));
-        apartments = await collection.find({}).toArray();
+    const uniqueMap = new Map();
+    for (const a of apartments) {
+      if (a.id && !uniqueMap.has(a.id)) {
+        const { _id, ...cleanA } = a as any;
+        uniqueMap.set(a.id, cleanA as ApartmentItem);
       }
     }
-    
-    const result = apartments.map(({ _id, ...a }) => a as ApartmentItem);
+    const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
     console.error("Failed to fetch hotel apartments from DB, falling back to JSON:", error);
@@ -388,9 +428,7 @@ export async function updateHotelApartment(id: string, apartment: Partial<Apartm
 }
 
 export async function deleteHotelApartment(id: string) {
-  const db = await getDb();
-  const collection = db.collection("hotel_apartments");
-  await collection.deleteOne({ id });
+  await removeItemWithCloudinaryCleanup("hotel_apartments", "hotel-apartments.json", id);
 }
 
 function normalizeBooking(b: any): Booking {
@@ -481,26 +519,25 @@ export async function deleteBooking(id: string) {
 
 export async function getLiveExchangeRates() {
   try {
-    const res = await fetch("https://api.exchangerate-api.com/v4/latest/EGP", {
+    const res = await fetch("https://open.er-api.com/v6/latest/USD", {
       next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(5000) // Fail fast (5 seconds) if network is blocked or slow
+      signal: AbortSignal.timeout(5000)
     });
-    if (!res.ok) throw new Error("Failed to fetch rates");
+    if (!res.ok) throw new Error("Failed to fetch live USD rates");
     const data = await res.json();
+    const rates = data.rates || {};
+    const egp = rates.EGP || 50;
+
     return {
-      usdRate: data.rates.USD ? Number((1 / data.rates.USD).toFixed(2)) : undefined,
-      eurRate: data.rates.EUR ? Number((1 / data.rates.EUR).toFixed(2)) : undefined,
-      sarRate: data.rates.SAR ? Number((1 / data.rates.SAR).toFixed(2)) : undefined,
-      qarRate: data.rates.QAR ? Number((1 / data.rates.QAR).toFixed(2)) : undefined,
-      kwdRate: data.rates.KWD ? Number((1 / data.rates.KWD).toFixed(2)) : undefined,
-      bhdRate: data.rates.BHD ? Number((1 / data.rates.BHD).toFixed(2)) : undefined,
+      usdRate: Number(egp.toFixed(2)),
+      eurRate: rates.EUR ? Number((egp / rates.EUR).toFixed(2)) : undefined,
+      sarRate: rates.SAR ? Number((egp / rates.SAR).toFixed(2)) : undefined,
+      qarRate: rates.QAR ? Number((egp / rates.QAR).toFixed(2)) : undefined,
+      kwdRate: rates.KWD ? Number((egp / rates.KWD).toFixed(2)) : undefined,
+      bhdRate: rates.BHD ? Number((egp / rates.BHD).toFixed(2)) : undefined,
     };
   } catch (err: any) {
-    if (err.name === 'TimeoutError') {
-      console.warn("⚠️ Live exchange rates API timed out. Using fallback rates.");
-    } else {
-      console.error("⚠️ Error fetching live rates:", err.message || "Unknown error");
-    }
+    console.warn("⚠️ Live exchange rates fallback used:", err.message || "Unknown error");
     return {};
   }
 }
@@ -555,12 +592,13 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   const liveRates = await getLiveExchangeRates();
   return {
     ...settingsToReturn,
-    usdRate: liveRates.usdRate || settingsToReturn.usdRate || 50,
-    eurRate: liveRates.eurRate || settingsToReturn.eurRate || 55,
-    sarRate: liveRates.sarRate || settingsToReturn.sarRate || 13,
-    qarRate: liveRates.qarRate || settingsToReturn.qarRate || 13,
-    kwdRate: liveRates.kwdRate || settingsToReturn.kwdRate || 160,
-    bhdRate: liveRates.bhdRate || settingsToReturn.bhdRate || 130,
+    // Saved DB value takes priority → live rate only as fallback when no saved value
+    usdRate: settingsToReturn.usdRate || liveRates.usdRate || 50,
+    eurRate: settingsToReturn.eurRate || liveRates.eurRate || 55,
+    sarRate: settingsToReturn.sarRate || liveRates.sarRate || 13,
+    qarRate: settingsToReturn.qarRate || liveRates.qarRate || 13,
+    kwdRate: settingsToReturn.kwdRate || liveRates.kwdRate || 160,
+    bhdRate: settingsToReturn.bhdRate || liveRates.bhdRate || 130,
   };
 }
 

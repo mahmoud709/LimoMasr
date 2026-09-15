@@ -18,7 +18,8 @@ export default async function CarsPage({ searchParams }: { searchParams?: Promis
   const cookieStore = await cookies();
   const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const cookieCurrency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
-  const exchangeRate = cookieCurrency === "USD" ? (settings.usdRate || 50) : cookieCurrency === "EUR" ? (settings.eurRate || 55) : cookieCurrency === "SAR" ? (settings.sarRate || 13) : cookieCurrency === "QAR" ? (settings.qarRate || 13) : cookieCurrency === "KWD" ? (settings.kwdRate || 160) : cookieCurrency === "BHD" ? (settings.bhdRate || 130) : 1;
+  // Always use usdRate for the exchange calc — formatCurrency needs USD→EGP rate regardless of display currency
+  const exchangeRate = settings.usdRate || 50;
   
   const t = ui[locale];
 

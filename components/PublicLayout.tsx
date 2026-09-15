@@ -229,7 +229,7 @@ export async function PublicLayout({
           
           <div className="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-white/40 font-light">
             <p>© {new Date().getFullYear()} {locale === "en" ? "Limo Egypt" : content.brand}. {locale === "en" ? "All rights reserved." : "جميع الحقوق محفوظة."}</p>
-            <p className="mt-4 md:mt-0 uppercase tracking-[0.2em] text-[11px] font-bold">Designed for Excellence</p>
+            <p className="mt-4 md:mt-0 uppercase tracking-[0.2em] text-[11px] font-bold">By Limo Egypt</p>
           </div>
         </div>
       </footer>

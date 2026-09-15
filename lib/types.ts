@@ -61,6 +61,7 @@ export type Car = {
   images: string[];
   status: AvailabilityStatus;
   tag?: string;
+  isMostBooked?: boolean;
   sortOrder: number;
   notes?: string;
   translations?: {

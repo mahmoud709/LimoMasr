@@ -4,9 +4,9 @@ import crypto from "crypto";
  * Get Cloudinary configuration parameters from environment variables
  */
 function getCloudinaryConfig() {
-  let cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
-  let apiKey = process.env.CLOUDINARY_API_KEY || "";
-  let apiSecret = process.env.CLOUDINARY_API_SECRET || "";
+  let cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "b2tqubbe";
+  let apiKey = process.env.CLOUDINARY_API_KEY || "842369475353943";
+  let apiSecret = process.env.CLOUDINARY_API_SECRET || "jcT8jqJL41r_jQHqop-B2NfkhEk";
   const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || "";
 
   // Parse CLOUDINARY_URL if present (e.g. cloudinary://api_key:api_secret@cloud_name)

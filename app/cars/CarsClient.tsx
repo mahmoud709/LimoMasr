@@ -14,9 +14,9 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
   const minPricePossible = 0;
-  const maxPriceRaw = cars.length > 0 ? Math.max(...cars.map(c => c.price)) : 10000;
-  // Dynamic ceiling: round up to nearest 5,000 so no car is ever filtered out by default
-  const maxPricePossible = Math.max(50000, Math.ceil(maxPriceRaw / 5000) * 5000);
+  const maxPriceRaw = cars.length > 0 ? Math.max(...cars.map(c => c.price)) : 1000;
+  // Dynamic ceiling in USD: round up to nearest 100 so no car is filtered out by default
+  const maxPricePossible = Math.max(1000, Math.ceil(maxPriceRaw / 100) * 100);
   const [maxPrice, setMaxPrice] = useState<number>(maxPricePossible);
   const deferredMaxPrice = useDeferredValue(maxPrice);
 
@@ -149,13 +149,13 @@ export function CarsClient({ cars, locale, currency, exchangeRate }: { cars: Car
           <div className="flex flex-col w-full md:w-48 gap-1.5 shrink-0">
             <div className="flex justify-between items-center text-xs font-bold text-[#1a2b3c]">
               <span>{locale === "en" ? "Max Price" : "الحد الأقصى للسعر"}</span>
-              <span className="text-[#d0a755]">{formatCurrency(maxPrice, "EGP", locale, currency, exchangeRate)}</span>
+              <span className="text-[#d0a755]">{formatCurrency(maxPrice, "USD", locale, currency, exchangeRate)}</span>
             </div>
             <input 
               type="range" 
               min={minPricePossible} 
               max={maxPricePossible} 
-              step={500}
+              step={10}
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
               className="w-full accent-[#d0a755] h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer"

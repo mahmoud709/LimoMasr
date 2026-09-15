@@ -58,9 +58,28 @@ export default function SettingsPage() {
     }
   }
 
+  async function restoreCloudinaryCars() {
+    setMigrating(true);
+    try {
+      const res = await fetch("/api/admin/restore-cars");
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`تم استرجاع ${data.cloudinaryImagesCount} صورة من Cloudinary وتحديث ${data.carsUpdated} سيارة بنجاح!`);
+      } else {
+        toast.error(data.error || "فشلت عملية الاسترجاع");
+      }
+    } catch (err: any) {
+      toast.error("حدث خطأ أثناء الاتصال بالخادم");
+    } finally {
+      setMigrating(false);
+    }
+  }
+
   async function changePassword() {
     if (!newPassword || newPassword.length < 6) {
-      toast.error("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+      toast.error("كلمة المرور يجب أن تكون 6 أحرف على الأقل"); 
+
+      
       return;
     }
     setChangingPassword(true);
@@ -157,14 +176,23 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={startCloudinaryMigration}
                 disabled={migrating}
                 className="px-5 py-3 rounded-xl bg-[#1a2b3c] hover:bg-[#d0a755] hover:text-[#1a2b3c] text-white text-xs font-black transition-all flex items-center gap-2 shadow-sm disabled:opacity-50"
               >
                 <FiRefreshCw className={`w-4 h-4 text-[#d0a755] ${migrating ? "animate-spin" : ""}`} />
-                {migrating ? "جاري رفع ونقل الصور إلى Cloudinary..." : "بدء مزامنة كافة الصور إلى Cloudinary الآن"}
+                {migrating ? "جاري العمل..." : "مزامنة صور المحتوى المحلي إلى Cloudinary"}
+              </button>
+
+              <button
+                onClick={restoreCloudinaryCars}
+                disabled={migrating}
+                className="px-5 py-3 rounded-xl bg-[#d0a755] hover:bg-[#b89040] text-[#1a2b3c] text-xs font-black transition-all flex items-center gap-2 shadow-sm disabled:opacity-50"
+              >
+                <FiUploadCloud className="w-4 h-4" />
+                استرجاع صور Cloudinary السابقة إلى السيارات
               </button>
             </div>
 

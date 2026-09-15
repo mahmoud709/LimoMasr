@@ -6,7 +6,7 @@
     "rooms": "2 إلى 4 غرف نوم",
     "capacity": "مناسب للعائلات الكبيرة",
     "price": 3200,
-    "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789405584/limo-masr/apartments/apt-tagamoa.jpg",
     "tag": "تشطيب فندقي فاخر",
     "features": [
       "فرش فندقي الترا مودرن ومكيف بالكامل",
@@ -55,7 +55,7 @@
     "rooms": "2 و 3 غرف نوم",
     "capacity": "عائلات ودبلوماسيين",
     "price": 4500,
-    "image": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789405585/limo-masr/apartments/apt-zamalek-nile.jpg",
     "tag": "إطلالة بانورامية على النيل",
     "features": [
       "شرفة واسعة بفيو مفتوح على نهر النيل",
@@ -104,7 +104,7 @@
     "rooms": "1 إلى 3 غرف نوم",
     "capacity": "أفراد وعائلات",
     "price": 2800,
-    "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789405586/limo-masr/apartments/apt-sheikh-zayed.jpg",
     "tag": "كمبوند هادئ وراقي",
     "features": [
       "إطلالة على مساحات خضراء وبحيرات",
@@ -153,7 +153,7 @@
     "rooms": "1 إلى 3 غرف نوم",
     "capacity": "قريب من المطار",
     "price": 2400,
-    "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789405587/limo-masr/apartments/apt-nasr-city.jpg",
     "tag": "موقع استراتيجي",
     "features": [
       "10 دقائق فقط من مطار القاهرة الدولي",

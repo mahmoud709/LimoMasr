@@ -36,7 +36,18 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
   const t = ui[locale];
   const isRtl = locale === "ar";
   const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
-  const exchangeRate = currency === "USD" ? (settings.usdRate || 50) : currency === "EUR" ? (settings.eurRate || 55) : currency === "SAR" ? (settings.sarRate || 13) : currency === "QAR" ? (settings.qarRate || 13) : currency === "KWD" ? (settings.kwdRate || 160) : currency === "BHD" ? (settings.bhdRate || 130) : 1;
+  // Always pass the full rates object so formatCurrency can correctly convert
+  // between any base currency (USD) and any target display currency (EGP, SAR…)
+  const exchangeRates = {
+    usdRate: settings.usdRate || 50,
+    eurRate: settings.eurRate || 55,
+    sarRate: settings.sarRate || 13,
+    qarRate: settings.qarRate || 13,
+    kwdRate: settings.kwdRate || 160,
+    bhdRate: settings.bhdRate || 130,
+  };
+  // Legacy single-number prop kept for components that still use it
+  const exchangeRate = exchangeRates.usdRate;
 
   return (
     <PublicLayout settings={settings} locale={locale}>

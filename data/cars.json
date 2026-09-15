@@ -1,92 +1,282 @@
 [
   {
-    "id": "economy-sedan",
-    "slug": "economy-sedan",
-    "categoryName": "سيارات صغيرة",
-    "subtitle": "سيدان اقتصادي",
-    "models": ["هيونداي النترا", "تويوتا كورولا", "كيا جراند سيراتو"],
-    "year": "2023",
-    "seats": 4,
-    "price": 900,
+    "id": "car-1789472713681-0",
+    "slug": "شيري-أريزو-5",
+    "categoryName": "شيري أريزو 5",
+    "vehicleType": "سيدان",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
+    "seats": 5,
+    "price": 45,
     "priceUnit": "per_trip",
     "images": [
-      "https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=1200&q=80"
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789472708/limo-masr/sjcdx0mapdjj4madytsc.jpg"
     ],
     "status": "available",
-    "tag": "الأكثر حجزًا",
     "sortOrder": 1,
-    "notes": "اختيار عملي وسريع للمشاوير داخل القاهرة والمطار."
+    "tag": "الأكثر اقتصادية",
+    "notes": "كفاءة عالية في استهلاك الوقود ومساحة مريحة للتنقل داخل المدينة",
+    "translations": {
+      "ar": {
+        "categoryName": "شيري أريزو 5",
+        "vehicleType": "سيدان",
+        "subtitle": "",
+        "tag": "الأكثر اقتصادية",
+        "notes": "كفاءة عالية في استهلاك الوقود ومساحة مريحة للتنقل داخل المدينة"
+      },
+      "en": {
+        "categoryName": "Chery Arrizo 5",
+        "vehicleType": "Sedan",
+        "subtitle": "",
+        "tag": "Best Value",
+        "notes": "High fuel efficiency and a comfortable cabin for city commuting"
+      }
+    }
   },
   {
-    "id": "mid-suv",
-    "slug": "mid-suv",
-    "categoryName": "سيارات متوسطة",
-    "subtitle": "SUV / كروس أوفر",
-    "models": ["ميتسوبيشي إكسباندر", "جيتور", "جلوري"],
-    "year": "2023",
-    "seats": 6,
-    "price": 1300,
-    "priceUnit": "per_trip",
-    "images": [
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=80"
-    ],
-    "status": "available",
-    "tag": "مناسب للعائلات",
-    "sortOrder": 2,
-    "notes": "مساحة مريحة للحقائب والعائلات الصغيرة."
-  },
-  {
-    "id": "luxury-family",
-    "slug": "luxury-family",
-    "categoryName": "سيارات عائلية فاخرة",
-    "subtitle": "Hyundai H1",
-    "models": ["هيونداي اتش وان H1"],
-    "year": "2023",
+    "id": "car-1789409205819-1",
+    "slug": "ميتسوبيشي-إكسباندر",
+    "categoryName": "ميتسوبيشي إكسباندر",
+    "vehicleType": "ٍSUV",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
     "seats": 7,
-    "price": 1700,
+    "price": 3340,
     "priceUnit": "per_trip",
     "images": [
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80"
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789409198/limo-masr/f5glodgcimqwvm9zk1su.png"
     ],
     "status": "available",
-    "tag": "فاخرة",
+    "sortOrder": 2,
+    "tag": "عائلية مميزة",
+    "notes": "مساحة داخلية رحبة تتسع لـ 7 ركاب مع راحة فائقة",
+    "translations": {
+      "ar": {
+        "categoryName": "ميتسوبيشي إكسباندر",
+        "vehicleType": "ٍSUV",
+        "subtitle": "",
+        "tag": "عائلية مميزة",
+        "notes": "مساحة داخلية رحبة تتسع لـ 7 ركاب مع راحة فائقة"
+      },
+      "en": {
+        "categoryName": "Mitsubishi Xpander",
+        "vehicleType": "SUV",
+        "subtitle": "",
+        "tag": "Family Choice",
+        "notes": "Generous 7-seater interior with high comfort"
+      }
+    }
+  },
+  {
+    "id": "car-1789409205819-0",
+    "slug": "هيونداي-إلنترا",
+    "categoryName": "هيونداي إلنترا",
+    "vehicleType": "سيدان",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
+    "seats": 5,
+    "price": 2826,
+    "priceUnit": "per_trip",
+    "images": [
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789409031/limo-masr/upuxagg6jizd9vciiwut.png"
+    ],
+    "status": "available",
     "sortOrder": 3,
-    "notes": "راحة أعلى للمجموعات العائلية والتنقلات الطويلة."
+    "tag": "الأكثر طلباً",
+    "notes": "راحة وأناقة واقتصادية في استهلاك الوقود",
+    "translations": {
+      "ar": {
+        "categoryName": "هيونداي إلنترا",
+        "vehicleType": "سيدان",
+        "subtitle": "",
+        "tag": "الأكثر طلباً",
+        "notes": "راحة وأناقة واقتصادية في استهلاك الوقود"
+      },
+      "en": {
+        "categoryName": "Hyundai Elantra",
+        "vehicleType": "Sedan",
+        "subtitle": "",
+        "tag": "Most Popular",
+        "notes": "Ideal for daily commutes and city tours"
+      }
+    }
   },
   {
-    "id": "hiace-van",
-    "slug": "hiace-van",
-    "categoryName": "فان متوسط",
-    "subtitle": "Toyota Hiace",
-    "models": ["تويوتا هاي إيس"],
-    "year": "2023",
-    "seats": 12,
-    "price": 2300,
+    "id": "car-1789471435281-1",
+    "slug": "شيري-تيجو-8-برو",
+    "categoryName": "شيري تيجو 8 برو",
+    "vehicleType": "SUV",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
+    "seats": 7,
+    "price": 65,
     "priceUnit": "per_trip",
     "images": [
-      "https://images.unsplash.com/photo-1609521263047-f8f205293f24?auto=format&fit=crop&w=1200&q=80"
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789471330/limo-masr/xgr2eukvzbcgbh9ll83v.png"
     ],
     "status": "available",
-    "tag": "للمجموعات",
     "sortOrder": 4,
-    "notes": "مناسب للمجموعات والوفود مع حقائب متعددة."
+    "tag": "",
+    "notes": "تتسع لـ 7 مقاعد مع مقصورة فارهة ومواصفات أمان عالية",
+    "translations": {
+      "ar": {
+        "categoryName": "شيري تيجو 8 برو",
+        "vehicleType": "SUV",
+        "subtitle": "",
+        "tag": "",
+        "notes": "تتسع لـ 7 مقاعد مع مقصورة فارهة ومواصفات أمان عالية"
+      },
+      "en": {
+        "categoryName": "Chery Tiggo 8 Pro",
+        "vehicleType": "SUV",
+        "subtitle": "",
+        "tag": "",
+        "notes": "7 seater SUV with a premium cabin and advanced safety"
+      }
+    }
   },
   {
-    "id": "coaster-bus",
-    "slug": "coaster-bus",
-    "categoryName": "باص كبير",
-    "subtitle": "Toyota Coaster",
-    "models": ["تويوتا كوستر"],
-    "year": "2023",
-    "seats": 21,
-    "price": 4200,
+    "id": "car-1789471435281-0",
+    "slug": "كيا-سيراتو",
+    "categoryName": "كيا سيراتو",
+    "vehicleType": "سيدان",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
+    "seats": 5,
+    "price": 55,
     "priceUnit": "per_trip",
     "images": [
-      "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80"
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789471206/limo-masr/ugvdn2n7pec7fpotfdvs.png"
     ],
     "status": "available",
-    "tag": "للرحلات",
     "sortOrder": 5,
-    "notes": "اختيار عملي للرحلات والوفود الكبيرة."
+    "tag": "",
+    "notes": "مثالية للمشاوير اليومية ورحلات العمل داخل وخارج المدينة",
+    "translations": {
+      "ar": {
+        "categoryName": "كيا سيراتو",
+        "vehicleType": "سيدان",
+        "subtitle": "",
+        "tag": "",
+        "notes": "مثالية للمشاوير اليومية ورحلات العمل داخل وخارج المدينة"
+      },
+      "en": {
+        "categoryName": "Kia Cerato",
+        "vehicleType": "Sedan",
+        "subtitle": "",
+        "tag": "",
+        "notes": "Perfect for daily city driving and business trips"
+      }
+    }
+  },
+  {
+    "id": "car-1789471435281-2",
+    "slug": "تويوتا-كورولا",
+    "categoryName": "تويوتا كورولا",
+    "vehicleType": "سيدان",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
+    "seats": 5,
+    "price": 55,
+    "priceUnit": "per_trip",
+    "images": [
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789471431/limo-masr/yq3jxwukq7a5phnhcqvn.png"
+    ],
+    "status": "available",
+    "sortOrder": 6,
+    "tag": "",
+    "notes": "خيار مثالي يجمع بين الراحة، الكفاءة، والاعتمادية الشهيرة",
+    "translations": {
+      "ar": {
+        "categoryName": "تويوتا كورولا",
+        "vehicleType": "سيدان",
+        "subtitle": "",
+        "tag": "",
+        "notes": "خيار مثالي يجمع بين الراحة، الكفاءة، والاعتمادية الشهيرة"
+      },
+      "en": {
+        "categoryName": "Toyota Corolla",
+        "vehicleType": "Sedan",
+        "subtitle": "",
+        "tag": "",
+        "notes": "Renowned for exceptional reliability and fuel efficiency"
+      }
+    }
+  },
+  {
+    "id": "car-1789473050598-0",
+    "slug": "مرسيدس-بنز-إي-كلاس",
+    "categoryName": "مرسيدس بنز إي-كلاس",
+    "vehicleType": "سيدان",
+    "subtitle": "فاخرة",
+    "models": [],
+    "year": "2026",
+    "seats": 4,
+    "price": 250,
+    "priceUnit": "per_trip",
+    "images": [
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789472897/limo-masr/ad9u8n0o3txhcwu7ap0p.jpg"
+    ],
+    "status": "available",
+    "sortOrder": 7,
+    "tag": "",
+    "notes": "تجربة قيادة فارهة وعزل صوتي استثنائي مع أحدث وسائل الراحة والأمان",
+    "translations": {
+      "ar": {
+        "categoryName": "مرسيدس بنز إي-كلاس",
+        "vehicleType": "سيدان",
+        "subtitle": "فاخرة",
+        "tag": "",
+        "notes": "تجربة قيادة فارهة وعزل صوتي استثنائي مع أحدث وسائل الراحة والأمان"
+      },
+      "en": {
+        "categoryName": "Mercedes-Benz E-Class",
+        "vehicleType": "Sedan",
+        "subtitle": "VIP Luxury",
+        "tag": "",
+        "notes": "Premium executive sedan offering unmatched comfort, prestige, and advanced technology"
+      }
+    }
+  },
+  {
+    "id": "car-1789473050598-1",
+    "slug": "مرسيدس-جي-كلاس",
+    "categoryName": "مرسيدس جي كلاس",
+    "vehicleType": "SUV",
+    "subtitle": "",
+    "models": [],
+    "year": "2026",
+    "seats": 5,
+    "price": 350,
+    "priceUnit": "per_trip",
+    "images": [
+      "https://res.cloudinary.com/b2tqubbe/image/upload/v1789473038/limo-masr/oheacl6y9ixdc4onhp84.jpg"
+    ],
+    "status": "available",
+    "sortOrder": 8,
+    "tag": "",
+    "notes": "أداء فائق وهيبة استثنائية مع مقصورة تجمع بين الرفاهية المطلقة والصلابة",
+    "translations": {
+      "ar": {
+        "categoryName": "مرسيدس جي كلاس",
+        "vehicleType": "SUV",
+        "subtitle": "",
+        "tag": "",
+        "notes": "أداء فائق وهيبة استثنائية مع مقصورة تجمع بين الرفاهية المطلقة والصلابة"
+      },
+      "en": {
+        "categoryName": "Mercedes-Benz G-CLass",
+        "vehicleType": "Luxury SUV",
+        "subtitle": "",
+        "tag": "",
+        "notes": "Peerless off-road capability combined with uncompromising executive luxury"
+      }
+    }
   }
 ]

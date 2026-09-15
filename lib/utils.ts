@@ -1,36 +1,88 @@
 import type { Booking, Locale, PriceUnit, ServiceType, SiteSettings } from "./types";
 
+export interface ExchangeRates {
+  usdRate?: number;
+  eurRate?: number;
+  sarRate?: number;
+  qarRate?: number;
+  kwdRate?: number;
+  bhdRate?: number;
+}
+
 export function formatCurrency(
   value: number | undefined, 
-  baseCurrency = "EGP", 
+  baseCurrency = "USD", 
   locale: Locale = "ar", 
-  targetCurrency = "EGP", 
-  exchangeRate = 50
+  targetCurrency = "USD", 
+  exchangeRates: ExchangeRates | number = 50
 ) {
   if (!value) return locale === "en" ? "Price on request" : "السعر حسب الطلب";
   
-  // Convert from base currency to target currency if needed
-  let displayValue = value;
-  
-  if (baseCurrency === "EGP" && targetCurrency !== "EGP") {
-    displayValue = value / exchangeRate;
-  } else if (baseCurrency !== "EGP" && targetCurrency === "EGP") {
-    displayValue = value * exchangeRate;
+  let rates: ExchangeRates = {};
+  if (typeof exchangeRates === "number") {
+    rates = { usdRate: exchangeRates, eurRate: 55, sarRate: 13.3, qarRate: 13.7, kwdRate: 160, bhdRate: 130 };
+  } else {
+    rates = exchangeRates;
   }
 
-  // Cap fast track original USD prices if they're shown as EGP (or whatever)
-  
-  if (locale === "en") {
-    const formattedNum = new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: targetCurrency === "USD" ? 2 : 0,
-    }).format(displayValue);
-    return targetCurrency === "EGP" ? `${formattedNum} EGP` : `${targetCurrency} ${formattedNum}`;
+  const usdRate = rates.usdRate || 50;
+  const eurRate = rates.eurRate || 55;
+  const sarRate = rates.sarRate || 13.3;
+  const qarRate = rates.qarRate || 13.7;
+  const kwdRate = rates.kwdRate || 160;
+  const bhdRate = rates.bhdRate || 130;
+
+  // 1. Convert value from baseCurrency to USD first
+  let usdValue = value;
+  if (baseCurrency === "USD") {
+    usdValue = value;
+  } else if (baseCurrency === "EGP") {
+    usdValue = value / usdRate;
+  } else if (baseCurrency === "SAR") {
+    usdValue = (value * sarRate) / usdRate;
+  } else if (baseCurrency === "EUR") {
+    usdValue = (value * eurRate) / usdRate;
   }
+
+  // 2. Convert from USD to targetCurrency
+  let displayValue = usdValue;
+  if (targetCurrency === "USD") {
+    displayValue = usdValue;
+  } else if (targetCurrency === "EGP") {
+    displayValue = usdValue * usdRate;
+  } else if (targetCurrency === "SAR") {
+    displayValue = (usdValue * usdRate) / sarRate;
+  } else if (targetCurrency === "EUR") {
+    displayValue = (usdValue * usdRate) / eurRate;
+  } else if (targetCurrency === "QAR") {
+    displayValue = (usdValue * usdRate) / qarRate;
+  } else if (targetCurrency === "KWD") {
+    displayValue = (usdValue * usdRate) / kwdRate;
+  } else if (targetCurrency === "BHD") {
+    displayValue = (usdValue * usdRate) / bhdRate;
+  }
+
+  const finalVal = Math.round(displayValue);
+
+  if (targetCurrency === "USD") {
+    return locale === "en" ? `$${finalVal}` : `${finalVal} $`;
+  }
+
+  if (targetCurrency === "EGP") {
+    const formattedNum = new Intl.NumberFormat("en-US").format(finalVal);
+    return locale === "en" ? `${formattedNum} EGP` : `${formattedNum} ج.م`;
+  }
+
+  if (locale === "en") {
+    const formattedNum = new Intl.NumberFormat("en-US").format(finalVal);
+    return `${targetCurrency} ${formattedNum}`;
+  }
+
   return new Intl.NumberFormat("ar-EG", {
     style: "currency",
     currency: targetCurrency,
-    maximumFractionDigits: targetCurrency === "USD" ? 2 : 0,
-  }).format(displayValue);
+    maximumFractionDigits: 0,
+  }).format(finalVal);
 }
 
 export function priceUnitLabel(unit: PriceUnit, locale: Locale = "ar") {

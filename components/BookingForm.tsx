@@ -44,7 +44,7 @@ export function BookingForm({
   whatsappNumber,
   price,
   locale,
-  baseCurrency = "EGP",
+  baseCurrency = "USD",
   currency = "EGP",
   exchangeRate = 1,
 }: BookingFormProps) {

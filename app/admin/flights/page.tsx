@@ -328,7 +328,7 @@ export default function FlightsAdminPage() {
                   onChange={(newImages) => {
                     setForm(prev => ({
                       ...prev,
-                      image: newImages[0] || prev.image
+                      image: newImages.length > 0 ? newImages[0] : ""
                     }));
                   }}
                 />

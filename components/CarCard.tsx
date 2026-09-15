@@ -82,9 +82,11 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
         
         {/* Top Badges */}
         <div className="absolute top-3 rtl:right-3 ltr:left-3 flex flex-col gap-1.5 items-start z-10 pointer-events-none">
-          <span className="bg-[#d0a755] text-[#1a2b3c] text-[10px] font-black px-3 py-1 rounded-full shadow-md">
-            {locale === "en" ? "Most Booked" : "الأكثر حجزاً"}
-          </span>
+          {car.isMostBooked && (
+            <span className="bg-[#d0a755] text-[#1a2b3c] text-[10px] font-black px-3 py-1 rounded-full shadow-md">
+              {locale === "en" ? "Most Booked" : "الأكثر حجزاً"}
+            </span>
+          )}
           {tag && (
              <span className="bg-white text-[#1a2b3c] text-[10px] font-bold px-3 py-1 rounded-full shadow-md">
                {tag}
@@ -126,7 +128,7 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
       <div className="flex flex-col gap-4 mt-auto pt-4 border-t border-black/5">
         <div className="flex items-center justify-between">
           <p className="text-[12px] text-[#1a2b3c]/60 font-medium" dir="rtl">
-            <span className="font-black text-[#d0a755] text-lg">{formatCurrency(car.price, "EGP", locale, currency, exchangeRate)}</span> / {priceUnitLabel(car.priceUnit, locale)} 
+            <span className="font-black text-[#d0a755] text-lg">{formatCurrency(car.price, "USD", locale, currency, exchangeRate)}</span> / {priceUnitLabel(car.priceUnit, locale)} 
           </p>
           <Link href={withLang(`/cars/${car.slug}`, locale)} className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 shadow-md hover:shadow-lg w-auto shrink-0">
             {locale === "en" ? "Book Now" : "احجز الآن"}

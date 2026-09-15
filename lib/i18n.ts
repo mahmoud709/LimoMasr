@@ -270,9 +270,9 @@ export function withLang(href: string, locale: Locale) {
 export function siteText(settings: SiteSettings, locale: Locale) {
   const translated = settings.translations?.[locale];
   return {
-    brand: translated?.brand ?? (locale === "en" ? "Limo Egypt" : settings.heroTitle),
+    brand: locale === "en" ? "Limo Egypt" : (translated?.brand ?? settings.heroTitle ?? "ليمو مصر"),
     address: translated?.address ?? settings.address,
-    heroTitle: translated?.heroTitle ?? settings.heroTitle,
+    heroTitle: translated?.heroTitle ?? (locale === "en" ? "Limo Egypt" : settings.heroTitle),
     heroSubtitle: translated?.heroSubtitle ?? settings.heroSubtitle,
     heroBadge: translated?.heroBadge ?? ui[locale].bookWhatsapp,
     footerText: translated?.footerText ?? "",
