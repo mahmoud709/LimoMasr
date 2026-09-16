@@ -607,7 +607,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     try {
       const db = await getDb();
       await db.collection("settings").updateOne(
-        { _id: "site-settings" },
+        { _id: "site-settings" } as any,
         { $set: {
           usdRate: merged.usdRate,
           eurRate: merged.eurRate,
