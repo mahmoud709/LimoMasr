@@ -520,7 +520,7 @@ export async function deleteBooking(id: string) {
 export async function getLiveExchangeRates() {
   try {
     const res = await fetch("https://open.er-api.com/v6/latest/USD", {
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 }, // refresh every 5 mins
       signal: AbortSignal.timeout(5000)
     });
     if (!res.ok) throw new Error("Failed to fetch live USD rates");
@@ -590,16 +590,40 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   }
 
   const liveRates = await getLiveExchangeRates();
-  return {
+
+  // Merge: live rate fills any missing DB values
+  const merged = {
     ...settingsToReturn,
-    // Saved DB value takes priority → live rate only as fallback when no saved value
-    usdRate: settingsToReturn.usdRate || liveRates.usdRate || 50,
-    eurRate: settingsToReturn.eurRate || liveRates.eurRate || 55,
-    sarRate: settingsToReturn.sarRate || liveRates.sarRate || 13,
-    qarRate: settingsToReturn.qarRate || liveRates.qarRate || 13,
-    kwdRate: settingsToReturn.kwdRate || liveRates.kwdRate || 160,
-    bhdRate: settingsToReturn.bhdRate || liveRates.bhdRate || 130,
+    usdRate: liveRates.usdRate ?? settingsToReturn.usdRate ?? 50,
+    eurRate: liveRates.eurRate ?? settingsToReturn.eurRate ?? 55,
+    sarRate: liveRates.sarRate ?? settingsToReturn.sarRate ?? 13,
+    qarRate: liveRates.qarRate ?? settingsToReturn.qarRate ?? 13,
+    kwdRate: liveRates.kwdRate ?? settingsToReturn.kwdRate ?? 160,
+    bhdRate: liveRates.bhdRate ?? settingsToReturn.bhdRate ?? 130,
   };
+
+  // Auto-save the live rates into DB so admin & website always see the same value
+  if (liveRates.usdRate) {
+    try {
+      const db = await getDb();
+      await db.collection("settings").updateOne(
+        { _id: "site-settings" },
+        { $set: {
+          usdRate: merged.usdRate,
+          eurRate: merged.eurRate,
+          sarRate: merged.sarRate,
+          qarRate: merged.qarRate,
+          kwdRate: merged.kwdRate,
+          bhdRate: merged.bhdRate,
+        }},
+        { upsert: false }
+      );
+    } catch (e) {
+      // non-critical — ignore silently
+    }
+  }
+
+  return merged;
 }
 
 export async function saveSiteSettings(settings: SiteSettings) {

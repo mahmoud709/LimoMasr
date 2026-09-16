@@ -302,22 +302,35 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
           const { latitude, longitude } = position.coords;
           setMapCenter({ lat: latitude, lng: longitude });
           const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=${isEn ? "en" : "ar"}`
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=${isEn ? "en" : "ar"}&zoom=18&addressdetails=1`
           );
           if (res.ok) {
             const data = await res.json();
             const addr = data.address || {};
-            const mainName = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.city || data.name || data.display_name?.split(",")[0];
-            const city = addr.city || addr.state || addr.governorate;
 
-            let locationStr = mainName;
-            if (city && mainName && !mainName.includes(city)) {
-              locationStr = isEn ? `${mainName}, ${city}` : `${mainName}، ${city}`;
+            // Build a rich, layered address: road → suburb/neighbourhood → city
+            const road = addr.road || addr.pedestrian || addr.footway || addr.path || "";
+            const suburb = addr.suburb || addr.neighbourhood || addr.quarter || addr.city_district || "";
+            const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
+
+            let locationStr = "";
+            if (road && suburb && city) {
+              locationStr = isEn
+                ? `${road}, ${suburb}, ${city}`
+                : `${road}، ${suburb}، ${city}`;
+            } else if (road && city) {
+              locationStr = isEn ? `${road}, ${city}` : `${road}، ${city}`;
+            } else if (suburb && city) {
+              locationStr = isEn ? `${suburb}, ${city}` : `${suburb}، ${city}`;
+            } else if (city) {
+              locationStr = city;
+            } else {
+              // Last resort: first two segments of display_name
+              const parts = (data.display_name || "").split(",").map((p: string) => p.trim()).filter(Boolean);
+              locationStr = parts.slice(0, 2).join(isEn ? ", " : "، ");
             }
-            if (!locationStr) {
-              locationStr = isEn ? "Current Location" : "موقعي الحالي";
-            }
-            handleSelect(locationStr.trim());
+
+            handleSelect((locationStr || (isEn ? "Current Location" : "موقعي الحالي")).trim());
           } else {
             handleSelect(isEn ? "Current Location" : "موقعي الحالي");
           }
@@ -332,7 +345,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
         setIsLocating(false);
         handleSelect(isEn ? "Current Location" : "موقعي الحالي");
       },
-      { timeout: 8000, enableHighAccuracy: true }
+      { timeout: 10000, enableHighAccuracy: true, maximumAge: 0 }
     );
   };
 

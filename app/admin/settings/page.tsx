@@ -216,17 +216,17 @@ export default function SettingsPage() {
 
         {/* Currency Rates */}
         <Card title="الأسعار والعملات">
-          <div className="mb-4 p-3 bg-blue-50 text-blue-800 text-xs font-bold rounded-xl border border-blue-100 flex items-center gap-2">
-            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            يتم تحديث أسعار الصرف تلقائياً من الإنترنت، ولا يمكن تعديلها يدوياً.
+          <div className="mb-4 p-3 bg-amber-50 text-amber-800 text-xs font-bold rounded-xl border border-amber-200 flex items-center gap-2">
+            <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            أسعار الصرف قابلة للتعديل يدوياً — القيمة المحفوظة هنا هي التي تظهر للعملاء على الموقع.
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field label="سعر صرف الدولار (USD to EGP)" value={settings.usdRate?.toString() || "50"} onChange={v => f("usdRate", parseFloat(v) || 50 as any)} dir="ltr" type="number" readOnly />
-            <Field label="سعر صرف اليورو (EUR to EGP)" value={settings.eurRate?.toString() || "55"} onChange={v => f("eurRate", parseFloat(v) || 55 as any)} dir="ltr" type="number" readOnly />
-            <Field label="سعر صرف الريال السعودي (SAR to EGP)" value={settings.sarRate?.toString() || "13"} onChange={v => f("sarRate", parseFloat(v) || 13 as any)} dir="ltr" type="number" readOnly />
-            <Field label="سعر صرف الريال القطري (QAR to EGP)" value={settings.qarRate?.toString() || "13"} onChange={v => f("qarRate", parseFloat(v) || 13 as any)} dir="ltr" type="number" readOnly />
-            <Field label="سعر صرف الدينار الكويتي (KWD to EGP)" value={settings.kwdRate?.toString() || "160"} onChange={v => f("kwdRate", parseFloat(v) || 160 as any)} dir="ltr" type="number" readOnly />
-            <Field label="سعر صرف الدينار البحريني (BHD to EGP)" value={settings.bhdRate?.toString() || "130"} onChange={v => f("bhdRate", parseFloat(v) || 130 as any)} dir="ltr" type="number" readOnly />
+            <Field label="سعر صرف الدولار (USD to EGP)" value={settings.usdRate?.toString() || "50"} onChange={v => f("usdRate", parseFloat(v) || 50 as any)} dir="ltr" type="number" />
+            <Field label="سعر صرف اليورو (EUR to EGP)" value={settings.eurRate?.toString() || "55"} onChange={v => f("eurRate", parseFloat(v) || 55 as any)} dir="ltr" type="number" />
+            <Field label="سعر صرف الريال السعودي (SAR to EGP)" value={settings.sarRate?.toString() || "13"} onChange={v => f("sarRate", parseFloat(v) || 13 as any)} dir="ltr" type="number" />
+            <Field label="سعر صرف الريال القطري (QAR to EGP)" value={settings.qarRate?.toString() || "13"} onChange={v => f("qarRate", parseFloat(v) || 13 as any)} dir="ltr" type="number" />
+            <Field label="سعر صرف الدينار الكويتي (KWD to EGP)" value={settings.kwdRate?.toString() || "160"} onChange={v => f("kwdRate", parseFloat(v) || 160 as any)} dir="ltr" type="number" />
+            <Field label="سعر صرف الدينار البحريني (BHD to EGP)" value={settings.bhdRate?.toString() || "130"} onChange={v => f("bhdRate", parseFloat(v) || 130 as any)} dir="ltr" type="number" />
           </div>
         </Card>
 
