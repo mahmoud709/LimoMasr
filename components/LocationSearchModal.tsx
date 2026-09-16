@@ -291,7 +291,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
 
   const handleUseCurrentLocation = () => {
     if (typeof window === "undefined" || !navigator.geolocation) {
-      handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+      setQuery(isEn ? "Current Location" : "موقعي الحالي");
       return;
     }
 
@@ -330,12 +330,18 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
               locationStr = parts.slice(0, 2).join(isEn ? ", " : "، ");
             }
 
-            handleSelect((locationStr || (isEn ? "Current Location" : "موقعي الحالي")).trim());
+            const finalStr = (locationStr || (isEn ? "Current Location" : "موقعي الحالي")).trim();
+            // Show in input so user can confirm or edit before selecting
+            setQuery(finalStr);
+            // Clear any stale search results so it doesn't flicker
+            setResults([]);
+            // Focus the input so user notices the populated value
+            setTimeout(() => inputRef.current?.focus(), 50);
           } else {
-            handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+            setQuery(isEn ? "Current Location" : "موقعي الحالي");
           }
         } catch (err) {
-          handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+          setQuery(isEn ? "Current Location" : "موقعي الحالي");
         } finally {
           setIsLocating(false);
         }
@@ -343,7 +349,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
       (error) => {
         console.warn("Geolocation error:", error);
         setIsLocating(false);
-        handleSelect(isEn ? "Current Location" : "موقعي الحالي");
+        setQuery(isEn ? "Current Location" : "موقعي الحالي");
       },
       { timeout: 10000, enableHighAccuracy: true, maximumAge: 0 }
     );

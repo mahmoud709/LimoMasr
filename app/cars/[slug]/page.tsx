@@ -134,7 +134,14 @@ export default async function CarDetailsPage({
                       {locale === "en" ? "Manufacturing Year" : "سنة الصنع"}
                     </p>
                     <p className="font-black text-[#1a2b3c]">
-                      {locale === "en" ? `${car.year} or newer` : `${car.year} أو أحدث`}
+                      {(() => {
+                        const currentYear = new Date().getFullYear();
+                        const carYear = parseInt(String(car.year), 10);
+                        if (!isNaN(carYear) && carYear >= currentYear) {
+                          return car.year;
+                        }
+                        return locale === "en" ? `${car.year} or newer` : `${car.year} أو أحدث`;
+                      })()}
                     </p>
                   </div>
                 </div>
