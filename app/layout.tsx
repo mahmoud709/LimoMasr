@@ -33,8 +33,8 @@ export default async function RootLayout({
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
-    <html lang={locale} dir={dir} className={`${cairo.variable} ${outfit.variable} h-full antialiased bg-[#F9F8F6]`}>
-      <body className="min-h-full flex flex-col font-cairo bg-[#F9F8F6] text-[#111111] selection:bg-[#B88A44]/30 selection:text-black">
+    <html lang={locale} dir={dir} className={`${cairo.variable} ${outfit.variable} h-full antialiased bg-[#F9F8F6] overflow-x-hidden`}>
+      <body className="min-h-full flex flex-col font-cairo bg-[#F9F8F6] text-[#111111] selection:bg-[#B88A44]/30 selection:text-black overflow-x-hidden">
         <div className="noise-overlay"></div>
         <QueryProvider>
           <ToastProvider>

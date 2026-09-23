@@ -98,6 +98,15 @@ export async function getCars(): Promise<Car[]> {
     
     let cars = await collection.find({}).toArray();
     
+    if (cars.length === 0) {
+      const fallbackCars = await readJsonFallback<Car[]>("cars.json");
+      if (fallbackCars && fallbackCars.length > 0) {
+        const toInsert = fallbackCars.map(({ ...c }) => c);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding cars:", err));
+        cars = await collection.find({}).toArray();
+      }
+    }
+    
     const result = cars.map(({ _id, ...car }) => car as Car);
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
@@ -227,7 +236,16 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
   try {
     const db = await getDb();
     const collection = db.collection<FastTrackPackage>("fast-track");
-    const packages = await collection.find({}).toArray();
+    let packages = await collection.find({}).toArray();
+    
+    if (packages.length === 0) {
+      const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
+      if (fallbackPackages && fallbackPackages.length > 0) {
+        const toInsert = fallbackPackages.map(({ ...p }) => p);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding fast track:", err));
+        packages = await collection.find({}).toArray();
+      }
+    }
     
     const uniqueMap = new Map();
     for (const p of packages) {
@@ -276,7 +294,16 @@ export async function getHotels(): Promise<HotelItem[]> {
   try {
     const db = await getDb();
     const collection = db.collection<HotelItem>("hotels");
-    const hotels = await collection.find({}).toArray();
+    let hotels = await collection.find({}).toArray();
+    
+    if (hotels.length === 0) {
+      const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
+      if (fallbackHotels && fallbackHotels.length > 0) {
+        const toInsert = fallbackHotels.map(({ ...h }) => h);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotels:", err));
+        hotels = await collection.find({}).toArray();
+      }
+    }
     
     const uniqueMap = new Map();
     for (const h of hotels) {
@@ -329,7 +356,16 @@ export async function getFlights(): Promise<FlightRoute[]> {
   try {
     const db = await getDb();
     const collection = db.collection<FlightRoute>("flights");
-    const flights = await collection.find({}).toArray();
+    let flights = await collection.find({}).toArray();
+    
+    if (flights.length === 0) {
+      const fallbackFlights = await readJsonFallback<FlightRoute[]>("flights.json");
+      if (fallbackFlights && fallbackFlights.length > 0) {
+        const toInsert = fallbackFlights.map(({ ...f }) => f);
+        await collection.insertMany(toInsert).catch(err => console.error("Error seeding flights:", err));
+        flights = await collection.find({}).toArray();
+      }
+    }
     
     const uniqueMap = new Map();
     for (const f of flights) {
@@ -602,26 +638,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     bhdRate: liveRates.bhdRate ?? settingsToReturn.bhdRate ?? 130,
   };
 
-  // Auto-save the live rates into DB so admin & website always see the same value
-  if (liveRates.usdRate) {
-    try {
-      const db = await getDb();
-      await db.collection("settings").updateOne(
-        { _id: "site-settings" } as any,
-        { $set: {
-          usdRate: merged.usdRate,
-          eurRate: merged.eurRate,
-          sarRate: merged.sarRate,
-          qarRate: merged.qarRate,
-          kwdRate: merged.kwdRate,
-          bhdRate: merged.bhdRate,
-        }},
-        { upsert: false }
-      );
-    } catch (e) {
-      // non-critical — ignore silently
-    }
-  }
+  // The live rates are merged and returned. We no longer write them to the DB on every request to prevent severe performance bottlenecks.
 
   return merged;
 }

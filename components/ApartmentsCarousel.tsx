@@ -295,7 +295,7 @@ export function ApartmentsCarousel({
                       const formElement = document.getElementById("booking-form") || document.querySelector("form");
                       if (formElement) {
                         e.preventDefault();
-                        formElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                        formElement.scrollIntoView({ behavior: "smooth", block: "start" });
                       }
                     }}
                     className="inline-flex items-center justify-center bg-[#1a2b3c] text-white hover:bg-[#d0a755] hover:text-[#1a2b3c] px-4 py-2 rounded-xl text-[11px] font-bold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap cursor-pointer"
