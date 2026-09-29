@@ -18,7 +18,7 @@ export default async function FlightsPage({ searchParams }: { searchParams?: Pro
   ]);
   const cookieStore = await cookies();
   const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
-  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "USD";
   // Always use usdRate for the exchange calc — formatCurrency needs USD→EGP rate regardless of display currency
   const exchangeRate = settings.usdRate || 50;
 

@@ -17,7 +17,7 @@ export default async function StaysPage({ searchParams }: { searchParams: Promis
   const [settings, hotels, apartments, resolvedSearchParams] = await Promise.all([getSiteSettings(), getHotels(), getHotelApartments(), searchParams]);
   const cookieStore = await cookies();
   const locale = ((resolvedSearchParams?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
-  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "USD";
   // Always use usdRate for the exchange calc — formatCurrency needs USD→EGP rate regardless of display currency
   const exchangeRate = settings.usdRate || 50;
 

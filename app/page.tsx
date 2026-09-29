@@ -35,7 +35,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
   const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const t = ui[locale];
   const isRtl = locale === "ar";
-  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const currency = cookieStore.get('NEXT_CURRENCY')?.value || "USD";
   // Always pass the full rates object so formatCurrency can correctly convert
   // between any base currency (USD) and any target display currency (EGP, SAR…)
   const exchangeRates = {

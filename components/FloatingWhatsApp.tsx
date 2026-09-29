@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   FaWhatsapp,
   FaFacebookF,
@@ -20,14 +20,8 @@ interface FloatingWhatsAppProps {
 }
 
 export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: FloatingWhatsAppProps) {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-
-  // Show after 1.5 seconds
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 1500);
-    return () => clearTimeout(t);
-  }, []);
 
   const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(
     locale === "en" ? "Hello Limo Egypt, I want to ask about booking." : "مرحبًا ليمو مصر، أريد الاستفسار عن الحجز."
@@ -88,7 +82,7 @@ export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: Flo
 
   return (
     <div
-      className={`fixed bottom-6 end-4 md:end-6 z-50 flex flex-col items-center transition-all duration-500 ${
+      className={`fixed bottom-6 left-4 md:left-6 z-[100] flex flex-col items-center transition-all duration-500 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
       }`}
     >

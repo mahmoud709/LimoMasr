@@ -49,7 +49,7 @@ export async function PublicLayout({
   const cookieLocale = cookieStore.get('NEXT_LOCALE')?.value as Locale;
   const locale = propLocale || cookieLocale || "ar";
 
-  const cookieCurrency = cookieStore.get('NEXT_CURRENCY')?.value || "EGP";
+  const cookieCurrency = cookieStore.get('NEXT_CURRENCY')?.value || "USD";
 
   const customerToken = cookieStore.get("customer-token")?.value;
   const portalLink = customerToken ? "/my-bookings" : "/login";
