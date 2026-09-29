@@ -20,7 +20,6 @@ interface FloatingWhatsAppProps {
 }
 
 export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: FloatingWhatsAppProps) {
-  const [visible, setVisible] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
   const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(
@@ -82,12 +81,10 @@ export function FloatingWhatsApp({ phone, socialLinks = {}, locale = "ar" }: Flo
 
   return (
     <div
-      className={`fixed bottom-6 left-4 md:left-6 z-[100] flex flex-col items-center transition-all duration-500 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
-      }`}
+      className="floating-contact-widget transition-all duration-500"
     >
       {/* Social Options Menu */}
-      <div className="flex flex-col items-center gap-3 mb-4">
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
         {menuItems.map((item, index) => {
           // Staggered transition delay based on state
           const delay = isOpen ? index * 50 : (menuItems.length - 1 - index) * 30;

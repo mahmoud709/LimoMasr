@@ -157,6 +157,9 @@ html {
     }
 html,
 body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: #F9F8F6 !important;
   color: #111111;
   font-family: var(--font-cairo);
@@ -176,6 +179,27 @@ body {
   opacity: 0.04;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.floating-contact-widget {
+  position: fixed;
+  top: auto !important;
+  bottom: calc(40px + env(safe-area-inset-bottom, 0px)) !important;
+  left: 16px;
+  right: auto !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  z-index: 2147483647;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 767px) {
+  .floating-contact-widget {
+    bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
 
 /* ==========================================================================
@@ -417,4 +441,3 @@ body {
   background: linear-gradient(90deg, transparent, rgba(208, 167, 85, 0.4), transparent);
   margin: 3rem 0;
 }
-

@@ -23,6 +23,8 @@ import Script from "next/script";
 import { cookies } from "next/headers";
 import { QueryProvider } from "@/components/QueryProvider";
 import { ToastProvider } from "@/components/admin/ToastProvider";
+import { GoogleAdsEvents } from "@/components/GoogleAdsEvents";
+import { GOOGLE_ADS_ID } from "@/lib/gtag";
 
 export default async function RootLayout({
   children,
@@ -36,17 +38,18 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className={`${cairo.variable} ${outfit.variable} h-full antialiased bg-[#F9F8F6] overflow-x-hidden`}>
       <head>
-        {/* Google Ads (gtag.js) Placeholder */}
+        {/* Google Ads (gtag.js) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXXX"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
           strategy="afterInteractive"
         />
         <Script id="google-ads-tag" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){window.dataLayer.push(arguments);}
+            window.gtag = gtag;
             gtag('js', new Date());
-            gtag('config', 'AW-XXXXXXXXXX');
+            gtag('config', '${GOOGLE_ADS_ID}');
           `}
         </Script>
       </head>
@@ -54,6 +57,7 @@ export default async function RootLayout({
         <div className="noise-overlay"></div>
         <QueryProvider>
           <ToastProvider>
+            <GoogleAdsEvents />
             {children}
           </ToastProvider>
         </QueryProvider>

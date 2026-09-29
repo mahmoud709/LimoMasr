@@ -68,7 +68,7 @@ export async function PublicLayout({
   );
 
   return (
-    <div className="min-h-screen flex flex-col relative z-10 bg-[#F9F8F6] text-[#111111] overflow-x-hidden" dir={locale === "ar" ? "rtl" : "ltr"}>
+    <div data-public-layout className="min-h-screen flex flex-col relative z-10 bg-[#F9F8F6] text-[#111111] overflow-x-hidden" dir={locale === "ar" ? "rtl" : "ltr"}>
       {/* Header updated to match the dark blue hero */}
       <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-500 bg-[#1a2b3c]/95 backdrop-blur-2xl border-b border-[#d0a755]/30 shadow-sm">
         <div className="mx-auto max-w-[1400px] px-6 md:px-8 flex items-center justify-between h-20 md:h-24">
@@ -95,6 +95,8 @@ export async function PublicLayout({
           </div>
         </div>
       </header>
+
+      <FloatingWhatsApp phone={settings.whatsappCarNumber} socialLinks={settings.socialLinks} locale={locale} />
       
       <div className="flex-1">
         {children}
@@ -233,7 +235,6 @@ export async function PublicLayout({
           </div>
         </div>
       </footer>
-      <FloatingWhatsApp phone={settings.whatsappCarNumber} socialLinks={settings.socialLinks} locale={locale} />
     </div>
   );
 }

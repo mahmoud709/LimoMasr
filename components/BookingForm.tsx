@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState, useEffect, useRef } from "react";
 import type { ServiceType } from "@/lib/types";
 import { bookingMessage, buildWhatsappUrl } from "@/lib/utils";
+import { trackEvent } from "@/lib/gtag";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
@@ -420,7 +421,20 @@ export function BookingForm({
       });
 
       if (res.ok) {
+        trackEvent("booking_submit_success", {
+          event_category: "lead",
+          event_label: "successful_booking",
+          service_type: effectiveType,
+          language: isEn ? "en" : "ar",
+          route: window.location.pathname,
+          booking_source: bookingSource,
+        });
+
         if (bookingSource === "whatsapp") {
+          trackEvent("whatsapp_click", {
+            event_category: "lead",
+            event_label: "whatsapp",
+          });
           window.open(buildWhatsappUrl(whatsappNumber, message), "_blank", "noopener,noreferrer");
         }
         setBookingSuccess(true);
