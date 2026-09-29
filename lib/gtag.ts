@@ -16,9 +16,16 @@ declare global {
 }
 
 export function trackEvent(eventName: string, params: GtagParams = {}) {
-  if (typeof window === "undefined" || typeof window.gtag !== "function") return;
+  if (typeof window === "undefined") return;
 
-  window.gtag("event", eventName, params);
+  window.dataLayer = window.dataLayer || [];
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, params);
+    return;
+  }
+
+  window.dataLayer.push(["event", eventName, params]);
 }
 
 export function trackWhatsappClick() {
