@@ -25,7 +25,11 @@ export function trackEvent(eventName: string, params: GtagParams = {}) {
     return;
   }
 
-  window.dataLayer.push(["event", eventName, params]);
+  function queuedGtag(..._args: unknown[]) {
+    window.dataLayer?.push(arguments);
+  }
+
+  queuedGtag("event", eventName, params);
 }
 
 export function trackWhatsappClick() {
