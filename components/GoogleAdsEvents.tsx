@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackEvent } from "@/lib/gtag";
+import { trackPhoneClick, trackWhatsappClick } from "@/lib/gtag";
 
 function isWhatsappHref(href: string) {
   const normalized = href.toLowerCase();
@@ -27,18 +27,12 @@ export function GoogleAdsEvents() {
       const href = link.href || link.getAttribute("href") || "";
 
       if (isWhatsappHref(href)) {
-        trackEvent("whatsapp_click", {
-          event_category: "lead",
-          event_label: "whatsapp",
-        });
+        trackWhatsappClick();
         return;
       }
 
       if (href.toLowerCase().startsWith("tel:")) {
-        trackEvent("phone_click", {
-          event_category: "lead",
-          event_label: "phone",
-        });
+        trackPhoneClick();
       }
     };
 
