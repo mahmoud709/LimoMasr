@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/fast-track");
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getFastTrackPackages, getSiteSettings } from "@/lib/data";
@@ -23,7 +25,7 @@ export default async function FastTrackPage({ searchParams }: { searchParams?: P
     <PublicLayout settings={settings} whatsappType="fast_track" locale={locale}>
       <main className="mx-auto w-full max-w-7xl px-6 md:px-8 py-32 relative z-10 flex flex-col overflow-hidden">
         <div className="animate-reveal-1">
-          <SectionHeader 
+          <SectionHeader as="h1" 
             eyebrow={locale === 'ar' ? "المسار السريع" : "Fast Track"} 
             title={locale === 'ar' ? "خدمات المساعدة بالمطار" : "Airport Meet & Assist Services"} 
             text={locale === 'ar' ? "وفر وقتك واعبر أسرع" : "Save your time and pass faster"} 

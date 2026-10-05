@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/blog");
 import { PublicLayout } from "@/components/PublicLayout";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,10 +10,7 @@ import { formatArticleDate, formatArticleReadTime } from "@/lib/utils";
 
 type Locale = "ar" | "en";
 
-export const metadata = {
-  title: "المدونة | ليمو مصر",
-  description: "أدلة وقصص من الداخل - من مدونة ليمو مصر",
-};
+
 
 export const dynamic = "force-dynamic";
 

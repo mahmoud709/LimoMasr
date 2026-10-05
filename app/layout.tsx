@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { SITE_URL } from "@/lib/seo";
 import { Cairo, Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -15,6 +17,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
   title: "ليمو مصر | حجز فنادق، استقبال مطارات، وسيارات VIP في مصر",
   description: "رتب رحلتك إلى مصر بالكامل في خطوة واحدة. حجز أرقى الفنادق والشقق الفندقية، استقبال من المطار بسيارات فاخرة (ليموزين)، وخدمات المسار السريع (VIP Fast Track).",
 };
@@ -26,13 +30,17 @@ import { ToastProvider } from "@/components/admin/ToastProvider";
 import { GoogleAdsEvents } from "@/components/GoogleAdsEvents";
 import { GOOGLE_ADS_ID } from "@/lib/gtag";
 
+const ga4Id = /^G-[A-Z0-9]+$/.test(process.env.NEXT_PUBLIC_GA4_ID || "")
+  ? process.env.NEXT_PUBLIC_GA4_ID : undefined;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'ar';
+  const requestedLocale = (await headers()).get('x-site-locale') || cookieStore.get('NEXT_LOCALE')?.value;
+  const locale = requestedLocale === 'en' ? 'en' : 'ar';
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
@@ -50,6 +58,7 @@ export default async function RootLayout({
             window.gtag = gtag;
             gtag('js', new Date());
             gtag('config', '${GOOGLE_ADS_ID}');
+            ${ga4Id ? `gtag('config', '${ga4Id}');` : ""}
           `}
         </Script>
       </head>

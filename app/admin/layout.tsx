@@ -6,6 +6,7 @@ import { verifyAdminToken } from "@/lib/admin-auth";
 import { AuthRedirect } from "@/components/admin/AuthRedirect";
 
 export const metadata = {
+  robots: { index: false, follow: false },
   title: "لوحة التحكم — ليمو مصر",
 };
 

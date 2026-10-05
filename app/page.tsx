@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/");
 import Link from "next/link";
 import Image from "next/image";
 import { cookies } from "next/headers";
@@ -63,7 +65,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
                 {t.hero.eyebrow}
               </p>
               <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.3] md:leading-[1.2] mb-4 md:mb-8 animate-reveal-2 drop-shadow-lg">
-                {t.hero.title1} <br className="hidden md:block" /> <span className="text-white">{t.hero.title2}.</span>
+                {locale === "en" ? "Hotel, Limousine & Travel Services in Egypt" : "حجز فنادق وليموزين وخدمات سفر في مصر"}
               </h1>
               <p className="text-white/90 text-sm md:text-xl leading-[1.6] md:leading-[1.8] mb-6 md:mb-8 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
                 {t.hero.text}

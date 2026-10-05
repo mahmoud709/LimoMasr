@@ -6,24 +6,21 @@ import { getSiteSettings, getArticles, getArticleBySlug } from "@/lib/data";
 import { formatArticleDate, formatArticleReadTime } from "@/lib/utils";
 import { ArticleClient } from "@/components/ArticleClient";
 import type { Locale } from "@/lib/types";
+import { pageMetadata, seoLocale, type SeoProps } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+export async function generateMetadata(props: SeoProps & { params: Promise<{ slug: string }> }) {
+  const { slug } = await props.params;
+  const locale = await seoLocale(props);
+  const article = await getArticleBySlug(decodeURIComponent(slug));
   
-  if (!article) return { title: "مقال غير موجود | ليمو مصر" };
+  if (!article) notFound();
   
-  return {
-    title: `${article.title} | ليمو مصر`,
-    description: article.excerpt,
-    openGraph: {
-      title: article.title,
-      description: article.excerpt,
-      images: article.image ? [article.image] : [],
-    }
-  };
+  const title = locale === "en" ? article.translations?.en?.title || article.title : article.title;
+  const excerpt = locale === "en" ? article.translations?.en?.excerpt || article.excerpt : article.excerpt;
+  const metadata = pageMetadata(`/blog/${encodeURIComponent(article.slug)}`, locale, `${title} | ${locale === "en" ? "Limo Egypt" : "ليمو مصر"}`, excerpt, article.image ? [article.image] : []);
+  return { ...metadata, openGraph: { ...metadata.openGraph, type: "article" } };
 }
 
 export default async function ArticlePage({ 
@@ -49,7 +46,7 @@ export default async function ArticlePage({
   const locale = ((searchParamsResolved?.__locale || cookieStore.get('NEXT_LOCALE')?.value || 'ar') as Locale);
   const isEn = locale === "en";
 
-  const enTrans = article.translations?.en as any;
+  const enTrans = article.translations?.en;
   const title = isEn && enTrans?.title ? enTrans.title : article.title;
   const excerpt = isEn && enTrans?.excerpt ? enTrans.excerpt : article.excerpt;
   const content = isEn && enTrans?.content ? enTrans.content : article.content;

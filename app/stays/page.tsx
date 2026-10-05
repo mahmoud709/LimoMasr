@@ -27,7 +27,7 @@ export default async function StaysPage({ searchParams }: { searchParams: Promis
     <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-8">
         <div className="animate-reveal-1 px-8 max-w-7xl mx-auto w-full mb-8">
-          <SectionHeader 
+          <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Accommodations" : "الإقامات"} 
             title={locale === "en" ? "Choose Your Perfect Stay" : "اختر إقامتك المثالية"} 
             text={locale === "en" ? "We provide you with the best hotel options and luxury apartments to suit all your needs." : "نوفر لك أفضل خيارات الفنادق والشقق الفندقية الفاخرة لتناسب جميع احتياجاتك."} 

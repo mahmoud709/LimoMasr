@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/flights");
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -26,7 +28,7 @@ export default async function FlightsPage({ searchParams }: { searchParams?: Pro
     <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-8">
         <div className="animate-reveal-1 px-8 max-w-7xl mx-auto w-full">
-          <SectionHeader 
+          <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Flight Booking" : "حجز طيران"} 
             title={locale === "en" ? "Flights to all Global & Domestic Destinations" : "رحلات طيران إلى كافة الوجهات العالمية والمحلية"} 
             text={locale === "en" ? "We provide you with the best flight ticket offers to travel in comfort to your favorite destinations at the best prices." : "نوفر لك أفضل عروض تذاكر الطيران، لتسافر براحة تامة إلى وجهتك المفضلة بأفضل الأسعار."} 

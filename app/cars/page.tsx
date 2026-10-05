@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/cars");
 import Link from "next/link";
 import { PublicLayout } from "@/components/PublicLayout";
 import { CarsClient } from "./CarsClient";

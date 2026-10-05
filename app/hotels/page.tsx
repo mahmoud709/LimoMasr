@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/hotels");
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -24,7 +26,7 @@ export default async function HotelsPage({ searchParams }: { searchParams?: Prom
     <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 overflow-x-hidden">
         <div className="animate-reveal-1 px-6 md:px-8 max-w-7xl mx-auto w-full">
-          <SectionHeader 
+          <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Hotel Booking" : "حجز فنادق"} 
             title={locale === "en" ? "Request a Stay Offer by City" : "اطلب عرض إقامة حسب المدينة"} 
             text={locale === "en" ? "Send arrival, departure dates, and guest count, and details will be confirmed via WhatsApp." : "أرسل تاريخ الوصول والمغادرة وعدد الأفراد، وسيتم تأكيد التفاصيل عبر واتساب."} 

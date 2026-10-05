@@ -6,6 +6,18 @@ import { formatCurrency, priceUnitLabel } from "@/lib/utils";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
 import { localizeCar } from "@/lib/i18n";
+import { pageMetadata, seoLocale, type SeoProps } from "@/lib/seo";
+
+export async function generateMetadata(props: SeoProps & { params: Promise<{ slug: string }> }) {
+  const [{ slug }, locale, cars] = await Promise.all([props.params, seoLocale(props), getCars()]);
+  const rawCar = cars.find(car => car.slug === decodeURIComponent(slug) || car.slug === slug);
+  if (!rawCar) notFound();
+  const car = localizeCar(rawCar, locale);
+  return pageMetadata(`/cars/${encodeURIComponent(rawCar.slug)}`, locale,
+    locale === "en" ? `${car.categoryName} Booking in Egypt | Limo Egypt` : `حجز ${car.categoryName} في مصر | ليمو مصر`,
+    locale === "en" ? `Explore ${car.categoryName}, with ${car.seats} seats. ${car.subtitle || ""} Review car details and request a booking with Limo Egypt.` : `تعرف على ${car.categoryName} بعدد ${car.seats} مقاعد. ${car.subtitle || ""} استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.`,
+    car.images);
+}
 
 export const dynamic = "force-dynamic";
 

@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/about");
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { getSiteSettings } from "@/lib/data";
@@ -17,7 +19,7 @@ export default async function AboutPage({ searchParams }: { searchParams?: Promi
     <PublicLayout settings={settings} locale={locale}>
       <main className="mx-auto max-w-6xl px-8 py-32 relative z-10">
         <div className="animate-reveal-1">
-          <SectionHeader 
+          <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "About Us" : "من نحن"} 
             title={locale === "en" ? "Limo Egypt Company" : "شركة ليمو مصر"} 
             text={locale === "en" ? "A transport and travel services company in Egypt focused on price transparency, fast booking confirmation, and a comfortable experience for visitors and tourists." : "شركة نقل وخدمات سفر في مصر تركز على وضوح السعر وسرعة تأكيد الحجز وتجربة مريحة للزوار والسياح."} 

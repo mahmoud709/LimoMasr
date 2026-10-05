@@ -2,10 +2,12 @@ export function SectionHeader({
   eyebrow,
   title,
   text,
+  as: Heading = "h2",
 }: {
   eyebrow?: string;
   title: string;
   text?: string;
+  as?: "h1" | "h2";
 }) {
   return (
     <div className="mb-12 max-w-3xl">
@@ -15,9 +17,9 @@ export function SectionHeader({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#111] tracking-tight leading-[1.2]">
+      <Heading className="text-3xl md:text-4xl lg:text-5xl font-black text-[#111] tracking-tight leading-[1.2]">
         {title}
-      </h2>
+      </Heading>
       {text ? <p className="mt-6 text-lg leading-relaxed text-black/60 font-light max-w-2xl">{text}</p> : null}
     </div>
   );

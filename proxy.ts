@@ -30,8 +30,8 @@ export function proxy(req: NextRequest) {
 
   // Normalize path for admin check
   let normalizedPath = pathname;
-  const hasEnPrefix = pathname.startsWith("/en");
-  const hasArPrefix = pathname.startsWith("/ar");
+  const hasEnPrefix = (pathname === "/en" || pathname.startsWith("/en/"));
+  const hasArPrefix = (pathname === "/ar" || pathname.startsWith("/ar/"));
 
   if (hasEnPrefix || hasArPrefix) {
     normalizedPath = pathname.substring(3);
@@ -71,6 +71,7 @@ export function proxy(req: NextRequest) {
 
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set("x-locale-rewritten", "true");
+    requestHeaders.set("x-site-locale", locale);
 
     logDebug(`REWRITE: ${pathname} -> ${rewriteUrl.pathname}${rewriteUrl.search}`);
 

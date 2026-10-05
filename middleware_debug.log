@@ -13756,3 +13756,5 @@
 2026-09-29T12:16:43.453Z - REDIRECT: /auth/login -> /ar/auth/login
 2026-09-29T12:16:46.929Z - INCOMING: /ar/auth/login | isRewritten: false | hasLocaleParam: false
 2026-09-29T12:16:47.874Z - REWRITE: /ar/auth/login -> /auth/login?__locale=ar
+2026-09-29T14:12:17.043Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-09-29T14:12:19.990Z - REWRITE: /ar -> /?__locale=ar

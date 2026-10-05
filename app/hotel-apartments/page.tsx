@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/hotel-apartments");
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -23,7 +25,7 @@ export default async function HotelApartmentsPage({ searchParams }: { searchPara
     <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-24 overflow-x-hidden">
         <div className="animate-reveal-1 px-6 md:px-8 max-w-7xl mx-auto w-full">
-          <SectionHeader 
+          <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Hotel Apartments" : "شقق فندقية"} 
             title={locale === "en" ? "Luxury Stay Giving You a Hotel Feeling" : "إقامة فاخرة تمنحك شعور الفندق"} 
             text={locale === "en" ? "Book your luxury hotel apartment in the best locations, spacious areas and complete privacy for your comfort." : "احجز شقتك الفندقية الراقية بأفضل المواقع، مساحات واسعة وخصوصية تامة لراحتك."} 

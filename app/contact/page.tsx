@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/contact");
 import { PublicLayout } from "@/components/PublicLayout";
 import { ContactForm } from "@/components/ContactForm";
 import { getSiteSettings } from "@/lib/data";
