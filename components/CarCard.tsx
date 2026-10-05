@@ -6,8 +6,9 @@ import type { Car, Locale } from "@/lib/types";
 import { ui, withLang } from "@/lib/i18n";
 import { formatCurrency, priceUnitLabel } from "@/lib/utils";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { ResponsiveImage } from "./ResponsiveImage";
 
-export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 50, viewMode = "grid" }: { car: Car; locale?: Locale; currency?: string; exchangeRate?: number; viewMode?: "grid" | "list" }) {
+export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 50, viewMode = "grid", imageSizes = "(max-width: 639px) calc(100vw - 48px), (max-width: 1023px) 50vw, 33vw" }: { car: Car; locale?: Locale; currency?: string; exchangeRate?: number; viewMode?: "grid" | "list"; imageSizes?: string }) {
   const t = ui[locale];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,10 +52,11 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {car.images.map((img, idx) => (
-            <img 
+            <ResponsiveImage
               key={idx}
               src={img} 
-              alt={`${car.categoryName} - ${idx + 1}`} 
+              alt={`${categoryName} - ${idx + 1}`}
+              sizes={imageSizes}
               className="w-full h-full object-cover shrink-0 snap-start transition-transform duration-700 group-hover:scale-105" 
               loading="lazy" 
             />

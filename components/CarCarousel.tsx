@@ -67,7 +67,7 @@ export function CarCarousel({ cars, title, viewAllText, locale = "ar", currency 
       >
         {cars.map((car, index) => (
           <div key={`${car.id}-${index}`} className="snap-start shrink-0 w-[280px] md:w-[360px]">
-             <CarCard car={car} locale={locale} currency={currency} exchangeRate={exchangeRate} />
+             <CarCard car={car} locale={locale} currency={currency} exchangeRate={exchangeRate} imageSizes="(min-width: 768px) 360px, 280px" />
           </div>
         ))}
       </div>
