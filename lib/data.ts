@@ -579,6 +579,8 @@ export async function getLiveExchangeRates() {
 }
 
 export async function getSiteSettings(): Promise<SiteSettings> {
+  // Start the independent rate request alongside the settings read.
+  const liveRatesPromise = getLiveExchangeRates();
   let settingsToReturn: SiteSettings | null = null;
   try {
     const db = await getDb();
@@ -625,7 +627,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     }
   }
 
-  const liveRates = await getLiveExchangeRates();
+  const liveRates = await liveRatesPromise;
 
   // Merge: live rate fills any missing DB values
   const merged = {

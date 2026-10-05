@@ -2,31 +2,44 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import Image from "next/image";
+
+function canOptimize(src: string) {
+  if (src.startsWith("/") && !src.startsWith("//")) return true;
+  try {
+    const url = new URL(src);
+    return url.protocol === "https:" && ["res.cloudinary.com", "images.unsplash.com"].includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
 
 export function HeroCarousel({ images }: { images?: string[] }) {
   const slides = images && images.length > 0 ? images : [];
 
   const [current, setCurrent] = useState(0);
-  const [errors, setErrors] = useState<Record<number, boolean>>({});
+  const [visited, setVisited] = useState<Set<number>>(() => new Set([0]));
 
   const goTo = useCallback((index: number) => {
+    setVisited(previous => new Set(previous).add(index));
     setCurrent(index);
   }, []);
 
   const prev = useCallback(() => {
     if (slides.length === 0) return;
-    setCurrent(c => (c - 1 + slides.length) % slides.length);
-  }, [slides.length]);
+    goTo((current - 1 + slides.length) % slides.length);
+  }, [current, slides.length, goTo]);
   
   const next = useCallback(() => {
     if (slides.length === 0) return;
-    setCurrent(c => (c + 1) % slides.length);
-  }, [slides.length]);
+    goTo((current + 1) % slides.length);
+  }, [current, slides.length, goTo]);
 
   useEffect(() => {
+    if (slides.length < 2) return;
     const timer = setInterval(next, 6000);
     return () => clearInterval(timer);
-  }, [next]);
+  }, [next, slides.length]);
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden group bg-[#1a2b3c]">
@@ -35,12 +48,15 @@ export function HeroCarousel({ images }: { images?: string[] }) {
           key={idx}
           className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${idx === current ? "opacity-100 scale-100 z-[2]" : "opacity-0 scale-105 z-[1]"}`}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          {visited.has(idx) && <Image
             src={src}
-            alt="Hero Background"
+            alt=""
+            fill
+            sizes="100vw"
+            preload={idx === 0}
+            unoptimized={!canOptimize(src)}
             className="w-full h-full object-cover"
-          />
+          />}
         </div>
       ))}
 

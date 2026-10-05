@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 function logDebug(message: string) {
+  if (process.env.NODE_ENV !== "development") return;
   fetch("http://localhost:3000/api/log", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
