@@ -96,7 +96,7 @@ export async function PublicLayout({
         </div>
       </header>
 
-      <FloatingWhatsApp phone={settings.whatsappCarNumber} socialLinks={settings.socialLinks} locale={locale} />
+      <FloatingWhatsApp phone={phone} socialLinks={settings.socialLinks} locale={locale} />
       
       <div className="flex-1">
         {children}
@@ -113,13 +113,13 @@ export async function PublicLayout({
             </h3>
             <p className="text-[#1a2b3c]/80 text-base md:text-lg font-medium max-w-xl">
               {locale === "en"
-                ? "Book your car now or contact us to arrange your airport welcome with the highest standards of comfort and safety."
-                : "احجز سيارتك الآن أو تواصل معنا لترتيب استقبالك من المطار بأعلى معايير الراحة والأمان."}
+                ? "Contact us to review your travel plans, service availability and booking details."
+                : "تواصل معنا لمراجعة ترتيبات رحلتك والتوافر وتفاصيل حجز الخدمة المطلوبة."}
             </p>
           </div>
           
           <div className="relative z-10 shrink-0">
-            <a href={buildWhatsappUrl(settings.whatsappCarNumber, "")} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-[#1a2b3c] text-white px-6 py-3.5 rounded-xl font-black text-base tracking-wide hover:bg-white hover:text-[#1a2b3c] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <a href={whatsappUrl} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-[#1a2b3c] text-white px-6 py-3.5 rounded-xl font-black text-base tracking-wide hover:bg-white hover:text-[#1a2b3c] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
               <FaWhatsapp className="w-5 h-5 text-[#25D366]" />
               {locale === "en" ? "Connect via WhatsApp" : "تواصل عبر واتساب"}
             </a>

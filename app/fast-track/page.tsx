@@ -1,3 +1,4 @@
+import { ServiceBookingGuide } from "@/components/ServiceBookingGuide";
 import { serviceMetadata } from "@/lib/seo";
 export const generateMetadata = serviceMetadata("/fast-track");
 import { PublicLayout } from "@/components/PublicLayout";
@@ -27,7 +28,7 @@ export default async function FastTrackPage({ searchParams }: { searchParams?: P
         <div className="animate-reveal-1">
           <SectionHeader as="h1" 
             eyebrow={locale === 'ar' ? "المسار السريع" : "Fast Track"} 
-            title={locale === 'ar' ? "خدمات المساعدة بالمطار" : "Airport Meet & Assist Services"} 
+            title={locale === 'ar' ? "فاست تراك وخدمات المساعدة بالمطار في مصر" : "Airport Fast Track & Assistance in Egypt"} 
             text={locale === 'ar' ? "وفر وقتك واعبر أسرع" : "Save your time and pass faster"} 
           />
         </div>
@@ -40,6 +41,7 @@ export default async function FastTrackPage({ searchParams }: { searchParams?: P
           exchangeRate={exchangeRate}
         />
 
+      <ServiceBookingGuide type="fast_track" locale={locale} settings={settings} />
       </main>
     </PublicLayout>
   );

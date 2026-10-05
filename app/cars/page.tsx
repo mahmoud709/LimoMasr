@@ -1,10 +1,11 @@
+import { ServiceBookingGuide } from "@/components/ServiceBookingGuide";
 import { serviceMetadata } from "@/lib/seo";
 export const generateMetadata = serviceMetadata("/cars");
-import Link from "next/link";
+
 import { PublicLayout } from "@/components/PublicLayout";
 import { CarsClient } from "./CarsClient";
 import { getCars, getSiteSettings } from "@/lib/data";
-import { ui } from "@/lib/i18n";
+
 import type { Locale } from "@/lib/types";
 import { cookies } from "next/headers";
 
@@ -23,7 +24,7 @@ export default async function CarsPage({ searchParams }: { searchParams?: Promis
   // Always use usdRate for the exchange calc — formatCurrency needs USD→EGP rate regardless of display currency
   const exchangeRate = settings.usdRate || 50;
   
-  const t = ui[locale];
+
 
   return (
     <PublicLayout settings={settings} locale={locale}>
@@ -35,11 +36,12 @@ export default async function CarsPage({ searchParams }: { searchParams?: Promis
                 <span className="w-8 h-[1px] bg-[#d0a755]"></span>
                 <span className="text-[#d0a755] font-bold tracking-widest text-xs uppercase">{locale === "en" ? "Our Fleet" : "الأسطول"}</span>
               </span>
-              <h1 className="text-4xl md:text-5xl font-black text-[#1a2b3c] tracking-tight">{locale === "en" ? "Limo Egypt Fleet" : "أسطول ليمو مصر"}</h1>
+              <h1 className="text-4xl md:text-5xl font-black text-[#1a2b3c] tracking-tight">{locale === "en" ? "Car & Limousine Booking in Egypt" : "حجز سيارات وليموزين في مصر"}</h1>
             </div>
           </div>
           
           <CarsClient cars={cars} locale={locale} currency={cookieCurrency} exchangeRate={exchangeRate} />
+<ServiceBookingGuide type="car" locale={locale} settings={settings} />
           
         </div>
       </div>

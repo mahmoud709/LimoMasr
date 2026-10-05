@@ -1,3 +1,4 @@
+import { ServiceBookingGuide } from "@/components/ServiceBookingGuide";
 import { serviceMetadata } from "@/lib/seo";
 export const generateMetadata = serviceMetadata("/hotels");
 import { BookingForm } from "@/components/BookingForm";
@@ -28,7 +29,7 @@ export default async function HotelsPage({ searchParams }: { searchParams?: Prom
         <div className="animate-reveal-1 px-6 md:px-8 max-w-7xl mx-auto w-full">
           <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Hotel Booking" : "حجز فنادق"} 
-            title={locale === "en" ? "Request a Stay Offer by City" : "اطلب عرض إقامة حسب المدينة"} 
+            title={locale === "en" ? "Hotel Booking in Egypt" : "حجز فنادق في مصر"} 
             text={locale === "en" ? "Send arrival, departure dates, and guest count, and details will be confirmed via WhatsApp." : "أرسل تاريخ الوصول والمغادرة وعدد الأفراد، وسيتم تأكيد التفاصيل عبر واتساب."} 
           />
         </div>
@@ -129,6 +130,7 @@ export default async function HotelsPage({ searchParams }: { searchParams?: Prom
           <HotelMarquee />
         </div>
         
+      <ServiceBookingGuide type="hotel" locale={locale} settings={settings} />
       </main>
     </PublicLayout>
   );

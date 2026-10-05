@@ -1,3 +1,4 @@
+import { ServiceBookingGuide } from "@/components/ServiceBookingGuide";
 import { serviceMetadata } from "@/lib/seo";
 export const generateMetadata = serviceMetadata("/flights");
 import { BookingForm } from "@/components/BookingForm";
@@ -25,12 +26,12 @@ export default async function FlightsPage({ searchParams }: { searchParams?: Pro
   const exchangeRate = settings.usdRate || 50;
 
   return (
-    <PublicLayout settings={settings} whatsappType="hotel" locale={locale}>
+    <PublicLayout settings={settings} whatsappType="flight" locale={locale}>
       <main className="mx-auto w-full relative z-10 flex flex-col pt-32 pb-8">
         <div className="animate-reveal-1 px-8 max-w-7xl mx-auto w-full">
           <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Flight Booking" : "حجز طيران"} 
-            title={locale === "en" ? "Flights to all Global & Domestic Destinations" : "رحلات طيران إلى كافة الوجهات العالمية والمحلية"} 
+            title={locale === "en" ? "Flight Booking & Travel Quotes" : "حجز طيران وطلب عروض رحلات"} 
             text={locale === "en" ? "We provide you with the best flight ticket offers to travel in comfort to your favorite destinations at the best prices." : "نوفر لك أفضل عروض تذاكر الطيران، لتسافر براحة تامة إلى وجهتك المفضلة بأفضل الأسعار."} 
           />
         </div>
@@ -113,6 +114,7 @@ export default async function FlightsPage({ searchParams }: { searchParams?: Pro
         <div className="mb-12">
           <AirlineMarquee locale={locale} />
         </div>
+      <ServiceBookingGuide type="flight" locale={locale} settings={settings} />
       </main>
     </PublicLayout>
   );

@@ -1,3 +1,4 @@
+import { ServiceBookingGuide } from "@/components/ServiceBookingGuide";
 import { serviceMetadata } from "@/lib/seo";
 export const generateMetadata = serviceMetadata("/hotel-apartments");
 import { BookingForm } from "@/components/BookingForm";
@@ -27,7 +28,7 @@ export default async function HotelApartmentsPage({ searchParams }: { searchPara
         <div className="animate-reveal-1 px-6 md:px-8 max-w-7xl mx-auto w-full">
           <SectionHeader as="h1" 
             eyebrow={locale === "en" ? "Hotel Apartments" : "شقق فندقية"} 
-            title={locale === "en" ? "Luxury Stay Giving You a Hotel Feeling" : "إقامة فاخرة تمنحك شعور الفندق"} 
+            title={locale === "en" ? "Serviced Apartment Booking in Egypt" : "حجز شقق فندقية في مصر"} 
             text={locale === "en" ? "Book your luxury hotel apartment in the best locations, spacious areas and complete privacy for your comfort." : "احجز شقتك الفندقية الراقية بأفضل المواقع، مساحات واسعة وخصوصية تامة لراحتك."} 
           />
         </div>
@@ -116,6 +117,7 @@ export default async function HotelApartmentsPage({ searchParams }: { searchPara
             exchangeRate={exchangeRate}
           />
         </div>
+      <ServiceBookingGuide type="apartment" locale={locale} settings={settings} />
       </main>
     </PublicLayout>
   );
