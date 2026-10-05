@@ -6,13 +6,13 @@ import "./globals.css";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
-  variable: "--font-cairo",
+  variable: "--font-cairo-loaded",
   display: "swap",
 });
 
 const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-outfit-loaded",
   display: "swap",
 });
 

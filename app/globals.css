@@ -11,9 +11,9 @@ html {
   font-size: 14px; /* Reduced from default 16px to scale down all text and spacing globally */
 }
   
-  @theme {
-    --font-cairo: var(--font-cairo), sans-serif;
-    --font-outfit: var(--font-outfit), sans-serif;
+  @theme inline {
+    --font-cairo: var(--font-cairo-loaded), Arial, sans-serif;
+    --font-outfit: var(--font-outfit-loaded), Arial, sans-serif;
     --color-gold: #B88A44;
     --color-gold-muted: #D4B27E;
     --color-light: #F9F8F6;
@@ -162,7 +162,7 @@ body {
   overflow-x: hidden;
   background-color: #F9F8F6 !important;
   color: #111111;
-  font-family: var(--font-cairo);
+  font-family: var(--font-cairo-loaded), Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;

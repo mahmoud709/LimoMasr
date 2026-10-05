@@ -61,18 +61,18 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
 
           <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
             <div className="flex flex-col items-start text-start max-w-4xl py-8 md:py-24 mb-12 md:mb-0 mt-4 md:mt-0 pointer-events-none">
-              <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-3 md:mb-6 animate-reveal-1 drop-shadow-md uppercase">
+              <p className="text-[#d0a755] font-bold tracking-widest text-sm md:text-base mb-3 md:mb-6 drop-shadow-md uppercase">
                 {t.hero.eyebrow}
               </p>
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.3] md:leading-[1.2] mb-4 md:mb-8 animate-reveal-2 drop-shadow-lg">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-white leading-[1.3] md:leading-[1.2] mb-4 md:mb-8 drop-shadow-lg">
                 {locale === "en" ? "Hotel, Limousine & Travel Services in Egypt" : "حجز فنادق وليموزين وخدمات سفر في مصر"}
               </h1>
-              <p className="text-white/90 text-sm md:text-xl leading-[1.6] md:leading-[1.8] mb-6 md:mb-8 max-w-xl animate-reveal-3 font-medium drop-shadow-md">
+              <p className="text-white/90 text-sm md:text-xl leading-[1.6] md:leading-[1.8] mb-6 md:mb-8 max-w-xl font-medium drop-shadow-md">
                 {t.hero.text}
               </p>
 
               {/* Sleek, Compact Booking Cards Row - 4 Cards Layout */}
-              <div className="w-full animate-reveal-3 pointer-events-auto">
+              <div className="w-full pointer-events-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                   {[
                     {
