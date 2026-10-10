@@ -3,6 +3,7 @@ import { getBookings, addBooking, updateBooking } from "@/lib/data";
 import type { Booking } from "@/lib/types";
 import { eventEmitter } from "@/lib/eventEmitter";
 import { requireAdminAuth } from "@/lib/admin-auth";
+import { normalizeBookingPhone } from "@/lib/booking-phone";
 
 export async function GET() {
   const unauth = await requireAdminAuth();
@@ -15,6 +16,15 @@ const rateLimitMap = new Map<string, number>();
 const RATE_LIMIT_MS = 60 * 1000; // 1 minute
 
 export async function POST(request: Request) {
+  const payload = await request.json().catch(() => null);
+  const phone = normalizeBookingPhone(payload?.phone);
+  if (!phone) {
+    return NextResponse.json({
+      error: "أدخل رقم هاتف / واتساب كاملًا وصحيحًا للتواصل، وليس كود الدولة فقط.",
+      code: "PHONE_INVALID",
+    }, { status: 400 });
+  }
+
   // Basic IP-based rate limiting
   const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown";
   const now = Date.now();
@@ -35,12 +45,11 @@ export async function POST(request: Request) {
   
   rateLimitMap.set(ip, now);
 
-  const payload = await request.json();
   const booking: Booking = {
     id: crypto.randomUUID(),
     type: payload.type,
     customerName: payload.customerName,
-    phone: payload.phone,
+    phone,
     serviceRefId: payload.serviceRefId,
     serviceName: payload.serviceName,
     date: payload.date,
@@ -70,6 +79,11 @@ export async function PUT(request: Request) {
   const unauth = await requireAdminAuth();
   if (unauth) return unauth;
   const payload = await request.json();
+  if (Object.prototype.hasOwnProperty.call(payload, "phone")) {
+    const phone = normalizeBookingPhone(payload.phone);
+    if (!phone) return NextResponse.json({ error: "رقم الهاتف مطلوب ويجب أن يكون كاملًا.", code: "PHONE_INVALID" }, { status: 400 });
+    payload.phone = phone;
+  }
   await updateBooking(payload.id, payload);
   return NextResponse.json({ ok: true });
 }

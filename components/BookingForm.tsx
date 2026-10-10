@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useMemo, useState, useEffect, useRef } from "react";
+import { FormEvent, useMemo, useState, useEffect, useRef, useId } from "react";
+import { normalizeBookingPhone } from "@/lib/booking-phone";
 import type { ServiceType } from "@/lib/types";
 import { bookingMessage, buildWhatsappUrl } from "@/lib/utils";
 import { BOOKING_SUCCESS_CONVERSION_SEND_TO, trackEvent, trackWhatsappClick } from "@/lib/gtag";
@@ -52,6 +53,9 @@ export function BookingForm({
   // Common Contact Info
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const phoneId = useId();
+  const [bookingError, setBookingError] = useState("");
   const [passengers, setPassengers] = useState<any>(1);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
@@ -116,6 +120,13 @@ export function BookingForm({
     window.location.search.includes("lang=en") ||
     document.cookie.includes("NEXT_LOCALE=en")
   ));
+
+  // Native form validation must also reject a country code without a number.
+  useEffect(() => {
+    phoneInputRef.current?.setCustomValidity(phone && !normalizeBookingPhone(phone)
+      ? (isEn ? "Enter a complete phone / WhatsApp number." : "أدخل رقم هاتف / واتساب كاملًا للتواصل، وليس كود الدولة فقط.")
+      : "");
+  }, [phone, isEn]);
 
   // Fetch logged in customer if available to pre-fill details
   const { data: authData } = useQuery({
@@ -348,6 +359,16 @@ export function BookingForm({
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (saving) return;
+    setBookingError("");
+    const contactPhone = normalizeBookingPhone(phone);
+    if (!contactPhone) {
+      setBookingError(isEn
+        ? "Enter a complete phone / WhatsApp number, not just the country code."
+        : "أدخل رقم هاتف / واتساب كاملًا للتواصل، وليس كود الدولة فقط.");
+      phoneInputRef.current?.focus();
+      return;
+    }
     setSaving(true);
     try {
       let uploadedAttachmentUrl = "";
@@ -402,7 +423,7 @@ export function BookingForm({
         body: JSON.stringify({
           type: effectiveType,
           customerName: effectiveCustomerName,
-          phone,
+          phone: contactPhone,
           isForOther,
           otherPersonName: isForOther ? otherPersonName : undefined,
           otherPersonPhone: isForOther ? otherPersonPhone : undefined,
@@ -419,6 +440,15 @@ export function BookingForm({
           source: bookingSource,
         }),
       });
+
+      if (!res.ok) {
+        const result = await res.json().catch(() => null);
+        if (result?.code === "PHONE_INVALID") phoneInputRef.current?.focus();
+        setBookingError(isEn
+          ? (result?.code === "PHONE_INVALID" ? "Enter a complete phone / WhatsApp number." : "Your booking was not saved. Please check your details and try again.")
+          : (result?.error || "لم يتم حفظ الحجز. راجع البيانات وحاول مرة أخرى."));
+        return;
+      }
 
       if (res.ok) {
         trackEvent("booking_submit_success", {
@@ -441,6 +471,7 @@ export function BookingForm({
       }
     } catch (err) {
       console.error("Booking error:", err);
+      setBookingError(isEn ? "Your booking was not saved. Please try again." : "لم يتم حفظ الحجز. حاول مرة أخرى.");
     } finally {
       setSaving(false);
     }
@@ -448,6 +479,7 @@ export function BookingForm({
 
   const resetForm = () => {
     setBookingSuccess(false);
+    setBookingError("");
     setNotes("");
     setPassengers(1);
     setCarDate("");
@@ -1275,16 +1307,33 @@ export function BookingForm({
             </div>
           </div>
           <div>
-            <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-              {isEn ? "Phone / WhatsApp Number" : "رقم الهاتف / الواتساب للتواصل"}
+            <label htmlFor={phoneId} className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
+              {isEn ? "Phone / WhatsApp Number *" : "رقم الهاتف / الواتساب للتواصل *"}
             </label>
             <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
               <FiPhone className="w-4 h-4 text-[#d0a755] shrink-0" />
               <input
                 required
                 type="tel"
+                name="phone"
+                id={phoneId}
+                ref={phoneInputRef}
+                inputMode="tel"
+                autoComplete="tel"
+                minLength={7}
+                maxLength={32}
+                aria-describedby={bookingError ? phoneId + "-error" : undefined}
                 value={phone}
-                onChange={(event) => setPhone(event.target.value)}
+                onInvalid={(event) => {
+                  event.currentTarget.setCustomValidity(isEn
+                    ? "Enter a complete phone / WhatsApp number."
+                    : "أدخل رقم هاتف / واتساب كاملًا للتواصل، وليس كود الدولة فقط.");
+                }}
+                onChange={(event) => {
+                  event.target.setCustomValidity("");
+                  setPhone(event.target.value);
+                  setBookingError("");
+                }}
                 placeholder={isEn ? "e.g. +201000000000" : "مثال: 01000000000"}
                 className="w-full bg-transparent text-sm font-medium text-[#1a2b3c] placeholder-[#1a2b3c]/40 outline-none text-left"
                 dir="ltr"
@@ -1329,6 +1378,7 @@ export function BookingForm({
       </div>
       
       <div className="flex flex-col gap-3 mt-6">
+        {bookingError && <p id={phoneId + "-error"} role="alert" className="text-sm font-bold text-red-600">{bookingError}</p>}
         {/* Book via Web */}
         <button
           type="submit"
@@ -1434,9 +1484,8 @@ export function BookingForm({
       <NationalitySearchModal
         isOpen={nationalityModalOpen}
         onClose={() => setNationalityModalOpen(false)}
-        onSelect={(nat, code) => {
+        onSelect={(nat) => {
           setNationality(nat);
-          if (code) setPhone(code + " ");
         }}
         title={isEn ? "Nationality" : "الجنسية"}
         placeholder={isEn ? "Search countries..." : "ابحث عن دولة..."}

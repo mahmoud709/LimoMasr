@@ -13758,3 +13758,37 @@
 2026-09-29T12:16:47.874Z - REWRITE: /ar/auth/login -> /auth/login?__locale=ar
 2026-09-29T14:12:17.043Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-09-29T14:12:19.990Z - REWRITE: /ar -> /?__locale=ar
+2026-10-10T17:21:20.730Z - REDIRECT: / -> /ar
+2026-10-10T17:21:20.804Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:21:20.831Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:21:20.922Z - REDIRECT: / -> /ar
+2026-10-10T17:21:20.958Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:21:20.985Z - REWRITE: /ar -> /?__locale=ar
+2026-10-10T17:21:52.059Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:21:52.074Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:29.630Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:29.648Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:30.256Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:30.271Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:30.494Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:30.511Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:30.528Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:30.543Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:30.560Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:30.576Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:30.592Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:30.608Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:31.168Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:31.182Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:31.393Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:31.406Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:31.601Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:31.612Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:31.628Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:31.641Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:32:31.659Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:32:31.670Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:41:13.094Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:41:13.105Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-10-10T17:44:17.795Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-10-10T17:44:17.813Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar

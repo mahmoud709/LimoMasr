@@ -3,6 +3,7 @@ import { getDb } from "@/lib/mongodb";
 import { getBookings, updateBooking } from "@/lib/data";
 import { ObjectId } from "mongodb";
 import { cookies } from "next/headers";
+import { normalizeBookingPhone } from "@/lib/booking-phone";
 
 // Helper to get logged-in customer phone
 async function getCustomerPhone() {
@@ -19,7 +20,7 @@ async function getCustomerPhone() {
   }
 
   const customer = await db.collection("customers").findOne({ _id: queryId });
-  return customer ? customer.phone : null;
+  return customer ? normalizeBookingPhone(customer.phone) : null;
 }
 
 export async function GET(req: Request) {
@@ -35,7 +36,7 @@ export async function GET(req: Request) {
 
     const bookings = await getBookings();
     // Filter bookings that match the customer's phone number
-    const customerBookings = bookings.filter(b => b.phone === phone);
+    const customerBookings = bookings.filter(b => normalizeBookingPhone(b.phone) === phone);
 
     // Sort bookings by date/createdAt descending (newest bookings first)
     const sortedBookings = [...customerBookings].sort((a, b) => {
@@ -80,7 +81,7 @@ export async function PUT(req: Request) {
     }
 
     // Ensure the booking belongs to the current logged-in customer
-    if (booking.phone !== phone) {
+    if (normalizeBookingPhone(booking.phone) !== phone) {
       return NextResponse.json({ error: "غير مصرح لك بتعديل هذا الحجز" }, { status: 403 });
     }
 

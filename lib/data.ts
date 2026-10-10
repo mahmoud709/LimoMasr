@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { getDb } from "./mongodb";
+import { normalizeBookingPhone } from "./booking-phone";
 import { deleteFromCloudinary } from "./cloudinary";
 import type {
   Booking,
@@ -535,12 +536,19 @@ export async function saveBookings(bookings: Booking[]) {
 }
 
 export async function addBooking(booking: Booking) {
+  const phone = normalizeBookingPhone(booking.phone);
+  if (!phone) throw new Error("A complete contact phone is required to create a booking.");
   const db = await getDb();
   const collection = db.collection("bookings");
-  await collection.insertOne({ ...booking });
+  await collection.insertOne({ ...booking, phone });
 }
 
 export async function updateBooking(id: string, booking: Partial<Booking>) {
+  if (Object.prototype.hasOwnProperty.call(booking, "phone")) {
+    const phone = normalizeBookingPhone(booking.phone);
+    if (!phone) throw new Error("A booking contact phone cannot be removed or invalid.");
+    booking = { ...booking, phone };
+  }
   const db = await getDb();
   const collection = db.collection("bookings");
   const { _id, ...updateData } = booking as any;
