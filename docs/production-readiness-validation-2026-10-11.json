@@ -1,0 +1,1603 @@
+{
+  "checkedAt": "2026-10-11T10:33:46.352Z",
+  "repository": "G:/mahmoud/LimoMasr",
+  "baseline": "53ed7926d0de9cfa274e4c5d48a57ba6e6293791",
+  "decision": "NO-GO",
+  "noDeployment": true,
+  "noProductionDatabaseWrites": true,
+  "noFakeConversions": true,
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0
+  },
+  "verification": {
+    "command": "npm run verify:production",
+    "exitCode": 0,
+    "invalidBookingRequests": 170,
+    "validMockBookingRequests": 10,
+    "submissionFailureCases": 55,
+    "retiredHandlers": 17,
+    "guardedAdminHandlers": 40,
+    "concurrentMongoCallers": 30
+  },
+  "html": {
+    "count": 68,
+    "schemaPages": 56,
+    "routes": [
+      "/ar",
+      "/ar/about",
+      "/ar/blog",
+      "/ar/blog/alexandria-best-places",
+      "/ar/blog/cairo-giza-best-places",
+      "/ar/blog/guide-fayoum",
+      "/ar/blog/guide-luxor-aswan",
+      "/ar/blog/guide-oases",
+      "/ar/blog/guide-sharm-hurghada",
+      "/ar/cairo-airport-transfer",
+      "/ar/cars",
+      "/ar/cars/%D8%A7%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%AA%D9%88%D8%B1%D9%8A%D8%B2%D9%85%D9%88",
+      "/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B1%D9%88%D9%84%D8%A7",
+      "/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B3%D8%AA%D8%B1",
+      "/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%87%D8%A7%D9%8A-%D8%A7%D8%B3",
+      "/ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5",
+      "/ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%AA%D9%8A%D8%AC%D9%88-8-%D8%A8%D8%B1%D9%88",
+      "/ar/cars/%D9%83%D9%8A%D8%A7-%D8%B3%D9%8A%D8%B1%D8%A7%D8%AA%D9%88",
+      "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D8%B3-500",
+      "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+      "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-200",
+      "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%AC%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+      "/ar/cars/%D9%85%D9%8A%D8%AA%D8%B3%D9%88%D8%A8%D9%8A%D8%B4%D9%8A-%D8%A5%D9%83%D8%B3%D8%A8%D8%A7%D9%86%D8%AF%D8%B1",
+      "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D8%AA%D8%B4-1",
+      "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+      "/ar/contact",
+      "/ar/fast-track",
+      "/ar/flights",
+      "/ar/hotel-apartments",
+      "/ar/hotels",
+      "/ar/policies",
+      "/ar/privacy",
+      "/ar/sphinx-airport-transfer",
+      "/ar/stays",
+      "/en",
+      "/en/about",
+      "/en/blog",
+      "/en/blog/alexandria-best-places",
+      "/en/blog/cairo-giza-best-places",
+      "/en/blog/guide-fayoum",
+      "/en/blog/guide-luxor-aswan",
+      "/en/blog/guide-oases",
+      "/en/blog/guide-sharm-hurghada",
+      "/en/cairo-airport-transfer",
+      "/en/cars",
+      "/en/cars/%D8%A7%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%AA%D9%88%D8%B1%D9%8A%D8%B2%D9%85%D9%88",
+      "/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B1%D9%88%D9%84%D8%A7",
+      "/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B3%D8%AA%D8%B1",
+      "/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%87%D8%A7%D9%8A-%D8%A7%D8%B3",
+      "/en/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5",
+      "/en/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%AA%D9%8A%D8%AC%D9%88-8-%D8%A8%D8%B1%D9%88",
+      "/en/cars/%D9%83%D9%8A%D8%A7-%D8%B3%D9%8A%D8%B1%D8%A7%D8%AA%D9%88",
+      "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D8%B3-500",
+      "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+      "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-200",
+      "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%AC%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+      "/en/cars/%D9%85%D9%8A%D8%AA%D8%B3%D9%88%D8%A8%D9%8A%D8%B4%D9%8A-%D8%A5%D9%83%D8%B3%D8%A8%D8%A7%D9%86%D8%AF%D8%B1",
+      "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D8%AA%D8%B4-1",
+      "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+      "/en/contact",
+      "/en/fast-track",
+      "/en/flights",
+      "/en/hotel-apartments",
+      "/en/hotels",
+      "/en/policies",
+      "/en/privacy",
+      "/en/sphinx-airport-transfer",
+      "/en/stays"
+    ]
+  },
+  "browser": {
+    "forms": [
+      {
+        "locale": "ar",
+        "service": "cars",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "ar",
+        "service": "fast-track",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "ar",
+        "service": "hotels",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "ar",
+        "service": "hotel-apartments",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "ar",
+        "service": "flights",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "ar",
+        "service": "cairo-airport-transfer",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "ar",
+        "service": "sphinx-airport-transfer",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "cars",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "fast-track",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "hotels",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "hotel-apartments",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "flights",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "cairo-airport-transfer",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      },
+      {
+        "locale": "en",
+        "service": "sphinx-airport-transfer",
+        "countryCodeRejected": true,
+        "completeNumberAccepted": true
+      }
+    ],
+    "errors": [],
+    "bookingRequests": 0,
+    "contactEvents": [
+      "whatsapp_click",
+      "conversion",
+      "phone_click",
+      "conversion"
+    ],
+    "contexts": [
+      {
+        "nationalitySelected": true,
+        "phoneStillEmpty": true
+      },
+      {
+        "locale": "ar",
+        "clientNavigationToBooking": true
+      },
+      {
+        "locale": "en",
+        "clientNavigationToBooking": true
+      },
+      {
+        "route": "ar/login",
+        "rendered": true
+      },
+      {
+        "route": "en/register",
+        "rendered": true
+      },
+      {
+        "route": "ar/my-bookings",
+        "rendered": true
+      },
+      {
+        "route": "ar/admin/login",
+        "rendered": true
+      },
+      {
+        "route": "ar/blog/guide-sharm-hurghada",
+        "rendered": true
+      },
+      {
+        "route": "en/blog/guide-sharm-hurghada",
+        "rendered": true
+      }
+    ]
+  },
+  "responsive": {
+    "checks": [
+      {
+        "pathname": "/ar",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar/cars",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar/hotels",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/hotel-apartments",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/flights",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/fast-track",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/cairo-airport-transfer",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/sphinx-airport-transfer",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/blog/guide-sharm-hurghada",
+        "width": 390,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en/cars",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en/hotels",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/hotel-apartments",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/flights",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/fast-track",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/cairo-airport-transfer",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/sphinx-airport-transfer",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/blog/guide-sharm-hurghada",
+        "width": 390,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": 0,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar/cars",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar/hotels",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/hotel-apartments",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/flights",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/fast-track",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/cairo-airport-transfer",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/sphinx-airport-transfer",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/blog/guide-sharm-hurghada",
+        "width": 768,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en/cars",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en/hotels",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/hotel-apartments",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/flights",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/fast-track",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/cairo-airport-transfer",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/sphinx-airport-transfer",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/blog/guide-sharm-hurghada",
+        "width": 768,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar/cars",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/ar/hotels",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/hotel-apartments",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/flights",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/fast-track",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/cairo-airport-transfer",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/sphinx-airport-transfer",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/ar/blog/guide-sharm-hurghada",
+        "width": 1440,
+        "lang": "ar",
+        "dir": "rtl",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en/cars",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      },
+      {
+        "pathname": "/en/hotels",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/hotel-apartments",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/flights",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/fast-track",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/cairo-airport-transfer",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/sphinx-airport-transfer",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": true
+      },
+      {
+        "pathname": "/en/blog/guide-sharm-hurghada",
+        "width": 1440,
+        "lang": "en",
+        "dir": "ltr",
+        "h1": 1,
+        "overflow": -15,
+        "nav": true,
+        "footer": true,
+        "phone": false
+      }
+    ],
+    "modals": [
+      {
+        "label": "Select Nationality",
+        "initialFocus": true,
+        "tabWrap": true,
+        "escape": true,
+        "focusRestored": true
+      },
+      {
+        "label": "Select destination",
+        "initialFocus": true,
+        "tabWrap": true,
+        "escape": true,
+        "focusRestored": true
+      }
+    ],
+    "xml": {
+      "errors": 0,
+      "urls": 68,
+      "links": true
+    },
+    "horizontalOverflows": []
+  },
+  "http": {
+    "checks": [
+      {
+        "method": "GET",
+        "path": "/api/bookings",
+        "status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/cloudinary/list",
+        "status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/api/admin/list-cloudinary-images",
+        "status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/api/reviews?all=true",
+        "status": 401
+      },
+      {
+        "method": "GET",
+        "path": "/api/customer/bookings",
+        "status": 401
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/admin/clear-all-cars",
+        "status": 410
+      },
+      {
+        "method": "POST",
+        "path": "/api/log",
+        "status": 404
+      },
+      {
+        "method": "POST",
+        "path": "/api/admin/auth/change-password",
+        "status": 401
+      },
+      {
+        "method": "POST",
+        "path": "/api/bookings",
+        "status": 400
+      },
+      {
+        "method": "POST",
+        "path": "/api/customer/login",
+        "status": 503
+      },
+      {
+        "method": "POST",
+        "path": "/api/customer/register",
+        "status": 503
+      },
+      {
+        "method": "GET",
+        "path": "/ar/admin?__locale=ar",
+        "status": 307
+      },
+      {
+        "method": "GET",
+        "path": "/en/admin/bookings",
+        "status": 307
+      }
+    ]
+  },
+  "lint": {
+    "errors": 125,
+    "warnings": 118,
+    "fullPass": false,
+    "targetedPass": true
+  },
+  "dependencies": {
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 1,
+      "high": 4,
+      "critical": 1,
+      "total": 6
+    },
+    "full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 12,
+      "critical": 1,
+      "total": 17
+    },
+    "productionPackages": [
+      {
+        "name": "baseline-browser-mapping",
+        "severity": "moderate",
+        "isDirect": false,
+        "fixAvailable": true
+      },
+      {
+        "name": "nanoid",
+        "severity": "high",
+        "isDirect": false,
+        "fixAvailable": true
+      },
+      {
+        "name": "next",
+        "severity": "critical",
+        "isDirect": true,
+        "fixAvailable": {
+          "name": "next",
+          "version": "16.4.0",
+          "isSemVerMajor": false
+        }
+      },
+      {
+        "name": "postcss",
+        "severity": "high",
+        "isDirect": false,
+        "fixAvailable": {
+          "name": "next",
+          "version": "16.4.0",
+          "isSemVerMajor": false
+        }
+      },
+      {
+        "name": "sharp",
+        "severity": "high",
+        "isDirect": false,
+        "fixAvailable": {
+          "name": "next",
+          "version": "16.4.0",
+          "isSemVerMajor": false
+        }
+      },
+      {
+        "name": "source-map-js",
+        "severity": "high",
+        "isDirect": false,
+        "fixAvailable": true
+      }
+    ]
+  },
+  "performance": {
+    "runs": [
+      {
+        "name": "limo-valid-readiness-final-ui-desktop-0.json",
+        "device": "desktop",
+        "index": 0,
+        "warmup": true,
+        "valid": true,
+        "failed": [],
+        "score": 96,
+        "FCP": 453.68100000000004,
+        "LCP": 839.8835000000001,
+        "TBT": 121.99999999999932,
+        "CLS": 0.00003258641854268347,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 169965
+          },
+          {
+            "status": 200,
+            "bytes": 179817
+          }
+        ]
+      },
+      {
+        "name": "limo-valid-readiness-final-ui-desktop-1.json",
+        "device": "desktop",
+        "index": 1,
+        "warmup": false,
+        "valid": true,
+        "failed": [],
+        "score": 99,
+        "FCP": 397.481,
+        "LCP": 821.6835,
+        "TBT": 58.5,
+        "CLS": 0.000001057987520380781,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 170587
+          },
+          {
+            "status": 200,
+            "bytes": 180453
+          }
+        ]
+      },
+      {
+        "name": "limo-valid-readiness-final-ui-mobile-0.json",
+        "device": "mobile",
+        "index": 0,
+        "warmup": true,
+        "valid": true,
+        "failed": [],
+        "score": 67,
+        "FCP": 1524.801,
+        "LCP": 3780.3009999999995,
+        "TBT": 955.4660000000001,
+        "CLS": 0.00010096870525283012,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 170591
+          },
+          {
+            "status": 200,
+            "bytes": 180459
+          }
+        ]
+      },
+      {
+        "name": "limo-valid-readiness-final-ui-mobile-1.json",
+        "device": "mobile",
+        "index": 1,
+        "warmup": false,
+        "valid": false,
+        "failed": [
+          {
+            "host": "www.google-analytics.com",
+            "status": -1
+          },
+          {
+            "host": "www.google.com.eg",
+            "status": -1
+          }
+        ],
+        "score": 70,
+        "FCP": 1512.9089999999999,
+        "LCP": 3800.4089999999997,
+        "TBT": 715.394,
+        "CLS": 0,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 170591
+          },
+          {
+            "status": 200,
+            "bytes": 180459
+          }
+        ]
+      },
+      {
+        "name": "limo-valid-readiness-final-ui-mobile-2.json",
+        "device": "mobile",
+        "index": 2,
+        "warmup": false,
+        "valid": true,
+        "failed": [],
+        "score": 69,
+        "FCP": 1514.592,
+        "LCP": 3779.592,
+        "TBT": 786.7719999999999,
+        "CLS": 0.00008328688327123644,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 170591
+          },
+          {
+            "status": 200,
+            "bytes": 180459
+          }
+        ]
+      },
+      {
+        "name": "limo-valid-readiness-final-ui-mobile-3.json",
+        "device": "mobile",
+        "index": 3,
+        "warmup": false,
+        "valid": true,
+        "failed": [],
+        "score": 70,
+        "FCP": 1518.687,
+        "LCP": 3784.687,
+        "TBT": 711.0420000000001,
+        "CLS": 0.00010942277004619816,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 170459
+          },
+          {
+            "status": 200,
+            "bytes": 179794
+          }
+        ]
+      },
+      {
+        "name": "limo-valid-readiness-final-ui-mobile-4.json",
+        "device": "mobile",
+        "index": 4,
+        "warmup": false,
+        "valid": true,
+        "failed": [],
+        "score": 67,
+        "FCP": 1523.8410000000001,
+        "LCP": 3783.8410000000003,
+        "TBT": 895.606,
+        "CLS": 0.00009994848169466683,
+        "googleScripts": [
+          {
+            "status": 200,
+            "bytes": 170591
+          },
+          {
+            "status": 200,
+            "bytes": 180436
+          }
+        ]
+      }
+    ],
+    "mobileMedian": {
+      "score": 69,
+      "FCP": 1518.687,
+      "LCP": 3783.8410000000003,
+      "TBT": 786.7719999999999,
+      "CLS": 0.00009994848169466683
+    },
+    "desktop": {
+      "name": "limo-valid-readiness-final-ui-desktop-1.json",
+      "device": "desktop",
+      "index": 1,
+      "warmup": false,
+      "valid": true,
+      "failed": [],
+      "score": 99,
+      "FCP": 397.481,
+      "LCP": 821.6835,
+      "TBT": 58.5,
+      "CLS": 0.000001057987520380781,
+      "googleScripts": [
+        {
+          "status": 200,
+          "bytes": 170587
+        },
+        {
+          "status": 200,
+          "bytes": 180453
+        }
+      ]
+    },
+    "profile": {
+      "longTasks": 8,
+      "mainThread": [
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 1642.6039999999882
+        },
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 1578.5079999999757
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 1221.3800000000012
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 273.17199999999985
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 254.03600000000066
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 97.56400000000001
+        },
+        {
+          "group": "garbageCollection",
+          "groupLabel": "Garbage Collection",
+          "duration": 17.956
+        }
+      ]
+    }
+  },
+  "filesChanged": [
+    {
+      "path": "lib/session-signing.ts",
+      "why": "New bounded, expiring, role-specific HMAC sessions.",
+      "sha256": "74271cb67126098123a0fb8352ba42d0381fde0a42cb35b6c1c2bb907d258168"
+    },
+    {
+      "path": "lib/request-json.ts",
+      "why": "New streamed 32 KiB JSON request limit.",
+      "sha256": "0dd461f5d9c645e873cb6f4f8d11b14312d654da31cb1462e01dc6d8e45923fd"
+    },
+    {
+      "path": "components/useModalAccessibility.ts",
+      "why": "Dialog semantics, close labels, focus trapping/restoration.",
+      "sha256": "d0a3dcc63c1c642c07b4dabd148b3bd70303383f288ea275cbdfb221b111b2c3"
+    },
+    {
+      "path": "scripts/verify-production-readiness.cjs",
+      "why": "Focused booking/SEO/security regressions and dynamic metadata checks.",
+      "sha256": "74bf247dad4d7bdab96eb0e69cd1f77461a64ca5755fc6bf1cb77becde13b016"
+    },
+    {
+      "path": "lib/admin-auth.ts",
+      "why": "Require verified signed admin session.",
+      "sha256": "eca856ffba1ae9b2629b5b05e0b5a7fb33b38ac6ec7e39426380a2e8ad484fb6"
+    },
+    {
+      "path": "lib/mongodb.ts",
+      "why": "Preserve lazy/retry behavior; bound connection pool/waits.",
+      "sha256": "295ca8dfb7bbd743d528df57185231c90d2150e69398bd09fcb25e11499b6e72"
+    },
+    {
+      "path": "lib/data.ts",
+      "why": "Remove read-triggered seeds; fail-closed booking reads/persistence; generic logs.",
+      "sha256": "2fe13654f9ec87e098b6ed86e01e8211442d9dac65b7b4a44f7fccf7e7f97b05"
+    },
+    {
+      "path": "lib/cloudinary.ts",
+      "why": "Remove credential fallbacks; require configured uploads; redact errors.",
+      "sha256": "356805c86896ab15694a5f121a50039babc9a29c84aeaaa22e33c69775c85863"
+    },
+    {
+      "path": "proxy.ts",
+      "why": "Server admin protection; remove forged bypass flags.",
+      "sha256": "bf21f02f46ee72f9a804aacf13543cce30ea77dbde68f18de1637766be2a3bc8"
+    },
+    {
+      "path": "app/admin/layout.tsx",
+      "why": "Server admin protection; remove forged bypass flags.",
+      "sha256": "15aa4804c7311132538b3e26e1219699bb5b3e9edb09734469dfff4043ab7630"
+    },
+    {
+      "path": "app/api/admin/auth/route.ts",
+      "why": "Require signing configuration and validated password input.",
+      "sha256": "68111d280d7c9f30f4de3bda1103e3dea3d77a1417077717a3a6518bd7d0f2b8"
+    },
+    {
+      "path": "app/api/admin/auth/change-password/route.ts",
+      "why": "Authorize, then disable nondurable password changes.",
+      "sha256": "5bfcf2799345e4768c0242266d1dfd6b703fd839c26817380a99ab168fcad766"
+    },
+    {
+      "path": "app/api/admin/cloudinary/list/route.ts",
+      "why": "Protect private media listing.",
+      "sha256": "eaac2a966fe279776dbf73640359b0656cd267266d5bdd0e8861780483766a37"
+    },
+    {
+      "path": "app/api/admin/list-cloudinary-images/route.ts",
+      "why": "Protect private media listing.",
+      "sha256": "0adc9ac2d6988437af0e0a48998a8e141379c28831d4bee5dd3d95c9394963c0"
+    },
+    {
+      "path": "app/api/admin/articles/seed/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "b78a8fb2522fdc64588197a8f3fb44cd3cc5d21960df7aca0f84bb3825cd68e2"
+    },
+    {
+      "path": "app/api/admin/clean-unsplash/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/clear-all-cars/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "52f2ff320437cae692ac22a77d1d298b01bb16db0fcb0ba23fe914cb3f83476f"
+    },
+    {
+      "path": "app/api/admin/cloudinary/migrate/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "b78a8fb2522fdc64588197a8f3fb44cd3cc5d21960df7aca0f84bb3825cd68e2"
+    },
+    {
+      "path": "app/api/admin/debug-db/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/delete-middleware/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/fix-all-collections/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/force-atlas-sync/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/inspect-dbs/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/master-cloudinary-sync/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/replace-limo/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/restore-all/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/restore-cars/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/seed-get/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/upload-flights-cloudinary/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/admin/upload-hotels-cloudinary/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/migrate-db/route.ts",
+      "why": "Retire unsafe maintenance handler with 410.",
+      "sha256": "8b687c148fecf6e095def2997ae56a3aa465d11214a0e2d07ff252dcbebedf0a"
+    },
+    {
+      "path": "app/api/customer/login/route.ts",
+      "why": "Signed sessions, input/config checks; reject bare-ID cookies.",
+      "sha256": "5b1a05981d66552cd5ea77bd9a65e848fb52b4c59249c723dca10fe1bf2d6e0c"
+    },
+    {
+      "path": "app/api/customer/register/route.ts",
+      "why": "Signed sessions, input/config checks; reject bare-ID cookies.",
+      "sha256": "cefbd4b9d30c82820c4c529ee42c906af2e884b028a254eb55769be596664880"
+    },
+    {
+      "path": "app/api/customer/me/route.ts",
+      "why": "Signed sessions, input/config checks; reject bare-ID cookies.",
+      "sha256": "3a35c861531e7b654f8dcb677c4e99bc452c0ac89f8c1546cf8187620761bdf2"
+    },
+    {
+      "path": "app/api/customer/bookings/route.ts",
+      "why": "Verify signed session and trusted phone ownership.",
+      "sha256": "94bd9cb76684ccf5bb8a9ef4172d7f9b352e7aa81530410b2db0c7b4739be8fc"
+    },
+    {
+      "path": "app/api/bookings/route.ts",
+      "why": "Bound/validate requests; persist before 201; safe storage/notification errors.",
+      "sha256": "a80f098ff6d5f02357ccca2d70ed8e48c3683be201355ede824943c86c1e8b66"
+    },
+    {
+      "path": "app/api/contact/route.ts",
+      "why": "Bound and validate contact/email/phone input.",
+      "sha256": "627eff0b40f458fd7837e1e5e0258d15b05131198782ecd9fb6e1c63780c89fa"
+    },
+    {
+      "path": "app/api/reviews/route.ts",
+      "why": "Bound review input; authorize unapproved listing.",
+      "sha256": "f0f29d38afd419dfca2e8cbdcf445528e63124e5ea324c53a2cb543b1dcea6f7"
+    },
+    {
+      "path": "app/api/upload/route.ts",
+      "why": "Local throttling, file restrictions and generic errors.",
+      "sha256": "41a0e24f5ab91034de4e8c8f0304c60b0a5aab16f94d79d01b1abd43b2f10a41"
+    },
+    {
+      "path": "app/api/log/route.ts",
+      "why": "Disable debug filesystem writes outside development.",
+      "sha256": "4692220ab1fa8445c5a937d88e4b776a7741147338c8fc337178bc63c6537b24"
+    },
+    {
+      "path": "components/BookingForm.tsx",
+      "why": "Timeout and submission contract/lock; native keyboard location controls.",
+      "sha256": "c7eab1284439660094b1272454ba6064eba3d860d980cb5b0bab7a9d1ed3044c"
+    },
+    {
+      "path": "components/LocationSearchModal.tsx",
+      "why": "Dialog semantics, close labels, focus trapping/restoration.",
+      "sha256": "c461c161d617b6bfbc3c33bb6a9c4bfcf27bb8330a024c9a4225c9237a605372"
+    },
+    {
+      "path": "components/NationalitySearchModal.tsx",
+      "why": "Dialog semantics, close labels, focus trapping/restoration.",
+      "sha256": "c7bf51a10b3c8e5f13bb3f61df18dbc8ad3147595e94036f9748def11a175b58"
+    },
+    {
+      "path": "scripts/verify-booking-phone.cjs",
+      "why": "Focused booking/SEO/security regressions and dynamic metadata checks.",
+      "sha256": "44d68e7368cb6f7c83d8fe0e6713d5e2b6bfe4f1aea245c1fa8f43835a2c064d"
+    },
+    {
+      "path": "scripts/verify-booking-tracking.cjs",
+      "why": "Focused booking/SEO/security regressions and dynamic metadata checks.",
+      "sha256": "f91c8e0d10d16fc3a2fa4f51b9e06cd4bea3e535e2e8356c26b38416e997cdcc"
+    },
+    {
+      "path": "scripts/verify-seo-remediation.cjs",
+      "why": "Focused booking/SEO/security regressions and dynamic metadata checks.",
+      "sha256": "cee327827b847021a9d09126c45a6df99af806b72df516451f6e4df956a2aeb4"
+    },
+    {
+      "path": "scripts/verify-public-seo.cjs",
+      "why": "Focused booking/SEO/security regressions and dynamic metadata checks.",
+      "sha256": "122f76e4118146cc55366d3b851d4af497d2d2b3820d9ff1e49d883493f63f96"
+    },
+    {
+      "path": "scripts/check-all-dbs.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "8cf7dc22207443902bb903957751a26dc26f1f51a9323d70de73da18340f5381"
+    },
+    {
+      "path": "scripts/check-cars-db.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "2dda0e42543e800b4c706ead40b2b160a79d252fe3b894db33e02f86c71f1439"
+    },
+    {
+      "path": "scripts/fix-car-prices-usd.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "e54de08caf4ad8a9ef20ff4ff1f4893c96d927b5e7f99268097da5cf6b1c82ed"
+    },
+    {
+      "path": "scripts/master-cloudinary-db-sync.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "9f08fa0a642557861b75c106ef5b72adfa31754013fe17166203e22d0f0c4257"
+    },
+    {
+      "path": "scripts/restore-cloudinary-cars.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "468b6e7b4052e4bbd58bbec64c445eb51441958ecff1070b3d6f514385fb6330"
+    },
+    {
+      "path": "scripts/sync-all-to-atlas.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "cd7035c23b28d0edbe63cd75850bd65f222d8b9f35cd76bd7a6432dc95ff99e0"
+    },
+    {
+      "path": "scripts/sync-db.js",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "3c19a388634899c05662c89312f06d193b0bde0338269afd51696cef1af7256c"
+    },
+    {
+      "path": "scripts/upload-hotels-to-cloudinary.mjs",
+      "why": "Remove embedded Mongo URI; require environment at execution. Syntax tested only.",
+      "sha256": "9aafae786ca05f3733c015ef072b20aebb211819af29db822c55d50555109b7a"
+    },
+    {
+      "path": "package.json",
+      "why": "Add verify:production script; no dependency upgrade.",
+      "sha256": "453ea080cc22949eed6b4c5d5e537aebcb36959689b0316b4537c5f74602ff13"
+    },
+    {
+      "path": "docs/production-readiness-audit-2026-10-11.md",
+      "why": "Audit report or sanitized validation evidence."
+    },
+    {
+      "path": "docs/production-readiness-validation-2026-10-11.json",
+      "why": "Audit report or sanitized validation evidence."
+    }
+  ],
+  "limitations": [
+    "No authenticated staging database transactions",
+    "No account-side Google/Vercel verification",
+    "No phone ownership verification workflow implemented",
+    "Full lint fails",
+    "Mobile targets missed",
+    "One catalogue image upstream 404; no catalogue writes",
+    "Raw analytics request URLs excluded from evidence"
+  ]
+}

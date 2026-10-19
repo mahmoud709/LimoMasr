@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/JsonLd";
+import { organizationGraph } from "@/lib/structured-data";
 import { serviceMetadata } from "@/lib/seo";
 export const generateMetadata = serviceMetadata("/");
 import Link from "next/link";
@@ -53,6 +55,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
 
   return (
     <PublicLayout settings={settings} locale={locale}>
+      <JsonLd nodes={organizationGraph()} />
       <main className="flex flex-col w-full overflow-hidden">
         {/* Exact Layout Hero Section */}
         <section className="relative min-h-screen w-full flex items-center pt-16 md:pt-24 pb-32 md:pb-0 overflow-hidden">
@@ -129,7 +132,8 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
         <section className="relative py-24 border-y border-black/[0.05] bg-white">
           <div className="mx-auto max-w-[1400px] pl-0 pr-8 md:px-8 relative z-10 flex flex-col gap-20">
             {/* Cars Carousel */}
-            <CarCarousel
+            <div className="home-deferred-section">
+<CarCarousel
               cars={cars}
               title={locale === "en" ? "Limo Egypt Fleet" : "أسطول ليمو مصر"}
               viewAllText={locale === "en" ? "View All" : "عرض الكل"}
@@ -137,9 +141,11 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
               currency={currency}
               exchangeRate={exchangeRate}
             />
+</div>
 
             {/* Fast Track Carousel */}
-            <FastTrackCarousel
+            <div className="home-deferred-section">
+<FastTrackCarousel
               packages={packages}
               title={locale === "en" ? "Fast Track Services" : "المسار السريع بالمطارات"}
               viewAllText={locale === "en" ? "View All" : "عرض الباقات"}
@@ -147,9 +153,11 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
               currency={currency}
               exchangeRate={exchangeRate}
             />
+</div>
 
             {/* Hotels & Resorts Carousel */}
-            <HotelsCarousel
+            <div className="home-deferred-section">
+<HotelsCarousel
               hotels={hotels}
               title={locale === "en" ? "Hotels & Luxury Resorts" : "الفنادق والمنتجعات الفاخرة"}
               viewAllText={locale === "en" ? "View Hotels" : "عرض الفنادق"}
@@ -157,9 +165,11 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
               currency={currency}
               exchangeRate={exchangeRate}
             />
+</div>
 
             {/* Hotel Apartments Carousel */}
-            <ApartmentsCarousel
+            <div className="home-deferred-section">
+<ApartmentsCarousel
               apartments={apartments}
               title={locale === "en" ? "Hotel Apartments & Suites" : "الشقق والأجنحة الفندقية"}
               viewAllText={locale === "en" ? "View Apartments" : "عرض الشقق"}
@@ -167,9 +177,11 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
               currency={currency}
               exchangeRate={exchangeRate}
             />
+</div>
 
             {/* Flight Bookings Carousel */}
-            <FlightCarousel
+            <div className="home-deferred-section">
+<FlightCarousel
               flights={flights}
               title={locale === "en" ? "Flight Bookings & Airline Tickets" : "حجز تذاكر الطيران"}
               viewAllText={locale === "en" ? "Book Flight" : "احجز تذكرتك"}
@@ -177,6 +189,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
               currency={currency}
               exchangeRate={exchangeRate}
             />
+</div>
           </div>
         </section>
 

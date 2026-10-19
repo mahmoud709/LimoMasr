@@ -1,4 +1,4 @@
-import type { Car, FastTrackPackage, HotelOption, HotelItem, FlightRoute, ApartmentItem, Locale, SiteSettings } from "./types";
+import type { Car, FastTrackPackage, HotelItem, FlightRoute, ApartmentItem, Locale, SiteSettings } from "./types";
 
 export const locales: Locale[] = ["ar", "en"];
 
@@ -6,6 +6,7 @@ export const ui = {
   ar: {
     home: "الرئيسية",
     cars: "السيارات",
+    airports: "المطارات",
     fastTrack: "المسار السريع",
     hotels: "الفنادق",
     hotelApartments: "شقق فندقية",
@@ -132,6 +133,7 @@ export const ui = {
   en: {
     home: "Home",
     cars: "Cars",
+    airports: "Airports",
     fastTrack: "Fast Track",
     hotels: "Hotels",
     hotelApartments: "Hotel Apartments",
@@ -283,7 +285,7 @@ export function siteText(settings: SiteSettings, locale: Locale) {
 
 export function localizeCar(car: Car, locale: Locale): Car {
   const trans = car.translations?.[locale];
-  let localized = { ...car, ...trans };
+  const localized = { ...car, ...trans };
 
   if (locale === "en") {
     if (!trans?.categoryName) {

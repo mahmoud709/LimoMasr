@@ -1,4 +1,5 @@
 "use client";
+import { useModalAccessibility } from "./useModalAccessibility";
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -47,6 +48,7 @@ export function NationalitySearchModal({ isOpen, onClose, onSelect, title, place
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [mounted, setMounted] = useState(false);
+  const dialogRef = useModalAccessibility(isOpen && mounted, onClose);
 
   useEffect(() => {
     setMounted(true);
@@ -65,23 +67,23 @@ export function NationalitySearchModal({ isOpen, onClose, onSelect, title, place
     onClose();
   };
 
-  const filteredCountries = COUNTRIES.filter(c => 
+  const filteredCountries = COUNTRIES.filter(c =>
     c.ar.includes(query) || c.en.toLowerCase().includes(query.toLowerCase())
   );
 
   if (!isOpen || !mounted) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 md:items-center md:p-4">
-      <div 
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 md:items-center md:p-4">
+      <div
         className="bg-white w-full md:w-[450px] h-[85vh] md:h-auto md:max-h-[85vh] rounded-t-3xl md:rounded-3xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-full md:zoom-in-95 duration-300 shadow-2xl mt-auto md:mt-0"
         dir={isEn ? "ltr" : "rtl"}
       >
         {/* Header */}
         <div className="p-6 border-b border-slate-100 flex items-center justify-between shrink-0">
           <h2 className="text-xl font-black text-[#1a2b3c]">{title}</h2>
-          <button 
-            onClick={onClose}
+          <button
+            aria-label={isEn ? "Close" : "إغلاق"} type="button" onClick={onClose}
             className="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500 transition-colors"
           >
             <FiX className="w-6 h-6" />
@@ -92,7 +94,7 @@ export function NationalitySearchModal({ isOpen, onClose, onSelect, title, place
         <div className="p-4 shrink-0 border-b border-slate-50 shadow-sm">
           <div className="relative">
             <FiSearch className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 ${isEn ? 'left-4' : 'right-4'}`} />
-            <input 
+            <input
               ref={inputRef}
               type="text"
               value={query}

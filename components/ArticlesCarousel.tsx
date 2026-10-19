@@ -4,10 +4,11 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import type { Article } from "@/lib/types";
+import type { ArticlePreview } from "@/lib/article-preview";
+import { withLang } from "@/lib/i18n";
 import { formatArticleDate, formatArticleReadTime } from "@/lib/utils";
 
-export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn: boolean }) {
+export function ArticlesCarousel({ articles, isEn }: { articles: ArticlePreview[], isEn: boolean }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "next" | "prev") => {
@@ -28,7 +29,9 @@ export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn
 
     let interval: NodeJS.Timeout;
 
+    const stopScroll = () => clearInterval(interval);
     const startScroll = () => {
+      stopScroll();
       interval = setInterval(() => {
         if (!scrollRef.current) return;
         
@@ -57,16 +60,16 @@ export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn
     // only start auto scroll if on mobile or if there are more items than fit
     startScroll();
 
-    el.addEventListener("mouseenter", () => clearInterval(interval));
+    el.addEventListener("mouseenter", stopScroll);
     el.addEventListener("mouseleave", startScroll);
-    el.addEventListener("touchstart", () => clearInterval(interval), { passive: true });
+    el.addEventListener("touchstart", stopScroll, { passive: true });
     el.addEventListener("touchend", startScroll, { passive: true });
 
     return () => {
       clearInterval(interval);
-      el.removeEventListener("mouseenter", () => clearInterval(interval));
+      el.removeEventListener("mouseenter", stopScroll);
       el.removeEventListener("mouseleave", startScroll);
-      el.removeEventListener("touchstart", () => clearInterval(interval));
+      el.removeEventListener("touchstart", stopScroll);
       el.removeEventListener("touchend", startScroll);
     };
   }, [articles.length, isEn]);
@@ -137,7 +140,7 @@ export function ArticlesCarousel({ articles, isEn }: { articles: Article[], isEn
           
           return (
             <Link 
-              href={isEn ? `/en/blog/${article.slug}` : `/blog/${article.slug}`} 
+              href={withLang(`/blog/${encodeURIComponent(article.slug)}`, isEn ? "en" : "ar")}
               key={article.id}
               className="snap-center shrink-0 w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.33rem)] bg-white border border-black/5 rounded-[2rem] overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(208,167,85,0.15)] hover:border-[#d0a755]/30 transition-all duration-500 hover:-translate-y-2 group block"
             >

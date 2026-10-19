@@ -1,3 +1,6 @@
+import { JsonLd } from "@/components/JsonLd";
+import { serviceGraph } from "@/lib/structured-data";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { notFound } from "next/navigation";
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -50,6 +53,7 @@ export default async function CarDetailsPage({
 
   return (
     <PublicLayout settings={settings} whatsappType="car" locale={locale}>
+      <JsonLd nodes={serviceGraph(`/cars/${encodeURIComponent(rawCar.slug)}`, locale, car.categoryName, car.subtitle || car.categoryName, "Car and limousine booking", [{ path: "/cars", name: locale === "ar" ? "السيارات" : "Cars" }])} />
       <main className="mx-auto max-w-[1400px] px-6 md:px-8 pt-32 pb-24 relative z-10" dir={locale === "en" ? "ltr" : "rtl"}>
         
         {/* Header Section */}
@@ -90,9 +94,10 @@ export default async function CarDetailsPage({
             {/* Image Gallery */}
             <div className="space-y-4">
               <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[2rem] luxury-panel p-2 bg-white">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={car.images[0]} 
+
+                <ResponsiveImage
+                  src={car.images[0]}
+                  loading="eager" fetchPriority="high" sizes="(min-width: 1024px) 60vw, 100vw"
                   alt={car.categoryName} 
                   className="h-full w-full object-cover rounded-2xl" 
                 />
@@ -108,8 +113,8 @@ export default async function CarDetailsPage({
                 <div className="grid grid-cols-4 sm:grid-cols-5 gap-4">
                   {car.images.slice(1).map((img, idx) => (
                     <div key={idx} className="relative aspect-video rounded-xl overflow-hidden luxury-panel p-1 bg-white cursor-pointer group">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt={`${car.categoryName} - ${idx + 2}`} className="w-full h-full object-cover rounded-lg group-hover:scale-110 transition-transform duration-500" />
+
+                      <ResponsiveImage src={img} alt={`${car.categoryName} - ${idx + 2}`} className="w-full h-full object-cover rounded-lg group-hover:scale-110 transition-transform duration-500" />
                     </div>
                   ))}
                 </div>

@@ -1,3 +1,4 @@
+import { requireAdminAuth } from "@/lib/admin-auth";
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -9,6 +10,8 @@ cloudinary.config({
 });
 
 export async function GET() {
+  const unauthorized = await requireAdminAuth();
+  if (unauthorized) return unauthorized;
   try {
     const res = await cloudinary.api.resources({ type: "upload", max_results: 200 });
     return NextResponse.json({

@@ -25,8 +25,8 @@ async function readJsonFallback<T>(fileName: string): Promise<T | null> {
       file = file.slice(1);
     }
     return JSON.parse(file) as T;
-} catch (error) {
-    console.error(`Error reading fallback JSON file ${fileName}:`, error);
+} catch {
+    console.error(`Error reading fallback JSON file ${fileName}:`, "Operation failed");
     return null;
   }
 }
@@ -35,9 +35,9 @@ export async function getArticles(onlyPublished = false): Promise<Article[]> {
   try {
     const db = await getDb();
     const collection = db.collection<Article>("articles");
-    
-    let articles = await collection.find({}).toArray();
-    
+
+    const articles = await collection.find({}).toArray();
+
     const result = articles
       .map(({ _id, ...article }) => article as Article)
       .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
@@ -46,8 +46,8 @@ export async function getArticles(onlyPublished = false): Promise<Article[]> {
       return result.filter(a => a.published !== false);
     }
     return result;
-  } catch (error) {
-    console.error("Failed to fetch articles from DB, falling back to JSON:", error);
+  } catch {
+    console.error("Failed to fetch articles from DB, falling back to JSON:", "Operation failed");
     const fallbackArticles = await readJsonFallback<Article[]>("articles.json");
     const list = (fallbackArticles || []).sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
     if (onlyPublished) {
@@ -67,7 +67,7 @@ export async function addArticle(article: Article): Promise<void> {
     const db = await getDb();
     await db.collection("articles").insertOne(article);
   } catch (error) {
-    console.error("Error adding article:", error);
+    console.error("Error adding article:", "Operation failed");
     throw error;
   }
 }
@@ -77,7 +77,7 @@ export async function updateArticle(id: string, updates: Partial<Article>): Prom
     const db = await getDb();
     await db.collection("articles").updateOne({ id }, { $set: updates });
   } catch (error) {
-    console.error("Error updating article:", error);
+    console.error("Error updating article:", "Operation failed");
     throw error;
   }
 }
@@ -87,7 +87,7 @@ export async function deleteArticle(id: string): Promise<void> {
     const db = await getDb();
     await db.collection("articles").deleteOne({ id });
   } catch (error) {
-    console.error("Error deleting article:", error);
+    console.error("Error deleting article:", "Operation failed");
     throw error;
   }
 }
@@ -96,22 +96,15 @@ export async function getCars(): Promise<Car[]> {
   try {
     const db = await getDb();
     const collection = db.collection<Car>("cars");
-    
-    let cars = await collection.find({}).toArray();
-    
-    if (cars.length === 0) {
-      const fallbackCars = await readJsonFallback<Car[]>("cars.json");
-      if (fallbackCars && fallbackCars.length > 0) {
-        const toInsert = fallbackCars.map(({ ...c }) => c);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding cars:", err));
-        cars = await collection.find({}).toArray();
-      }
-    }
-    
+
+    const cars = await collection.find({}).toArray();
+
+
+
     const result = cars.map(({ _id, ...car }) => car as Car);
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  } catch (error) {
-    console.error("Failed to fetch cars from DB:", error);
+  } catch {
+    console.error("Failed to fetch cars from DB:", "Operation failed");
     return [];
   }
 }
@@ -119,7 +112,7 @@ export async function getCars(): Promise<Car[]> {
 export async function saveCars(cars: Car[]) {
   const db = await getDb();
   const collection = db.collection("cars");
-  
+
   // In a bulk update pattern, replace all documents
   await collection.deleteMany({});
   if (cars.length > 0) {
@@ -146,7 +139,7 @@ async function removeItemWithCloudinaryCleanup(collectionName: string, jsonFileN
   try {
     const db = await getDb();
     const collection = db.collection(collectionName);
-    
+
     // 1. Clean up Cloudinary images
     const item = await collection.findOne({ id });
     if (item) {
@@ -172,8 +165,8 @@ async function removeItemWithCloudinaryCleanup(collectionName: string, jsonFileN
         await fs.writeFile(filePath, JSON.stringify(filtered, null, 2), "utf8");
       }
     }
-  } catch (err) {
-    console.error(`Error deleting item ${id} from ${collectionName}:`, err);
+  } catch {
+    console.error(`Error deleting item ${id} from ${collectionName}:`, "Operation failed");
   }
 }
 
@@ -192,7 +185,7 @@ export async function batchAddCars(carsList: Car[]) {
   const collection = db.collection("cars");
   if (carsList.length > 0) {
     await collection.insertMany(carsList.map(({ ...c }) => c));
-    
+
     // Sync JSON
     try {
       const filePath = path.join(process.cwd(), "data", "cars.json");
@@ -200,8 +193,8 @@ export async function batchAddCars(carsList: Car[]) {
       const list = JSON.parse(raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw);
       const updated = [...list, ...carsList];
       await fs.writeFile(filePath, JSON.stringify(updated, null, 2), "utf8");
-    } catch (err) {
-      console.error("Error updating cars.json on batch add:", err);
+    } catch {
+      console.error("Error updating cars.json on batch add:", "Operation failed");
     }
   }
 }
@@ -209,7 +202,7 @@ export async function batchAddCars(carsList: Car[]) {
 export async function reorderCars(orderedItems: { id: string; sortOrder: number }[]) {
   const db = await getDb();
   const collection = db.collection("cars");
-  
+
   for (const item of orderedItems) {
     await collection.updateOne({ id: item.id }, { $set: { sortOrder: item.sortOrder } });
   }
@@ -228,8 +221,8 @@ export async function reorderCars(orderedItems: { id: string; sortOrder: number 
       list.sort((a: any, b: any) => (a.sortOrder || 0) - (b.sortOrder || 0));
       await fs.writeFile(filePath, JSON.stringify(list, null, 2), "utf8");
     }
-  } catch (err) {
-    console.error("Error updating cars.json on reorder:", err);
+  } catch {
+    console.error("Error updating cars.json on reorder:", "Operation failed");
   }
 }
 
@@ -237,17 +230,10 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
   try {
     const db = await getDb();
     const collection = db.collection<FastTrackPackage>("fast-track");
-    let packages = await collection.find({}).toArray();
-    
-    if (packages.length === 0) {
-      const fallbackPackages = await readJsonFallback<FastTrackPackage[]>("fast-track.json");
-      if (fallbackPackages && fallbackPackages.length > 0) {
-        const toInsert = fallbackPackages.map(({ ...p }) => p);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding fast track:", err));
-        packages = await collection.find({}).toArray();
-      }
-    }
-    
+    const packages = await collection.find({}).toArray();
+
+
+
     const uniqueMap = new Map();
     for (const p of packages) {
       if (p.id && !uniqueMap.has(p.id)) {
@@ -257,8 +243,8 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
     }
     const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  } catch (error) {
-    console.error("Failed to fetch fast-track packages from DB:", error);
+  } catch {
+    console.error("Failed to fetch fast-track packages from DB:", "Operation failed");
     return [];
   }
 }
@@ -266,7 +252,7 @@ export async function getFastTrackPackages(): Promise<FastTrackPackage[]> {
 export async function saveFastTrackPackages(packages: FastTrackPackage[]) {
   const db = await getDb();
   const collection = db.collection("fast-track");
-  
+
   await collection.deleteMany({});
   if (packages.length > 0) {
     const toInsert = packages.map(({ ...p }) => p);
@@ -295,17 +281,10 @@ export async function getHotels(): Promise<HotelItem[]> {
   try {
     const db = await getDb();
     const collection = db.collection<HotelItem>("hotels");
-    let hotels = await collection.find({}).toArray();
-    
-    if (hotels.length === 0) {
-      const fallbackHotels = await readJsonFallback<HotelItem[]>("hotels.json");
-      if (fallbackHotels && fallbackHotels.length > 0) {
-        const toInsert = fallbackHotels.map(({ ...h }) => h);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding hotels:", err));
-        hotels = await collection.find({}).toArray();
-      }
-    }
-    
+    const hotels = await collection.find({}).toArray();
+
+
+
     const uniqueMap = new Map();
     for (const h of hotels) {
       if (h.id && !uniqueMap.has(h.id)) {
@@ -315,8 +294,8 @@ export async function getHotels(): Promise<HotelItem[]> {
     }
     const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  } catch (error) {
-    console.error("Failed to fetch hotels from DB:", error);
+  } catch {
+    console.error("Failed to fetch hotels from DB:", "Operation failed");
     return [];
   }
 }
@@ -324,7 +303,7 @@ export async function getHotels(): Promise<HotelItem[]> {
 export async function saveHotels(hotels: HotelItem[]) {
   const db = await getDb();
   const collection = db.collection("hotels");
-  
+
   await collection.deleteMany({});
   if (hotels.length > 0) {
     const toInsert = hotels.map(({ ...h }) => h);
@@ -357,17 +336,10 @@ export async function getFlights(): Promise<FlightRoute[]> {
   try {
     const db = await getDb();
     const collection = db.collection<FlightRoute>("flights");
-    let flights = await collection.find({}).toArray();
-    
-    if (flights.length === 0) {
-      const fallbackFlights = await readJsonFallback<FlightRoute[]>("flights.json");
-      if (fallbackFlights && fallbackFlights.length > 0) {
-        const toInsert = fallbackFlights.map(({ ...f }) => f);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding flights:", err));
-        flights = await collection.find({}).toArray();
-      }
-    }
-    
+    const flights = await collection.find({}).toArray();
+
+
+
     const uniqueMap = new Map();
     for (const f of flights) {
       if (f.id && !uniqueMap.has(f.id)) {
@@ -377,8 +349,8 @@ export async function getFlights(): Promise<FlightRoute[]> {
     }
     const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  } catch (error) {
-    console.error("Failed to fetch flights from DB:", error);
+  } catch {
+    console.error("Failed to fetch flights from DB:", "Operation failed");
     return [];
   }
 }
@@ -386,7 +358,7 @@ export async function getFlights(): Promise<FlightRoute[]> {
 export async function saveFlights(flights: FlightRoute[]) {
   const db = await getDb();
   const collection = db.collection("flights");
-  
+
   await collection.deleteMany({});
   if (flights.length > 0) {
     const toInsert = flights.map(({ ...f }) => f);
@@ -420,7 +392,7 @@ export async function getHotelApartments(): Promise<ApartmentItem[]> {
     const db = await getDb();
     const collection = db.collection<ApartmentItem>("hotel_apartments");
     const apartments = await collection.find({}).toArray();
-    
+
     const uniqueMap = new Map();
     for (const a of apartments) {
       if (a.id && !uniqueMap.has(a.id)) {
@@ -430,8 +402,8 @@ export async function getHotelApartments(): Promise<ApartmentItem[]> {
     }
     const result = Array.from(uniqueMap.values());
     return result.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  } catch (error) {
-    console.error("Failed to fetch hotel apartments from DB, falling back to JSON:", error);
+  } catch {
+    console.error("Failed to fetch hotel apartments from DB, falling back to JSON:", "Operation failed");
     const fallbackApartments = await readJsonFallback<ApartmentItem[]>("hotel-apartments.json");
     if (fallbackApartments) {
       return fallbackApartments.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -443,7 +415,7 @@ export async function getHotelApartments(): Promise<ApartmentItem[]> {
 export async function saveHotelApartments(apartments: ApartmentItem[]) {
   const db = await getDb();
   const collection = db.collection("hotel_apartments");
-  
+
   await collection.deleteMany({});
   if (apartments.length > 0) {
     const toInsert = apartments.map(({ ...a }) => a);
@@ -476,7 +448,7 @@ function normalizeBooking(b: any): Booking {
     } else if (item.notes.includes("[النوع: شقة فندقية]") && (item.type === "hotel" || !item.type)) {
       item.type = "apartment";
     }
-    
+
     // If serviceName is generic but specific place/hotel was recorded in notes
     if (!item.serviceName || item.serviceName === "طلب حجز شقق فندقية" || item.serviceName === "طلب حجز فندق" || item.serviceName === "Hotel Booking Request" || item.serviceName === "Hotel Apartments Request") {
       const placeMatch = item.notes.match(/\[المكان:\s*([^\]]+)\]/);
@@ -500,34 +472,22 @@ export async function getBookings(): Promise<Booking[]> {
   try {
     const db = await getDb();
     const collection = db.collection<Booking>("bookings");
-    
-    let bookings = await collection.find({}).toArray();
-    
-    if (bookings.length === 0) {
-      const fallbackBookings = await readJsonFallback<Booking[]>("bookings.json");
-      if (fallbackBookings && fallbackBookings.length > 0) {
-        const toInsert = fallbackBookings.map(({ ...b }) => b);
-        await collection.insertMany(toInsert).catch(err => console.error("Error seeding bookings:", err));
-        bookings = await collection.find({}).toArray();
-      }
-    }
-    
+
+    const bookings = await collection.find({}).toArray();
+
+
+
     const result = bookings.map(({ _id, ...b }) => normalizeBooking(b));
     return result.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  } catch (error) {
-    console.error("Failed to fetch bookings from DB, falling back to JSON:", error);
-    const fallbackBookings = await readJsonFallback<Booking[]>("bookings.json");
-    if (fallbackBookings) {
-      return fallbackBookings.map((b: any) => normalizeBooking(b)).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    }
-    return [];
+  } catch {
+    throw new Error("Booking storage is unavailable.");
   }
 }
 
 export async function saveBookings(bookings: Booking[]) {
   const db = await getDb();
   const collection = db.collection("bookings");
-  
+
   await collection.deleteMany({});
   if (bookings.length > 0) {
     const toInsert = bookings.map(({ ...b }) => b);
@@ -540,7 +500,8 @@ export async function addBooking(booking: Booking) {
   if (!phone) throw new Error("A complete contact phone is required to create a booking.");
   const db = await getDb();
   const collection = db.collection("bookings");
-  await collection.insertOne({ ...booking, phone });
+  const result = await collection.insertOne({ ...booking, phone });
+  if (result.acknowledged === false) throw new Error("Booking persistence was not acknowledged.");
 }
 
 export async function updateBooking(id: string, booking: Partial<Booking>) {
@@ -593,27 +554,24 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   try {
     const db = await getDb();
     const collection = db.collection<SiteSettings & { _id: string }>("settings");
-    
+
     // Settings is a single object stored with _id = "site-settings"
     const settingsDoc = await collection.findOne({ _id: "site-settings" });
-    
+
     if (settingsDoc) {
       const { _id, ...settings } = settingsDoc;
       settingsToReturn = settings as SiteSettings;
     }
-    
+
     if (!settingsToReturn) {
     const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
-      if (fallbackSettings) {
-        const doc = { _id: "site-settings", ...fallbackSettings };
-        await collection.insertOne(doc).catch(err => console.error("Error seeding site settings:", err));
-        settingsToReturn = fallbackSettings;
+      if (fallbackSettings) {        settingsToReturn = fallbackSettings;
       }
     }
-  } catch (error) {
-    console.error("Failed to fetch site settings from DB, falling back to JSON:", error);
+  } catch {
+    console.error("Failed to fetch site settings from DB, falling back to JSON:", "Operation failed");
   }
-  
+
   if (!settingsToReturn) {
     const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
     if (fallbackSettings) {
@@ -656,7 +614,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 export async function saveSiteSettings(settings: SiteSettings) {
   const db = await getDb();
   const collection = db.collection<SiteSettings & { _id: string }>("settings");
-  
+
   await collection.replaceOne(
     { _id: "site-settings" },
     settings,
@@ -675,18 +633,18 @@ export async function getContactMessages(page = 1, limit = 10): Promise<{ messag
     const db = await getDb();
     const collection = db.collection<ContactMessage>("messages");
     const skip = (page - 1) * limit;
-    
+
     const [messages, total] = await Promise.all([
       collection.find({}).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray(),
       collection.countDocuments()
     ]);
-    
-    return { 
-      messages: messages.map(({ _id, ...m }) => m as ContactMessage), 
-      total 
+
+    return {
+      messages: messages.map(({ _id, ...m }) => m as ContactMessage),
+      total
     };
-  } catch (error) {
-    console.error("Failed to fetch contact messages from DB:", error);
+  } catch {
+    console.error("Failed to fetch contact messages from DB:", "Operation failed");
     return { messages: [], total: 0 };
   }
 }
@@ -711,8 +669,8 @@ export async function getReviews(onlyApproved = false): Promise<Review[]> {
     const query = onlyApproved ? { approved: true } : {};
     const reviews = await collection.find(query).sort({ date: -1 }).toArray();
     return reviews.map(({ _id, ...r }) => r as Review);
-  } catch (error) {
-    console.error("Failed to fetch reviews from DB:", error);
+  } catch {
+    console.error("Failed to fetch reviews from DB:", "Operation failed");
     return [];
   }
 }

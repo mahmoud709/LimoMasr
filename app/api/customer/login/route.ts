@@ -1,12 +1,14 @@
+import { issueSession, sessionConfigured } from "@/lib/session-signing";
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { verifyPassword } from "@/lib/auth";
 
 export async function POST(req: Request) {
+  if (!sessionConfigured("customer")) return NextResponse.json({ error: "Customer login not configured" }, { status: 503 });
   try {
     const { phone, password } = await req.json();
 
-    if (!phone || !password) {
+    if (typeof phone !== "string" || !phone.trim() || phone.length > 80 || typeof password !== "string" || !password || password.length > 256) {
       return NextResponse.json({ error: "الرجاء إدخال رقم الهاتف وكلمة المرور" }, { status: 400 });
     }
 
@@ -29,7 +31,7 @@ export async function POST(req: Request) {
     });
 
     // Set HTTP-only cookie
-    response.cookies.set("customer-token", customer._id.toString(), {
+    response.cookies.set("customer-token", issueSession("customer", customer._id.toString(), 30 * 86400), {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
@@ -38,7 +40,7 @@ export async function POST(req: Request) {
     });
 
     return response;
-  } catch (err: any) {
+  } catch {
     return NextResponse.json({ error: "حدث خطأ أثناء تسجيل الدخول" }, { status: 500 });
   }
 }

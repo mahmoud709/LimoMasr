@@ -29,6 +29,15 @@ export function pageMetadata(path: string, locale: Locale, title: string, descri
 }
 
 export const serviceSeo = {
+  "/airports": {
+    ar: ["المطارات وخدمات الاستقبال والتوصيل | ليمو مصر", "اختر مطار القاهرة أو سفنكس للاطلاع على خدمات النقل بالسيارة من المطار أو إليه وإرسال تفاصيل الرحلة لطلب عرض سعر."],
+    en: ["Airport Pickup & Drop-off Services | Limo Egypt", "Choose Cairo or Sphinx Airport to explore car pickup and drop-off services, review transfer details and request a quote for your trip."],
+  },
+"/stays": {"ar":["حجز فنادق وشقق فندقية في مصر | ليمو مصر","اختر الفنادق والشقق الفندقية وأرسل تفاصيل الإقامة لطلب عرض حجز."],"en":["Hotels & Serviced Apartments in Egypt | Limo Egypt","Explore hotels and serviced apartments and request a stay quote."]},
+"/privacy": {"ar":["سياسة الخصوصية وحماية البيانات | ليمو مصر","راجع سياسة الخصوصية والتعامل مع بيانات التواصل والحجز."],"en":["Privacy & Customer Data Policy | Limo Egypt","Read our policy covering contact information and booking data."]},
+"/policies": {"ar":["الشروط والأحكام وسياسات الحجز | ليمو مصر","راجع شروط الخدمات وسياسات طلب الحجز قبل ترتيب رحلتك."],"en":["Terms, Conditions & Booking Policies | Limo Egypt","Review our service terms and booking policies before arranging your trip."]},
+"/cairo-airport-transfer": {"ar":["ليموزين مطار القاهرة للاستقبال والتوصيل | ليمو مصر","اطلب سيارة للاستقبال من مطار القاهرة الدولي أو التوصيل إليه. أرسل تفاصيل الرحلة لطلب عرض سعر."],"en":["Cairo Airport Pickup & Drop-off Transfers | Limo Egypt","Request Cairo International Airport pickup or drop-off. Share your trip details for a transfer quote."]},
+"/sphinx-airport-transfer": {"ar":["ليموزين مطار سفنكس للاستقبال والتوصيل | ليمو مصر","اطلب خدمة نقل من مطار سفنكس الدولي أو إليه وأرسل الموعد والركاب والأمتعة لطلب عرض سعر."],"en":["Sphinx Airport Pickup & Drop-off Transfers | Limo Egypt","Request transfers to or from Sphinx International Airport. Share your travel details for a quote."]},
   "/": {
     ar: ["ليمو مصر | حجز فنادق وليموزين وخدمات المطارات", "احجز خدمات رحلتك في مصر مع ليمو مصر: سيارات وليموزين، فنادق وشقق فندقية، فاست تراك وحجز طيران. أرسل تفاصيل رحلتك لطلب عرض سعر."],
     en: ["Limo Egypt | Hotels, Limousine & Airport Services", "Plan your Egypt trip with Limo Egypt: limousine and car booking, hotels, serviced apartments, airport fast track and flights. Request a tailored quote."],

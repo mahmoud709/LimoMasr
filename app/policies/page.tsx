@@ -1,3 +1,5 @@
+import { serviceMetadata } from "@/lib/seo";
+export const generateMetadata = serviceMetadata("/policies");
 import { PublicLayout } from "@/components/PublicLayout";
 import { getSiteSettings } from "@/lib/data";
 import { cookies } from "next/headers";

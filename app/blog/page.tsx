@@ -94,8 +94,8 @@ export default async function BlogPage({
                   <Link
                     href={
                       isEn
-                        ? `/en/blog/${article.slug}`
-                        : `/blog/${article.slug}`
+                        ? `/en/blog/${encodeURIComponent(article.slug)}`
+                        : `/ar/blog/${encodeURIComponent(article.slug)}`
                     }
                     key={article.id}
                     className="bg-white rounded-[2rem] overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(208,167,85,0.15)] transition-all duration-500 hover:-translate-y-2 group block"

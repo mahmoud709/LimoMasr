@@ -1,3 +1,4 @@
+import { sessionConfigured } from "@/lib/session-signing";
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -5,7 +6,10 @@ import { verifyPassword } from "@/lib/auth";
 import { generateAdminToken } from "@/lib/admin-auth";
 
 export async function POST(req: Request) {
-  const { password } = await req.json();
+  if (!sessionConfigured("admin")) return NextResponse.json({ error: "Admin login not configured" }, { status: 503 });
+  const payload = await req.json().catch(() => null);
+  const password = payload?.password;
+  if (typeof password !== "string" || !password || password.length > 256) return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
 
   let isValid = false;
 

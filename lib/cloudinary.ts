@@ -4,20 +4,21 @@ import crypto from "crypto";
  * Get Cloudinary configuration parameters from environment variables
  */
 function getCloudinaryConfig() {
-  let cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "b2tqubbe";
-  let apiKey = process.env.CLOUDINARY_API_KEY || "842369475353943";
-  let apiSecret = process.env.CLOUDINARY_API_SECRET || "jcT8jqJL41r_jQHqop-B2NfkhEk";
+  let cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "";
+  let apiKey = process.env.CLOUDINARY_API_KEY || "";
+  let apiSecret = process.env.CLOUDINARY_API_SECRET || "";
   const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || "";
 
   // Parse CLOUDINARY_URL if present (e.g. cloudinary://api_key:api_secret@cloud_name)
   if (process.env.CLOUDINARY_URL && (!cloudName || !apiKey || !apiSecret)) {
     try {
       const url = new URL(process.env.CLOUDINARY_URL);
+      if (url.protocol !== "cloudinary:") throw new Error("Invalid Cloudinary configuration");
       cloudName = cloudName || url.hostname;
       apiKey = apiKey || url.username;
       apiSecret = apiSecret || url.password;
-    } catch (e) {
-      console.error("Error parsing CLOUDINARY_URL:", e);
+    } catch {
+      console.error("Invalid Cloudinary configuration.");
     }
   }
 
@@ -63,8 +64,8 @@ export async function uploadToCloudinary(
 ): Promise<string> {
   const { cloudName, apiKey, apiSecret, uploadPreset } = getCloudinaryConfig();
 
-  if (!cloudName) {
-    throw new Error("Missing Cloudinary Cloud Name. Please configure CLOUDINARY_CLOUD_NAME in .env");
+  if (!cloudName || (!(apiKey && apiSecret) && !uploadPreset)) {
+    throw new Error("Cloudinary upload is not configured.");
   }
 
   const timestamp = Math.floor(Date.now() / 1000).toString();
@@ -103,8 +104,7 @@ export async function uploadToCloudinary(
   });
 
   if (!res.ok) {
-    const errorData = await res.text();
-    console.error("Cloudinary upload error response:", errorData);
+    console.error("Cloudinary upload failed:", res.status);
     throw new Error(`Cloudinary Upload Failed: ${res.statusText}`);
   }
 
@@ -146,8 +146,7 @@ export async function deleteFromCloudinary(url: string): Promise<boolean> {
     });
 
     if (!res.ok) {
-      const errText = await res.text();
-      console.error("Cloudinary destroy error response:", errText);
+      console.error("Cloudinary deletion failed:", res.status);
       return false;
     }
 

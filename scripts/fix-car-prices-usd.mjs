@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 
 async function normalizePrices() {
-  const uri = process.env.MONGODB_URI || "mongodb+srv://mahmoud709:M123456789m@cluster0.o5hpx.mongodb.net/limo_masr?retryWrites=true&w=majority";
+  const uri = process.env.MONGODB_URI || requiredMongoUri();
   const client = new MongoClient(uri);
   await client.connect();
   const db = client.db("limo_masr");
@@ -26,3 +26,9 @@ async function normalizePrices() {
 }
 
 normalizePrices();
+
+function requiredMongoUri() {
+  const value = process.env.MONGODB_URI;
+  if (!value) throw new Error("MONGODB_URI is required; credentials must not be stored in source.");
+  return value;
+}

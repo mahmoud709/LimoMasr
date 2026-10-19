@@ -32,6 +32,8 @@ const navItems = [
   ["contact", "/contact"],
 ] as const;
 
+const footerNavItems = [...navItems.slice(0, 2), ["airports", "/airports"] as const, ...navItems.slice(2)] as const;
+
 import { cookies } from "next/headers";
 
 export async function PublicLayout({
@@ -91,7 +93,7 @@ export async function PublicLayout({
             </Link>
             <LanguageCurrencyModal currentLocale={locale} currentCurrency={cookieCurrency} />
             {/* Mobile Nav Toggle */}
-            <MobileMenu navItems={navItems as any} translations={t as any} locale={locale} portalLink={portalLink} portalText={portalText} />
+            <MobileMenu navItems={navItems} translations={Object.fromEntries(navItems.map(([key]) => [key, t[key]]))} locale={locale} portalLink={portalLink} portalText={portalText} />
           </div>
         </div>
       </header>
@@ -176,7 +178,7 @@ export async function PublicLayout({
                 {locale === "en" ? "Quick Links" : "الروابط السريعة"}
               </h3>
               <div className="flex flex-col gap-5">
-                {navItems.map(([key, href]) => (
+                {footerNavItems.map(([key, href]) => (
                   <Link key={href} href={withLang(href, locale)} className="text-white/60 hover:text-[#d0a755] hover:translate-x-[-8px] transition-all duration-300 text-base font-medium flex items-center gap-3 w-fit group">
                     <span className="text-[#d0a755] opacity-0 group-hover:opacity-100 transition-opacity duration-300">←</span> 
                     {t[key]}

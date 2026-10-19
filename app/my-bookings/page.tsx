@@ -4,6 +4,8 @@ import { MyBookingsClient } from "@/components/MyBookingsClient";
 import type { Locale } from "@/lib/types";
 
 import { cookies } from "next/headers";
+import type { Metadata } from "next";
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 type PageProps = {
   searchParams: Promise<{ lang?: string; __locale?: string }>;
@@ -13,12 +15,13 @@ export default async function MyBookingsPage({ searchParams }: PageProps) {
   const settings = await getSiteSettings();
   const cookieStore = await cookies();
   const params = await searchParams;
-  const locale: Locale = ((params.__locale || params.lang || cookieStore.get('NEXT_LOCALE')?.value || "ar") as Locale);
+  const selectedLocale = params.__locale || params.lang || cookieStore.get("NEXT_LOCALE")?.value;
+  const locale: Locale = selectedLocale === "en" ? "en" : "ar";
 
   return (
     <PublicLayout settings={settings} locale={locale}>
       <main className="mx-auto max-w-[1000px] px-6 py-32 md:py-40 relative z-10 min-h-[70vh]">
-        <MyBookingsClient />
+        <MyBookingsClient locale={locale} />
       </main>
     </PublicLayout>
   );

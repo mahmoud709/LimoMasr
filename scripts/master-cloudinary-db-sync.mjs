@@ -10,7 +10,7 @@ cloudinary.config({
   secure: true,
 });
 
-const mongoUri = "mongodb+srv://mahmoudshalaby:mahmoud1300@limocluster.oss54j9.mongodb.net/limo";
+const mongoUri = requiredMongoUri();
 
 // Premium high-res fallback images for each category in case external URL fails
 const CATEGORY_FALLBACKS = {
@@ -125,3 +125,9 @@ async function run() {
 }
 
 run().catch(console.error);
+
+function requiredMongoUri() {
+  const value = process.env.MONGODB_URI;
+  if (!value) throw new Error("MONGODB_URI is required; credentials must not be stored in source.");
+  return value;
+}

@@ -1,0 +1,1347 @@
+{
+  "checkedAt": "2026-10-10T20:21:53.102Z",
+  "baselineCommit": "53ed7926d0de9cfa274e4c5d48a57ba6e6293791",
+  "deployed": false,
+  "productionDatabaseConnected": false,
+  "externalAccountsValidated": false,
+  "environment": {
+    "next": "16.2.9",
+    "node": "v24.21.0",
+    "lighthouse": "13.5.0",
+    "data": "Identical read-only public catalogue snapshots and partially reconstructed settings",
+    "tracking": "Existing Google Ads plus QA GA4 ID, unchanged afterInteractive loading"
+  },
+  "performance": {
+    "Mobile before": {
+      "runs": [
+        {
+          "artifact": "limo-valid-before-mobile-1.json",
+          "index": 1,
+          "fetchTime": "2026-10-10T19:28:41.759Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 59,
+          "FCPms": 1809.73,
+          "LCPms": 3972.92,
+          "TBTms": 820.5,
+          "CLS": 0.00013597904200719194,
+          "failedHosts": [],
+          "warnings": []
+        },
+        {
+          "artifact": "limo-valid-before-mobile-2.json",
+          "index": 2,
+          "fetchTime": "2026-10-10T19:29:29.308Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 61,
+          "FCPms": 1917.4155,
+          "LCPms": 4200.454250000001,
+          "TBTms": 1149.000000000001,
+          "CLS": 0,
+          "failedHosts": [],
+          "warnings": []
+        },
+        {
+          "artifact": "limo-valid-before-mobile-3.json",
+          "index": 3,
+          "fetchTime": "2026-10-10T19:29:58.119Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 64,
+          "FCPms": 2266.1059999999998,
+          "LCPms": 4061.423999999999,
+          "TBTms": 848,
+          "CLS": 0,
+          "failedHosts": [],
+          "warnings": []
+        }
+      ],
+      "summary": {
+        "score": 61,
+        "FCPms": 1917.4155,
+        "LCPms": 4061.423999999999,
+        "TBTms": 848,
+        "CLS": 0
+      },
+      "summaryMethod": "three-run median"
+    },
+    "Mobile after": {
+      "runs": [
+        {
+          "artifact": "limo-valid-after-release-mobile-2.json",
+          "index": 2,
+          "fetchTime": "2026-10-10T20:14:45.397Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 70,
+          "FCPms": 1644.252,
+          "LCPms": 3714.256,
+          "TBTms": 794.5,
+          "CLS": 0,
+          "failedHosts": [],
+          "warnings": []
+        },
+        {
+          "artifact": "limo-valid-after-release-mobile-3.json",
+          "index": 3,
+          "fetchTime": "2026-10-10T20:15:12.649Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 67,
+          "FCPms": 1880.389,
+          "LCPms": 3811.6670000000004,
+          "TBTms": 898.5000000000002,
+          "CLS": 0,
+          "failedHosts": [],
+          "warnings": []
+        },
+        {
+          "artifact": "limo-valid-after-release-mobile-4.json",
+          "index": 4,
+          "fetchTime": "2026-10-10T20:17:31.006Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 69,
+          "FCPms": 1631.565,
+          "LCPms": 3780.695,
+          "TBTms": 809.0000000000009,
+          "CLS": 0,
+          "failedHosts": [],
+          "warnings": []
+        }
+      ],
+      "summary": {
+        "score": 69,
+        "FCPms": 1644.252,
+        "LCPms": 3780.695,
+        "TBTms": 809.0000000000009,
+        "CLS": 0
+      },
+      "summaryMethod": "three-run median"
+    },
+    "Desktop before": {
+      "runs": [
+        {
+          "artifact": "limo-valid-before-desktop-1.json",
+          "index": 1,
+          "fetchTime": "2026-10-10T19:31:04.508Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 94,
+          "FCPms": 445.409,
+          "LCPms": 905.227,
+          "TBTms": 145.9999999999991,
+          "CLS": 0.000036254063845008465,
+          "failedHosts": [],
+          "warnings": []
+        }
+      ],
+      "summary": {
+        "score": 94,
+        "FCPms": 445.409,
+        "LCPms": 905.227,
+        "TBTms": 145.9999999999991,
+        "CLS": 0.000036254063845008465
+      },
+      "summaryMethod": "one measurement"
+    },
+    "Desktop after": {
+      "runs": [
+        {
+          "artifact": "limo-valid-after-release-desktop-1.json",
+          "index": 1,
+          "fetchTime": "2026-10-10T20:16:18.179Z",
+          "lighthouseVersion": "13.5.0",
+          "score": 94,
+          "FCPms": 472.322,
+          "LCPms": 822.127,
+          "TBTms": 158.00000000000023,
+          "CLS": 0.000039654404919979596,
+          "failedHosts": [],
+          "warnings": []
+        }
+      ],
+      "summary": {
+        "score": 94,
+        "FCPms": 472.322,
+        "LCPms": 822.127,
+        "TBTms": 158.00000000000023,
+        "CLS": 0.000039654404919979596
+      },
+      "summaryMethod": "one measurement"
+    }
+  },
+  "excludedFinalRun": {
+    "artifact": "limo-valid-after-release-mobile-1.json",
+    "reason": "Failed Google resource request; excluded and replaced"
+  },
+  "tests": {
+    "productionBuild": "passed; missing-URI fallback warnings, valid production URI still required",
+    "metadataVariants": 28,
+    "bookingInvalidRequests": 170,
+    "bookingValidRequests": 10,
+    "bookingTrackingFailureCases": 25,
+    "fullLint": {
+      "errors": 172,
+      "warnings": 123
+    },
+    "strictLint": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "strictLintExcludes": "BookingForm baseline 7 errors and 7 warnings",
+    "browser": {
+      "checks": [
+        {
+          "locale": "ar",
+          "service": "cars",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "ar",
+          "service": "fast-track",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "ar",
+          "service": "hotels",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "ar",
+          "service": "hotel-apartments",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "ar",
+          "service": "flights",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "en",
+          "service": "cars",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "en",
+          "service": "fast-track",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "en",
+          "service": "hotels",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "en",
+          "service": "hotel-apartments",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        },
+        {
+          "locale": "en",
+          "service": "flights",
+          "countryCodeRejected": true,
+          "completeNumberAccepted": true
+        }
+      ],
+      "errors": [],
+      "bookingRequests": 0,
+      "contactEvents": [
+        "whatsapp_click",
+        "conversion",
+        "phone_click",
+        "conversion"
+      ]
+    },
+    "additionalBrowser": {
+      "checks": [
+        {
+          "nationalitySelected": true,
+          "phoneStillEmpty": true
+        },
+        {
+          "locale": "ar",
+          "clientNavigationToBooking": true
+        },
+        {
+          "locale": "en",
+          "clientNavigationToBooking": true
+        },
+        {
+          "route": "ar/login",
+          "rendered": true
+        },
+        {
+          "route": "en/register",
+          "rendered": true
+        },
+        {
+          "route": "ar/my-bookings",
+          "rendered": true
+        },
+        {
+          "route": "ar/admin/login",
+          "rendered": true
+        },
+        {
+          "route": "ar/blog/guide-sharm-hurghada",
+          "rendered": true
+        },
+        {
+          "route": "en/blog/guide-sharm-hurghada",
+          "rendered": true
+        }
+      ],
+      "errors": [],
+      "bookingRequests": 0,
+      "contactEvents": [
+        "whatsapp_click",
+        "conversion",
+        "phone_click",
+        "conversion"
+      ]
+    },
+    "publicHtml": {
+      "checkedAt": "2026-10-10T20:09:48.534Z",
+      "base": "http://localhost:3110",
+      "count": 68,
+      "schemaPages": 56,
+      "results": [
+        {
+          "route": "/ar",
+          "status": 200,
+          "title": "ليمو مصر | حجز فنادق وليموزين وخدمات المطارات",
+          "description": "احجز خدمات رحلتك في مصر مع ليمو مصر: سيارات وليموزين، فنادق وشقق فندقية، فاست تراك وحجز طيران. أرسل تفاصيل رحلتك لطلب عرض سعر.",
+          "canonical": "https://www.limo-egypt.com/ar",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Organization",
+            "WebSite"
+          ],
+          "requiredPhones": 0,
+          "bytes": 414550
+        },
+        {
+          "route": "/ar/about",
+          "status": 200,
+          "title": "من نحن وخدمات السفر في مصر | ليمو مصر",
+          "description": "تعرف على ليمو مصر وخدمات حجز السيارات والليموزين والفنادق والشقق الفندقية والطيران وخدمات المطارات، وكيفية التواصل لتنظيم رحلتك.",
+          "canonical": "https://www.limo-egypt.com/ar/about",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 116140
+        },
+        {
+          "route": "/ar/blog",
+          "status": 200,
+          "title": "دليل السفر والإقامة والتنقل في مصر | مدونة ليمو مصر",
+          "description": "اقرأ أدلة ليمو مصر عن السفر والإقامة والتنقل وخدمات المطارات، واستكشف الخدمات المناسبة للتخطيط لرحلتك إلى مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/blog",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 123021
+        },
+        {
+          "route": "/ar/blog/alexandria-best-places",
+          "status": 200,
+          "title": "اجمل اماكن الاسكندرية | ليمو مصر",
+          "description": "الإسكندرية مدينة تعيش وتدير وجهها للبحر، وتكافئ الزائر الذي يدع هذا يرسم يومه. هذه هي القائمة التي نرسلها فعلاً لصديق...",
+          "canonical": "https://www.limo-egypt.com/ar/blog/alexandria-best-places",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 153230
+        },
+        {
+          "route": "/ar/blog/cairo-giza-best-places",
+          "status": 200,
+          "title": "افضل اماكن القاهرة والجيزة | ليمو مصر",
+          "description": "القاهرة تكافئ من يحسن اختيار التوقيت أكثر ممن يحاول أن يرى كل شيء. هذه هي القائمة التي نرسلها فعلاً لصديق...",
+          "canonical": "https://www.limo-egypt.com/ar/blog/cairo-giza-best-places",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 163634
+        },
+        {
+          "route": "/ar/blog/guide-fayoum",
+          "status": 200,
+          "title": "افضل اماكن الفيوم | ليمو مصر",
+          "description": "الفيوم واحة خضراء في قلب الصحراء، تجمع بين جمال البحيرات الساحرة والشلالات الطبيعية والقرى التراثية الأصيلة مثل قرية تونس التي تشتهر بصناعة الخزف.",
+          "canonical": "https://www.limo-egypt.com/ar/blog/guide-fayoum",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 153335
+        },
+        {
+          "route": "/ar/blog/guide-luxor-aswan",
+          "status": 200,
+          "title": "افضل اماكن الاقصر واسوان | ليمو مصر",
+          "description": "الأقصر وأسوان هما متحفان مفتوحان يعكسان عظمة الحضارة المصرية القديمة، حيث المعابد الشامخة ونهر النيل الساحر الذي يربط بين التاريخ والطبيعة الخلابة.",
+          "canonical": "https://www.limo-egypt.com/ar/blog/guide-luxor-aswan",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 161766
+        },
+        {
+          "route": "/ar/blog/guide-oases",
+          "status": 200,
+          "title": "افضل اماكن الواحات | ليمو مصر",
+          "description": "الواحات المصرية هي لوحات فنية ترسمها الطبيعة في عمق الصحراء الغربية، من سيوة وينابيعها الصافية إلى الصحراء البيضاء والسوداء في الواحات البحرية.",
+          "canonical": "https://www.limo-egypt.com/ar/blog/guide-oases",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 158839
+        },
+        {
+          "route": "/ar/blog/guide-sharm-hurghada",
+          "status": 200,
+          "title": "افضل اماكن شرم الشيخ والغردقة | ليمو مصر",
+          "description": "الوجهتان الأبرز على البحر الأحمر، حيث تلتقي متعة الغوص والشعاب المرجانية مع الحياة الليلية الصاخبة والمنتجعات الفاخرة التي توفر كل سبل الراحة والاستجمام.",
+          "canonical": "https://www.limo-egypt.com/ar/blog/guide-sharm-hurghada",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 160735
+        },
+        {
+          "route": "/ar/cairo-airport-transfer",
+          "status": 200,
+          "title": "ليموزين مطار القاهرة للاستقبال والتوصيل | ليمو مصر",
+          "description": "اطلب سيارة للاستقبال من مطار القاهرة الدولي أو التوصيل إليه. أرسل تفاصيل الرحلة لطلب عرض سعر.",
+          "canonical": "https://www.limo-egypt.com/ar/cairo-airport-transfer",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 105844
+        },
+        {
+          "route": "/ar/cars",
+          "status": 200,
+          "title": "حجز سيارات وليموزين في مصر | ليمو مصر",
+          "description": "استعرض سيارات ليمو مصر وقارن الموديلات وعدد المقاعد وأسعار الحجز. اختر السيارة المناسبة لرحلتك واطلب الحجز عبر الموقع أو واتساب.",
+          "canonical": "https://www.limo-egypt.com/ar/cars",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 160917
+        },
+        {
+          "route": "/ar/cars/%D8%A7%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%AA%D9%88%D8%B1%D9%8A%D8%B2%D9%85%D9%88",
+          "status": 200,
+          "title": "حجز اتوبيس مرسيدس بنز توريزمو في مصر | ليمو مصر",
+          "description": "تعرف على اتوبيس مرسيدس بنز توريزمو بعدد 50 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D8%A7%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%AA%D9%88%D8%B1%D9%8A%D8%B2%D9%85%D9%88",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 115247
+        },
+        {
+          "route": "/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B1%D9%88%D9%84%D8%A7",
+          "status": 200,
+          "title": "حجز تويوتا كورولا في مصر | ليمو مصر",
+          "description": "تعرف على تويوتا كورولا بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B1%D9%88%D9%84%D8%A7",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113720
+        },
+        {
+          "route": "/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B3%D8%AA%D8%B1",
+          "status": 200,
+          "title": "حجز تويوتا كوستر في مصر | ليمو مصر",
+          "description": "تعرف على تويوتا كوستر بعدد 20 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B3%D8%AA%D8%B1",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113605
+        },
+        {
+          "route": "/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%87%D8%A7%D9%8A-%D8%A7%D8%B3",
+          "status": 200,
+          "title": "حجز تويوتا هاي اس في مصر | ليمو مصر",
+          "description": "تعرف على تويوتا هاي اس بعدد 10 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%87%D8%A7%D9%8A-%D8%A7%D8%B3",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113620
+        },
+        {
+          "route": "/ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5",
+          "status": 200,
+          "title": "حجز شيري أريزو 5 في مصر | ليمو مصر",
+          "description": "تعرف على شيري أريزو 5 بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113703
+        },
+        {
+          "route": "/ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%AA%D9%8A%D8%AC%D9%88-8-%D8%A8%D8%B1%D9%88",
+          "status": 200,
+          "title": "حجز شيري تيجو 8 برو في مصر | ليمو مصر",
+          "description": "تعرف على شيري تيجو 8 برو بعدد 6 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%AA%D9%8A%D8%AC%D9%88-8-%D8%A8%D8%B1%D9%88",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113664
+        },
+        {
+          "route": "/ar/cars/%D9%83%D9%8A%D8%A7-%D8%B3%D9%8A%D8%B1%D8%A7%D8%AA%D9%88",
+          "status": 200,
+          "title": "حجز كيا سيراتو في مصر | ليمو مصر",
+          "description": "تعرف على كيا سيراتو بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%83%D9%8A%D8%A7-%D8%B3%D9%8A%D8%B1%D8%A7%D8%AA%D9%88",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113248
+        },
+        {
+          "route": "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D8%B3-500",
+          "status": 200,
+          "title": "حجز مرسيدس بنز إس 500 في مصر | ليمو مصر",
+          "description": "تعرف على مرسيدس بنز إس 500 بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D8%B3-500",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113851
+        },
+        {
+          "route": "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "status": 200,
+          "title": "حجز مرسيدس بنز إي-كلاس في مصر | ليمو مصر",
+          "description": "تعرف على مرسيدس بنز إي-كلاس بعدد 4 مقاعد. فاخرة استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 114503
+        },
+        {
+          "route": "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-200",
+          "status": 200,
+          "title": "حجز مرسيدس بنز إي 200 في مصر | ليمو مصر",
+          "description": "تعرف على مرسيدس بنز إي 200 بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-200",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113765
+        },
+        {
+          "route": "/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%AC%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "status": 200,
+          "title": "حجز مرسيدس جي كلاس في مصر | ليمو مصر",
+          "description": "تعرف على مرسيدس جي كلاس بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%AC%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113815
+        },
+        {
+          "route": "/ar/cars/%D9%85%D9%8A%D8%AA%D8%B3%D9%88%D8%A8%D9%8A%D8%B4%D9%8A-%D8%A5%D9%83%D8%B3%D8%A8%D8%A7%D9%86%D8%AF%D8%B1",
+          "status": 200,
+          "title": "حجز ميتسوبيشي إكسباندر في مصر | ليمو مصر",
+          "description": "تعرف على ميتسوبيشي إكسباندر بعدد 6 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%85%D9%8A%D8%AA%D8%B3%D9%88%D8%A8%D9%8A%D8%B4%D9%8A-%D8%A5%D9%83%D8%B3%D8%A8%D8%A7%D9%86%D8%AF%D8%B1",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 114621
+        },
+        {
+          "route": "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D8%AA%D8%B4-1",
+          "status": 200,
+          "title": "حجز هيونداي إتش 1 في مصر | ليمو مصر",
+          "description": "تعرف على هيونداي إتش 1 بعدد 7 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D8%AA%D8%B4-1",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 113416
+        },
+        {
+          "route": "/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+          "status": 200,
+          "title": "حجز هيونداي إلنترا في مصر | ليمو مصر",
+          "description": "تعرف على هيونداي إلنترا بعدد 4 مقاعد.  استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.",
+          "canonical": "https://www.limo-egypt.com/ar/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 114160
+        },
+        {
+          "route": "/ar/contact",
+          "status": 200,
+          "title": "تواصل لحجز فنادق وسيارات وخدمات سفر | ليمو مصر",
+          "description": "تواصل مع ليمو مصر للاستفسار عن حجز السيارات والفنادق والشقق الفندقية والطيران وخدمات المطارات. أرسل تفاصيل رحلتك لطلب عرض سعر.",
+          "canonical": "https://www.limo-egypt.com/ar/contact",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 127154
+        },
+        {
+          "route": "/ar/fast-track",
+          "status": 200,
+          "title": "فاست تراك وخدمات المطارات في مصر | ليمو مصر",
+          "description": "استعرض باقات فاست تراك وخدمات المطارات لدى ليمو مصر. أرسل المطار وموعد الرحلة وعدد المسافرين لتأكيد الخدمة والتوافر والسعر قبل الحجز.",
+          "canonical": "https://www.limo-egypt.com/ar/fast-track",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 125226
+        },
+        {
+          "route": "/ar/flights",
+          "status": 200,
+          "title": "حجز طيران وطلب عروض رحلات | ليمو مصر",
+          "description": "اطلب عرض حجز طيران مع ليمو مصر. حدد وجهة السفر والتواريخ وعدد المسافرين لمراجعة الخيارات المتاحة وتأكيد السعر وتفاصيل الرحلة قبل الحجز.",
+          "canonical": "https://www.limo-egypt.com/ar/flights",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 177746
+        },
+        {
+          "route": "/ar/hotel-apartments",
+          "status": 200,
+          "title": "حجز شقق فندقية في مصر | ليمو مصر",
+          "description": "استعرض خيارات الشقق الفندقية في مصر واطلب عرض إقامة حسب الموقع وعدد الضيوف ومدة الرحلة. تواصل مع ليمو مصر لتأكيد التوافر وتفاصيل الحجز.",
+          "canonical": "https://www.limo-egypt.com/ar/hotel-apartments",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 161066
+        },
+        {
+          "route": "/ar/hotels",
+          "status": 200,
+          "title": "حجز فنادق في مصر وطلب عروض إقامة | ليمو مصر",
+          "description": "اطلب عرض حجز فندق في مصر حسب المدينة والميزانية. أرسل تواريخ الوصول والمغادرة وعدد الضيوف لمراجعة خيارات الإقامة وتأكيد التفاصيل عبر واتساب.",
+          "canonical": "https://www.limo-egypt.com/ar/hotels",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 166882
+        },
+        {
+          "route": "/ar/policies",
+          "status": 200,
+          "title": "الشروط والأحكام وسياسات الحجز | ليمو مصر",
+          "description": "راجع شروط الخدمات وسياسات طلب الحجز قبل ترتيب رحلتك.",
+          "canonical": "https://www.limo-egypt.com/ar/policies",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 95976
+        },
+        {
+          "route": "/ar/privacy",
+          "status": 200,
+          "title": "سياسة الخصوصية وحماية البيانات | ليمو مصر",
+          "description": "راجع سياسة الخصوصية والتعامل مع بيانات التواصل والحجز.",
+          "canonical": "https://www.limo-egypt.com/ar/privacy",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 90379
+        },
+        {
+          "route": "/ar/sphinx-airport-transfer",
+          "status": 200,
+          "title": "ليموزين مطار سفنكس للاستقبال والتوصيل | ليمو مصر",
+          "description": "اطلب خدمة نقل من مطار سفنكس الدولي أو إليه وأرسل الموعد والركاب والأمتعة لطلب عرض سعر.",
+          "canonical": "https://www.limo-egypt.com/ar/sphinx-airport-transfer",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 105704
+        },
+        {
+          "route": "/ar/stays",
+          "status": 200,
+          "title": "حجز فنادق وشقق فندقية في مصر | ليمو مصر",
+          "description": "اختر الفنادق والشقق الفندقية وأرسل تفاصيل الإقامة لطلب عرض حجز.",
+          "canonical": "https://www.limo-egypt.com/ar/stays",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 1,
+          "bytes": 155669
+        },
+        {
+          "route": "/en",
+          "status": 200,
+          "title": "Limo Egypt | Hotels, Limousine & Airport Services",
+          "description": "Plan your Egypt trip with Limo Egypt: limousine and car booking, hotels, serviced apartments, airport fast track and flights. Request a tailored quote.",
+          "canonical": "https://www.limo-egypt.com/en",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Organization",
+            "WebSite"
+          ],
+          "requiredPhones": 0,
+          "bytes": 405003
+        },
+        {
+          "route": "/en/about",
+          "status": 200,
+          "title": "About Our Egypt Travel Services | Limo Egypt",
+          "description": "Learn about Limo Egypt and our car, limousine, hotel, serviced apartment, flight and airport services. Contact our team to arrange your trip.",
+          "canonical": "https://www.limo-egypt.com/en/about",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 112667
+        },
+        {
+          "route": "/en/blog",
+          "status": 200,
+          "title": "Egypt Travel, Stay & Transport Guides | Limo Egypt",
+          "description": "Read Limo Egypt guides on travel, accommodation, transport and airport services, and explore the services available for planning your Egypt trip.",
+          "canonical": "https://www.limo-egypt.com/en/blog",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 118629
+        },
+        {
+          "route": "/en/blog/alexandria-best-places",
+          "status": 200,
+          "title": "Best Places in Alexandria | Limo Egypt",
+          "description": "Alexandria is a city that lives and turns its face to the sea. The Corniche, Qaitbay Citadel, and Montazah.",
+          "canonical": "https://www.limo-egypt.com/en/blog/alexandria-best-places",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 146268
+        },
+        {
+          "route": "/en/blog/cairo-giza-best-places",
+          "status": 200,
+          "title": "Best Places in Cairo & Giza | Limo Egypt",
+          "description": "Cairo rewards those who choose their timing well. The Pyramids, the Old City, and the Nile all await you.",
+          "canonical": "https://www.limo-egypt.com/en/blog/cairo-giza-best-places",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 153898
+        },
+        {
+          "route": "/en/blog/guide-fayoum",
+          "status": 200,
+          "title": "Best Places in Fayoum | Limo Egypt",
+          "description": "Fayoum is a green oasis in the heart of the desert, combining the beauty of lakes, waterfalls, and heritage villages.",
+          "canonical": "https://www.limo-egypt.com/en/blog/guide-fayoum",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 146598
+        },
+        {
+          "route": "/en/blog/guide-luxor-aswan",
+          "status": 200,
+          "title": "Best Places in Luxor & Aswan | Limo Egypt",
+          "description": "Luxor and Aswan are open museums reflecting the greatness of ancient Egyptian civilization, with majestic temples.",
+          "canonical": "https://www.limo-egypt.com/en/blog/guide-luxor-aswan",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 152475
+        },
+        {
+          "route": "/en/blog/guide-oases",
+          "status": 200,
+          "title": "Best Places in The Oases | Limo Egypt",
+          "description": "The Egyptian oases are artistic paintings drawn by nature in the depths of the Western Desert, from Siwa to Bahariya.",
+          "canonical": "https://www.limo-egypt.com/en/blog/guide-oases",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 149602
+        },
+        {
+          "route": "/en/blog/guide-sharm-hurghada",
+          "status": 200,
+          "title": "Best Places in Sharm & Hurghada | Limo Egypt",
+          "description": "The most prominent destinations on the Red Sea, where the joy of diving and coral reefs meet vibrant nightlife.",
+          "canonical": "https://www.limo-egypt.com/en/blog/guide-sharm-hurghada",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "BlogPosting",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 123772
+        },
+        {
+          "route": "/en/cairo-airport-transfer",
+          "status": 200,
+          "title": "Cairo Airport Pickup & Drop-off Transfers | Limo Egypt",
+          "description": "Request Cairo International Airport pickup or drop-off. Share your trip details for a transfer quote.",
+          "canonical": "https://www.limo-egypt.com/en/cairo-airport-transfer",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 102356
+        },
+        {
+          "route": "/en/cars",
+          "status": 200,
+          "title": "Car & Limousine Booking in Egypt | Limo Egypt",
+          "description": "Explore the Limo Egypt fleet, compare models, seating and booking prices, and choose a car for your trip. Request your booking online or via WhatsApp.",
+          "canonical": "https://www.limo-egypt.com/en/cars",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 0,
+          "bytes": 155628
+        },
+        {
+          "route": "/en/cars/%D8%A7%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%AA%D9%88%D8%B1%D9%8A%D8%B2%D9%85%D9%88",
+          "status": 200,
+          "title": "Mercedes-Benz Tourismo Booking in Egypt | Limo Egypt",
+          "description": "Explore Mercedes-Benz Tourismo, with 50 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D8%A7%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%AA%D9%88%D8%B1%D9%8A%D8%B2%D9%85%D9%88",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 112263
+        },
+        {
+          "route": "/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B1%D9%88%D9%84%D8%A7",
+          "status": 200,
+          "title": "Toyota Corolla Booking in Egypt | Limo Egypt",
+          "description": "Explore Toyota Corolla, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B1%D9%88%D9%84%D8%A7",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111076
+        },
+        {
+          "route": "/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B3%D8%AA%D8%B1",
+          "status": 200,
+          "title": "Toyota Coaster Booking in Egypt | Limo Egypt",
+          "description": "Explore Toyota Coaster, with 20 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%83%D9%88%D8%B3%D8%AA%D8%B1",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 110999
+        },
+        {
+          "route": "/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%87%D8%A7%D9%8A-%D8%A7%D8%B3",
+          "status": 200,
+          "title": "Toyota Hiace Booking in Egypt | Limo Egypt",
+          "description": "Explore Toyota Hiace, with 10 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D8%AA%D9%88%D9%8A%D9%88%D8%AA%D8%A7-%D9%87%D8%A7%D9%8A-%D8%A7%D8%B3",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 110954
+        },
+        {
+          "route": "/en/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5",
+          "status": 200,
+          "title": "Chery Arrizo 5 Booking in Egypt | Limo Egypt",
+          "description": "Explore Chery Arrizo 5, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111111
+        },
+        {
+          "route": "/en/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%AA%D9%8A%D8%AC%D9%88-8-%D8%A8%D8%B1%D9%88",
+          "status": 200,
+          "title": "Chery Tiggo 8 Pro Booking in Egypt | Limo Egypt",
+          "description": "Explore Chery Tiggo 8 Pro, with 6 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%AA%D9%8A%D8%AC%D9%88-8-%D8%A8%D8%B1%D9%88",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111088
+        },
+        {
+          "route": "/en/cars/%D9%83%D9%8A%D8%A7-%D8%B3%D9%8A%D8%B1%D8%A7%D8%AA%D9%88",
+          "status": 200,
+          "title": "Kia Cerato Booking in Egypt | Limo Egypt",
+          "description": "Explore Kia Cerato, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%83%D9%8A%D8%A7-%D8%B3%D9%8A%D8%B1%D8%A7%D8%AA%D9%88",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 110655
+        },
+        {
+          "route": "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D8%B3-500",
+          "status": 200,
+          "title": "Mercedes-Benz S 500 Booking in Egypt | Limo Egypt",
+          "description": "Explore Mercedes-Benz S 500, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D8%B3-500",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111247
+        },
+        {
+          "route": "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "status": 200,
+          "title": "Mercedes-Benz E-Class Booking in Egypt | Limo Egypt",
+          "description": "Explore Mercedes-Benz E-Class, with 4 seats. VIP Luxury Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111887
+        },
+        {
+          "route": "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-200",
+          "status": 200,
+          "title": "Mercedes-Benz E 200 Booking in Egypt | Limo Egypt",
+          "description": "Explore Mercedes-Benz E 200, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%A8%D9%86%D8%B2-%D8%A5%D9%8A-200",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111191
+        },
+        {
+          "route": "/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%AC%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "status": 200,
+          "title": "Mercedes-Benz G-CLass Booking in Egypt | Limo Egypt",
+          "description": "Explore Mercedes-Benz G-CLass, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%85%D8%B1%D8%B3%D9%8A%D8%AF%D8%B3-%D8%AC%D9%8A-%D9%83%D9%84%D8%A7%D8%B3",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111301
+        },
+        {
+          "route": "/en/cars/%D9%85%D9%8A%D8%AA%D8%B3%D9%88%D8%A8%D9%8A%D8%B4%D9%8A-%D8%A5%D9%83%D8%B3%D8%A8%D8%A7%D9%86%D8%AF%D8%B1",
+          "status": 200,
+          "title": "Mitsubishi Xpander Booking in Egypt | Limo Egypt",
+          "description": "Explore Mitsubishi Xpander, with 6 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%85%D9%8A%D8%AA%D8%B3%D9%88%D8%A8%D9%8A%D8%B4%D9%8A-%D8%A5%D9%83%D8%B3%D8%A8%D8%A7%D9%86%D8%AF%D8%B1",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111835
+        },
+        {
+          "route": "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D8%AA%D8%B4-1",
+          "status": 200,
+          "title": "Hyundai H-1 Booking in Egypt | Limo Egypt",
+          "description": "Explore Hyundai H-1, with 7 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D8%AA%D8%B4-1",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 110830
+        },
+        {
+          "route": "/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+          "status": 200,
+          "title": "Hyundai Elantra Booking in Egypt | Limo Egypt",
+          "description": "Explore Hyundai Elantra, with 4 seats.  Review car details and request a booking with Limo Egypt.",
+          "canonical": "https://www.limo-egypt.com/en/cars/%D9%87%D9%8A%D9%88%D9%86%D8%AF%D8%A7%D9%8A-%D8%A5%D9%84%D9%86%D8%AA%D8%B1%D8%A7",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 111500
+        },
+        {
+          "route": "/en/contact",
+          "status": 200,
+          "title": "Contact Us for Bookings & Travel Quotes | Limo Egypt",
+          "description": "Contact Limo Egypt about cars, hotels, serviced apartments, flights and airport services. Send your trip details to request a booking quote.",
+          "canonical": "https://www.limo-egypt.com/en/contact",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 124487
+        },
+        {
+          "route": "/en/fast-track",
+          "status": 200,
+          "title": "Airport Fast Track Services in Egypt | Limo Egypt",
+          "description": "Explore airport fast track packages from Limo Egypt. Share your airport, flight time and passenger count to confirm service details, availability and price.",
+          "canonical": "https://www.limo-egypt.com/en/fast-track",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 120214
+        },
+        {
+          "route": "/en/flights",
+          "status": 200,
+          "title": "Flight Booking & Travel Quotes | Limo Egypt",
+          "description": "Request a flight quote with Limo Egypt. Share your destination, travel dates and passenger count to review available options and confirm booking details.",
+          "canonical": "https://www.limo-egypt.com/en/flights",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 170944
+        },
+        {
+          "route": "/en/hotel-apartments",
+          "status": 200,
+          "title": "Serviced Apartment Booking in Egypt | Limo Egypt",
+          "description": "Explore serviced apartments in Egypt and request a stay quote by location, guest count and trip duration. Contact Limo Egypt to confirm availability.",
+          "canonical": "https://www.limo-egypt.com/en/hotel-apartments",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 155303
+        },
+        {
+          "route": "/en/hotels",
+          "status": 200,
+          "title": "Hotel Booking in Egypt & Stay Quotes | Limo Egypt",
+          "description": "Request an Egypt hotel quote by city and budget. Share your arrival and departure dates and guest count to review accommodation options via WhatsApp.",
+          "canonical": "https://www.limo-egypt.com/en/hotels",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 160950
+        },
+        {
+          "route": "/en/policies",
+          "status": 200,
+          "title": "Terms, Conditions & Booking Policies | Limo Egypt",
+          "description": "Review our service terms and booking policies before arranging your trip.",
+          "canonical": "https://www.limo-egypt.com/en/policies",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 92336
+        },
+        {
+          "route": "/en/privacy",
+          "status": 200,
+          "title": "Privacy & Customer Data Policy | Limo Egypt",
+          "description": "Read our policy covering contact information and booking data.",
+          "canonical": "https://www.limo-egypt.com/en/privacy",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 0,
+          "bytes": 87504
+        },
+        {
+          "route": "/en/sphinx-airport-transfer",
+          "status": 200,
+          "title": "Sphinx Airport Pickup & Drop-off Transfers | Limo Egypt",
+          "description": "Request transfers to or from Sphinx International Airport. Share your travel details for a quote.",
+          "canonical": "https://www.limo-egypt.com/en/sphinx-airport-transfer",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [
+            "Service",
+            "BreadcrumbList"
+          ],
+          "requiredPhones": 1,
+          "bytes": 102370
+        },
+        {
+          "route": "/en/stays",
+          "status": 200,
+          "title": "Hotels & Serviced Apartments in Egypt | Limo Egypt",
+          "description": "Explore hotels and serviced apartments and request a stay quote.",
+          "canonical": "https://www.limo-egypt.com/en/stays",
+          "hreflangCount": 3,
+          "h1Count": 1,
+          "schemaTypes": [],
+          "requiredPhones": 1,
+          "bytes": 152012
+        }
+      ]
+    },
+    "robots": {
+      "status": 200,
+      "apiDisallowed": true,
+      "sitemap": "https://www.limo-egypt.com/sitemap.xml",
+      "noindexPaths": [
+        "/ar/admin/login",
+        "/ar/login",
+        "/ar/register",
+        "/ar/my-bookings"
+      ]
+    }
+  },
+  "files": [
+    "app/blog/[slug]/page.tsx",
+    "app/blog/page.tsx",
+    "app/cars/[slug]/page.tsx",
+    "app/fast-track/FastTrackClient.tsx",
+    "app/layout.tsx",
+    "app/page.tsx",
+    "app/policies/page.tsx",
+    "app/privacy/page.tsx",
+    "app/stays/page.tsx",
+    "components/ArticleClient.tsx",
+    "components/ArticlesCarousel.tsx",
+    "components/ArticlesSection.tsx",
+    "components/BookingForm.tsx",
+    "components/GoogleAdsEvents.tsx",
+    "components/PublicLayout.tsx",
+    "components/ServiceBookingGuide.tsx",
+    "lib/mongodb.ts",
+    "lib/sanitize.ts",
+    "lib/seo.ts",
+    "package-lock.json",
+    "package.json",
+    "app/cairo-airport-transfer/page.tsx",
+    "app/sphinx-airport-transfer/page.tsx",
+    "components/AirportTransferPage.tsx",
+    "components/JsonLd.tsx",
+    "lib/airport-services.ts",
+    "lib/article-preview.ts",
+    "lib/structured-data.ts",
+    "lib/tracking-links.ts",
+    "scripts/verify-booking-tracking.cjs",
+    "scripts/verify-public-seo.cjs",
+    "scripts/verify-seo-remediation.cjs",
+    "docs/seo-remediation-2026-10-10.md",
+    "docs/seo-remediation-validation-2026-10-10.json"
+  ]
+}

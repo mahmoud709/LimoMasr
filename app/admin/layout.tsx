@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { cookies } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { verifyAdminToken } from "@/lib/admin-auth";
-import { AuthRedirect } from "@/components/admin/AuthRedirect";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -16,10 +16,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const isAuthenticated = token ? verifyAdminToken(token) : false;
 
   if (!isAuthenticated) {
+    const requestHeaders = await headers();
+    if (requestHeaders.get("x-site-path") !== "/admin/login") redirect("/ar/admin/login");
     return (
-      <div className="min-h-screen bg-[#1a2b3c]" dir="rtl">
-        <AuthRedirect isAuthenticated={false} />
-        {children}
+      <div className="min-h-screen bg-[#1a2b3c]" dir="rtl">        {children}
       </div>
     );
   }

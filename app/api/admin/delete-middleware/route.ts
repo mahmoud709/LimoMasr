@@ -1,17 +1,3 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
-import { requireAdminAuth } from "@/lib/admin-auth";
-
-export async function GET() {
-  const unauth = await requireAdminAuth();
-  if (unauth) return unauth;
-
-  try {
-    const middlewarePath = path.join(process.cwd(), "middleware.ts");
-    await fs.unlink(middlewarePath);
-    return NextResponse.json({ ok: true, message: "Deleted middleware.ts" });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
+// Legacy maintenance endpoints must not execute database or filesystem mutations.
+export async function GET() { return NextResponse.json({ error: "This maintenance endpoint is retired." }, { status: 410 }); }

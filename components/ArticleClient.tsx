@@ -13,10 +13,12 @@ import {
   FiCopy, 
   FiList, 
   FiCompass, 
-  FiCheckCircle, 
+
   FiMessageSquare,
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
+import type { ArticlePreview } from "@/lib/article-preview";
+import { formatArticleReadTime } from "@/lib/utils";
 import type { Article, SiteSettings } from "@/lib/types";
 
 interface TocItem {
@@ -28,21 +30,25 @@ interface TocItem {
 export function ArticleClient({
   article,
   contentHtml,
+  initialToc,
   relatedArticles,
   settings,
-  isEn
+  isEn,
+  serviceLinks,
 }: {
   article: Article;
   contentHtml: string;
-  relatedArticles: Article[];
+  initialToc: TocItem[];
+  relatedArticles: ArticlePreview[];
   settings: SiteSettings;
   isEn: boolean;
+  serviceLinks: React.ReactNode;
 }) {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [toc, setToc] = useState<TocItem[]>([]);
+  const toc = initialToc;
   const [activeTocId, setActiveTocId] = useState<string>("");
   const [copied, setCopied] = useState(false);
-  const [processedContent, setProcessedContent] = useState(contentHtml);
+  const processedContent = contentHtml;
 
   // 1. Calculate reading progress & process TOC headings in DOM
   useEffect(() => {
@@ -70,31 +76,6 @@ export function ArticleClient({
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // 2. Parse Headings for TOC & inject IDs into HTML
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(contentHtml, "text/html");
-    const headings = doc.querySelectorAll("h2, h3");
-    const tocItems: TocItem[] = [];
-
-    headings.forEach((heading, idx) => {
-      const text = heading.textContent?.trim() || "";
-      if (!text) return;
-      const id = `heading-${idx}-${text.slice(0, 15).replace(/\s+/g, "-").toLowerCase()}`;
-      heading.id = id;
-      tocItems.push({
-        id,
-        text,
-        level: heading.tagName.toLowerCase() === "h2" ? 2 : 3
-      });
-    });
-
-    setToc(tocItems);
-    setProcessedContent(doc.body.innerHTML);
-  }, [contentHtml]);
 
   // 3. Share URL
   const articleUrl = typeof window !== "undefined" ? window.location.href : "";
@@ -131,7 +112,7 @@ export function ArticleClient({
           {/* Breadcrumb Navigation */}
           <nav className="mb-8 flex items-center justify-between animate-reveal-1">
             <Link 
-              href={isEn ? "/en/blog" : "/blog"}
+              href={isEn ? "/en/blog" : "/ar/blog"}
               className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-black/5 text-xs font-bold text-slate-600 hover:text-[#1a2b3c] hover:border-[#d0a755]/30 hover:shadow-md transition-all group"
             >
               {isEn ? <FiArrowLeft className="w-4 h-4 text-[#d0a755] group-hover:-translate-x-1 transition-transform" /> : <FiArrowRight className="w-4 h-4 text-[#d0a755] group-hover:translate-x-1 transition-transform" />}
@@ -162,8 +143,8 @@ export function ArticleClient({
                 <div className="w-7 h-7 rounded-full bg-[#1a2b3c] text-white flex items-center justify-center text-[10px] font-black">
                   LM
                 </div>
-                <span className="text-[#1a2b3c] font-black">{isEn ? "Limo Egypt Editorial" : "فريق تحرير ليمو مصر"}</span>
-                <FiCheckCircle className="w-3.5 h-3.5 text-[#d0a755]" title={isEn ? "Verified Author" : "كاتب موثوق"} />
+                <span className="text-[#1a2b3c] font-black">{isEn ? "Limo Egypt travel guide" : "دليل السفر من ليمو مصر"}</span>
+
               </div>
 
               <span className="hidden sm:inline text-slate-200">•</span>
@@ -202,6 +183,7 @@ export function ArticleClient({
             </div>
           )}
 
+          {serviceLinks}
           {/* Two-Column Grid: Content + Sidebar */}
           <div className="grid lg:grid-cols-[1fr_360px] gap-12 items-start">
             
@@ -239,7 +221,7 @@ export function ArticleClient({
                   </p>
                 </div>
                 <Link 
-                  href={isEn ? "/en/cars" : "/cars"}
+                  href={isEn ? "/en/cars" : "/ar/cars"}
                   className="bg-[#d0a755] hover:bg-[#b88a44] text-[#1a2b3c] hover:text-white font-black px-8 py-4 rounded-2xl text-sm transition-all duration-300 shadow-lg hover:shadow-xl shrink-0 border border-white/20"
                 >
                   {isEn ? "Explore Fleet & Book" : "استكشف الأسطول واحجز الآن"}
@@ -362,7 +344,7 @@ export function ArticleClient({
                   </p>
                 </div>
                 <Link
-                  href={isEn ? "/en/cars" : "/cars"}
+                  href={isEn ? "/en/cars" : "/ar/cars"}
                   className="w-full flex items-center justify-center gap-2 bg-[#d0a755] hover:bg-[#b88a44] text-[#1a2b3c] font-black py-3 rounded-xl text-xs transition-all shadow-md"
                 >
                   <span>{isEn ? "View Available Fleet" : "عرض السيارات المتاحة"}</span>
@@ -414,9 +396,11 @@ export function ArticleClient({
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedArticles.slice(0, 3).map((rel) => {
-                  const relTrans = rel.translations?.en as any;
+                  const relTrans = rel.translations?.en;
                   const relTitle = isEn && relTrans?.title ? relTrans.title : rel.title;
                   const relExcerpt = isEn && relTrans?.excerpt ? relTrans.excerpt : rel.excerpt;
+                  const relCategory = isEn && relTrans?.category ? relTrans.category : rel.category;
+                  const relReadTime = isEn && relTrans?.readTime ? relTrans.readTime : formatArticleReadTime(rel.readTime, isEn);
 
                   return (
                     <article key={rel.id} className="bg-white rounded-3xl border border-black/5 shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 group flex flex-col">
@@ -424,7 +408,8 @@ export function ArticleClient({
                         {rel.image ? (
                           <Image 
                             src={rel.image} 
-                            alt={relTitle} 
+                            alt={relTitle}
+                            sizes="(max-width: 767px) calc(100vw - 48px), (max-width: 1023px) 50vw, 420px"
                             fill 
                             className="object-cover group-hover:scale-105 transition-transform duration-500" 
                           />
@@ -432,7 +417,7 @@ export function ArticleClient({
                           <div className="w-full h-full flex items-center justify-center text-[#d0a755] text-4xl">🏛️</div>
                         )}
                         <span className="absolute top-3 right-3 bg-[#1a2b3c] text-[#d0a755] text-[10px] font-black px-3 py-1 rounded-full shadow-sm">
-                          {rel.category}
+                          {relCategory}
                         </span>
                       </div>
 
@@ -445,12 +430,12 @@ export function ArticleClient({
                         </p>
                         
                         <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-black text-[#1a2b3c]">
-                          <span>{rel.readTime}</span>
+                          <span>{relReadTime}</span>
                           <Link 
-                            href={isEn ? `/en/blog/${rel.slug}` : `/blog/${rel.slug}`} 
+                            href={`/${isEn ? "en" : "ar"}/blog/${encodeURIComponent(rel.slug)}`}
                             className="flex items-center gap-1 text-[#d0a755] hover:underline"
                           >
-                            <span>{isEn ? "Read Guide" : "اقرأ المقال"}</span>
+                            <span>{isEn ? "Read Guide" : "اقرأ المقال"}<span className="sr-only">: {relTitle}</span></span>
                             {isEn ? <FiArrowRight className="w-3.5 h-3.5" /> : <FiArrowLeft className="w-3.5 h-3.5" />}
                           </Link>
                         </div>

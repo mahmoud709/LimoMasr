@@ -1,3 +1,4 @@
+import { verifySession } from "@/lib/session-signing";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -21,9 +22,7 @@ export function proxy(req: NextRequest) {
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
-    pathname.includes(".") ||
-    isRewritten ||
-    hasLocaleParam
+    pathname.includes(".")
   ) {
     logDebug(`PASSTHROUGH: ${pathname}`);
     return NextResponse.next();
@@ -45,7 +44,7 @@ export function proxy(req: NextRequest) {
       logDebug(`ADMIN LOGIN: ${pathname}`);
     } else {
       const token = req.cookies.get("admin-token")?.value;
-      if (!token) {
+      if (verifySession("admin", token) !== "admin") {
         logDebug(`ADMIN REDIRECT: ${pathname} -> /admin/login`);
         const locale = hasEnPrefix ? "en" : "ar";
         const loginUrl = new URL(`/${locale}/admin/login`, req.url);
@@ -73,6 +72,7 @@ export function proxy(req: NextRequest) {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set("x-locale-rewritten", "true");
     requestHeaders.set("x-site-locale", locale);
+    requestHeaders.set("x-site-path", restOfPath);
 
     logDebug(`REWRITE: ${pathname} -> ${rewriteUrl.pathname}${rewriteUrl.search}`);
 

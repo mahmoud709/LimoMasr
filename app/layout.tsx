@@ -11,6 +11,7 @@ const cairo = Cairo({
 });
 
 const outfit = Outfit({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-outfit-loaded",
   display: "swap",

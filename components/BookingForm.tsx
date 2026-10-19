@@ -8,24 +8,25 @@ import { BOOKING_SUCCESS_CONVERSION_SEND_TO, trackEvent, trackWhatsappClick } fr
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
-import { 
-  FiCheckCircle, 
-  FiCalendar, 
-  FiUsers, 
-  FiMapPin, 
-  FiBriefcase, 
-  FiGlobe, 
-  FiUser, 
-  FiRepeat, 
-  FiArrowRight, 
-  FiClock, 
-  FiNavigation, 
+import {
+  FiCheckCircle,
+  FiCalendar,
+  FiUsers,
+  FiMapPin,
+  FiBriefcase,
+  FiGlobe,
+  FiUser,
+  FiRepeat,
+  FiArrowRight,
+  FiClock,
+  FiNavigation,
   FiPhone,
   FiImage,
   FiX
 } from "react-icons/fi";
-import { LocationSearchModal } from "./LocationSearchModal";
-import { NationalitySearchModal } from "./NationalitySearchModal";
+import dynamic from "next/dynamic";
+const LocationSearchModal = dynamic(() => import("./LocationSearchModal").then(module => module.LocationSearchModal));
+const NationalitySearchModal = dynamic(() => import("./NationalitySearchModal").then(module => module.NationalitySearchModal));
 
 type BookingFormProps = {
   type: ServiceType;
@@ -37,6 +38,7 @@ type BookingFormProps = {
   baseCurrency?: string;
   currency?: string;
   exchangeRate?: number;
+  airportTransfer?: { code: "CAI" | "SPX"; name: string };
 };
 
 export function BookingForm({
@@ -49,6 +51,7 @@ export function BookingForm({
   baseCurrency = "USD",
   currency = "EGP",
   exchangeRate = 1,
+  airportTransfer,
 }: BookingFormProps) {
   // Common Contact Info
   const [customerName, setCustomerName] = useState("");
@@ -59,6 +62,7 @@ export function BookingForm({
   const [passengers, setPassengers] = useState<any>(1);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const savingRef = useRef(false);
   const [bookingSource, setBookingSource] = useState<"web" | "whatsapp">("web");
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
@@ -66,7 +70,7 @@ export function BookingForm({
   const [carDate, setCarDate] = useState("");          // تاريخ التوصيلة
   const [carTime, setCarTime] = useState("");
   const [carLuggage, setCarLuggage] = useState<any>(0);
-  const [carServiceType, setCarServiceType] = useState<"trip" | "daily">("trip");
+  const [selectedCarServiceType, setCarServiceType] = useState<"trip" | "daily">("trip");
   const [carFrom, setCarFrom] = useState("");
   const [carTo, setCarTo] = useState("");
   const [carResidence, setCarResidence] = useState("");
@@ -113,6 +117,12 @@ export function BookingForm({
 
   // Modal selector state
   const [activeModal, setActiveModal] = useState<"hotel" | "flightFrom" | "flightTo" | "carFrom" | "carTo" | "carResidence" | "otherPersonLocation" | null>(null);
+
+  const [airportDirection, setAirportDirection] = useState<"arrival" | "departure">("arrival");
+  const airport = type === "car" ? airportTransfer : undefined;
+  const carServiceType = airport ? "trip" : selectedCarServiceType;
+  const transferFrom = airport && airportDirection === "arrival" ? airport.name : carFrom;
+  const transferTo = airport && airportDirection === "departure" ? airport.name : carTo;
 
   // Detect locale based on props, pathname prefix, or cookie
   const isEn = locale ? locale === "en" : (typeof window !== "undefined" && (
@@ -233,17 +243,17 @@ export function BookingForm({
     let detailsList: string[] = [];
 
     if (type === "car") {
-      const serviceTypeStr = carServiceType === "trip"
+      const serviceTypeStr = airport ? (airportDirection === "arrival" ? (isEn ? "Airport pickup" : "استقبال من المطار") : (isEn ? "Airport drop-off" : "توصيل إلى المطار")) : carServiceType === "trip"
         ? (isEn ? "Transfer (Trip)" : "توصيلة")
         : (isEn ? "Daily Rental Service" : "خدمة يومية");
-      
+
       detailsList.push(isEn ? `• Service Type: ${serviceTypeStr}` : `• نوع الخدمة: ${serviceTypeStr}`);
 
       if (carServiceType === "trip") {
         if (carDate) detailsList.push(isEn ? `• Date: ${carDate}` : `• تاريخ الرحلة: ${carDate}`);
         if (carTime) detailsList.push(isEn ? `• Time: ${carTime}` : `• وقت الرحلة: ${carTime}`);
-        if (carFrom) detailsList.push(isEn ? `• Pickup From: ${carFrom}` : `• الانطلاق من: ${carFrom}`);
-        if (carTo) detailsList.push(isEn ? `• Destination To: ${carTo}` : `• الوصول إلى: ${carTo}`);
+        if (transferFrom) detailsList.push(isEn ? `• Pickup From: ${transferFrom}` : `• الانطلاق من: ${transferFrom}`);
+        if (transferTo) detailsList.push(isEn ? `• Destination To: ${transferTo}` : `• الوصول إلى: ${transferTo}`);
       } else {
         if (carDateFrom) detailsList.push(isEn ? `• From Date: ${carDateFrom}` : `• تاريخ البداية: ${carDateFrom}`);
         if (carDateTo) detailsList.push(isEn ? `• To Date: ${carDateTo}` : `• تاريخ النهاية: ${carDateTo}`);
@@ -251,7 +261,7 @@ export function BookingForm({
         if (carResidence) detailsList.push(isEn ? `• Residence / Accommodation: ${carResidence}` : `• مكان السكن / الإقامة: ${carResidence}`);
         if (calculatedPrice) detailsList.push(isEn ? `• Total Price: ${calculatedPrice} EGP` : `• السعر الإجمالي: ${calculatedPrice} ج.م`);
       }
-      
+
       detailsList.push(isEn ? `• Luggage Count: ${carLuggage}` : `• عدد الحقائب: ${carLuggage}`);
       detailsList.push(isEn ? `• Passengers: ${passengers}` : `• عدد الركاب: ${passengers}`);
     } else if (type === "fast_track") {
@@ -259,7 +269,7 @@ export function BookingForm({
       if (fastTrackDate) detailsList.push(isEn ? `• Date: ${fastTrackDate}` : `• تاريخ الخدمة: ${fastTrackDate}`);
       if (fastTrackTime) detailsList.push(isEn ? `• Time: ${fastTrackTime}` : `• وقت الخدمة: ${fastTrackTime}`);
       detailsList.push(isEn ? `• Number of Travelers: ${passengers}` : `• عدد الأفراد: ${passengers}`);
-      
+
       const filledNames = passengerNames.filter((n) => n.trim().length > 0);
       if (filledNames.length > 0) {
         const namesFormatted = filledNames.map((n, i) => `  ${i + 1}. ${n}`).join("\n");
@@ -267,16 +277,16 @@ export function BookingForm({
       }
     } else if (["hotel", "apartment"].includes(type)) {
       const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
-      const accDetails = accommodationType === "hotel" 
+      const accDetails = accommodationType === "hotel"
         ? (isEn ? `Accommodation: Hotel\nGovernorate/Hotel: ${hotelDetails || (isEn ? "Not specified" : "غير محدد")}` : `الإقامة: فنادق\nالمحافظة أو اسم الفندق: ${hotelDetails || "غير محدد"}`)
         : (isEn ? `Accommodation: Hotel Apartment\nArea: ${apartmentArea || (isEn ? "Not specified" : "غير محدد")}` : `الإقامة: شقق فندقية\nالمنطقة: ${apartmentArea || "غير محدد"}`);
-      
+
       detailsList.push(accDetails);
       if (nationality) detailsList.push(isEn ? `• Nationality: ${nationality}` : `• الجنسية: ${nationality}`);
       if (hotelDateFrom) detailsList.push(isEn ? `• Check-in Date: ${hotelDateFrom}` : `• تاريخ الوصول: ${hotelDateFrom}`);
       if (hotelNights) detailsList.push(isEn ? `• Number of Nights: ${hotelNights}` : `• عدد الليالي: ${hotelNights}`);
       detailsList.push(isEn ? `• Number of Guests: ${passengers}` : `• عدد الأفراد: ${passengers}`);
-      
+
       const totalBudget = currency !== "EGP" ? ((budget * hotelNights) / exchangeRate).toFixed(2) + ` ${currency}` : (budget * hotelNights) + " EGP";
       detailsList.push(isEn ? `• Budget per night: ${formattedBudget}` : `• الميزانية المتوقعة لليلة: ${formattedBudget}`);
       detailsList.push(isEn ? `• Total Budget: ${totalBudget}` : `• إجمالي الميزانية المتوقعة: ${totalBudget}`);
@@ -284,7 +294,7 @@ export function BookingForm({
       const tripTypeStr = flightTripType === "round_trip"
         ? (isEn ? "Round Trip" : "ذهاب وعودة")
         : (isEn ? "One Way" : "رحلة واحدة (ذهاب فقط)");
-      
+
       detailsList.push(isEn ? `• Flight Type: ${tripTypeStr}` : `• نوع الرحلة: ${tripTypeStr}`);
       if (flightFrom) detailsList.push(isEn ? `• From: ${flightFrom}` : `• من: ${flightFrom}`);
       if (flightTo) detailsList.push(isEn ? `• To: ${flightTo}` : `• إلى: ${flightTo}`);
@@ -332,6 +342,10 @@ export function BookingForm({
     carServiceType,
     carFrom,
     carTo,
+    transferFrom,
+    transferTo,
+    airport,
+    airportDirection,
     carResidence,
     carDateFrom,
     carDateTo,
@@ -359,7 +373,7 @@ export function BookingForm({
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (saving) return;
+    if (saving || savingRef.current) return;
     setBookingError("");
     const contactPhone = normalizeBookingPhone(phone);
     if (!contactPhone) {
@@ -369,6 +383,11 @@ export function BookingForm({
       phoneInputRef.current?.focus();
       return;
     }
+    if (airport && !(airportDirection === "arrival" ? carTo : carFrom).trim()) {
+      setBookingError(isEn ? (airportDirection === "arrival" ? "Choose your destination after airport pickup." : "Choose your pickup address before airport drop-off.") : (airportDirection === "arrival" ? "حدد وجهة الوصول بعد الاستقبال من المطار." : "حدد عنوان الانطلاق للتوصيل إلى المطار."));
+      return;
+    }
+    savingRef.current = true;
     setSaving(true);
     try {
       let uploadedAttachmentUrl = "";
@@ -376,7 +395,7 @@ export function BookingForm({
         try {
           const formData = new FormData();
           formData.append("file", attachmentFile);
-          const uploadRes = await fetch("/api/upload", { method: "POST", body: formData });
+          const uploadRes = await fetch("/api/upload", { method: "POST", body: formData, signal: AbortSignal.timeout(20000) });
           if (uploadRes.ok) {
             const data = await uploadRes.json();
             uploadedAttachmentUrl = data.url;
@@ -386,12 +405,12 @@ export function BookingForm({
         }
       }
       const formattedBudget = currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP";
-      
+
       // Build structured notes for admin and internal records
       let structuredNotes = "";
       if (type === "car") {
         if (carServiceType === "trip") {
-          structuredNotes = `[نوع الخدمة: توصيلة] [تاريخ الرحلة: ${carDate}] [عدد الحقائب: ${carLuggage}] [من: ${carFrom}] [إلى: ${carTo}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+          structuredNotes = `${airport ? `[اتجاه النقل: ${airportDirection === "arrival" ? "استقبال من المطار" : "توصيل إلى المطار"}] [المطار: ${airport.code}] ` : ""}[نوع الخدمة: توصيلة] [تاريخ الرحلة: ${carDate}] [عدد الحقائب: ${carLuggage}] [من: ${transferFrom}] [إلى: ${transferTo}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
         } else {
           structuredNotes = `[نوع الخدمة: يومية] [تاريخ البداية: ${carDateFrom}] [تاريخ النهاية: ${carDateTo}] [عدد الأيام: ${carTotalDays}] [مكان السكن: ${carResidence}] [عدد الحقائب: ${carLuggage}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
         }
@@ -418,6 +437,7 @@ export function BookingForm({
       const effectiveCustomerName = (type === "fast_track" && passengerNames[0]?.trim()) ? passengerNames[0].trim() : customerName;
 
       const res = await fetch("/api/bookings", {
+        signal: AbortSignal.timeout(20000),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -450,6 +470,12 @@ export function BookingForm({
         return;
       }
 
+      const savedBooking = await res.json().catch(() => null);
+      if (res.status !== 201 || typeof savedBooking?.id !== "string" || !savedBooking.id.trim()) {
+        setBookingError(isEn ? "Your booking could not be confirmed. Please try again." : "لم يتم تأكيد حفظ الحجز. حاول مرة أخرى.");
+        return;
+      }
+
       if (res.ok) {
         trackEvent("booking_submit_success", {
           event_category: "lead",
@@ -473,6 +499,7 @@ export function BookingForm({
       console.error("Booking error:", err);
       setBookingError(isEn ? "Your booking was not saved. Please try again." : "لم يتم حفظ الحجز. حاول مرة أخرى.");
     } finally {
+      savingRef.current = false;
       setSaving(false);
     }
   }
@@ -530,21 +557,21 @@ export function BookingForm({
           {isEn ? "Booking Confirmed!" : "تم تأكيد الحجز!"}
         </h2>
         <p className="text-sm font-bold text-[#1a2b3c]/70 leading-relaxed max-w-sm mx-auto">
-          {isEn 
+          {isEn
             ? "Your booking has been saved. Our team will contact you shortly to confirm details."
             : "تم تسجيل طلبك بنجاح في النظام. سيقوم فريق خدمة العملاء بالتواصل معك قريباً عبر رقم الهاتف المدخل لتأكيد التفاصيل."}
         </p>
-        
+
         <div className="pt-4 border-t border-black/5 flex flex-col gap-2">
           {user ? (
-            <Link 
+            <Link
               href={isEn ? "/my-bookings?lang=en" : "/my-bookings"}
               className="inline-block bg-[#1a2b3c] text-white px-6 py-3.5 rounded-xl text-xs font-black hover:bg-[#1a2b3c]/90 transition-colors"
             >
               {isEn ? "View My Bookings" : "عرض حجوزاتي في الموقع"}
             </Link>
           ) : (
-            <Link 
+            <Link
               href={isEn ? "/login?lang=en" : "/login"}
               className="inline-block bg-[#d0a755] text-[#1a2b3c] px-6 py-3.5 rounded-xl text-xs font-black hover:bg-[#b89040] transition-colors"
             >
@@ -575,14 +602,19 @@ export function BookingForm({
           {isEn ? "Service:" : "الخدمة:"} {effectiveServiceName}
         </p>
       </div>
-      
+
       <div className="space-y-4">
         {/* ========================================================================= */}
         {/* 1. LIMOUSINE CAR FIELDS */}
         {/* ========================================================================= */}
         {type === "car" && (
           <div className="space-y-4">
-            {/* Service Type Selection: Transfer vs Daily */}
+            {airport ? <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-[#1a2b3c]/70">{isEn ? "Transfer direction" : "اتجاه النقل"}</label>
+              <div className="grid grid-cols-2 gap-2 p-1.5 bg-[#F4F3EF] rounded-2xl border border-black/5">
+                {(["arrival", "departure"] as const).map(direction => <button key={direction} type="button" aria-pressed={airportDirection === direction} onClick={() => { setAirportDirection(direction); setBookingError(""); }} className={airportDirection === direction ? "py-3 px-3 rounded-xl text-xs font-black bg-[#1a2b3c] text-[#d0a755]" : "py-3 px-3 rounded-xl text-xs font-black bg-white/60 text-[#1a2b3c]/70"}>{direction === "arrival" ? (isEn ? "Airport pickup" : "استقبال من المطار") : (isEn ? "Airport drop-off" : "توصيل إلى المطار")}</button>)}
+              </div>
+            </div> : (
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-[#1a2b3c]/70">
                 {isEn ? "Service Type" : "نوع الخدمة المطلوبة"}
@@ -615,37 +647,38 @@ export function BookingForm({
               </div>
             </div>
 
+            )}
             {/* If Transfer: From & To */}
             {carServiceType === "trip" ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                    {isEn ? "Pickup Location (From)" : "مكان الانطلاق (من)"}
+                    {airport ? (airportDirection === "arrival" ? (isEn ? "Pickup airport" : "مطار الاستقبال") : (isEn ? "Pickup address" : "عنوان الانطلاق")) : (isEn ? "Pickup Location (From)" : "مكان الانطلاق (من)")}
                   </label>
-                  <div 
+                  {airport && airportDirection === "arrival" ? <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3"><FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" /><span title={airport.name} className="min-w-0 truncate text-sm font-medium">{airport.name}</span></div> : airport ? <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755]"><FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" /><input required type="text" name="airportPickupAddress" aria-label={isEn ? "Enter your pickup address..." : "أدخل عنوان الانطلاق..."} autoComplete="street-address" value={carFrom} onChange={event => setCarFrom(event.target.value)} placeholder={isEn ? "Enter your pickup address..." : "أدخل عنوان الانطلاق..."} className="min-w-0 w-full bg-transparent text-sm font-medium outline-none" /></div> : (                  <button type="button"
                     onClick={() => setActiveModal("carFrom")}
-                    className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                    className="w-full text-start flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
                   >
                     <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
                     <span className={`text-sm font-medium truncate ${carFrom ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
                       {carFrom || (isEn ? "Select pickup location..." : "حدد مكان الانطلاق...")}
                     </span>
-                  </div>
+                  </button>)}
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-                    {isEn ? "Destination (To)" : "مكان الوصول (إلى)"}
+                    {airport ? (airportDirection === "departure" ? (isEn ? "Departure airport" : "مطار المغادرة") : (isEn ? "Destination" : "وجهة الوصول")) : (isEn ? "Destination (To)" : "مكان الوصول (إلى)")}
                   </label>
-                  <div 
+{airport && airportDirection === "departure" ? <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3"><FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" /><span title={airport.name} className="min-w-0 truncate text-sm font-medium">{airport.name}</span></div> : airport ? <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 focus-within:border-[#d0a755]"><FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" /><input required type="text" name="airportDestinationAddress" aria-label={isEn ? "Enter your destination address..." : "أدخل عنوان وجهة الوصول..."} autoComplete="street-address" value={carTo} onChange={event => setCarTo(event.target.value)} placeholder={isEn ? "Enter your destination address..." : "أدخل عنوان وجهة الوصول..."} className="min-w-0 w-full bg-transparent text-sm font-medium outline-none" /></div> : (                  <button type="button"
                     onClick={() => setActiveModal("carTo")}
-                    className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                    className="w-full text-start flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
                   >
                     <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
                     <span className={`text-sm font-medium truncate ${carTo ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
                       {carTo || (isEn ? "Select destination..." : "حدد مكان الوصول...")}
                     </span>
-                  </div>
+                  </button>)}
                 </div>
               </div>
             ) : (
@@ -654,15 +687,15 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Accommodation / Residence Location" : "مكان السكن / الإقامة"}
                 </label>
-                <div 
+                <button type="button"
                   onClick={() => setActiveModal("carResidence")}
-                  className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
+                  className="w-full text-start flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
                 >
                   <FiMapPin className="w-4 h-4 text-[#d0a755] shrink-0" />
                   <span className={`text-sm font-medium truncate ${carResidence ? "text-[#1a2b3c]" : "text-[#1a2b3c]/40"}`}>
                     {carResidence || (isEn ? "Select hotel or residence location..." : "حدد مكان السكن أو الفندق...")}
                   </span>
-                </div>
+                </button>
               </div>
             )}
 
@@ -977,7 +1010,7 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Hotel or Governorate" : "المحافظة أو اسم الفندق المطلوب"}
                 </label>
-                <div 
+                <div
                   onClick={() => setActiveModal("hotel")}
                   className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
                 >
@@ -1080,10 +1113,10 @@ export function BookingForm({
                   {currency !== "EGP" ? (budget / exchangeRate).toFixed(2) + ` ${currency}` : budget + " EGP"}
                 </p>
               </div>
-              <input 
-                type="range" 
-                min={500} 
-                max={250000} 
+              <input
+                type="range"
+                min={500}
+                max={250000}
                 step={500}
                 value={budget}
                 onChange={(e) => setBudget(Number(e.target.value))}
@@ -1104,7 +1137,7 @@ export function BookingForm({
                   </span>
                 </div>
                 <p className="text-[11px] font-medium text-[#1a2b3c]/60 leading-relaxed px-1">
-                  {isEn 
+                  {isEn
                     ? "✨ Hotel rates fluctuate dynamically. Our team will verify live availability & present the best luxury deal matching your budget."
                     : "✨ تتغير أسعار الإقامة حسب الموسم والتوافر، يقوم فريقنا بمراجعة العروض المتاحة فوراً وتأكيد أفضل سعر يناسب ميزانيتك."}
                 </p>
@@ -1157,7 +1190,7 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Departure (From)" : "الواجهة من"}
                 </label>
-                <div 
+                <div
                   onClick={() => setActiveModal("flightFrom")}
                   className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
                 >
@@ -1172,7 +1205,7 @@ export function BookingForm({
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
                   {isEn ? "Destination (To)" : "الواجهة إلي"}
                 </label>
-                <div 
+                <div
                   onClick={() => setActiveModal("flightTo")}
                   className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 cursor-pointer hover:border-[#d0a755] hover:bg-white transition-all"
                 >
@@ -1288,7 +1321,7 @@ export function BookingForm({
         )}
 
         {/* Nationality & Phone Number (Required for all services) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 sm:items-end gap-3">
           <div>
             <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
               {isEn ? "Nationality" : "الجنسية"}
@@ -1308,7 +1341,7 @@ export function BookingForm({
           </div>
           <div>
             <label htmlFor={phoneId} className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
-              {isEn ? "Phone / WhatsApp Number *" : "رقم الهاتف / الواتساب للتواصل *"}
+              {isEn ? "Phone / WhatsApp *" : "رقم الهاتف / واتساب *"}
             </label>
             <div className="flex items-center gap-2.5 rounded-xl border border-black/10 bg-[#F9F8F6] px-3.5 py-3 transition-all focus-within:border-[#d0a755] focus-within:bg-white focus-within:ring-1 focus-within:ring-[#d0a755]">
               <FiPhone className="w-4 h-4 text-[#d0a755] shrink-0" />
@@ -1343,7 +1376,7 @@ export function BookingForm({
         </div>
 
 
-        
+
         {/* Additional Notes */}
         <div className="relative">
           <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">
@@ -1354,16 +1387,16 @@ export function BookingForm({
             onChange={(event) => setNotes(event.target.value)}
             placeholder={
               isEn ? (
-                type === 'hotel' 
-                  ? "Additional notes (preferred rooms, floor, special requests...)" 
+                type === 'hotel'
+                  ? "Additional notes (preferred rooms, floor, special requests...)"
                   : type === 'flight'
                   ? "Additional notes (preferred airline, flight class, special assistance...)"
                   : type === 'apartment'
                   ? "Additional notes (number of rooms, amenities...)"
                   : "Additional notes (flight number, pickup timing, special requests...)"
               ) : (
-                type === 'hotel' 
-                  ? "ملاحظات إضافية (الغرف المطلوبة، إطلالة مفضلة، طلبات خاصة...)" 
+                type === 'hotel'
+                  ? "ملاحظات إضافية (الغرف المطلوبة، إطلالة مفضلة، طلبات خاصة...)"
                   : type === 'flight'
                   ? "ملاحظات إضافية (خطوط الطيران المفضلة، درجة السفر، طلبات خاصة...)"
                   : type === 'apartment'
@@ -1376,7 +1409,7 @@ export function BookingForm({
           />
         </div>
       </div>
-      
+
       <div className="flex flex-col gap-3 mt-6">
         {bookingError && <p id={phoneId + "-error"} role="alert" className="text-sm font-bold text-red-600">{bookingError}</p>}
         {/* Book via Web */}
@@ -1434,7 +1467,7 @@ export function BookingForm({
       )}
 
       {/* Render the Location Search Modal */}
-      <LocationSearchModal
+      {activeModal !== null && <LocationSearchModal
         isOpen={activeModal !== null}
         onClose={() => setActiveModal(null)}
         onSelect={(location) => {
@@ -1479,9 +1512,9 @@ export function BookingForm({
             : (isEn ? "Search for a location or address..." : "ابحث عن عنوان أو مكان...")
         }
         isEn={isEn}
-      />
+      />}
       </form>
-      <NationalitySearchModal
+      {nationalityModalOpen && <NationalitySearchModal
         isOpen={nationalityModalOpen}
         onClose={() => setNationalityModalOpen(false)}
         onSelect={(nat) => {
@@ -1490,7 +1523,7 @@ export function BookingForm({
         title={isEn ? "Nationality" : "الجنسية"}
         placeholder={isEn ? "Search countries..." : "ابحث عن دولة..."}
         isEn={isEn}
-      />
+      />}
     </>
   );
 }

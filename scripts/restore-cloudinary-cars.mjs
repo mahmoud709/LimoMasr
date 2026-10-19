@@ -10,7 +10,7 @@ cloudinary.config({
   secure: true,
 });
 
-const uri = 'mongodb+srv://mahmoudshalaby:mahmoud1300@limocluster.oss54j9.mongodb.net/limo';
+const uri = requiredMongoUri();
 
 async function restore() {
   console.log('Fetching images from Cloudinary...');
@@ -64,3 +64,9 @@ async function restore() {
 }
 
 restore();
+
+function requiredMongoUri() {
+  const value = process.env.MONGODB_URI;
+  if (!value) throw new Error("MONGODB_URI is required; credentials must not be stored in source.");
+  return value;
+}

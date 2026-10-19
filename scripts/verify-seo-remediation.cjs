@@ -1,0 +1,75 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- Standalone regression runner. */
+const fs = require("node:fs"), vm = require("node:vm"), assert = require("node:assert/strict");
+const ts = require("typescript");
+function load(file, mocks = {}, globals = {}) {
+  const exports = {};
+  const source = ts.transpileModule(fs.readFileSync(file, "utf8"), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } }).outputText;
+  vm.runInNewContext(source, { exports, process, console, URL, require: name => name in mocks ? mocks[name] : require(name), ...globals }, { filename: file });
+  return exports;
+}
+(async () => {
+  const parser = load("lib/sanitize.ts", { parse5: await import("parse5") });
+  const long = "هذه فقرة طويلة تشرح تفاصيل الرحلة وتحافظ على المعنى والمحتوى الأصلي. ".repeat(8);
+  const html = '<h1 dir="rtl"><strong>قسم السفر</strong></h1><h1>' + long + '</h1><h1> </h1><h3>التفاصيل</h3><ul><li>الأمتعة</li></ul><img src="https://example.com/car.jpg" alt="سيارة" onerror="alert(1)"><a href="/ar/cars">السيارات</a><a href="java&#x73;cript:alert(1)">unsafe</a><script>alert(1)</script><iframe src="https://example.com"></iframe>';
+  const localizedLinks = parser.prepareArticleHtml('<a href="/cars?source=guide#fleet">Cars</a><a href="https://www.limo-egypt.com/hotels">Hotels</a><a href="/ar/blog/test">Arabic</a><a href="https://example.com/cars">External</a>', "en").html;
+  assert(localizedLinks.includes('href="/en/cars?source=guide#fleet"'));
+  assert(localizedLinks.includes('href="/en/hotels"'));
+  assert(localizedLinks.includes('href="/ar/blog/test"'));
+  assert(localizedLinks.includes('href="https://example.com/cars"'));
+  assert.equal(parser.prepareArticleHtml(localizedLinks, "en").html, localizedLinks);
+  const clean = parser.normalizeArticleHtml(html);
+  assert(!/<h1\b/.test(clean)); assert(clean.includes('<h2 dir="rtl"><strong>قسم السفر</strong></h2>'));
+  assert(clean.includes("<p>" + long + "</p>")); assert(clean.includes("<ul><li>الأمتعة</li></ul>"));
+  assert(clean.includes('alt="سيارة"')); assert(clean.includes('href="/ar/cars"')); assert(!/onerror|javascript:|<script|<iframe/.test(clean));
+  for (const bad of ["JaVaScRiPt:alert(1)", "java\nscript:alert(1)", "data:text/html,evil"]) assert(!parser.sanitizeHtml('<a href="' + bad + '">test</a>').includes("href="));
+  assert(parser.normalizeArticleHtml('<h1><img src="/car.jpg"></h1>').includes('<img'));
+  assert.equal(parser.normalizeArticleHtml(clean), clean);
+  const seo = load("lib/seo.ts", { "next/headers": { cookies: async () => ({ get: () => undefined }) } });
+  const schema = load("lib/structured-data.ts", { "./seo": seo });
+  const graph = schema.serviceGraph("/cars/example", "en", "</script><script>alert(1)</script>", "Car booking", "Car booking", [{ path: "/cars", name: "Cars" }]);
+  const encoded = schema.serializeStructuredData(graph); assert(!encoded.includes("</script>"));
+  const decoded = JSON.parse(encoded); assert.equal(decoded["@graph"][0]["@type"], "Service"); assert(!encoded.includes('"Product"'));
+  const crumbs = decoded["@graph"][1].itemListElement; assert.equal(crumbs[2].item, "https://www.limo-egypt.com/en/cars/example");
+  const article = schema.articleGraph("/blog/test", "ar", { title: "Title", excerpt: "Excerpt", image: "https://example.com/test.jpg", date: "١٤ يوليو ٢٠٢٦" })[0];
+  assert(!("datePublished" in article)); assert(!("dateModified" in article)); assert(!("author" in article));
+  assert.equal(schema.articleGraph("/blog/test", "en", { title: "Title", excerpt: "Excerpt", image: "", date: "2026-07-14" })[0].datePublished, "2026-07-14");
+  assert.deepEqual(Array.from(schema.organizationGraph(), n => n["@type"]), ["Organization", "WebSite"]);
+  const preview = load("lib/article-preview.ts").articlePreview({ id: "1", content: "large", title: "A", translations: { en: { title: "B", content: "large translated", excerpt: "C" } } });
+  assert(!("content" in preview)); assert(!("content" in preview.translations.en)); assert.equal(preview.translations.en.title, "B");
+  const links = load("lib/tracking-links.ts");
+  for (const href of ["https://wa.me/2010", "https://api.whatsapp.com/send?phone=2010", "whatsapp://send?phone=2010"]) assert.equal(links.contactLinkType(href), "whatsapp");
+  assert.equal(links.contactLinkType("tel:+201012345678"), "phone");
+  for (const href of ["https://evil.com/wa.me/2010", "https://wa.me.evil.com/2010", "javascript:alert(1)", "/cars", "tel:"]) assert.equal(links.contactLinkType(href), null);
+  for (const path of ["/admin", "/admin/bookings", "/ar/admin", "/en/admin/settings"]) assert(links.isAdminTrackingPath(path));
+  for (const path of ["/ar", "/en/cars", "/administrator"]) assert(!links.isAdminTrackingPath(path));
+  const trackingWindow = {};
+  const tag = load("lib/gtag.ts", {}, { window: trackingWindow });
+  tag.trackWhatsappClick(); tag.trackPhoneClick();
+  assert.equal(trackingWindow.dataLayer.length, 4);
+  assert.deepEqual(Array.from(trackingWindow.dataLayer, x => x[1]), ["whatsapp_click", "conversion", "phone_click", "conversion"]);
+  const calls = []; trackingWindow.gtag = (...args) => calls.push(args); tag.trackWhatsappClick(); assert.equal(calls.length, 2);
+  let connections = 0, closed = 0, fail = false;
+  class FakeClient { connect() { connections++; return fail ? Promise.reject(Error("offline")) : Promise.resolve(this); } db(name) { return { name }; } close() { closed++; return Promise.resolve(); } }
+  const env = { NODE_ENV: "production" };
+  const mongo = load("lib/mongodb.ts", { mongodb: { MongoClient: FakeClient } }, { process: { env } });
+  assert.equal(connections, 0); await assert.rejects(mongo.getDb(), /MONGODB_URI/); assert.equal(connections, 0);
+  env.MONGODB_URI = "mongodb://test";
+  assert.equal((await mongo.getDb()).name, "limo"); await mongo.getDb(); assert.equal(connections, 1);
+  fail = true; const retryMongo = load("lib/mongodb.ts", { mongodb: { MongoClient: FakeClient } }, { process: { env } });
+  await assert.rejects(retryMongo.getDb(), /offline/); assert.equal(closed, 1);
+  fail = false; await retryMongo.getDb(); assert.equal(connections, 3);
+  const cars = Array.from({ length: 14 }, (_, i) => ({ slug: "car-" + i }));
+  const publication = load("lib/article-publication.ts");
+  assert.equal(publication.hasEnglishArticle({ translations: { en: { title: "Guide", excerpt: "Excerpt", content: "<p>Content about Sharm and Hurghada...</p>" } } }), false);
+  const articles = Array.from({ length: 6 }, (_, i) => ({ slug: "article-" + i, translations: i === 4 ? undefined : { en: { title: "Guide", excerpt: "Excerpt", content: i === 5 ? "<p>Coming soon.</p>" : "<p>A complete supplied English paragraph.</p>" } } }));
+  const database = { collection: name => ({ find: () => ({ toArray: async () => name === "cars" ? cars : articles }) }) };
+  const sitemap = load("app/sitemap.ts", { "@/lib/mongodb": { getDb: async () => database }, "@/lib/seo": seo, "@/lib/article-publication": publication });
+  const urls = await sitemap.default(); const expectedCount = 2 * (Object.keys(seo.serviceSeo).length + cars.length) + articles.length + articles.filter(publication.hasEnglishArticle).length;
+  assert.equal(urls.length, expectedCount); assert.equal(new Set(urls.map(x => x.url)).size, expectedCount);
+  assert(!urls.some(item => /\/en\/blog\/article-(4|5)$/.test(item.url)));
+  assert.equal(Object.keys(urls.find(item => /\/ar\/blog\/article-5$/.test(item.url)).alternates.languages).length, 2);
+  for (const url of urls) { assert(url.url.startsWith(seo.SITE_URL)); assert.equal(url.alternates.languages["x-default"].startsWith(seo.SITE_URL + "/ar"), true); }
+  const failed = load("app/sitemap.ts", { "@/lib/mongodb": { getDb: async () => { throw Error("offline"); } }, "@/lib/seo": seo, "@/lib/article-publication": publication });
+  await assert.rejects(failed.default(), /offline/);
+  console.log("PASS: HTML parsing, heading/prose semantics, XSS fixtures, schema escaping/types/dates, preview payloads, tracking queues/URLs/admin exclusions, lazy MongoDB/retry and dynamically calculated sitemap entries.");
+})().catch(error => { console.error(error); process.exitCode = 1; });

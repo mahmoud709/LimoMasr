@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import Image from "next/image";
+import { cloudinaryImageUrl } from "@/lib/responsive-image";
 
 function canOptimize(src: string) {
   if (src.startsWith("/") && !src.startsWith("//")) return true;
@@ -46,13 +47,14 @@ export function HeroCarousel({ images }: { images?: string[] }) {
       {slides.map((src, idx) => (
         <div
           key={idx}
-          className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${idx === current ? "opacity-100 scale-100 z-[2]" : "opacity-0 scale-105 z-[1]"}`}
+          className={`absolute inset-0 w-full h-full transition-[opacity,transform] duration-1000 ease-in-out ${idx === current ? "opacity-100 scale-100 z-[2]" : "opacity-0 scale-105 z-[1]"}`}
         >
           {visited.has(idx) && <Image
-            src={src}
+            src={cloudinaryImageUrl(src, 1920) || src}
             alt=""
             fill
             sizes="100vw"
+            quality={60}
             preload={idx === 0}
             unoptimized={!canOptimize(src)}
             className="w-full h-full object-cover"

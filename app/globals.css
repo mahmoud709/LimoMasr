@@ -441,3 +441,10 @@ body {
   background: linear-gradient(90deg, transparent, rgba(208, 167, 85, 0.4), transparent);
   margin: 3rem 0;
 }
+
+/* Preserve SSR content and controls while skipping offscreen layout/paint. */
+.home-deferred-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+@media print { .home-deferred-section { content-visibility: visible; } }

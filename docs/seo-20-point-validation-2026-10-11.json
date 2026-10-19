@@ -1,0 +1,625 @@
+{
+  "checkedAt": "2026-10-11T19:27:38.904Z",
+  "repository": "G:/mahmoud/LimoMasr/",
+  "next": "16.4.0",
+  "productionDeployment": "Not performed",
+  "productionDatabaseUsed": false,
+  "realConversionsSent": 0,
+  "completion": {
+    "originalLocalCompleted": 6,
+    "originalPartial": 9,
+    "originalExternalOrBusiness": 5,
+    "locallyCompleted": 10,
+    "liveHttpsCompleted": 1,
+    "boundedTotal": 11,
+    "partial": 4,
+    "externalBusinessOrOutreach": 5,
+    "target17Achieved": false
+  },
+  "tests": {
+    "verifyProduction": "PASS",
+    "build": "PASS",
+    "typescript": "PASS",
+    "targetedLint": {
+      "files": 15,
+      "errors": 0,
+      "warnings": 0
+    },
+    "fullLint": {
+      "rerun": false,
+      "latestReadinessErrors": 117,
+      "latestReadinessWarnings": 116
+    },
+    "html": {
+      "indexablePages": 67,
+      "schemaPages": 55,
+      "excludedTranslations": [
+        {
+          "url": "https://www.limo-egypt.com/en/blog/guide-sharm-hurghada",
+          "status": 200,
+          "robots": "noindex, follow"
+        }
+      ]
+    },
+    "links": {
+      "checkedAt": "2026-10-11T19:19:54.919Z",
+      "base": "http://localhost:3110",
+      "pages": 67,
+      "orphanPages": [],
+      "brokenTargets": [],
+      "extraTargets": [
+        {
+          "route": "/ar/login",
+          "status": 200,
+          "location": null
+        },
+        {
+          "route": "/login",
+          "status": 307,
+          "location": "/ar/login"
+        },
+        {
+          "route": "/register",
+          "status": 307,
+          "location": "/ar/register"
+        },
+        {
+          "route": "/hotels",
+          "status": 307,
+          "location": "/ar/hotels"
+        },
+        {
+          "route": "/en/login",
+          "status": 200,
+          "location": null
+        },
+        {
+          "route": "/cars",
+          "status": 307,
+          "location": "/ar/cars"
+        },
+        {
+          "route": "/fast-track",
+          "status": 307,
+          "location": "/ar/fast-track"
+        },
+        {
+          "route": "/hotel-apartments",
+          "status": 307,
+          "location": "/ar/hotel-apartments"
+        },
+        {
+          "route": "/flights",
+          "status": 307,
+          "location": "/ar/flights"
+        },
+        {
+          "route": "/blog",
+          "status": 307,
+          "location": "/ar/blog"
+        },
+        {
+          "route": "/en/blog/guide-sharm-hurghada",
+          "status": 200,
+          "location": null
+        }
+      ],
+      "mixedContent": 0,
+      "images": 260,
+      "missingAlt": 0
+    },
+    "indexability": {
+      "robots": {
+        "status": 200,
+        "sitemapDeclared": true
+      },
+      "results": [
+        {
+          "locale": "ar",
+          "route": "login",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "ar",
+          "route": "register",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "ar",
+          "route": "my-bookings",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "ar",
+          "route": "admin/login",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "en",
+          "route": "login",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "en",
+          "route": "register",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "en",
+          "route": "my-bookings",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        },
+        {
+          "locale": "en",
+          "route": "admin/login",
+          "status": 200,
+          "robots": [
+            "noindex, nofollow"
+          ]
+        }
+      ]
+    },
+    "browser": {
+      "bookingForms": 14,
+      "bookingRequests": 0,
+      "runtimeHydrationExceptions": 0,
+      "contactEventsIntercepted": true,
+      "spaSameDocumentNavigation": true,
+      "duplicateContactEvents": false,
+      "layouts": 60,
+      "modals": [
+        {
+          "label": "Select Nationality",
+          "initialFocus": true,
+          "tabWrap": true,
+          "escape": true,
+          "focusRestored": true
+        },
+        {
+          "label": "Select destination",
+          "initialFocus": true,
+          "tabWrap": true,
+          "escape": true,
+          "focusRestored": true
+        }
+      ],
+      "xml": {
+        "errors": 0,
+        "urls": 67,
+        "links": true
+      },
+      "horizontalOverflows": 0
+    },
+    "diffWhitespace": "PASS"
+  },
+  "performance": {
+    "method": "Lighthouse13.5; Edge; cold browser/warm server cache; read-only fixture; no Google scripts blocked",
+    "baseline": {
+      "runs": [
+        {
+          "stage": "seo-baseline",
+          "device": "mobile",
+          "index": 1,
+          "score": 62,
+          "FCPms": 1796.53565,
+          "LCPms": 3756.874775,
+          "TBTms": 1530.4999999999998,
+          "CLS": 0,
+          "incomplete": []
+        },
+        {
+          "stage": "seo-baseline",
+          "device": "mobile",
+          "index": 2,
+          "score": 71,
+          "FCPms": 1539.3616753311792,
+          "LCPms": 3616.921954553042,
+          "TBTms": 755.7588831125472,
+          "CLS": 0,
+          "incomplete": []
+        },
+        {
+          "stage": "seo-baseline",
+          "device": "mobile",
+          "index": 3,
+          "score": 68,
+          "FCPms": 1538.16165,
+          "LCPms": 3345.801375,
+          "TBTms": 1134.5,
+          "CLS": 0,
+          "incomplete": []
+        }
+      ],
+      "median": {
+        "score": 68,
+        "FCPms": 1539.3616753311792,
+        "LCPms": 3616.921954553042,
+        "TBTms": 1134.5,
+        "CLS": 0
+      }
+    },
+    "finalMobile": {
+      "runs": [
+        {
+          "stage": "seo-verified",
+          "device": "mobile",
+          "index": 1,
+          "score": 71,
+          "FCPms": 1530.498,
+          "LCPms": 3602.5810000000006,
+          "TBTms": 762,
+          "CLS": 0,
+          "incomplete": []
+        },
+        {
+          "stage": "seo-verified",
+          "device": "mobile",
+          "index": 5,
+          "score": 69,
+          "FCPms": 1525.32285,
+          "LCPms": 3325.1023750000004,
+          "TBTms": 956.5,
+          "CLS": 0.0001359674517390102,
+          "incomplete": []
+        },
+        {
+          "stage": "seo-verified",
+          "device": "mobile",
+          "index": 6,
+          "score": 70,
+          "FCPms": 1536.06075,
+          "LCPms": 3424.0708750000003,
+          "TBTms": 918,
+          "CLS": 0,
+          "incomplete": []
+        }
+      ],
+      "median": {
+        "score": 70,
+        "FCPms": 1530.498,
+        "LCPms": 3424.0708750000003,
+        "TBTms": 918,
+        "CLS": 0
+      }
+    },
+    "finalDesktop": {
+      "runs": [
+        {
+          "stage": "seo-verified",
+          "device": "desktop",
+          "index": 1,
+          "score": 99,
+          "FCPms": 391.6619999999999,
+          "LCPms": 867.6619999999998,
+          "TBTms": 63.500000000000114,
+          "CLS": 0,
+          "incomplete": []
+        },
+        {
+          "stage": "seo-verified",
+          "device": "desktop",
+          "index": 2,
+          "score": 100,
+          "FCPms": 398.0388,
+          "LCPms": 816.5388,
+          "TBTms": 54.499999999999886,
+          "CLS": 0,
+          "incomplete": []
+        },
+        {
+          "stage": "seo-verified",
+          "device": "desktop",
+          "index": 3,
+          "score": 97,
+          "FCPms": 389.35499999999996,
+          "LCPms": 853.355,
+          "TBTms": 105.5,
+          "CLS": 0.00003457222966868751,
+          "incomplete": []
+        }
+      ],
+      "median": {
+        "score": 99,
+        "FCPms": 391.6619999999999,
+        "LCPms": 853.355,
+        "TBTms": 63.500000000000114,
+        "CLS": 0
+      }
+    },
+    "warmupsExcluded": true,
+    "excludedMobileAttempts": [
+      {
+        "stage": "seo-verified",
+        "device": "mobile",
+        "index": 2,
+        "score": 70,
+        "FCPms": 1518.4983,
+        "LCPms": 2951.5813499999995,
+        "TBTms": 1032,
+        "CLS": 0.0001514251180540148,
+        "incomplete": [
+          {
+            "host": "www.google-analytics.com",
+            "path": "/g/collect",
+            "status": -1,
+            "finished": false,
+            "resourceType": "Fetch"
+          }
+        ]
+      },
+      {
+        "stage": "seo-verified",
+        "device": "mobile",
+        "index": 3,
+        "score": 64,
+        "FCPms": 1528.9293,
+        "LCPms": 3597.75085,
+        "TBTms": 1208.713800000001,
+        "CLS": 0.00012527775299413875,
+        "incomplete": [
+          {
+            "host": "www.google-analytics.com",
+            "path": "/g/collect",
+            "status": -1,
+            "finished": false,
+            "resourceType": "Fetch"
+          }
+        ]
+      },
+      {
+        "stage": "seo-verified",
+        "device": "mobile",
+        "index": 4,
+        "score": 70,
+        "FCPms": 1533.50985,
+        "LCPms": 3342.9248749999997,
+        "TBTms": 984.5,
+        "CLS": 0.00011216367250046575,
+        "incomplete": [
+          {
+            "host": "www.google-analytics.com",
+            "path": "/g/collect",
+            "status": -1,
+            "finished": false,
+            "resourceType": "Fetch"
+          }
+        ]
+      }
+    ],
+    "exclusionReason": "Unfinished analytics fetch at cutoff; does not prove delivery failure",
+    "targetsMet": false
+  },
+  "assets": {
+    "method": "HEAD source metadata; not a visual or body-download comparison",
+    "count": 44,
+    "ok": 43,
+    "brokenOrUnverified": [
+      {
+        "url": "https://res.cloudinary.com/b2tqubbe/image/upload/v1788897277/limo-masr/rjgu1yaareu56eyj33re.png",
+        "status": 404,
+        "format": "image/gif",
+        "bytes": null
+      }
+    ],
+    "comparisons": [
+      {
+        "source": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789409031/limo-masr/upuxagg6jizd9vciiwut.png",
+        "optimized": "https://res.cloudinary.com/b2tqubbe/image/upload/f_auto,q_auto,c_limit,w_640/v1789409031/limo-masr/upuxagg6jizd9vciiwut.png",
+        "status": 200,
+        "format": "image/webp",
+        "bytes": 34376
+      },
+      {
+        "source": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789409198/limo-masr/f5glodgcimqwvm9zk1su.png",
+        "optimized": "https://res.cloudinary.com/b2tqubbe/image/upload/f_auto,q_auto,c_limit,w_640/v1789409198/limo-masr/f5glodgcimqwvm9zk1su.png",
+        "status": 200,
+        "format": "image/jpeg",
+        "bytes": 56203
+      },
+      {
+        "source": "https://res.cloudinary.com/b2tqubbe/image/upload/v1789472708/limo-masr/sjcdx0mapdjj4madytsc.jpg",
+        "optimized": "https://res.cloudinary.com/b2tqubbe/image/upload/f_auto,q_auto,c_limit,w_640/v1789472708/limo-masr/sjcdx0mapdjj4madytsc.jpg",
+        "status": 200,
+        "format": "image/jpeg",
+        "bytes": 72474
+      }
+    ],
+    "optimizedHeroRequests": {
+      "count": 14,
+      "status": 200,
+      "widths": [
+        750,
+        1920
+      ],
+      "quality": 60
+    },
+    "coldCdnReliability": "Unverified"
+  },
+  "liveRedirects": {
+    "checkedAt": "2026-10-11T18:13:54.772Z",
+    "results": [
+      {
+        "initial": "http://limo-egypt.com/ar",
+        "chain": [
+          {
+            "url": "http://limo-egypt.com/ar",
+            "status": 308,
+            "location": "https://limo-egypt.com/ar"
+          },
+          {
+            "url": "https://limo-egypt.com/ar",
+            "status": 308,
+            "location": "https://www.limo-egypt.com/ar"
+          },
+          {
+            "url": "https://www.limo-egypt.com/ar",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "http://www.limo-egypt.com/ar",
+        "chain": [
+          {
+            "url": "http://www.limo-egypt.com/ar",
+            "status": 308,
+            "location": "https://www.limo-egypt.com/ar"
+          },
+          {
+            "url": "https://www.limo-egypt.com/ar",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://limo-egypt.com/ar",
+        "chain": [
+          {
+            "url": "https://limo-egypt.com/ar",
+            "status": 308,
+            "location": "https://www.limo-egypt.com/ar"
+          },
+          {
+            "url": "https://www.limo-egypt.com/ar",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/",
+            "status": 307,
+            "location": "/ar"
+          },
+          {
+            "url": "https://www.limo-egypt.com/ar",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/cars",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/cars",
+            "status": 307,
+            "location": "/ar/cars"
+          },
+          {
+            "url": "https://www.limo-egypt.com/ar/cars",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/ar/cars",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/ar/cars",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/en/cars",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/en/cars",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/ar/apartments",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/ar/apartments",
+            "status": 404,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/ar/hotel-apartments",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/ar/hotel-apartments",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/ar/cairo-airport-transfer",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/ar/cairo-airport-transfer",
+            "status": 404,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/ar/sphinx-airport-transfer",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/ar/sphinx-airport-transfer",
+            "status": 404,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/sitemap.xml",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/sitemap.xml",
+            "status": 200,
+            "location": null
+          }
+        ]
+      },
+      {
+        "initial": "https://www.limo-egypt.com/robots.txt",
+        "chain": [
+          {
+            "url": "https://www.limo-egypt.com/robots.txt",
+            "status": 200,
+            "location": null
+          }
+        ]
+      }
+    ]
+  },
+  "releaseDecision": "NO-GO: owner credential rotation/runtime configuration/isolated staging persistence and combined-diff review remain; OTP not required"
+}

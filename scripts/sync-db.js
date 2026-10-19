@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 // =========================================================================
 // ⚠️ قم بتعديل هذا الرابط برابط قاعدة البيانات الخاصة بالسيرفر (Production)
-const REMOTE_URI = "mongodb+srv://mahmoudshalaby:mahmoud1300@limocluster.oss54j9.mongodb.net/limo?retryWrites=true&w=majority";
+const REMOTE_URI = requiredMongoUri();
 // =========================================================================
 
 const LOCAL_URI = "mongodb://127.0.0.1:27017/limo";
@@ -67,3 +67,9 @@ async function syncDatabases() {
 }
 
 syncDatabases();
+
+function requiredMongoUri() {
+  const value = process.env.MONGODB_URI;
+  if (!value) throw new Error("MONGODB_URI is required; credentials must not be stored in source.");
+  return value;
+}

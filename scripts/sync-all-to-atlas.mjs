@@ -3,7 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import fileURLToPath from "url";
 
-const uri = "mongodb+srv://mahmoudshalaby:mahmoud1300@limocluster.oss54j9.mongodb.net/limo";
+const uri = requiredMongoUri();
 
 async function run() {
   const client = new MongoClient(uri);
@@ -47,3 +47,9 @@ async function run() {
 }
 
 run();
+
+function requiredMongoUri() {
+  const value = process.env.MONGODB_URI;
+  if (!value) throw new Error("MONGODB_URI is required; credentials must not be stored in source.");
+  return value;
+}

@@ -1,33 +1,20 @@
-import { MongoClient, Db } from "mongodb";
-
-const uri = process.env.MONGODB_URI || (process.env.NODE_ENV === "development" ? "mongodb://localhost:27017/limo-masr" : "");
-if (!uri) throw new Error("MONGODB_URI is not set.");
-const options = {};
-
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-if (process.env.NODE_ENV === "development") {
-  // In development mode, use a global variable so that the value
-  // is preserved across module reloads caused by HMR (Hot Module Replacement).
-  let globalWithMongo = global as typeof globalThis & {
-    _mongoClientPromise?: Promise<MongoClient>;
-  };
-
-  if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
-  }
-  clientPromise = globalWithMongo._mongoClientPromise;
-} else {
-  // In production mode, it's best to not use a global variable.
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+import { MongoClient, type Db } from "mongodb";
+type MongoCache = { promise?: Promise<MongoClient> };
+const globalMongo = globalThis as typeof globalThis & { _limoMongo?: MongoCache };
+const cache: MongoCache = process.env.NODE_ENV === "development" ? (globalMongo._limoMongo ??= {}) : {};
+/** Database connections start on demand, never during route module evaluation. */
+export function getMongoClient(): Promise<MongoClient> {
+  if (cache.promise) return cache.promise;
+  const uri = process.env.MONGODB_URI || (process.env.NODE_ENV === "development" ? "mongodb://localhost:27017/limo-masr" : "");
+  if (!uri) return Promise.reject(new Error("MONGODB_URI is not set."));
+  const client = new MongoClient(uri, { minPoolSize: 0, maxPoolSize: 10, maxIdleTimeMS: 60000, serverSelectionTimeoutMS: 10000, waitQueueTimeoutMS: 10000 });
+  cache.promise = client.connect().catch(async error => {
+    cache.promise = undefined;
+    await client.close().catch(() => undefined);
+    throw error;
+  });
+  return cache.promise;
 }
-
 export async function getDb(): Promise<Db> {
-  const connection = await clientPromise;
-  return connection.db("limo");
+  return (await getMongoClient()).db("limo");
 }
-
-export default clientPromise;

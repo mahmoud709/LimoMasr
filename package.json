@@ -6,13 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify:seo": "node scripts/verify-seo.cjs && node scripts/verify-seo-remediation.cjs && node scripts/verify-booking-phone.cjs && node scripts/verify-booking-tracking.cjs",
+    "verify:seo:html": "node scripts/verify-public-seo.cjs",
+    "verify:production": "npm run verify:seo && node scripts/verify-production-readiness.cjs",
+    "verify:config": "node scripts/verify-runtime-config.cjs",
+    "verify:staging": "node scripts/verify-staging-db.cjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.56.2",
     "cloudinary": "^2.10.0",
     "mongodb": "^6.8.0",
-    "next": "16.2.9",
+    "next": "16.4.0",
+    "parse5": "^8.0.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-icons": "^5.6.0"
@@ -24,7 +30,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
+    "eslint-config-next": "16.4.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

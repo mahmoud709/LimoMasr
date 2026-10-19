@@ -1,4 +1,5 @@
 "use client";
+import { useModalAccessibility } from "./useModalAccessibility";
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -57,7 +58,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
   const [isSearching, setIsSearching] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  
+
   // Interactive Map & Proxy Booking state
   const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>({ lat: 30.0444, lng: 31.2357 }); // Cairo default
   const [pinnedLocationName, setPinnedLocationName] = useState<string>("");
@@ -74,6 +75,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletInstanceRef = useRef<any>(null);
   const [mounted, setMounted] = useState(false);
+  const dialogRef = useModalAccessibility(isOpen && mounted, onClose);
 
   useEffect(() => {
     setMounted(true);
@@ -202,7 +204,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
       setIsSearching(true);
 
       const q = query.toLowerCase().trim();
-      const localMatches = [...LOCAL_AIRPORTS, ...LOCAL_HOTELS].filter(a => 
+      const localMatches = [...LOCAL_AIRPORTS, ...LOCAL_HOTELS].filter(a =>
         a.nameAr.includes(q) || a.nameEn.toLowerCase().includes(q) ||
         a.cityAr.includes(q) || a.cityEn.toLowerCase().includes(q)
       ).map(a => ({
@@ -221,7 +223,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
             name: d.name,
             display_name: d.display_name
           }));
-          
+
           const combined = [...localMatches, ...apiFormatted];
           const unique = combined.filter((v, i, a) => a.findIndex(t => t.name === v.name) === i);
           setResults(unique);
@@ -276,7 +278,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
       const details = [];
       if (otherPersonName.trim()) details.push(`[اسم المستفيد: ${otherPersonName.trim()}]`);
       if (otherPersonPhone.trim()) details.push(`[رقم هاتف المستفيد: ${otherPersonPhone.trim()}]`);
-      
+
       finalLocation = `${location} [حجز للغير: نعم] ${details.join(" ")} [موقع المستفيد: ${location}]`;
     }
 
@@ -284,7 +286,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
     const recents = [location, ...recentSearches.filter(l => l !== location)].slice(0, 5);
     setRecentSearches(recents);
     localStorage.setItem("recent_locations", JSON.stringify(recents));
-    
+
     onSelect(finalLocation);
     onClose();
   };
@@ -370,8 +372,8 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
   if (!isOpen || !mounted) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 md:items-center md:p-4">
-      <div 
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 md:items-center md:p-4">
+      <div
         className="bg-white w-full md:w-[540px] max-h-[92vh] md:max-h-[85vh] rounded-t-3xl md:rounded-3xl flex flex-col overflow-hidden animate-in slide-in-from-bottom-full md:zoom-in-95 duration-300 shadow-2xl mt-auto md:mt-0"
         dir={isEn ? "ltr" : "rtl"}
       >
@@ -383,8 +385,8 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
               {isEn ? "Search address or select pin on interactive map" : "ابحث عن موقع أو حدد بالدبوس على الخريطة مباشرة"}
             </p>
           </div>
-          <button 
-            onClick={onClose}
+          <button
+            aria-label={isEn ? "Close" : "إغلاق"} type="button" onClick={onClose}
             className="w-9 h-9 rounded-full hover:bg-slate-200/60 flex items-center justify-center text-slate-500 transition-colors"
           >
             <FiX className="w-5 h-5" />
@@ -480,7 +482,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
             {/* Search Input */}
             <div className="relative">
               <FiSearch className={`absolute top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 ${isEn ? 'left-4' : 'right-4'}`} />
-              <input 
+              <input
                 ref={inputRef}
                 type="text"
                 value={query}
@@ -489,8 +491,8 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
                 className={`w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 focus:outline-none focus:ring-2 focus:ring-[#d0a755] focus:border-transparent text-sm font-bold text-[#1a2b3c] ${isEn ? 'pl-12 pr-4' : 'pr-12 pl-4'}`}
               />
             </div>
-            
-            <button 
+
+            <button
               type="button"
               onClick={handleUseCurrentLocation}
               disabled={isLocating}
@@ -498,7 +500,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
             >
               <FiNavigation className={`w-4 h-4 text-[#d0a755] ${isLocating ? "animate-spin" : ""}`} />
               <span>
-                {isLocating 
+                {isLocating
                   ? (isEn ? "Detecting your location..." : "جاري تحديد موقعك...")
                   : (isEn ? "Use My Current Location" : "استخدام موقعي الحالي")
                 }
@@ -533,7 +535,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
                         </div>
                       </button>
                     ))}
-                    
+
                     <button
                       onClick={() => handleSelect(query.trim())}
                       className="w-full text-start p-3.5 hover:bg-[#d0a755]/10 rounded-2xl flex items-start gap-3.5 transition-colors group border border-dashed border-[#d0a755]/50 mt-2 bg-[#d0a755]/5"
@@ -636,7 +638,7 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
             <div className="relative z-[1000]">
               <div className="relative flex items-center">
                 <FiSearch className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 ${isEn ? 'left-3.5' : 'right-3.5'}`} />
-                <input 
+                <input
                   type="text"
                   value={mapSearchQuery}
                   onChange={(e) => setMapSearchQuery(e.target.value)}
@@ -644,8 +646,8 @@ export function LocationSearchModal({ isOpen, onClose, onSelect, title, placehol
                   className={`w-full bg-white border border-slate-200 shadow-sm rounded-xl py-2.5 focus:outline-none focus:ring-2 focus:ring-[#d0a755] text-xs font-bold text-[#1a2b3c] ${isEn ? 'pl-10 pr-8' : 'pr-10 pl-8'}`}
                 />
                 {mapSearchQuery && (
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => { setMapSearchQuery(""); setMapSearchResults([]); }}
                     className={`absolute top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 ${isEn ? 'right-2.5' : 'left-2.5'}`}
                   >

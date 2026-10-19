@@ -32,6 +32,7 @@ for (const [input, expected] of [
 
 let saves = [], updates = [], notifications = [];
 const route = load('app/api/bookings/route.ts', {
+  '@/lib/request-json': load('lib/request-json.ts'),
   '@/lib/booking-phone': phone,
   '@/lib/data': {
     addBooking: async booking => saves.push(booking),
@@ -58,7 +59,7 @@ function post(payload, ip = 'test-client') {
         rejected++;
       }
       const before = saves.length;
-      const response = await post({ type, source, phone: ' +20 101-234-5678 ', customerName: 'Test' }, type + '-' + source);
+      const response = await post({ type, source, phone: ' +20 101-234-5678 ', customerName: 'Test', serviceRefId: 'qa-service', serviceName: 'QA service', date: '2026-10-12' }, type + '-' + source);
       assert.equal(response.status, 201, 'Invalid attempts must not consume a valid booking rate limit');
       assert.equal(saves.length, before + 1);
       assert.equal(saves.at(-1).phone, '+201012345678');
@@ -90,7 +91,7 @@ function post(payload, ip = 'test-client') {
     './mongodb': { getDb: async () => {
       dbCalls++;
       return { collection: () => ({
-        insertOne: async item => { inserted = item; },
+        insertOne: async item => { inserted = item; return { acknowledged: true }; },
         updateOne: async (query, update) => { patched = update.$set; },
       }) };
     } },
@@ -107,31 +108,21 @@ function post(payload, ip = 'test-client') {
   assert.equal(patched.phone, '+971501234567');
 
 
-  // Existing customer numbers may contain spaces or Arabic digits.
-  let customerPhone = '+20 101-234-5678', customerUpdates = [];
-  const customerRoute = load('app/api/customer/bookings/route.ts', {
-    '@/lib/booking-phone': phone,
-    '@/lib/mongodb': { getDb: async () => ({ collection: () => ({ findOne: async () => ({ phone: customerPhone }) }) }) },
-    '@/lib/data': {
-      getBookings: async () => [
-        { id: 'mine', phone: '+201012345678', status: 'new', createdAt: '2026-10-10' },
-        { id: 'other', phone: '+201098765432', status: 'new', createdAt: '2026-10-10' },
-        { id: 'blank', phone: '', status: 'new', createdAt: '2026-10-10' },
-      ],
-      updateBooking: async (id, patch) => customerUpdates.push({ id, patch }),
-    },
-    'next/headers': { cookies: async () => ({ get: () => ({ value: '012345678901234567890123' }) }) },
+  // Phone matching/verification flags never reopen the disabled customer API.
+  let customerReads = 0, customerUpdates = 0;
+  const denyCustomerIO = () => { customerReads++; throw new Error("Customer database access prohibited"); };
+  const customerRoute = load("app/api/customer/bookings/route.ts", {
+    "@/lib/customer-booking-access": load("lib/customer-booking-access.ts"),
+    "@/lib/mongodb": { getDb: denyCustomerIO },
+    "@/lib/data": { getBookings: denyCustomerIO, updateBooking: () => { customerUpdates++; } },
   });
-  const listing = await customerRoute.GET(new Request('http://localhost/api/customer/bookings'));
-  assert.equal(listing.status, 200);
-  assert.equal((await listing.json()).total, 1);
-  assert.equal((await customerRoute.PUT(new Request('http://localhost/api/customer/bookings', {
-    method: 'PUT', body: JSON.stringify({ id: 'mine', status: 'cancelled' }),
-  }))).status, 200);
-  assert.equal((await customerRoute.PUT(new Request('http://localhost/api/customer/bookings', {
-    method: 'PUT', body: JSON.stringify({ id: 'other', status: 'cancelled' }),
+  const listing = await customerRoute.GET(new Request("http://localhost/api/customer/bookings?phone=%2B201012345678&id=other&phoneVerified=true"));
+  assert.equal(listing.status, 403);
+  assert.equal((await listing.json()).code, "CUSTOMER_SELF_SERVICE_DISABLED");
+  for (const id of ["mine", "other"]) assert.equal((await customerRoute.PUT(new Request("http://localhost/api/customer/bookings", {
+    method: "PUT", body: JSON.stringify({ id, phone: "+201012345678", phoneVerified: true, status: "cancelled" }),
   }))).status, 403);
-  assert.equal(customerUpdates.length, 1);
+  assert.equal(customerReads, 0); assert.equal(customerUpdates, 0);
 
   // Render the real shared form for every service and both languages.
   const React = projectRequire('react');

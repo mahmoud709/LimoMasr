@@ -1,12 +1,14 @@
+import { issueSession, sessionConfigured } from "@/lib/session-signing";
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { hashPassword } from "@/lib/auth";
 
 export async function POST(req: Request) {
+  if (!sessionConfigured("customer")) return NextResponse.json({ error: "Customer login not configured" }, { status: 503 });
   try {
     const { name, phone, password } = await req.json();
 
-    if (!name || !phone || !password) {
+    if (typeof name !== "string" || !name.trim() || name.length > 150 || typeof phone !== "string" || !phone.trim() || phone.length > 80 || typeof password !== "string" || password.length < 8 || password.length > 256) {
       return NextResponse.json({ error: "جميع الحقول مطلوبة" }, { status: 400 });
     }
 
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
     });
 
     // Set HTTP-only cookie
-    response.cookies.set("customer-token", result.insertedId.toString(), {
+    response.cookies.set("customer-token", issueSession("customer", result.insertedId.toString(), 30 * 86400), {
       httpOnly: true,
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
@@ -44,7 +46,7 @@ export async function POST(req: Request) {
     });
 
     return response;
-  } catch (err: any) {
+  } catch {
     return NextResponse.json({ error: "حدث خطأ أثناء التسجيل" }, { status: 500 });
   }
 }

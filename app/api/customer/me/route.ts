@@ -1,3 +1,4 @@
+import { verifySession } from "@/lib/session-signing";
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
@@ -6,7 +7,7 @@ import { cookies } from "next/headers";
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get("customer-token")?.value;
+    const token = verifySession("customer", cookieStore.get("customer-token")?.value);
 
     if (!token) {
       return NextResponse.json({ user: null });

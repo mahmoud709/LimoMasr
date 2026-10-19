@@ -1,5 +1,6 @@
 "use client";
 
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { useState } from "react";
 import { BookingForm } from "@/components/BookingForm";
 import { formatCurrency } from "@/lib/utils";
@@ -33,6 +34,8 @@ export function FastTrackClient({
           return (
             <article 
               key={item.id} 
+              role="button" tabIndex={0} aria-pressed={selectedPackage?.id === item.id}
+              onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelectedPackage(item); } }}
               onClick={() => setSelectedPackage(item)}
               className={`luxury-panel cursor-pointer transition-all duration-500 overflow-hidden flex flex-col relative ${selectedPackage?.id === item.id ? 'ring-2 ring-[#d0a755] bg-[#d0a755]/5 scale-[1.01] shadow-[0_15px_40px_rgba(208,167,85,0.15)]' : 'hover:-translate-y-1 hover:border-[#d0a755]/30'}`}
             >
@@ -53,8 +56,8 @@ export function FastTrackClient({
               {/* Package Image */}
               {item.image && (
                 <div className="w-full h-52 relative overflow-hidden bg-gray-100 animate-fade-in">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.image} alt={name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+
+                  <ResponsiveImage sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 90vw" src={item.image} alt={name} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
                 </div>
               )}
 
