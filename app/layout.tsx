@@ -50,7 +50,7 @@ export default async function RootLayout({
         {/* Google Ads (gtag.js) */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <Script id="google-ads-tag" strategy="afterInteractive">
           {`

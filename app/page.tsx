@@ -12,7 +12,7 @@ import { HotelsCarousel } from "@/components/HotelsCarousel";
 import { ApartmentsCarousel } from "@/components/ApartmentsCarousel";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { PublicLayout } from "@/components/PublicLayout";
-import { getCars, getFastTrackPackages, getSiteSettings, getFlights, getHotels, getHotelApartments } from "@/lib/data";
+import { getHomepageData } from "@/lib/data";
 import { FaCar, FaPlane, FaBed } from 'react-icons/fa';
 import { ui, withLang } from "@/lib/i18n";
 import type { Locale } from "@/lib/types";
@@ -23,16 +23,12 @@ import { CorporateSection } from "@/components/CorporateSection";
 export const dynamic = "force-dynamic";
 
 export default async function Home({ searchParams }: { searchParams?: Promise<{ __locale?: string }> }) {
-  const [searchParamsResolved, settings, rawCars, packages, flights, hotels, apartments] = await Promise.all([
+  const [searchParamsResolved, homepageData] = await Promise.all([
     searchParams ?? Promise.resolve<{ __locale?: string }>({}),
-    getSiteSettings(),
-    getCars(),
-    getFastTrackPackages(),
-    getFlights(),
-    getHotels(),
-    getHotelApartments(),
+    getHomepageData(),
   ]);
 
+  const { settings, cars: rawCars, packages, flights, hotels, apartments } = homepageData;
   const cars = rawCars;
 
   const cookieStore = await cookies();

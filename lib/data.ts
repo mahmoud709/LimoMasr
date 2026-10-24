@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { unstable_cache } from "next/cache";
 import { getDb } from "./mongodb";
 import { normalizeBookingPhone } from "./booking-phone";
 import { deleteFromCloudinary } from "./cloudinary";
@@ -565,7 +566,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
     if (!settingsToReturn) {
     const fallbackSettings = await readJsonFallback<SiteSettings>("site-settings.json");
-      if (fallbackSettings) {        settingsToReturn = fallbackSettings;
+      if (fallbackSettings) {
+        settingsToReturn = fallbackSettings;
       }
     }
   } catch {
@@ -610,6 +612,23 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
   return merged;
 }
+
+export const getHomepageData = unstable_cache(
+  async () => {
+    const [settings, cars, packages, flights, hotels, apartments] = await Promise.all([
+      getSiteSettings(),
+      getCars(),
+      getFastTrackPackages(),
+      getFlights(),
+      getHotels(),
+      getHotelApartments(),
+    ]);
+
+    return { settings, cars, packages, flights, hotels, apartments };
+  },
+  ["homepage-data-v1"],
+  { revalidate: 60, tags: ["homepage-data"] }
+);
 
 export async function saveSiteSettings(settings: SiteSettings) {
   const db = await getDb();

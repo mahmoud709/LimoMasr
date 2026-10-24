@@ -56,14 +56,13 @@ export function proxy(req: NextRequest) {
 
   // 3. Detect and handle path-prefixed locale routing (/en/... or /ar/...)
 
-  if (hasEnPrefix || hasArPrefix) {
-    const locale = hasEnPrefix ? "en" : "ar";
-    
-    // Extract pathname after language prefix
-    let restOfPath = pathname.substring(3);
-    if (restOfPath === "") {
-      restOfPath = "/";
-    }
+  if (hasEnPrefix || hasArPrefix || pathname === "/") {
+    const locale = hasEnPrefix
+      ? "en"
+      : hasArPrefix
+        ? "ar"
+        : req.cookies.get("NEXT_LOCALE")?.value === "en" ? "en" : "ar";
+    const restOfPath = hasEnPrefix || hasArPrefix ? pathname.substring(3) || "/" : "/";
 
     // Rewrite internally to the page without language prefix
     const rewriteUrl = new URL(`${restOfPath}${search}`, req.url);
