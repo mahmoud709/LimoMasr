@@ -7,7 +7,7 @@ import "./globals.css";
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   variable: "--font-cairo-loaded",
-  display: "swap",
+  display: "optional",
 });
 
 const outfit = Outfit({

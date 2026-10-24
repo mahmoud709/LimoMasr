@@ -54,7 +54,7 @@ export function HeroCarousel({ images }: { images?: string[] }) {
             alt=""
             fill
             sizes="100vw"
-            quality={60}
+            quality={50}
             preload={idx === 0}
             unoptimized={!canOptimize(src)}
             className="w-full h-full object-cover"
