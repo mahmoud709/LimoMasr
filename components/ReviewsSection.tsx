@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { Locale, Review } from "@/lib/types";
 import { FaStar, FaGoogle, FaTimes } from "react-icons/fa";
 
-export function ReviewsSection({ locale }: { locale: Locale }) {
-  const [reviews, setReviews] = useState<Review[]>([]);
+export function ReviewsSection({ locale, initialReviews }: { locale: Locale; initialReviews: Review[] }) {
+  const reviews = initialReviews;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -25,15 +25,6 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
     successMsg: locale === "ar" ? "شكراً لك! تم إرسال تقييمك بنجاح وسيتم مراجعته." : "Thank you! Your review has been submitted and is pending approval.",
     note: locale === "ar" ? "يتم سحب التقييمات وعرضها بشفافية لضمان مصداقية التجربة." : "Reviews are pulled and displayed transparently to ensure a credible experience.",
   };
-
-  useEffect(() => {
-    fetch("/api/reviews")
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data)) setReviews(data);
-      })
-      .catch(console.error);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,6 +158,7 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
           <div className="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 relative shadow-2xl animate-in zoom-in-95 duration-200">
             <button 
               onClick={() => setIsModalOpen(false)}
+              aria-label={locale === "ar" ? "إغلاق" : "Close"}
               className="absolute top-4 right-4 rtl:left-4 rtl:right-auto w-8 h-8 flex items-center justify-center rounded-full bg-[#f0f2f5] text-[#1a2b3c]/60 hover:bg-[#1a2b3c] hover:text-white transition-colors"
             >
               <FaTimes />
@@ -181,8 +173,9 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.nameLabel}</label>
+                  <label htmlFor="review-name" className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.nameLabel}</label>
                   <input 
+                    id="review-name"
                     required 
                     type="text" 
                     value={formData.name} 
@@ -192,13 +185,15 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
                 </div>
                 
                 <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.ratingLabel}</label>
-                  <div className="flex gap-2" dir="ltr">
+                  <label id="review-rating-label" className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.ratingLabel}</label>
+                  <div className="flex gap-2" dir="ltr" role="group" aria-labelledby="review-rating-label">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
                         type="button"
                         onClick={() => setFormData({...formData, rating: star})}
+                        aria-label={locale === "ar" ? `${star} من 5 نجوم` : `${star} out of 5 stars`}
+                        aria-pressed={star === formData.rating}
                         className="p-1 focus:outline-none transition-transform hover:scale-110"
                       >
                         <FaStar className={`w-8 h-8 ${star <= formData.rating ? "text-[#FFC107]" : "text-gray-200"}`} />
@@ -208,8 +203,9 @@ export function ReviewsSection({ locale }: { locale: Locale }) {
                 </div>
                 
                 <div>
-                  <label className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.textLabel}</label>
+                  <label htmlFor="review-text" className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.textLabel}</label>
                   <textarea 
+                    id="review-text"
                     required 
                     rows={4}
                     value={formData.text} 

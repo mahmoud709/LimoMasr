@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import Image from "next/image";
 import { cloudinaryImageUrl } from "@/lib/responsive-image";
+import type { Locale } from "@/lib/types";
 
 function canOptimize(src: string) {
   if (src.startsWith("/") && !src.startsWith("//")) return true;
@@ -15,7 +16,7 @@ function canOptimize(src: string) {
   }
 }
 
-export function HeroCarousel({ images }: { images?: string[] }) {
+export function HeroCarousel({ images, locale = "ar" }: { images?: string[]; locale?: Locale }) {
   const slides = images && images.length > 0 ? images : [];
 
   const [current, setCurrent] = useState(0);
@@ -54,8 +55,9 @@ export function HeroCarousel({ images }: { images?: string[] }) {
             alt=""
             fill
             sizes="100vw"
-            quality={50}
+            quality={70}
             preload={idx === 0}
+            fetchPriority={idx === 0 ? "high" : undefined}
             unoptimized={!canOptimize(src)}
             className="w-full h-full object-cover"
           />}
@@ -112,13 +114,18 @@ export function HeroCarousel({ images }: { images?: string[] }) {
               <button
                 key={i}
                 onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className={`transition-all duration-300 rounded-full cursor-pointer pointer-events-auto ${
-                  i === current
-                    ? "w-10 h-3 bg-[#d0a755] shadow-[0_0_15px_rgba(208,167,85,0.8)]"
-                    : "w-3 h-3 bg-white/40 hover:bg-white/80"
-                }`}
-              />
+                aria-label={locale === "ar" ? `الشريحة ${i + 1}` : `Go to slide ${i + 1}`}
+                className="grid h-6 w-6 shrink-0 cursor-pointer place-items-center pointer-events-auto"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`rounded-full transition-all duration-300 ${
+                    i === current
+                      ? "w-10 h-3 bg-[#d0a755] shadow-[0_0_15px_rgba(208,167,85,0.8)]"
+                      : "w-3 h-3 bg-white/40 hover:bg-white/80"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </>

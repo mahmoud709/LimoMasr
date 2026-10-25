@@ -615,16 +615,17 @@ export async function getSiteSettings(): Promise<SiteSettings> {
 
 export const getHomepageData = unstable_cache(
   async () => {
-    const [settings, cars, packages, flights, hotels, apartments] = await Promise.all([
+    const [settings, cars, packages, flights, hotels, apartments, reviews] = await Promise.all([
       getSiteSettings(),
       getCars(),
       getFastTrackPackages(),
       getFlights(),
       getHotels(),
       getHotelApartments(),
+      getReviews(true),
     ]);
 
-    return { settings, cars, packages, flights, hotels, apartments };
+    return { settings, cars, packages, flights, hotels, apartments, reviews };
   },
   ["homepage-data-v1"],
   { revalidate: 60, tags: ["homepage-data"] }

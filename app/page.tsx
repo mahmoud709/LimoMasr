@@ -28,7 +28,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
     getHomepageData(),
   ]);
 
-  const { settings, cars: rawCars, packages, flights, hotels, apartments } = homepageData;
+  const { settings, cars: rawCars, packages, flights, hotels, apartments, reviews } = homepageData;
   const cars = rawCars;
 
   const cookieStore = await cookies();
@@ -56,7 +56,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
         {/* Exact Layout Hero Section */}
         <section className="relative min-h-screen w-full flex items-center pt-16 md:pt-24 pb-32 md:pb-0 overflow-hidden">
           {/* Background Image Carousel */}
-          <HeroCarousel images={settings.heroImages || (settings.heroImage ? [settings.heroImage] : [])} />
+          <HeroCarousel images={settings.heroImages || (settings.heroImage ? [settings.heroImage] : [])} locale={locale} />
 
           <div className="relative z-20 mx-auto max-w-[1400px] px-8 w-full pointer-events-none">
             <div className="flex flex-col items-start text-start max-w-4xl py-8 md:py-24 mb-12 md:mb-0 mt-4 md:mt-0 pointer-events-none">
@@ -294,7 +294,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">{t.drivers.f1Title}</h4>
+                    <h3 className="font-bold text-white mb-1">{t.drivers.f1Title}</h3>
                     <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f1Sub}</p>
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">{t.drivers.f2Title}</h4>
+                    <h3 className="font-bold text-white mb-1">{t.drivers.f2Title}</h3>
                     <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f2Sub}</p>
                   </div>
                 </div>
@@ -318,7 +318,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">{t.drivers.f3Title}</h4>
+                    <h3 className="font-bold text-white mb-1">{t.drivers.f3Title}</h3>
                     <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f3Sub}</p>
                   </div>
                 </div>
@@ -330,7 +330,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">{t.drivers.f4Title}</h4>
+                    <h3 className="font-bold text-white mb-1">{t.drivers.f4Title}</h3>
                     <p className="text-xs text-white/50 leading-relaxed">{t.drivers.f4Sub}</p>
                   </div>
                 </div>
@@ -409,7 +409,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
                     key={idx}
                     className="flex flex-col items-center justify-center cursor-default transition-transform duration-300 hover:scale-110"
                   >
-                    <span className="text-3xl md:text-5xl font-black font-outfit text-[#1a2b3c]/30 hover:text-[#d0a755] transition-colors duration-300 tracking-widest uppercase">
+                    <span className="text-3xl md:text-5xl font-black font-outfit text-[#1a2b3c]/55 hover:text-[#80601f] transition-colors duration-300 tracking-widest uppercase">
                       {brand}
                     </span>
                   </div>
@@ -419,7 +419,7 @@ export default async function Home({ searchParams }: { searchParams?: Promise<{ 
           </div>
         </section>
 
-        <ReviewsSection locale={locale} />
+        <ReviewsSection locale={locale} initialReviews={reviews} />
       </main>
     </PublicLayout>
   );

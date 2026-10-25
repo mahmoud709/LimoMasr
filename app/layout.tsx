@@ -5,9 +5,10 @@ import { Cairo, Outfit } from "next/font/google";
 import "./globals.css";
 
 const cairo = Cairo({
-  subsets: ["arabic", "latin"],
+  subsets: ["arabic"],
   variable: "--font-cairo-loaded",
-  display: "optional",
+  display: "swap",
+  preload: true,
 });
 
 const outfit = Outfit({
@@ -26,7 +27,6 @@ export const metadata: Metadata = {
 
 import Script from "next/script";
 import { cookies } from "next/headers";
-import { QueryProvider } from "@/components/QueryProvider";
 import { ToastProvider } from "@/components/admin/ToastProvider";
 import { GoogleAdsEvents } from "@/components/GoogleAdsEvents";
 import { GOOGLE_ADS_ID } from "@/lib/gtag";
@@ -65,12 +65,10 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col font-cairo bg-[#F9F8F6] text-[#111111] selection:bg-[#B88A44]/30 selection:text-black overflow-x-hidden">
         <div className="noise-overlay"></div>
-        <QueryProvider>
-          <ToastProvider>
-            <GoogleAdsEvents />
-            {children}
-          </ToastProvider>
-        </QueryProvider>
+        <ToastProvider>
+          <GoogleAdsEvents />
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );

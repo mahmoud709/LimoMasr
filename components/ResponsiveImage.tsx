@@ -1,15 +1,19 @@
 "use client";
 
 import type { ImgHTMLAttributes } from "react";
-import { responsiveImageProps } from "@/lib/responsive-image";
+import { responsiveImageProps, type CloudinaryCompression } from "@/lib/responsive-image";
 
-type Props = Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "srcSet"> & { src: string; alt: string };
+type Props = Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "srcSet"> & {
+  src: string;
+  alt: string;
+  compression?: CloudinaryCompression;
+};
 
-export function ResponsiveImage({ src, alt, sizes = "(min-width: 768px) 360px, 280px", loading = "lazy", onError, ...props }: Props) {
+export function ResponsiveImage({ src, alt, compression = "auto", sizes = "(min-width: 768px) 360px, 280px", loading = "lazy", onError, ...props }: Props) {
   return (
     // Cloudinary supplies responsive sizes, compression and format negotiation.
     // eslint-disable-next-line @next/next/no-img-element
-    <img {...props} {...responsiveImageProps(src)} alt={alt} sizes={sizes} loading={loading} decoding="async" onError={event => {
+    <img {...props} {...responsiveImageProps(src, compression)} alt={alt} sizes={sizes} loading={loading} decoding="async" onError={event => {
       if (onError) event.currentTarget.removeAttribute("srcset");
       onError?.(event);
     }} />

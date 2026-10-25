@@ -34,7 +34,7 @@ export function CarCarousel({ cars, title, viewAllText, locale = "ar", currency 
             <button 
               onClick={() => scroll("prev")} 
               className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]"
-              aria-label="Previous"
+              aria-label={isEn ? "Previous cars" : "السيارات السابقة"}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isEn ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
@@ -43,7 +43,7 @@ export function CarCarousel({ cars, title, viewAllText, locale = "ar", currency 
             <button 
               onClick={() => scroll("next")} 
               className="w-9 h-9 rounded-full border border-black/10 flex items-center justify-center hover:bg-black/5 hover:border-black/20 transition-all text-[#1a2b3c]"
-              aria-label="Next"
+              aria-label={isEn ? "Next cars" : "السيارات التالية"}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isEn ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />

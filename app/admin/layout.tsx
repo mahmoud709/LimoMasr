@@ -4,6 +4,7 @@ import { AdminHeader } from "@/components/admin/AdminHeader";
 import { headers, cookies } from "next/headers";
 import { verifyAdminToken } from "@/lib/admin-auth";
 import { redirect } from "next/navigation";
+import { QueryProvider } from "@/components/QueryProvider";
 
 export const metadata = {
   robots: { index: false, follow: false },
@@ -19,18 +20,21 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     const requestHeaders = await headers();
     if (requestHeaders.get("x-site-path") !== "/admin/login") redirect("/ar/admin/login");
     return (
-      <div className="min-h-screen bg-[#1a2b3c]" dir="rtl">        {children}
+      <div className="min-h-screen bg-[#1a2b3c]" dir="rtl">
+        {children}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f0f2f5] flex" dir="rtl">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col min-w-0 lg:mr-64">
-        <AdminHeader />
-        {children}
+    <QueryProvider>
+      <div className="min-h-screen bg-[#f0f2f5] flex" dir="rtl">
+        <AdminSidebar />
+        <div className="flex-1 flex flex-col min-w-0 lg:mr-64">
+          <AdminHeader />
+          {children}
+        </div>
       </div>
-    </div>
+    </QueryProvider>
   );
 }

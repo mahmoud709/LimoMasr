@@ -56,6 +56,7 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
               key={idx}
               src={img} 
               alt={`${categoryName} - ${idx + 1}`}
+              compression="auto:eco"
               sizes={imageSizes}
               className="w-full h-full object-cover shrink-0 snap-start transition-transform duration-700 group-hover:scale-105" 
               loading="lazy" 
@@ -66,10 +67,10 @@ export function CarCard({ car, locale = "ar", currency = "EGP", exchangeRate = 5
         {/* Carousel Arrows (only show if multiple images) */}
         {car.images.length > 1 && (
           <>
-            <button onClick={prevImage} className="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-black/50">
+            <button onClick={prevImage} aria-label={locale === "en" ? "Previous image" : "الصورة السابقة"} className="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-black/50">
               <FaChevronRight className="w-3 h-3" />
             </button>
-            <button onClick={nextImage} className="absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-black/50">
+            <button onClick={nextImage} aria-label={locale === "en" ? "Next image" : "الصورة التالية"} className="absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-black/50">
               <FaChevronLeft className="w-3 h-3" />
             </button>
             

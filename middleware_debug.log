@@ -14350,3 +14350,11 @@
 2026-10-12T18:30:52.743Z - INCOMING: /ar | isRewritten: false | hasLocaleParam: false
 2026-10-12T18:53:01.604Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
 2026-10-12T18:53:01.621Z - REWRITE: /ar/cars -> /cars?__locale=ar
+2026-10-25T09:46:37.337Z - REWRITE: / -> /?__locale=ar
+2026-10-25T09:46:37.355Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-10-25T09:46:54.637Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-10-25T09:46:54.647Z - REWRITE: / -> /?__locale=ar
+2026-10-25T09:47:17.127Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-10-25T09:47:17.151Z - REWRITE: / -> /?__locale=ar
+2026-10-25T09:47:21.290Z - REWRITE: / -> /?__locale=ar
+2026-10-25T09:47:21.307Z - INCOMING: / | isRewritten: false | hasLocaleParam: false

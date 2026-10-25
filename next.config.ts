@@ -1,12 +1,18 @@
 // Force dev server config reload
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+  openAnalyzer: false,
+});
 
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/**": ["./data/**/*"],
   },
   images: {
-    qualities: [50, 60, 75],
+    qualities: [50, 60, 70, 75],
     remotePatterns: [
       {
         protocol: "https",
@@ -20,4 +26,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
