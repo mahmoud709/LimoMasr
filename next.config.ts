@@ -8,6 +8,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 });
 
 const nextConfig: NextConfig = {
+  experimental: {
+    inlineCss: true,
+  },
   outputFileTracingIncludes: {
     "/**": ["./data/**/*"],
   },

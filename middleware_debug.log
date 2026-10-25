@@ -14358,3 +14358,5 @@
 2026-10-25T09:47:17.151Z - REWRITE: / -> /?__locale=ar
 2026-10-25T09:47:21.290Z - REWRITE: / -> /?__locale=ar
 2026-10-25T09:47:21.307Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-10-25T10:06:59.542Z - REWRITE: / -> /?__locale=ar
+2026-10-25T10:06:59.559Z - INCOMING: / | isRewritten: false | hasLocaleParam: false

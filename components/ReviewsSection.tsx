@@ -1,53 +1,13 @@
-"use client";
-
-import { useState } from "react";
 import type { Locale, Review } from "@/lib/types";
-import { FaStar, FaGoogle, FaTimes } from "react-icons/fa";
+import { FaStar, FaGoogle } from "react-icons/fa";
+import { ReviewFormTrigger } from "./ReviewFormTrigger";
 
 export function ReviewsSection({ locale, initialReviews }: { locale: Locale; initialReviews: Review[] }) {
   const reviews = initialReviews;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [formData, setFormData] = useState({ name: "", rating: 5, text: "" });
-
-  const isRtl = locale === "ar";
   const t = {
     title: locale === "ar" ? "سافر مع الشريك الذي يثق به العملاء" : "Travel with the partner trusted by customers",
     subtitle: locale === "ar" ? "آراء حقيقية من عملائنا" : "Real reviews from our customers",
-    addReview: locale === "ar" ? "أضف تقييمك" : "Write a review",
-    formTitle: locale === "ar" ? "اكتب تقييمك" : "Write your review",
-    nameLabel: locale === "ar" ? "الاسم" : "Name",
-    ratingLabel: locale === "ar" ? "التقييم" : "Rating",
-    textLabel: locale === "ar" ? "رأيك بصراحة" : "Your honest review",
-    submit: locale === "ar" ? "إرسال التقييم" : "Submit Review",
-    submitting: locale === "ar" ? "جاري الإرسال..." : "Submitting...",
-    successMsg: locale === "ar" ? "شكراً لك! تم إرسال تقييمك بنجاح وسيتم مراجعته." : "Thank you! Your review has been submitted and is pending approval.",
     note: locale === "ar" ? "يتم سحب التقييمات وعرضها بشفافية لضمان مصداقية التجربة." : "Reviews are pulled and displayed transparently to ensure a credible experience.",
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (res.ok) {
-        setSuccess(true);
-        setTimeout(() => {
-          setIsModalOpen(false);
-          setSuccess(false);
-          setFormData({ name: "", rating: 5, text: "" });
-        }, 3000);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   return (
@@ -65,12 +25,7 @@ export function ReviewsSection({ locale, initialReviews }: { locale: Locale; ini
               {t.title}
             </h2>
           </div>
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className="shrink-0 px-6 py-3 bg-[#1a2b3c] text-white text-sm font-bold rounded-xl hover:bg-[#d0a755] hover:text-[#1a2b3c] transition-colors shadow-sm"
-          >
-            {t.addReview}
-          </button>
+          <ReviewFormTrigger locale={locale} />
         </div>
 
         {/* Slider / Grid Container */}
@@ -152,80 +107,6 @@ export function ReviewsSection({ locale, initialReviews }: { locale: Locale; ini
         }
       `}} />
 
-      {/* Review Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" dir={isRtl ? "rtl" : "ltr"}>
-          <div className="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 relative shadow-2xl animate-in zoom-in-95 duration-200">
-            <button 
-              onClick={() => setIsModalOpen(false)}
-              aria-label={locale === "ar" ? "إغلاق" : "Close"}
-              className="absolute top-4 right-4 rtl:left-4 rtl:right-auto w-8 h-8 flex items-center justify-center rounded-full bg-[#f0f2f5] text-[#1a2b3c]/60 hover:bg-[#1a2b3c] hover:text-white transition-colors"
-            >
-              <FaTimes />
-            </button>
-            
-            <h3 className="text-2xl font-black text-[#1a2b3c] mb-6">{t.formTitle}</h3>
-            
-            {success ? (
-              <div className="p-6 bg-green-50 text-green-700 rounded-2xl text-center font-bold text-sm">
-                {t.successMsg}
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label htmlFor="review-name" className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.nameLabel}</label>
-                  <input 
-                    id="review-name"
-                    required 
-                    type="text" 
-                    value={formData.name} 
-                    onChange={e => setFormData({...formData, name: e.target.value})}
-                    className="w-full bg-[#f0f2f5] rounded-xl px-4 py-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]/50" 
-                  />
-                </div>
-                
-                <div>
-                  <label id="review-rating-label" className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.ratingLabel}</label>
-                  <div className="flex gap-2" dir="ltr" role="group" aria-labelledby="review-rating-label">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setFormData({...formData, rating: star})}
-                        aria-label={locale === "ar" ? `${star} من 5 نجوم` : `${star} out of 5 stars`}
-                        aria-pressed={star === formData.rating}
-                        className="p-1 focus:outline-none transition-transform hover:scale-110"
-                      >
-                        <FaStar className={`w-8 h-8 ${star <= formData.rating ? "text-[#FFC107]" : "text-gray-200"}`} />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="review-text" className="block text-xs font-black text-[#1a2b3c]/60 mb-2 uppercase">{t.textLabel}</label>
-                  <textarea 
-                    id="review-text"
-                    required 
-                    rows={4}
-                    value={formData.text} 
-                    onChange={e => setFormData({...formData, text: e.target.value})}
-                    className="w-full bg-[#f0f2f5] rounded-xl px-4 py-3 text-sm font-medium text-[#1a2b3c] outline-none focus:ring-2 focus:ring-[#d0a755]/50 resize-none" 
-                  />
-                </div>
-                
-                <button 
-                  type="submit" 
-                  disabled={submitting}
-                  className="w-full bg-[#1a2b3c] text-white font-bold py-3.5 rounded-xl hover:bg-[#d0a755] hover:text-[#1a2b3c] transition-colors disabled:opacity-50"
-                >
-                  {submitting ? t.submitting : t.submit}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 }
