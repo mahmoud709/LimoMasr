@@ -25,6 +25,7 @@ import {
   FiX
 } from "react-icons/fi";
 import dynamic from "next/dynamic";
+import { QueryProvider } from "@/components/QueryProvider";
 const LocationSearchModal = dynamic(() => import("./LocationSearchModal").then(module => module.LocationSearchModal));
 const NationalitySearchModal = dynamic(() => import("./NationalitySearchModal").then(module => module.NationalitySearchModal));
 
@@ -41,7 +42,15 @@ type BookingFormProps = {
   airportTransfer?: { code: "CAI" | "SPX"; name: string };
 };
 
-export function BookingForm({
+export function BookingForm(props: BookingFormProps) {
+  return (
+    <QueryProvider>
+      <BookingFormContent {...props} />
+    </QueryProvider>
+  );
+}
+
+function BookingFormContent({
   type,
   serviceRefId,
   serviceName,
