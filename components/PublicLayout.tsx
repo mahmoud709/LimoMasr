@@ -32,7 +32,7 @@ const navItems = [
   ["contact", "/contact"],
 ] as const;
 
-const footerNavItems = [...navItems.slice(0, 2), ["airports", "/airports"] as const, ...navItems.slice(2)] as const;
+const footerNavItems = [...navItems.slice(0, 2), ["airports", "/airports"] as const, ...navItems.slice(2), ["businessTravel", "/business-travel"] as const] as const;
 
 import { cookies } from "next/headers";
 

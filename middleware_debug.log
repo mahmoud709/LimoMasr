@@ -14382,3 +14382,142 @@
 2026-10-27T15:57:24.611Z - REWRITE: /ar/hotels -> /hotels?__locale=ar
 2026-10-27T15:57:27.433Z - INCOMING: /ar/stays | isRewritten: false | hasLocaleParam: false
 2026-10-27T15:57:27.441Z - REWRITE: /ar/stays -> /stays?__locale=ar
+2026-11-02T19:38:12.210Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-11-02T19:38:12.238Z - REWRITE: / -> /?__locale=ar
+2026-11-02T19:38:13.123Z - INCOMING: / | isRewritten: false | hasLocaleParam: false
+2026-11-02T19:38:13.144Z - REWRITE: / -> /?__locale=ar
+2026-11-02T19:38:20.285Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-11-02T19:38:20.311Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-11-02T19:38:24.403Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-11-02T19:38:24.419Z - ADMIN REDIRECT: /ar/admin -> /admin/login
+2026-11-02T19:38:24.467Z - ADMIN LOGIN: /ar/admin/login
+2026-11-02T19:38:24.486Z - INCOMING: /ar/admin/login | isRewritten: false | hasLocaleParam: false
+2026-11-02T19:38:24.506Z - REWRITE: /ar/admin/login -> /admin/login?__locale=ar
+2026-11-02T19:50:14.275Z - ADMIN LOGIN: /ar/admin/login
+2026-11-02T19:50:14.372Z - REWRITE: /ar/admin/login -> /admin/login?__locale=ar
+2026-11-02T19:50:14.390Z - INCOMING: /ar/admin/login | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:31.944Z - ADMIN LOGIN: /ar/admin/login
+2026-11-02T20:01:31.966Z - INCOMING: /ar/admin/login | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:31.995Z - REWRITE: /ar/admin/login -> /admin/login?__locale=ar
+2026-11-02T20:01:36.109Z - INCOMING: /admin | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:36.128Z - ADMIN PASSTHROUGH: /admin
+2026-11-02T20:01:36.153Z - REDIRECT: /admin -> /ar/admin
+2026-11-02T20:01:36.193Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:36.214Z - ADMIN PASSTHROUGH: /ar/admin
+2026-11-02T20:01:36.238Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-11-02T20:01:37.169Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:37.435Z - ADMIN PASSTHROUGH: /ar/admin
+2026-11-02T20:01:37.465Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-11-02T20:01:37.901Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:37.982Z - ADMIN PASSTHROUGH: /ar/admin
+2026-11-02T20:01:38.047Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-11-02T20:01:46.511Z - INCOMING: /admin/bookings | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:46.529Z - ADMIN PASSTHROUGH: /admin/bookings
+2026-11-02T20:01:46.562Z - REDIRECT: /admin/bookings -> /ar/admin/bookings
+2026-11-02T20:01:46.597Z - INCOMING: /ar/admin/bookings | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:46.621Z - ADMIN PASSTHROUGH: /ar/admin/bookings
+2026-11-02T20:01:46.648Z - REWRITE: /ar/admin/bookings -> /admin/bookings?__locale=ar
+2026-11-02T20:01:47.069Z - INCOMING: /ar/admin/bookings | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:47.089Z - ADMIN PASSTHROUGH: /ar/admin/bookings
+2026-11-02T20:01:47.105Z - REWRITE: /ar/admin/bookings -> /admin/bookings?__locale=ar
+2026-11-02T20:01:48.247Z - INCOMING: /admin/customers | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:48.271Z - ADMIN PASSTHROUGH: /admin/customers
+2026-11-02T20:01:48.290Z - REDIRECT: /admin/customers -> /ar/admin/customers
+2026-11-02T20:01:48.330Z - INCOMING: /ar/admin/customers | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:48.351Z - ADMIN PASSTHROUGH: /ar/admin/customers
+2026-11-02T20:01:48.374Z - REWRITE: /ar/admin/customers -> /admin/customers?__locale=ar
+2026-11-02T20:01:48.834Z - INCOMING: /ar/admin/customers | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:48.992Z - ADMIN PASSTHROUGH: /ar/admin/customers
+2026-11-02T20:01:49.028Z - REWRITE: /ar/admin/customers -> /admin/customers?__locale=ar
+2026-11-02T20:01:49.789Z - INCOMING: /admin/messages | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:49.816Z - ADMIN PASSTHROUGH: /admin/messages
+2026-11-02T20:01:49.846Z - REDIRECT: /admin/messages -> /ar/admin/messages
+2026-11-02T20:01:49.884Z - INCOMING: /ar/admin/messages | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:49.906Z - ADMIN PASSTHROUGH: /ar/admin/messages
+2026-11-02T20:01:49.930Z - REWRITE: /ar/admin/messages -> /admin/messages?__locale=ar
+2026-11-02T20:01:50.359Z - INCOMING: /ar/admin/messages | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:50.382Z - ADMIN PASSTHROUGH: /ar/admin/messages
+2026-11-02T20:01:50.403Z - REWRITE: /ar/admin/messages -> /admin/messages?__locale=ar
+2026-11-02T20:01:51.982Z - INCOMING: /admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:52.008Z - ADMIN PASSTHROUGH: /admin/hotels
+2026-11-02T20:01:52.028Z - REDIRECT: /admin/hotels -> /ar/admin/hotels
+2026-11-02T20:01:52.067Z - INCOMING: /ar/admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:52.090Z - ADMIN PASSTHROUGH: /ar/admin/hotels
+2026-11-02T20:01:52.113Z - REWRITE: /ar/admin/hotels -> /admin/hotels?__locale=ar
+2026-11-02T20:01:52.565Z - INCOMING: /ar/admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:52.587Z - ADMIN PASSTHROUGH: /ar/admin/hotels
+2026-11-02T20:01:52.602Z - REWRITE: /ar/admin/hotels -> /admin/hotels?__locale=ar
+2026-11-02T20:01:58.572Z - ADMIN PASSTHROUGH: /admin/reviews
+2026-11-02T20:01:58.591Z - REDIRECT: /admin/reviews -> /ar/admin/reviews
+2026-11-02T20:01:58.616Z - INCOMING: /admin/reviews | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:58.638Z - ADMIN PASSTHROUGH: /ar/admin/reviews
+2026-11-02T20:01:58.660Z - INCOMING: /ar/admin/reviews | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:58.684Z - REWRITE: /ar/admin/reviews -> /admin/reviews?__locale=ar
+2026-11-02T20:01:59.539Z - INCOMING: /ar/admin/reviews | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:01:59.591Z - ADMIN PASSTHROUGH: /ar/admin/reviews
+2026-11-02T20:01:59.641Z - REWRITE: /ar/admin/reviews -> /admin/reviews?__locale=ar
+2026-11-02T20:02:02.521Z - INCOMING: /admin/cars | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:02:02.546Z - ADMIN PASSTHROUGH: /admin/cars
+2026-11-02T20:02:02.570Z - REDIRECT: /admin/cars -> /ar/admin/cars
+2026-11-02T20:02:02.611Z - INCOMING: /ar/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:02:02.632Z - ADMIN PASSTHROUGH: /ar/admin/cars
+2026-11-02T20:02:02.654Z - REWRITE: /ar/admin/cars -> /admin/cars?__locale=ar
+2026-11-02T20:02:03.220Z - REWRITE: /ar/admin/cars -> /admin/cars?__locale=ar
+2026-11-02T20:02:03.236Z - INCOMING: /ar/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:02:03.254Z - ADMIN PASSTHROUGH: /ar/admin/cars
+2026-11-02T20:03:34.580Z - INCOMING: /ar/admin/cars | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:34.619Z - ADMIN PASSTHROUGH: /ar/admin/cars
+2026-11-02T20:03:34.658Z - REWRITE: /ar/admin/cars -> /admin/cars?__locale=ar
+2026-11-02T20:03:42.677Z - INCOMING: /admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:42.693Z - ADMIN PASSTHROUGH: /admin/hotel-apartments
+2026-11-02T20:03:42.716Z - REDIRECT: /admin/hotel-apartments -> /ar/admin/hotel-apartments
+2026-11-02T20:03:42.755Z - INCOMING: /ar/admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:42.775Z - ADMIN PASSTHROUGH: /ar/admin/hotel-apartments
+2026-11-02T20:03:42.794Z - REWRITE: /ar/admin/hotel-apartments -> /admin/hotel-apartments?__locale=ar
+2026-11-02T20:03:43.689Z - INCOMING: /ar/admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:43.716Z - ADMIN PASSTHROUGH: /ar/admin/hotel-apartments
+2026-11-02T20:03:43.738Z - REWRITE: /ar/admin/hotel-apartments -> /admin/hotel-apartments?__locale=ar
+2026-11-02T20:03:52.722Z - INCOMING: /ar/admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:52.742Z - ADMIN PASSTHROUGH: /ar/admin/hotel-apartments
+2026-11-02T20:03:52.767Z - REWRITE: /ar/admin/hotel-apartments -> /admin/hotel-apartments?__locale=ar
+2026-11-02T20:03:58.304Z - ADMIN PASSTHROUGH: /admin/hotel-apartments
+2026-11-02T20:03:58.321Z - INCOMING: /admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:58.345Z - REDIRECT: /admin/hotel-apartments -> /ar/admin/hotel-apartments
+2026-11-02T20:03:58.387Z - REWRITE: /ar/admin/hotel-apartments -> /admin/hotel-apartments?__locale=ar
+2026-11-02T20:03:58.406Z - INCOMING: /ar/admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:58.428Z - ADMIN PASSTHROUGH: /ar/admin/hotel-apartments
+2026-11-02T20:03:58.531Z - INCOMING: /ar/admin/hotel-apartments | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:58.549Z - ADMIN PASSTHROUGH: /ar/admin/hotel-apartments
+2026-11-02T20:03:58.571Z - REWRITE: /ar/admin/hotel-apartments -> /admin/hotel-apartments?__locale=ar
+2026-11-02T20:03:59.168Z - INCOMING: /admin/flights | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:03:59.194Z - ADMIN PASSTHROUGH: /admin/flights
+2026-11-02T20:03:59.216Z - REDIRECT: /admin/flights -> /ar/admin/flights
+2026-11-02T20:03:59.254Z - ADMIN PASSTHROUGH: /ar/admin/flights
+2026-11-02T20:03:59.276Z - REWRITE: /ar/admin/flights -> /admin/flights?__locale=ar
+2026-11-02T20:03:59.301Z - INCOMING: /ar/admin/flights | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:00.123Z - INCOMING: /ar/admin/flights | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:00.144Z - ADMIN PASSTHROUGH: /ar/admin/flights
+2026-11-02T20:04:00.161Z - REWRITE: /ar/admin/flights -> /admin/flights?__locale=ar
+2026-11-02T20:04:02.610Z - INCOMING: /admin/fast-track | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:02.628Z - ADMIN PASSTHROUGH: /admin/fast-track
+2026-11-02T20:04:02.654Z - REDIRECT: /admin/fast-track -> /ar/admin/fast-track
+2026-11-02T20:04:02.697Z - INCOMING: /ar/admin/fast-track | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:02.715Z - ADMIN PASSTHROUGH: /ar/admin/fast-track
+2026-11-02T20:04:02.745Z - REWRITE: /ar/admin/fast-track -> /admin/fast-track?__locale=ar
+2026-11-02T20:04:03.216Z - INCOMING: /ar/admin/fast-track | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:03.241Z - ADMIN PASSTHROUGH: /ar/admin/fast-track
+2026-11-02T20:04:03.270Z - REWRITE: /ar/admin/fast-track -> /admin/fast-track?__locale=ar
+2026-11-02T20:04:04.952Z - INCOMING: /admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:04.970Z - ADMIN PASSTHROUGH: /admin/hotels
+2026-11-02T20:04:04.987Z - REDIRECT: /admin/hotels -> /ar/admin/hotels
+2026-11-02T20:04:05.069Z - INCOMING: /ar/admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:05.085Z - ADMIN PASSTHROUGH: /ar/admin/hotels
+2026-11-02T20:04:05.104Z - REWRITE: /ar/admin/hotels -> /admin/hotels?__locale=ar
+2026-11-02T20:04:05.160Z - INCOMING: /ar/admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:04:05.221Z - ADMIN PASSTHROUGH: /ar/admin/hotels
+2026-11-02T20:04:05.238Z - REWRITE: /ar/admin/hotels -> /admin/hotels?__locale=ar
+2026-11-02T20:11:42.240Z - INCOMING: /ar/admin/hotels | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:11:42.256Z - REWRITE: /ar/admin/hotels -> /admin/hotels?__locale=ar
+2026-11-02T20:11:42.274Z - ADMIN PASSTHROUGH: /ar/admin/hotels
+2026-11-02T20:12:31.136Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
+2026-11-02T20:12:31.178Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar

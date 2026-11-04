@@ -3,7 +3,7 @@ const fs=require("node:fs"),vm=require("node:vm"),assert=require("node:assert/st
 function load(file,mocks={},globals={}){const exports={};const js=ts.transpileModule(fs.readFileSync(file,"utf8"),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;vm.runInNewContext(js,{exports,process,URL,console:{error:()=>{}},require:name=>name in mocks?mocks[name]:require(name),...globals},{filename:file});return exports;}
 const phone=load("lib/booking-phone.ts");
 function formText(element){if(typeof element==="string"||typeof element==="number")return String(element);if(Array.isArray(element))return element.map(formText).join(" ");return element&&typeof element==="object"?formText(element.props?.children):"";}
-function findForm(element){if(!element||typeof element!=="object")return null;if(element.type==="form")return element;for(const child of [].concat(element.props?.children||[])){const found=findForm(child);if(found)return found;}return null;}
+function findForm(element){if(!element||typeof element!=="object")return null;if(element.type==="form")return element;if(typeof element.type==="function"){const found=findForm(element.type(element.props||{}));if(found)return found;}for(const child of [].concat(element.props?.children||[])){const found=findForm(child);if(found)return found;}return null;}
 async function scenario(type,source,status,body,number="+201012345678",delayed=false,airportTest=null){
  const events=[],stateChanges=[],requests=[],opened=[],messages=[];let index=0,release;
  const response={ok:status>=200&&status<300,status,json:async()=>{if(body===null)throw Error("Malformed response");return body;}};
@@ -11,6 +11,7 @@ async function scenario(type,source,status,body,number="+201012345678",delayed=f
  const Form=load("components/BookingForm.tsx",{
   react:hooks,"@/lib/booking-phone":phone,"@/lib/utils":{bookingMessage:params=>{messages.push(params);return "QA request";},buildWhatsappUrl:()=>"https://wa.me/2010"},
   "@/lib/gtag":{BOOKING_SUCCESS_CONVERSION_SEND_TO:"QA/booking",trackEvent:(name,params)=>events.push({name,params}),trackWhatsappClick:()=>events.push({name:"whatsapp_click"})},
+    "./QueryProvider":{QueryProvider:({children})=>children},
   "@tanstack/react-query":{useQuery:()=>({data:null})},"next/dynamic":()=>()=>null,
  },{AbortSignal,DOMException,window:{location:{pathname:"/en/qa"},open:(...args)=>opened.push(args)},fetch:async(url,options)=>{requests.push({url,body:JSON.parse(options.body)});if(status===-1)throw Error("Network failure");if(status===-2)throw new DOMException("Timed out","TimeoutError");return delayed?new Promise(resolve=>{release=()=>resolve(response);}):response;}});
  const form=findForm(Form.BookingForm({type,serviceRefId:airportTest?"airport-transfer-"+airportTest.code:"qa-service",serviceName:"QA service",whatsappNumber:"2010",locale:"en",airportTransfer:airportTest?{code:airportTest.code,name:airportTest.name}:undefined}));assert(form);

@@ -53,6 +53,8 @@ interface FullBulkCarItem {
   images: string[];
 }
 
+const EMPTY_CARS: Car[] = [];
+
 function createEmptyBulkItem(index: number): FullBulkCarItem {
   return {
     id: `bulk-${Date.now()}-${index}`,
@@ -108,7 +110,7 @@ export default function CarsPage() {
   ]);
   const [bulkSaving, setBulkSaving] = useState(false);
 
-  const { data: cars = [], isLoading: loading } = useQuery<Car[]>({
+  const { data: cars = EMPTY_CARS, isLoading: loading } = useQuery<Car[]>({
     queryKey: ["cars"],
     queryFn: async () => {
       const res = await fetch("/api/admin/cars");

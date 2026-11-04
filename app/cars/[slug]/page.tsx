@@ -1,6 +1,8 @@
 import { JsonLd } from "@/components/JsonLd";
 import { serviceGraph } from "@/lib/structured-data";
 import { ResponsiveImage } from "@/components/ResponsiveImage";
+import Link from "next/link";
+import { FiTag } from "react-icons/fi";
 import { notFound } from "next/navigation";
 import { BookingForm } from "@/components/BookingForm";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -8,7 +10,7 @@ import { getCars, getSiteSettings } from "@/lib/data";
 import { formatCurrency, priceUnitLabel } from "@/lib/utils";
 import { cookies } from "next/headers";
 import type { Locale } from "@/lib/types";
-import { localizeCar } from "@/lib/i18n";
+import { localizeCar, withLang } from "@/lib/i18n";
 import { pageMetadata, seoLocale, type SeoProps } from "@/lib/seo";
 
 export async function generateMetadata(props: SeoProps & { params: Promise<{ slug: string }> }) {
@@ -16,9 +18,19 @@ export async function generateMetadata(props: SeoProps & { params: Promise<{ slu
   const rawCar = cars.find(car => car.slug === decodeURIComponent(slug) || car.slug === slug);
   if (!rawCar) notFound();
   const car = localizeCar(rawCar, locale);
+  const vehicleType = car.vehicleType?.replace(/^[\u0610-\u061A\u064B-\u065F\u0670]+/, "").trim();
+  const carDetails = [
+    vehicleType,
+    locale === "en" ? `${car.seats} seats` : `${car.seats} ركاب`,
+    locale === "en" ? `Model year ${car.year}` : `موديل ${car.year}`,
+    car.notes?.trim(),
+  ].filter(Boolean).join(locale === "en" ? " · " : "، ");
+  const description = locale === "en"
+    ? `Explore ${car.categoryName} in Egypt: ${carDetails}. Review the details and ask about availability.`
+    : `تعرف على ${car.categoryName} في مصر: ${carDetails}. راجع التفاصيل واستفسر عن التوافر.`;
   return pageMetadata(`/cars/${encodeURIComponent(rawCar.slug)}`, locale,
     locale === "en" ? `${car.categoryName} Booking in Egypt | Limo Egypt` : `حجز ${car.categoryName} في مصر | ليمو مصر`,
-    locale === "en" ? `Explore ${car.categoryName}, with ${car.seats} seats. ${car.subtitle || ""} Review car details and request a booking with Limo Egypt.` : `تعرف على ${car.categoryName} بعدد ${car.seats} مقاعد. ${car.subtitle || ""} استعرض تفاصيل السيارة واطلب الحجز مع ليمو مصر.`,
+    description,
     car.images);
 }
 
@@ -50,11 +62,23 @@ export default async function CarDetailsPage({
   const exchangeRate = settings.usdRate || 50;
 
   const car = localizeCar(rawCar, locale);
+  const vehicleType = car.vehicleType?.replace(/^[\u0610-\u061A\u064B-\u065F\u0670]+/, "").trim();
 
   return (
     <PublicLayout settings={settings} whatsappType="car" locale={locale}>
       <JsonLd nodes={serviceGraph(`/cars/${encodeURIComponent(rawCar.slug)}`, locale, car.categoryName, car.subtitle || car.categoryName, "Car and limousine booking", [{ path: "/cars", name: locale === "ar" ? "السيارات" : "Cars" }])} />
       <main className="mx-auto max-w-[1400px] px-6 md:px-8 pt-32 pb-24 relative z-10" dir={locale === "en" ? "ltr" : "rtl"}>
+        <nav aria-label={locale === "en" ? "Breadcrumb" : "مسار الصفحة"} className="mb-6 flex min-w-0 flex-wrap items-center gap-2 text-sm text-[#1a2b3c]/70">
+          <Link href={withLang("/", locale)} className="underline underline-offset-4">
+            {locale === "en" ? "Home" : "الرئيسية"}
+          </Link>
+          <span aria-hidden="true">/</span>
+          <Link href={withLang("/cars", locale)} className="underline underline-offset-4">
+            {locale === "en" ? "Cars" : "السيارات"}
+          </Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page" className="min-w-0 break-words">{car.categoryName}</span>
+        </nav>
         
         {/* Header Section */}
         <div className="mb-10 animate-reveal-1">
@@ -141,6 +165,20 @@ export default async function CarDetailsPage({
                     </p>
                   </div>
                 </div>
+
+                {vehicleType && (
+                  <div className="bg-[#F9F8F6] rounded-2xl p-6 border border-black/5 flex flex-col items-center justify-center text-center gap-3 hover:-translate-y-1 transition-transform">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#d0a755] shadow-sm">
+                      <FiTag className="w-6 h-6" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-[#1a2b3c]/50 font-bold uppercase tracking-widest mb-1">
+                        {locale === "en" ? "Vehicle Type" : "نوع السيارة"}
+                      </p>
+                      <p className="font-black text-[#1a2b3c]">{vehicleType}</p>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="bg-[#F9F8F6] rounded-2xl p-6 border border-black/5 flex flex-col items-center justify-center text-center gap-3 hover:-translate-y-1 transition-transform">
                   <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#d0a755] shadow-sm">
@@ -180,18 +218,20 @@ export default async function CarDetailsPage({
                 </div>
               </div>
 
-              <div className="pt-6 border-t border-black/5">
-                <h3 className="text-lg font-black text-[#1a2b3c] mb-3">
-                  {locale === "en" ? "Available Models in this Category" : "الموديلات المتوفرة في هذه الفئة"}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {car.models.map(model => (
-                    <span key={model} className="bg-[#1a2b3c]/5 text-[#1a2b3c] font-bold text-sm px-4 py-2 rounded-lg border border-black/5">
-                      {model}
-                    </span>
-                  ))}
+              {car.models.length > 0 && (
+                <div className="pt-6 border-t border-black/5">
+                  <h3 className="text-lg font-black text-[#1a2b3c] mb-3">
+                    {locale === "en" ? "Available Models in this Category" : "الموديلات المتوفرة في هذه الفئة"}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {car.models.map(model => (
+                      <span key={model} className="bg-[#1a2b3c]/5 text-[#1a2b3c] font-bold text-sm px-4 py-2 rounded-lg border border-black/5">
+                        {model}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {car.notes && (
                 <div className="pt-6 border-t border-black/5">

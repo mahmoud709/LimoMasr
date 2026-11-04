@@ -25,7 +25,7 @@ import {
   FiX
 } from "react-icons/fi";
 import dynamic from "next/dynamic";
-import { QueryProvider } from "@/components/QueryProvider";
+import { QueryProvider } from "./QueryProvider";
 const LocationSearchModal = dynamic(() => import("./LocationSearchModal").then(module => module.LocationSearchModal));
 const NationalitySearchModal = dynamic(() => import("./NationalitySearchModal").then(module => module.NationalitySearchModal));
 

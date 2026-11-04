@@ -70,6 +70,10 @@ export const serviceSeo = {
     ar: ["تواصل لحجز فنادق وسيارات وخدمات سفر | ليمو مصر", "تواصل مع ليمو مصر للاستفسار عن حجز السيارات والفنادق والشقق الفندقية والطيران وخدمات المطارات. أرسل تفاصيل رحلتك لطلب عرض سعر."],
     en: ["Contact Us for Bookings & Travel Quotes | Limo Egypt", "Contact Limo Egypt about cars, hotels, serviced apartments, flights and airport services. Send your trip details to request a booking quote."],
   },
+  "/business-travel": {
+    ar: ["نقل الشركات والمؤتمرات في مصر | ليمو مصر", "اطلب خدمات نقل الشركات والوفود والمؤتمرات في مصر، مع سيارات خاصة وتنظيم تنقلات الفعاليات والرحلات حسب احتياج شركتك."],
+    en: ["Business Travel & Conference Transport in Egypt | Limo Egypt", "Request corporate transportation, delegation transfers and event travel services in Egypt, tailored to your company’s itinerary."],
+  },
   "/blog": {
     ar: ["دليل السفر والإقامة والتنقل في مصر | مدونة ليمو مصر", "اقرأ أدلة ليمو مصر عن السفر والإقامة والتنقل وخدمات المطارات، واستكشف الخدمات المناسبة للتخطيط لرحلتك إلى مصر."],
     en: ["Egypt Travel, Stay & Transport Guides | Limo Egypt", "Read Limo Egypt guides on travel, accommodation, transport and airport services, and explore the services available for planning your Egypt trip."],

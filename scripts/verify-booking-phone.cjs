@@ -130,6 +130,7 @@ function post(payload, ip = 'test-client') {
   const { BookingForm } = load('components/BookingForm.tsx', {
     '@/lib/booking-phone': phone, '@/lib/utils': { bookingMessage: () => '', buildWhatsappUrl: () => '' },
     '@/lib/gtag': {},
+    './QueryProvider': { QueryProvider: ({ children }) => children },
     '@tanstack/react-query': { useQuery: () => ({ data: null }) },
     'next/link': props => React.createElement('a', { href: props.href }, props.children),
     './LocationSearchModal': { LocationSearchModal: () => null },

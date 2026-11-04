@@ -2,15 +2,21 @@
 
 These briefs are not routes, sitemap entries or promises of service availability. Existing public booking forms remain guest forms. A saved enquiry is not confirmation.
 
+## Client data confirmation — 3 November 2026
+
+The client confirmed that the vehicle, hotel, apartment and service information supplied for this SEO work is client-provided and accurate. Use those supplied facts in page copy; do not keep those supplied facts blocked for another approval round. This does not authorize inventing details that were not supplied, such as route coverage, luggage limits, waiting/cancellation terms, or supplier-specific inclusions.
+
+The car detail template now includes the approved vehicle type, seats, year and notes in its metadata/specifications, and hides the empty model list. Hotel and apartment cards now render their existing localized descriptions. These are local changes and require deployment before production/Search Console can reflect them.
+
 ## Existing five services
 Bilingual guides now explain preparation, submission, quote review and contacting the team for existing bookings. Public FAQs ask the customer to confirm terms rather than asserting supplier terms.
 
-Owner questions before adding operational copy:
-- Cars: Is a driver included in each listed product? What routes, luggage capacities, waiting terms, extra stops and cancellation terms apply?
-- Hotels: Which room types, meals, taxes, offer dates and payment/cancellation terms are approved for each offer?
-- Apartments: Which amenities, cleaning, utilities, deposits, occupancy and check-in/out terms apply to each listing?
-- Flights: What are the approved quote, payment and ticket-issuance procedures? Which fare-specific baggage/change terms can be published?
-- Fast Track: Which exact airports and packages are confirmed? What is included/excluded, how far ahead to request, and what meeting arrangements apply? Do not infer CAI/SPX coverage from transport availability.
+Additional operational facts not present in the supplied records:
+- Cars: Current records provide vehicle type, seats, year, price unit and notes. Add driver inclusion, routes, luggage capacity, waiting, extra-stop or cancellation details only when provided for the product.
+- Hotels: Current records provide descriptions, features, city and price. Keep room-specific meals, taxes, dates and payment/cancellation terms tied to the approved offer.
+- Apartments: Current records provide location, rooms, capacity, features and descriptions. Add deposits, utility charges and check-in/out details only when supplied.
+- Flights: Keep fare-specific baggage, payment, issuance and change terms tied to the actual airline and offer.
+- Fast Track: Use the supplied package descriptions as approved. Do not infer named-airport availability or meeting arrangements beyond the package's recorded airport and inclusions.
 
 ## Airport expansion — NOT PUBLISHED
 CAI and SPX pickup/drop-off are confirmed and have distinct bilingual pages, forms, airport-identification guidance, FAQs and reciprocal links. Signs, flight tracking, waiting times and guaranteed pickup arrangements remain unconfirmed.

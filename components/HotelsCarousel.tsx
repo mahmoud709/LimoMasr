@@ -263,6 +263,12 @@ export function HotelsCarousel({
                   {name}
                 </h3>
 
+                {item.description && (
+                  <p className="mt-2 min-h-11 line-clamp-2 text-sm leading-6 text-[#1a2b3c]/70">
+                    {item.description}
+                  </p>
+                )}
+
                 {/* Features List */}
                 <ul className="mt-4 space-y-1.5 flex-grow relative z-10">
                   {features.map((feature, idx) => (
