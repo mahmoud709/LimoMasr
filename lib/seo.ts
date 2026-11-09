@@ -29,9 +29,41 @@ export function pageMetadata(path: string, locale: Locale, title: string, descri
 }
 
 export const serviceSeo = {
+  "/hurghada-airport-transfer": { ar: ["نقل مطار الغردقة | ليمو مصر", "اطلب سيارة بسائق للاستقبال من مطار الغردقة أو التوصيل إليه، وراجع التوافر وتفاصيل الرحلة مع الفريق."], en: ["Hurghada Airport Transfers | Limo Egypt", "Request a chauffeured pickup from or drop-off at Hurghada Airport and review availability and trip details with the team."] },
+  "/sharm-airport-transfer": { ar: ["نقل مطار شرم الشيخ | ليمو مصر", "اطلب سيارة بسائق للاستقبال من مطار شرم الشيخ أو التوصيل إليه، وراجع التوافر وتفاصيل الرحلة مع الفريق."], en: ["Sharm El Sheikh Airport Transfers | Limo Egypt", "Request a chauffeured pickup from or drop-off at Sharm El Sheikh Airport and review availability and trip details with the team."] },
+  "/borg-el-arab-airport-transfer": { ar: ["نقل مطار برج العرب | ليمو مصر", "اطلب سيارة بسائق للاستقبال من مطار برج العرب أو التوصيل إليه، وراجع التوافر وتفاصيل الرحلة مع الفريق."], en: ["Borg El Arab Airport Transfers | Limo Egypt", "Request a chauffeured pickup from or drop-off at Borg El Arab Airport and review availability and trip details with the team."] },
+  "/private-tours": { ar: ["رحلات سياحية خاصة في مصر | ليمو مصر", "اطلب رحلة سياحية خاصة في القاهرة والجيزة والإسكندرية وشرم الشيخ والغردقة والأقصر، وحدد مدتها مع فريق ليمو مصر."], en: ["Private Egypt Tour Enquiries | Limo Egypt", "Enquire about private trips in Cairo, Giza, Alexandria, Sharm El Sheikh, Hurghada and Luxor; discuss the itinerary and duration with our team."] },
+  "/blog/booking-guides/airport-fast-track": {
+    ar: ["دليل طلب فاست تراك في المطارات | ليمو مصر", "تعرف على المعلومات والأسئلة التي تجهزها عند الاستفسار عن فاست تراك ومساعدة المسافرين بالمطار."],
+    en: ["Airport Fast Track Request Guide | Limo Egypt", "Prepare the details and questions for an airport Fast Track assistance enquiry."],
+  },
+  "/blog/booking-guides/flight-quote": {
+    ar: ["كيف تطلب عرض حجز طيران؟ | ليمو مصر", "جهز الوجهة والتواريخ وبيانات المسافرين، وراجع شروط الأمتعة والتعديل قبل تأكيد عرض الطيران."],
+    en: ["How to Request a Flight Quote | Limo Egypt", "Prepare your itinerary and passenger details and review baggage and change terms before confirming a flight quote."],
+  },
+  "/blog/booking-guides/serviced-apartment": {
+    ar: ["دليل اختيار شقة فندقية في مصر | ليمو مصر", "حدد موقع الإقامة والسعة والمرافق والميزانية، وراجع شروط الشقة قبل تأكيد العرض."],
+    en: ["Serviced Apartment Enquiry Guide for Egypt | Limo Egypt", "Plan your location, capacity, amenities and budget and review apartment terms before confirming an offer."],
+  },
+  "/blog/booking-guides/cairo-airport-transfer": {
+    ar: ["دليل طلب استقبال مطار القاهرة | ليمو مصر", "جهز بيانات وصولك أو مغادرتك، والركاب والأمتعة، والأسئلة التي تساعدك في طلب سيارة لمطار القاهرة."],
+    en: ["Cairo Airport Transfer Request Guide | Limo Egypt", "Prepare your arrival or departure, passenger and luggage details and questions before requesting a Cairo Airport transfer."],
+  },
+  "/blog/booking-guides/car-with-driver": {
+    ar: ["كيف تطلب سيارة بسائق في مصر؟ | ليمو مصر", "دليل عملي لتحديد خط السير وعدد الركاب واختيار السيارة ومراجعة عرض السعر قبل طلب سيارة بسائق."],
+    en: ["How to Request a Car with Driver in Egypt | Limo Egypt", "Plan your route, passenger needs and vehicle choice, and review your quote before requesting a car with a driver."],
+  },
+  "/blog/booking-guides/hotel-apartment-quotes": {
+    ar: ["دليل طلب عروض الفنادق والشقق الفندقية | ليمو مصر", "جهز تفاصيل الإقامة وقارن الموقع والغرف والسعر والشروط قبل تأكيد عرض الفندق أو الشقة الفندقية."],
+    en: ["Hotel and Serviced Apartment Quote Guide | Limo Egypt", "Prepare your stay details and compare location, rooms, price and terms before confirming a hotel or serviced apartment offer."],
+  },
+  "/car-with-driver": {
+    ar: ["سيارة بسائق في مصر | ليمو مصر", "اطلب سيارة بسائق لرحلتك في مصر. اختر السيارة وأرسل خط السير والموعد وعدد الركاب لمراجعة التوافر وطلب عرض سعر."],
+    en: ["Car with Driver in Egypt | Limo Egypt", "Request a car with a driver in Egypt. Choose a vehicle and share your itinerary, date and passenger count for an availability check and quote."],
+  },
   "/airports": {
-    ar: ["المطارات وخدمات الاستقبال والتوصيل | ليمو مصر", "اختر مطار القاهرة أو سفنكس للاطلاع على خدمات النقل بالسيارة من المطار أو إليه وإرسال تفاصيل الرحلة لطلب عرض سعر."],
-    en: ["Airport Pickup & Drop-off Services | Limo Egypt", "Choose Cairo or Sphinx Airport to explore car pickup and drop-off services, review transfer details and request a quote for your trip."],
+    ar: ["المطارات وخدمات الاستقبال والتوصيل | ليمو مصر", "اختر مطار القاهرة أو سفنكس أو الغردقة أو شرم الشيخ أو برج العرب لطلب استقبال أو توصيل بالسيارة."],
+    en: ["Airport Pickup & Drop-off Services | Limo Egypt", "Request car pickup or drop-off at Cairo, Sphinx, Hurghada, Sharm El Sheikh or Borg El Arab Airport."],
   },
 "/stays": {"ar":["حجز فنادق وشقق فندقية في مصر | ليمو مصر","اختر الفنادق والشقق الفندقية وأرسل تفاصيل الإقامة لطلب عرض حجز."],"en":["Hotels & Serviced Apartments in Egypt | Limo Egypt","Explore hotels and serviced apartments and request a stay quote."]},
 "/privacy": {"ar":["سياسة الخصوصية وحماية البيانات | ليمو مصر","راجع سياسة الخصوصية والتعامل مع بيانات التواصل والحجز."],"en":["Privacy & Customer Data Policy | Limo Egypt","Read our policy covering contact information and booking data."]},

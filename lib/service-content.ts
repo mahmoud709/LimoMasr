@@ -6,9 +6,11 @@ export const serviceContent: Record<ServiceType, Record<Locale, Guide>> = {
   car: {
     ar: {
       title: "اختيار سيارة أو ليموزين لرحلتك في مصر",
-      intro: "ابدأ بعدد الركاب ومسار الرحلة، ثم استعرض الموديلات والمقاعد والسعر ووحدة التسعير في صفحة كل سيارة. اختر بين طلب توصيلة وخدمة يومية حسب خطة تنقلك.",
+      intro: "جميع سيارات ليمو مصر متاحة بسائق خاص، وتغطي الخدمة أنحاء الجمهورية حسب خط سيرك والتوافر. استعرض السيارات والمقاعد والسعر ووحدة التسعير، واختر توصيلة أو خدمة يومية لعدة أيام.",
       checklist: ["مكان الانطلاق والوصول وتاريخ ووقت الرحلة.", "عدد الركاب والحقائب لاختيار السعة المناسبة.", "للحجز اليومي: مكان الإقامة وتاريخ بداية الخدمة ونهايتها."],
       faqs: [
+        { question: "هل السيارة بسائق وهل يمكن حجزها لأكثر من يوم؟", answer: "نعم، جميع السيارات بسائق خاص، ويمكن طلبها لعدة أيام متواصلة. أرسل التواريخ وخط السير لمراجعة التوافر وتفاصيل الحجز." },
+        { question: "ماذا يشمل سعر السيارة المعروض؟", answer: "بحسب الشركة يشمل سعر السيارة المعروض تكاليف الرحلة، بما فيها السائق والبنزين والحقائب ورسوم الطرق والكباري والانتظار والتوقفات الإضافية. وضّح مسار الرحلة واحتياجاتك عند إرسال الطلب." },
         { question: "كيف أختار السيارة المناسبة؟", answer: "قارن عدد المقاعد والموديلات المعروضة، وأرسل عدد الحقائب مع طلبك. عدد المقاعد وحده لا يحدد مساحة الأمتعة؛ راجع ملاءمة السيارة قبل تأكيد الحجز." },
         { question: "هل السعر للرحلة أم لليوم؟", answer: "تظهر وحدة التسعير بجوار السعر في تفاصيل السيارة. وضّح مسار الرحلة أو مدة الخدمة اليومية عند إرسال الطلب لمراجعة السعر المطلوب." },
         { question: "ما المعلومات المطلوبة لتوصيلة المطار؟", answer: "حدد المطار ونقطة الوصول وعدد الركاب والحقائب وموعد الرحلة. أضف رقم الرحلة في الملاحظات، واسأل عن نقطة اللقاء ومدة الانتظار قبل التأكيد." },
@@ -16,9 +18,11 @@ export const serviceContent: Record<ServiceType, Record<Locale, Guide>> = {
     },
     en: {
       title: "Choosing a car or limousine for your Egypt trip",
-      intro: "Start with your passenger count and route, then compare models, seats, prices and pricing units on each car page. Choose a transfer request or daily service to match your plans.",
+      intro: "All Limo Egypt cars come with a private driver. Service covers destinations across Egypt, subject to your itinerary and availability. Compare vehicles, seats, prices and pricing units, then request a transfer or multi-day service.",
       checklist: ["Pickup and destination, travel date and time.", "Passenger and luggage counts to check capacity.", "For daily service: accommodation location and start and end dates."],
       faqs: [
+        { question: "Does the car include a driver, and can I book for multiple days?", answer: "Yes. All cars come with a private driver, and you can request consecutive days. Share your dates and itinerary to check availability and booking details." },
+        { question: "What is included in the displayed car price?", answer: "According to the company, the displayed car price includes trip costs, including the driver, fuel, luggage, road and bridge fees, waiting and additional stops. Share your route and requirements with your request." },
         { question: "How do I choose the right car?", answer: "Compare the listed seats and models and include your luggage count. Seats alone do not determine luggage capacity; check suitability before confirming the booking." },
         { question: "Is the price per trip or per day?", answer: "The pricing unit is shown beside the price on the car details page. Include your route or daily service duration so the requested price can be reviewed." },
         { question: "What details should I send for an airport transfer?", answer: "Specify the airport, destination, passengers, luggage and travel time. Add your flight number in the notes and ask about the meeting point and waiting time before confirmation." },

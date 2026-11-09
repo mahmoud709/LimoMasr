@@ -39,7 +39,7 @@ type BookingFormProps = {
   baseCurrency?: string;
   currency?: string;
   exchangeRate?: number;
-  airportTransfer?: { code: "CAI" | "SPX"; name: string };
+  airportTransfer?: { code: "CAI" | "SPX" | "HRG" | "SSH" | "HBE"; name: string };
 };
 
 export function BookingForm(props: BookingFormProps) {
@@ -419,7 +419,7 @@ function BookingFormContent({
       let structuredNotes = "";
       if (type === "car") {
         if (carServiceType === "trip") {
-          structuredNotes = `${airport ? `[اتجاه النقل: ${airportDirection === "arrival" ? "استقبال من المطار" : "توصيل إلى المطار"}] [المطار: ${airport.code}] ` : ""}[نوع الخدمة: توصيلة] [تاريخ الرحلة: ${carDate}] [عدد الحقائب: ${carLuggage}] [من: ${transferFrom}] [إلى: ${transferTo}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
+          structuredNotes = `${airport ? `[اتجاه النقل: ${airportDirection === "arrival" ? "استقبال من المطار" : "توصيل إلى المطار"}] [المطار: ${airport.code}] ` : ""}[نوع الخدمة: توصيلة] [تاريخ الرحلة: ${carDate}] ${carTime ? `[الوقت: ${carTime}] ` : ""}[عدد الحقائب: ${carLuggage}] [من: ${transferFrom}] [إلى: ${transferTo}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
         } else {
           structuredNotes = `[نوع الخدمة: يومية] [تاريخ البداية: ${carDateFrom}] [تاريخ النهاية: ${carDateTo}] [عدد الأيام: ${carTotalDays}] [مكان السكن: ${carResidence}] [عدد الحقائب: ${carLuggage}] ${notes ? `[ملاحظات: ${notes}]` : ""}`;
         }
@@ -459,7 +459,10 @@ function BookingFormContent({
           otherPersonLocation: isForOther ? otherPersonLocation : undefined,
           serviceRefId,
           serviceName: effectiveServiceName,
-          date: bookingEffectiveDate,
+          date: type === "car" ? (carServiceType === "daily" ? carDateFrom : carDate)
+            : type === "fast_track" ? fastTrackDate
+            : type === "flight" ? flightDateFrom
+            : hotelDateFrom,
           dateFrom: type === "car" && carServiceType === "daily" ? carDateFrom : undefined,
           dateTo: type === "car" && carServiceType === "daily" ? carDateTo : undefined,
           notes: structuredNotes.trim(),

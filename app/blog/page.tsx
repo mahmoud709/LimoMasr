@@ -42,7 +42,7 @@ export default async function BlogPage({
   const articlesWithoutImages: typeof articles = [];
 
   return (
-    <PublicLayout settings={settings}>
+    <PublicLayout settings={settings} locale={locale}>
       <main
         className="min-h-screen bg-[#F9F8F6] pt-32 pb-24"
         dir={isEn ? "ltr" : "rtl"}
@@ -60,6 +60,20 @@ export default async function BlogPage({
                 : "أدلة شاملة، نصائح من الداخل، وقصص ملهمة عن أفضل الوجهات في مصر."}
             </p>
           </div>
+
+          <section aria-labelledby="booking-guides" className="mb-16">
+            <h2 id="booking-guides" className="text-2xl font-black text-[#1a2b3c] mb-5">{isEn ? "Practical booking guides" : "أدلة عملية لطلب الحجز"}</h2>
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                { slug: "cairo-airport-transfer", ar: "دليل طلب نقل مطار القاهرة", en: "Requesting a Cairo Airport transfer" },
+                { slug: "car-with-driver", ar: "كيف تطلب سيارة بسائق؟", en: "How to request a car with a driver" },
+                { slug: "hotel-apartment-quotes", ar: "مقارنة عروض الفنادق والشقق", en: "Comparing hotel and apartment quotes" },
+                { slug: "airport-fast-track", ar: "دليل طلب فاست تراك", en: "Requesting airport Fast Track" },
+                { slug: "flight-quote", ar: "كيف تطلب عرض طيران؟", en: "How to request a flight quote" },
+                { slug: "serviced-apartment", ar: "اختيار شقة فندقية", en: "Choosing a serviced apartment" },
+              ].map(guide => <Link key={guide.slug} href={`/${locale}/blog/booking-guides/${guide.slug}`} className="rounded-2xl border border-black/10 bg-white p-6 font-bold text-[#1a2b3c] hover:border-[#d0a755]">{isEn ? guide.en : guide.ar} <span aria-hidden="true">←</span></Link>)}
+            </div>
+          </section>
 
           {/* Blog Articles */}
           {articles.length > 0 && (

@@ -33,7 +33,7 @@ async function scenario(type,source,status,body,number="+201012345678",delayed=f
  const whatsapp=await scenario("car","whatsapp",201,{id:"qa-confirmed-id"});assert.deepEqual(whatsapp.events.map(x=>x.name),["booking_submit_success","conversion","whatsapp_click"]);assert.equal(whatsapp.opened.length,1);
  const failedWhatsapp=await scenario("car","whatsapp",500,{error:"offline"});assert.equal(failedWhatsapp.events.length,0);assert.equal(failedWhatsapp.opened.length,0);
  await scenario("car","web",201,{id:"qa-confirmed-id"},"+201012345678",true);
- for(const [code,name] of [["CAI","Cairo International Airport"],["SPX","Sphinx International Airport"]]) {
+ for(const [code,name] of [["CAI","Cairo International Airport"],["SPX","Sphinx International Airport"],["HRG","Hurghada International Airport"],["SSH","Sharm El Sheikh International Airport"],["HBE","Borg El Arab International Airport"]]) {
   for(const direction of ["arrival","departure"]) {
    const airportTest={code,name,direction,from:"QA pickup address",to:"QA destination"};
    const result=await scenario("car","web",201,{id:"qa-airport"},"+201012345678",false,airportTest);
@@ -49,6 +49,6 @@ async function scenario(type,source,status,body,number="+201012345678",delayed=f
    assert.equal(missing.requests.length,0);assert.equal(missing.events.length,0);
   }
  }
- console.log("PASS: 4 airport pickup/drop-off routes fix the correct endpoint, suppress stale daily state and reject missing other locations; no database/network/conversions.");
+ console.log("PASS: 10 airport pickup/drop-off cases fix the correct endpoint, suppress stale daily state and reject missing other locations; no database/network/conversions.");
  console.log("PASS: "+checked+" failure/invalid-phone cases across five booking types; confirmed success and WhatsApp flow; concurrent submit lock. No database, network or real Google conversions.");
 })().catch(error=>{console.error(error);process.exitCode=1;});

@@ -32,6 +32,7 @@ export function ServiceBookingGuide({ type, locale, settings }: { type: ServiceT
           <li>{en ? "Review availability, the final quote, included items and change or cancellation terms with the team before confirmation." : "راجع التوافر والعرض النهائي والبنود المشمولة وشروط التعديل أو الإلغاء مع الفريق قبل التأكيد."}</li>
         </ol>
         <p className="mt-4 leading-7">{en ? "A saved request is an enquiry, not proof of availability or a confirmed reservation. For an existing booking, contact the team; account retrieval and cancellation are temporarily unavailable." : "حفظ الطلب يعني إرسال استفسار، ولا يثبت التوافر أو تأكيد الحجز. للاستفسار عن حجز قائم تواصل مع الفريق؛ عرض الحجوزات وإلغاؤها عبر الحساب غير متاح مؤقتًا."}</p>
+        <p className="mt-4 leading-7">{en ? "Payment is arranged directly with the team through WhatsApp; there is currently no online payment gateway on the site." : "يتم ترتيب الدفع مباشرة مع الفريق عبر واتساب؛ لا توجد حاليًا بوابة دفع إلكتروني على الموقع."}</p>
         <Link href={withLang("/contact", locale)} className="inline-block mt-3 underline">{en ? "Contact the booking team" : "تواصل مع فريق الحجز"}</Link>
       </div>
       <div className="grid gap-10 md:grid-cols-2 mt-10">
@@ -52,7 +53,7 @@ export function ServiceBookingGuide({ type, locale, settings }: { type: ServiceT
       </div>
       <nav aria-label={en ? "Related travel services" : "خدمات سفر مرتبطة"} className="mt-12 border-t border-[#1a2b3c]/15 pt-6">
         <h3 className="font-bold mb-4">{en ? "Plan the rest of your trip" : "كمّل ترتيبات رحلتك"}</h3>
-        <div className="flex flex-wrap gap-3">{type === "car" && <><Link href={withLang("/cairo-airport-transfer", locale)} className="underline">{en ? "Cairo Airport transfers" : "نقل مطار القاهرة"}</Link><Link href={withLang("/sphinx-airport-transfer", locale)} className="underline">{en ? "Sphinx Airport transfers" : "نقل مطار سفنكس"}</Link></>}{services.filter(item => item.type !== type).map(item => <Link key={item.type} href={withLang(item.path, locale)} className="rounded-full border border-[#1a2b3c]/20 px-4 py-2 hover:bg-[#1a2b3c] hover:text-white transition-colors">{en ? item.en : item.ar}</Link>)}</div>
+        <div className="flex flex-wrap gap-3">{type === "car" && <><Link href={withLang("/car-with-driver", locale)} className="underline">{en ? "Car with driver" : "سيارة بسائق"}</Link><Link href={withLang("/cairo-airport-transfer", locale)} className="underline">{en ? "Cairo Airport transfers" : "نقل مطار القاهرة"}</Link><Link href={withLang("/sphinx-airport-transfer", locale)} className="underline">{en ? "Sphinx Airport transfers" : "نقل مطار سفنكس"}</Link></>}{services.filter(item => item.type !== type).map(item => <Link key={item.type} href={withLang(item.path, locale)} className="rounded-full border border-[#1a2b3c]/20 px-4 py-2 hover:bg-[#1a2b3c] hover:text-white transition-colors">{en ? item.en : item.ar}</Link>)}</div>
       </nav>
     </section>
   );

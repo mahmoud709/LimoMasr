@@ -18,27 +18,27 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
   const defaultContentEn = [
     {
       title: "Service Scope & Overview",
-      content: "Limo Egypt delivers premier luxury transportation across Egypt, specializing in airport transfers (Cairo, Sharm El Sheikh, Hurghada, Borg El Arab), intercity chauffeur services, VIP Fast Track airport assistance, and corporate fleet management."
+      content: "Limo Egypt offers chauffeur-driven car requests across Egypt and airport transfers including Cairo, Sphinx, Hurghada, Sharm El Sheikh and Borg El Arab. Check availability and Fast Track package inclusions for your journey with the team."
     },
     {
       title: "Booking & Instant Confirmation",
-      content: "Reservations placed on our portal or official channels are reviewed by our 24/7 dispatch center. Final trip confirmation and driver contact details are communicated promptly via WhatsApp or phone."
+      content: "Requests submitted through the website or official channels are reviewed by the team. Contact the team to confirm availability and booking details; a submitted request is not itself a confirmed reservation."
     },
     {
       title: "Pricing, Tolls & Multi-Currency",
-      content: "All quoted rates include the luxury vehicle, professional multilingual chauffeur, fuel, and highway toll fees unless explicitly stated otherwise. Rates are displayed in EGP, USD, EUR, SAR, QAR, KWD, and BHD for customer convenience."
+      content: "According to the company, the displayed car price includes trip costs, including the driver, fuel, luggage, road and bridge fees, waiting and additional stops. Share the complete itinerary with the team. Hotel and apartment prices not listed on the site are communicated directly; the company states it adds no booking fee for these stays."
     },
     {
       title: "Flight Tracking & Complimentary Waiting",
-      content: "Our operational team actively tracks incoming flight status in real-time. International arrivals include up to 60 minutes of complimentary waiting time post-landing, and 30 minutes for domestic arrivals."
+      content: "Ask the team whether flight monitoring is available, where to meet, and what waiting time and any additional charges apply to your airport transfer before confirming."
     },
     {
       title: "Cancellation & Refund Policy",
-      content: "We understand travel plans can change. Cancellations or schedule modifications made at least 24 hours prior to the scheduled pickup time are processed free of charge and eligible for a full refund. Late cancellations may be subject to partial fees."
+      content: "Contact customer service to request a change or cancellation. Ask for the conditions and any refund applicable to your specific booking before confirming; customer self-service cancellation is temporarily unavailable."
     },
     {
       title: "Delivery & Service Fulfillment Policy",
-      content: "As a transportation and travel service provider, our 'delivery' occurs when our chauffeur meets you at the designated pickup location and time. Booking confirmations are delivered digitally via email or WhatsApp immediately upon successful payment."
+      content: "Payment is arranged directly with the company through WhatsApp; the website does not currently have an online payment gateway. Confirm payment, service arrangements and proof of booking with the team."
     },
     {
       title: "Vehicle Integrity & Safety Standards",
@@ -49,27 +49,27 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
   const defaultContentAr = [
     {
       title: "نطاق الخدمات ونظرة عامة",
-      content: "تقدم ليمو مصر خدمات النقل الفاخر والليموزين في جميع أنحاء جمهورية مصر العربية، مع التخصص في تنقلات المطارات (مطار القاهرة، شرم الشيخ، الغردقة، برج العرب)، التنقلات بين المحافظات، خدمات المسار السريع VIP، وتعاقدات الشركات."
+      content: "توفر ليمو مصر طلب سيارات بسائق في أنحاء الجمهورية وخدمات نقل المطارات، ومنها القاهرة وسفنكس والغردقة وشرم الشيخ وبرج العرب. راجع مع الفريق توافر الخدمة ومحتوى باقات فاست تراك لرحلتك."
     },
     {
       title: "حجز وتأكيد الرحلات",
-      content: "يتم مراجعة الطلبات المقدمة عبر الموقع أو وسائل التواصل الرسمية بواسطة مركز العمليات على مدار 24 ساعة. يتم إرسال تأكيد الحجز النهائي وتفاصيل السائق عبر واتساب أو الاتصال المباشر."
+      content: "يراجع الفريق الطلبات المقدمة عبر الموقع أو قنوات التواصل الرسمية. تواصل مع الفريق لتأكيد التوافر وتفاصيل الحجز؛ إرسال الطلب وحده لا يعني تأكيد الحجز."
     },
     {
       title: "الأسعار والرسوم وتعدد العملات",
-      content: "تشمل الأسعار المعروضة السيارة الفاخرة، السائق المحترف، الوقود، ورسوم الطرق السريعة ما لم يذكر خلاف ذلك. ندعم التصفح والتحويل المتعدد للعملات (الجنيه المصري، الدولار، اليورو، الريال، الدينار) لراحة العملاء."
+      content: "بحسب الشركة، يشمل سعر السيارة المعروض تكاليف الرحلة بما فيها السائق والبنزين والحقائب ورسوم الطرق والكباري والانتظار والتوقفات الإضافية. وضّح خط السير كاملًا للفريق. أسعار الفنادق والشقق غير المعروضة تُحدد بالتواصل المباشر، وتؤكد الشركة عدم إضافة رسوم حجز لهذه الإقامات."
     },
     {
       title: "تتبع الرحلات الجوية ووقت الانتظار",
-      content: "يقوم فريق التشغيل بمتابعة حركة الطيران حياً عبر رقم الرحلة المزود. تتضمن الرحلات الدولية فترة انتظار مجانية تصل إلى 60 دقيقة بعد الهبوط، و30 دقيقة للرحلات الداخلية."
+      content: "اسأل الفريق عن توافر متابعة الرحلة ونقطة اللقاء ومدة الانتظار وأي رسوم إضافية تنطبق على طلب نقل المطار قبل التأكيد."
     },
     {
       title: "سياسة الإلغاء والاسترجاع",
-      content: "ندرك إمكانية تغيير خطط السفر. يمكن تعديل الموعد أو إلغاء الحجز واسترجاع المبلغ بالكامل مجاناً وبدون أي رسوم قبل 24 ساعة من موعد الانطلاق المحدد. الإلغاء المتأخر قد يخضع لرسوم جزئية."
+      content: "تواصل مع خدمة العملاء لطلب تعديل الحجز أو إلغائه، واسأل عن الشروط والاسترداد المطبقين على حجزك قبل التأكيد. إلغاء الحجز عبر حساب العميل غير متاح مؤقتًا."
     },
     {
       title: "سياسة التوصيل وتنفيذ الخدمة",
-      content: "بصفتنا مزود خدمات نقل، يتم 'توصيل' الخدمة بمجرد وصول السائق في الوقت والمكان المحددين مسبقاً. يتم تسليم تأكيدات الحجز والفواتير بشكل رقمي وفوري عبر البريد الإلكتروني أو واتساب بعد الدفع."
+      content: "يتم ترتيب الدفع مباشرة مع الشركة عبر واتساب؛ لا توجد حاليًا بوابة دفع إلكتروني على الموقع. راجع مع الفريق تفاصيل الدفع وتنفيذ الخدمة وإثبات الحجز."
     },
     {
       title: "قواعد السلامة والحفاظ على أسطول السيارات",

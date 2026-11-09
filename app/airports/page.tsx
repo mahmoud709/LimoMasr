@@ -28,7 +28,7 @@ export default async function AirportsPage(props: SeoProps) {
           <span className="inline-block mt-4 underline">{en ? "View transfer details" : "عرض تفاصيل النقل"}</span>
         </Link>)}</div>
       </section>
-      <p className="mt-8 leading-8">{en ? "Confirm availability, pricing and arrangements with the team before your trip. Airport-specific Fast Track availability must be checked separately." : "راجع التوافر والسعر وترتيبات النقل مع الفريق قبل رحلتك. توافر فاست تراك في مطار محدد يحتاج إلى مراجعة منفصلة."}</p>
+      <p className="mt-8 leading-8">{en ? "Confirm availability, pricing and arrangements with the team before your trip. Ask separately about Fast Track packages available for your flight." : "راجع التوافر والسعر وترتيبات النقل مع الفريق قبل رحلتك. استفسر بشكل منفصل عن باقات فاست تراك المتاحة لرحلتك."}</p>
     </main>
   </PublicLayout>;
 }
