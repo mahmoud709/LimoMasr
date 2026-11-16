@@ -11,15 +11,47 @@ type Section = { heading: string; body: string };
 type GuideText = { title: string; intro: string; sections: Section[]; action: string };
 type Guide = { path: keyof typeof serviceSeo; service: string; ar: GuideText; en: GuideText };
 const guides: Record<string, Guide> = {
+  "cairo-family-travel": {
+    path: "/blog/booking-guides/cairo-family-travel", service: "/private-tours",
+    ar: { title: "دليل زيارة القاهرة والجيزة للعائلات", intro: "تجمع القاهرة والجيزة بين الآثار والمتاحف وأماكن التنزه. التخطيط حسب أعمار الأطفال وموقع الإقامة يساعد الأسرة على الاستمتاع بالزيارة دون ازدحام الجدول.", sections: [
+      { heading: "ابدأ بما يناسب أسرتك", body: "يمكن تخصيص زيارة لهضبة الجيزة ورؤية الأهرامات وأبي الهول، ويوم آخر لمتحف أو منطقة من القاهرة التاريخية. اختر الأنشطة حسب اهتمامات الأسرة، وتحقق مسبقًا من أوقات الزيارة وإمكانية دخول الأطفال والأسعار من الجهة الرسمية." },
+      { heading: "اختر الإقامة حسب برنامجك", body: "قارن موقع الفندق أو الشقة الفندقية بمناطق الزيارة، وعدد غرف النوم وتوزيع الأسرّة والخدمات المطلوبة. اطلب السعر الإجمالي وشروط الدخول والإلغاء؛ لا تفترض أن الوجبات أو رسومًا معينة مشمولة." },
+      { heading: "خطط للتنقل بين الزيارات", body: "اترك وقتًا كافيًا للتنقل والراحة، خصوصًا مع الأطفال. عند طلب سيارة بسائق حدد عدد الركاب والحقائب ومقاعد الأطفال إن لزمت، وأرسل خط السير لتأكيد ملاءمة السيارة والترتيبات." },
+      { heading: "قبل الخروج", body: "جهز الماء ووسائل الحماية من الشمس، وراجع متطلبات الدخول وإمكانية الوصول لكل موقع. يمكنك سؤال فريق ليمو مصر عن النقل والإقامة أو مناقشة برنامج مرن؛ التذاكر والمرشد والخدمات الإضافية لا تُفترض ضمن العرض." },
+    ], action: "ناقش رحلة خاصة" },
+    en: { title: "A family guide to visiting Cairo and Giza", intro: "Cairo and Giza offer monuments, museums and places to explore. Planning around children's ages and your accommodation location can keep the schedule comfortable.", sections: [
+      { heading: "Start with your family's interests", body: "Consider a visit to the Giza Plateau to see the pyramids and Sphinx, and another day for a museum or historic Cairo. Choose activities for your group and check official opening hours, child access and current tickets in advance." },
+      { heading: "Choose accommodation around your plans", body: "Compare hotel or apartment locations with your intended visits, bedroom and bed arrangements, and facilities you need. Request the total price and check-in and cancellation terms; do not assume meals or fees are included." },
+      { heading: "Plan travel between visits", body: "Allow time for travel and breaks, especially with children. When requesting a chauffeured car, specify passengers, luggage and any child-seat needs and share the itinerary to check vehicle suitability and arrangements." },
+      { heading: "Before you set out", body: "Prepare water and sun protection, and check each attraction's access and entry requirements. You can ask Limo Egypt about transport and accommodation or discuss a flexible itinerary; tickets, guides and extra services should not be assumed included." },
+    ], action: "Discuss a private trip" },
+  },
+  "egypt-seven-day-itinerary": {
+    path: "/blog/booking-guides/egypt-seven-day-itinerary", service: "/private-tours",
+    ar: { title: "برنامج مقترح لزيارة مصر في 7 أيام", intro: "هذا مثال مرن للتخطيط الشخصي، وليس باقة ثابتة أو عرض سعر. يمكن تعديل الوجهات والمدة بحسب مواعيد الوصول واهتمامات المسافرين والتوافر.", sections: [
+      { heading: "اليومان الأول والثاني: القاهرة والجيزة", body: "خصص يوم الوصول للراحة حسب موعد الرحلة، ثم فكر في زيارة هضبة الجيزة أو أحد المتاحف. راجع المواعيد والتذاكر الرسمية، واترك وقتًا كافيًا للتنقل بدل جمع زيارات كثيرة في يوم واحد." },
+      { heading: "اليوم الثالث: القاهرة التاريخية", body: "يمكن اختيار جولة في إحدى مناطق القاهرة التاريخية أو تجربة هادئة قرب النيل. راعِ ساعات الدخول وأيام عمل الأماكن والأنشطة التي تناسب المجموعة." },
+      { heading: "اليومان الرابع والخامس: الأقصر", body: "إذا رغبت في إضافة الأقصر، خصص وقتًا للانتقال والإقامة، ثم اختر مواقع أثرية تناسب وقتك. تحقق من وسائل السفر والتوافر ومواعيد المعالم قبل تثبيت الخطة." },
+      { heading: "اليومان السادس والسابع: البحر الأحمر أو العودة", body: "يمكن مناقشة التوجه إلى الغردقة أو شرم الشيخ إذا سمحت مواعيد الانتقال، أو قضاء الوقت المتبقي في القاهرة قبل المغادرة. تختلف ملاءمة المسار حسب نقطة العودة ووسيلة السفر؛ لا تفترض إمكانية جميع الزيارات دون مراجعة الجدول." },
+      { heading: "كيف تطلب عرضًا يناسبك؟", body: "أرسل عدد المسافرين وتواريخ الرحلة ووجهاتك والإقامة المطلوبة وميزانيتك. يناقش الفريق البرنامج ومدته والسعر وما يشمله؛ التذاكر والطيران والإقامة والمرشد ليست مشمولة تلقائيًا." },
+    ], action: "ناقش برنامج رحلتك" },
+    en: { title: "A suggested seven-day Egypt itinerary", intro: "This is a flexible personal-planning example, not a fixed package or quote. Adapt the destinations and duration to arrival times, interests and availability.", sections: [
+      { heading: "Days 1 and 2: Cairo and Giza", body: "Allow time to rest on arrival, then consider the Giza Plateau or a museum. Check official hours and tickets and allow sufficient travel time instead of packing too many visits into one day." },
+      { heading: "Day 3: Historic Cairo", body: "Consider exploring an area of historic Cairo or spending a quieter period near the Nile. Check opening days and choose activities that suit your group." },
+      { heading: "Days 4 and 5: Luxor", body: "If Luxor interests you, allow time for the journey and accommodation, then choose archaeological sites that fit your schedule. Check transport, availability and attraction hours before finalising plans." },
+      { heading: "Days 6 and 7: Red Sea or return", body: "Consider Hurghada or Sharm El Sheikh if connections and timing allow, or spend the remaining time in Cairo before departure. The practical route depends on your return point and transport, so check the itinerary before committing." },
+      { heading: "How to request a tailored quote", body: "Share your passenger count, dates, preferred destinations, accommodation and budget. The team can discuss the itinerary, duration, price and inclusions; tickets, flights, hotels and guides are not automatically included." },
+    ], action: "Discuss your itinerary" },
+  },
   "airport-fast-track": {
     path: "/blog/booking-guides/airport-fast-track", service: "/fast-track",
-    ar: { title: "كيف تطلب خدمة فاست تراك بالمطار؟", intro: "تساعدك خدمة فاست تراك أو المساعدة بالمطار في ترتيبات الوصول أو المغادرة بحسب الباقة المتاحة؛ راجع نطاق الخدمة مع الفريق قبل الحجز.", sections: [
+    ar: { title: "كيف تطلب خدمة فاست تراك بالمطار؟", intro: "تتوفر خدمة فاست تراك حصريًا في مطار القاهرة الدولي للمساعدة في ترتيبات الوصول أو المغادرة بحسب الباقة المتاحة؛ راجع نطاق الخدمة مع الفريق قبل الحجز.", sections: [
       { heading: "حدد المطار والرحلة", body: "أرسل اسم المطار وتاريخ ووقت الرحلة ورقمها إن كان متاحًا، وحدد إن كنت تصل أم تغادر. وجود باقة في الموقع لا يضمن توفرها في مطار أو موعد معين؛ اطلب التأكيد أولًا." },
       { heading: "جهز بيانات المسافرين", body: "حدد عدد المسافرين وأسماءهم واحتياجات المساعدة المطلوبة. راجع مع الفريق المستندات اللازمة وطريقة تقديمها، ولا تشارك صورًا إضافية قبل معرفة الحاجة إليها." },
       { heading: "قارن الباقات ونقطة اللقاء", body: "اسأل عما تتضمنه الباقة ونقطة الالتقاء والتوقيت والسعر الإجمالي، وشروط التعديل والإلغاء. قد تختلف المساعدة وفق المطار والباقة والجهات المختصة." },
       { heading: "النقل ومستندات السفر", body: "لا تفترض أن سيارة المطار ضمن الباقة؛ اطلب النقل منفصلًا عند الحاجة. خدمة المساعدة لا تحل محل جواز السفر أو التأشيرة أو قرارات الجهات المختصة. إرسال الطلب لا يؤكد التوافر أو الحجز." },
     ], action: "استعرض باقات فاست تراك" },
-    en: { title: "How to request airport Fast Track assistance", intro: "Fast Track or airport assistance can support arrival or departure arrangements according to the available package. Review its scope with the team before booking.", sections: [
+    en: { title: "How to request airport Fast Track assistance", intro: "Fast Track is available exclusively at Cairo International Airport for arrival or departure assistance according to the available package. Review its scope with the team before booking.", sections: [
       { heading: "Identify your airport and flight", body: "Share the airport, flight date and time, flight number if available, and whether you are arriving or departing. A listed package does not guarantee availability at a specific airport or time; ask the team to confirm." },
       { heading: "Prepare passenger details", body: "Provide the number and names of passengers and any assistance needs. Ask the team which documents are needed and how to provide them; avoid sharing additional copies before confirming the need." },
       { heading: "Compare packages and meeting arrangements", body: "Ask what is included, where and when to meet, the total price, and change and cancellation conditions. Assistance can vary by airport, package and the decisions of the relevant authorities." },
@@ -128,6 +160,7 @@ export default async function BookingGuidePage(props: Props) {
         <p className="mt-6 leading-8">{text.intro}</p>
         {text.sections.map(section => <section key={section.heading} className="mt-10"><h2 className="text-2xl font-bold text-[#1a2b3c]">{section.heading}</h2><p className="mt-3 leading-8">{section.body}</p></section>)}
       </article>
+      {(slug === "cairo-family-travel" || slug === "egypt-seven-day-itinerary") && <p className="mt-8 leading-7 text-sm">{en ? "Check current visitor information with " : "راجع معلومات الزيارة الحالية على "}<a className="underline" href="https://egymonuments.gov.eg/archaeological-sites/giza-plateau/" target="_blank" rel="noreferrer">{en ? "Egypt's Ministry of Tourism and Antiquities" : "موقع وزارة السياحة والآثار"}</a>{en ? " and " : " و"}<a className="underline" href="https://www.experienceegypt.eg/en/attraction-details/292/historic-cairo" target="_blank" rel="noreferrer">Experience Egypt</a>.</p>}
       <div className="mt-10 flex flex-wrap gap-5"><Link href={withLang(guide.service, locale)} className="rounded-xl bg-[#1a2b3c] px-6 py-3 font-bold text-white">{text.action}</Link>
         {slug === "hotel-apartment-quotes" && <Link href={withLang("/hotel-apartments", locale)} className="self-center underline">{en ? "Request an apartment quote" : "اطلب عرض شقة فندقية"}</Link>}
         <Link href={withLang("/blog", locale)} className="self-center underline">{en ? "More travel guides" : "المزيد من أدلة السفر"}</Link></div>

@@ -27,9 +27,9 @@ export default async function FastTrackPage({ searchParams }: { searchParams?: P
       <main className="mx-auto w-full max-w-7xl px-6 md:px-8 py-32 relative z-10 flex flex-col overflow-hidden">
         <div className="animate-reveal-1">
           <SectionHeader as="h1" 
-            eyebrow={locale === 'ar' ? "المسار السريع" : "Fast Track"} 
-            title={locale === 'ar' ? "فاست تراك وخدمات المساعدة بالمطار في مصر" : "Airport Fast Track & Assistance in Egypt"} 
-            text={locale === 'ar' ? "وفر وقتك واعبر أسرع" : "Save your time and pass faster"} 
+            eyebrow={locale === 'ar' ? "المسار السريع" : "Fast Track"}
+            title={locale === 'ar' ? "فاست تراك مطار القاهرة الدولي" : "Cairo International Airport Fast Track"}
+            text={locale === 'ar' ? "خدمة فاست تراك متاحة حصريًا في مطار القاهرة الدولي." : "Fast Track is available exclusively at Cairo International Airport."}
           />
         </div>
         

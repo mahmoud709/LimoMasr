@@ -1017,6 +1017,8 @@ function BookingFormContent({
               </select>
             </div>
 
+            {accommodationType === "apartment" && <p role="note" className="rounded-xl border border-[#d0a755]/40 bg-[#fff9e9] p-4 text-sm leading-7 text-[#1a2b3c]">{isEn ? "To confirm an apartment booking, an advance deposit of at least one day’s rent is required and is non-refundable under the owners’ policy. Without a deposit, you can only choose from apartments available during your stay; confirm availability with the team." : "لتأكيد حجز الشقة يلزم عربون مقدم لا يقل عن إيجار يوم واحد، وهو غير مسترد وفق سياسة المؤجرين. دون عربون يمكنك الاختيار فقط من الشقق المتاحة خلال فترة إقامتك؛ راجع التوافر مع الفريق."}</p>}
+
             {accommodationType === "hotel" ? (
               <div>
                 <label className="block text-xs font-bold text-[#1a2b3c]/70 mb-1">

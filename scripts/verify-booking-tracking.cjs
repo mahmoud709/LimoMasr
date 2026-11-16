@@ -49,6 +49,20 @@ async function scenario(type,source,status,body,number="+201012345678",delayed=f
    assert.equal(missing.requests.length,0);assert.equal(missing.events.length,0);
   }
  }
+ const { cairoFastTrackPackages } = load("lib/fast-track-coverage.ts");
+ const packages = [
+  { id:"all", airport:"كل المطارات", translations:{en:{airport:"All Airports"}} },
+  { id:"cairo", airport:"القاهرة", translations:{en:{airport:"Cairo International Airport"}} },
+  { id:"other", airport:"الغردقة", translations:{en:{airport:"Hurghada"}} },
+  { id:"mixed", airport:"كل المطارات", translations:{en:{airport:"Hurghada"}} },
+  { id:"unknown", airport:"" }
+ ];
+ assert.deepEqual(Array.from(cairoFastTrackPackages(packages), x => x.id), ["all", "cairo"]);
+ const apartment = await scenario("apartment","web",201,{id:"qa"});
+ const hotel = await scenario("hotel","web",201,{id:"qa"});
+ assert(apartment.rendered.includes("non-refundable"), "Apartment deposit terms must be visible");
+ assert(!hotel.rendered.includes("non-refundable"), "Apartment deposit terms must not appear for hotel mode");
+ console.log("PASS: Cairo-only package selection and apartment deposit disclosure; no database/network.");
  console.log("PASS: 10 airport pickup/drop-off cases fix the correct endpoint, suppress stale daily state and reject missing other locations; no database/network/conversions.");
  console.log("PASS: "+checked+" failure/invalid-phone cases across five booking types; confirmed success and WhatsApp flow; concurrent submit lock. No database, network or real Google conversions.");
 })().catch(error=>{console.error(error);process.exitCode=1;});

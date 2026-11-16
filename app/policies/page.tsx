@@ -18,7 +18,7 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
   const defaultContentEn = [
     {
       title: "Service Scope & Overview",
-      content: "Limo Egypt offers chauffeur-driven car requests across Egypt and airport transfers including Cairo, Sphinx, Hurghada, Sharm El Sheikh and Borg El Arab. Check availability and Fast Track package inclusions for your journey with the team."
+      content: "Limo Egypt offers chauffeur-driven car requests across Egypt and airport transfers including Cairo, Sphinx, Hurghada, Sharm El Sheikh and Borg El Arab. Fast Track is available exclusively at Cairo International Airport. Check package availability and inclusions with the team."
     },
     {
       title: "Booking & Instant Confirmation",
@@ -26,15 +26,15 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
     },
     {
       title: "Pricing, Tolls & Multi-Currency",
-      content: "According to the company, the displayed car price includes trip costs, including the driver, fuel, luggage, road and bridge fees, waiting and additional stops. Share the complete itinerary with the team. Hotel and apartment prices not listed on the site are communicated directly; the company states it adds no booking fee for these stays."
+      content: "According to the company, the displayed car price includes trip costs, including the driver, fuel, luggage, road and bridge fees, parking, unlimited waiting until the customer exits, and additional stops, with no additional charge. Share the complete itinerary with the team. Hotel and apartment prices not listed on the site are communicated directly; the company states it adds no booking fee for these stays."
     },
     {
       title: "Flight Tracking & Complimentary Waiting",
-      content: "Ask the team whether flight monitoring is available, where to meet, and what waiting time and any additional charges apply to your airport transfer before confirming."
+      content: "The driver waits until the customer exits; waiting and parking are included in the displayed car price without an additional charge. Confirm the meeting point and flight-monitoring arrangements with the team."
     },
     {
       title: "Cancellation & Refund Policy",
-      content: "Contact customer service to request a change or cancellation. Ask for the conditions and any refund applicable to your specific booking before confirming; customer self-service cancellation is temporarily unavailable."
+      content: "Car and limousine bookings and Fast Track bookings can be cancelled with a refund free of charge at least 48 hours before the service. Hotel cancellations and refunds follow the individual hotel's policy; flight tickets follow the airline's policy. For serviced apartments, an advance deposit of at least one day's rent is non-refundable under the owners' policy. Without a deposit, customers can only choose from apartments available during their stay. For car or Fast Track cancellations within 48 hours, ask the team about the applicable conditions. Contact customer service to request cancellation; customer self-service cancellation is temporarily unavailable."
     },
     {
       title: "Delivery & Service Fulfillment Policy",
@@ -49,7 +49,7 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
   const defaultContentAr = [
     {
       title: "نطاق الخدمات ونظرة عامة",
-      content: "توفر ليمو مصر طلب سيارات بسائق في أنحاء الجمهورية وخدمات نقل المطارات، ومنها القاهرة وسفنكس والغردقة وشرم الشيخ وبرج العرب. راجع مع الفريق توافر الخدمة ومحتوى باقات فاست تراك لرحلتك."
+      content: "توفر ليمو مصر طلب سيارات بسائق في أنحاء الجمهورية وخدمات نقل المطارات، ومنها القاهرة وسفنكس والغردقة وشرم الشيخ وبرج العرب. فاست تراك متاحة حصريًا في مطار القاهرة الدولي. راجع مع الفريق توافر الباقات ومحتواها."
     },
     {
       title: "حجز وتأكيد الرحلات",
@@ -57,15 +57,15 @@ export default async function PoliciesPage({ searchParams }: { searchParams?: Pr
     },
     {
       title: "الأسعار والرسوم وتعدد العملات",
-      content: "بحسب الشركة، يشمل سعر السيارة المعروض تكاليف الرحلة بما فيها السائق والبنزين والحقائب ورسوم الطرق والكباري والانتظار والتوقفات الإضافية. وضّح خط السير كاملًا للفريق. أسعار الفنادق والشقق غير المعروضة تُحدد بالتواصل المباشر، وتؤكد الشركة عدم إضافة رسوم حجز لهذه الإقامات."
+      content: "بحسب الشركة، يشمل سعر السيارة المعروض تكاليف الرحلة بما فيها السائق والبنزين والحقائب ورسوم الطرق والكباري والمواقف والانتظار المفتوح حتى خروج العميل والتوقفات الإضافية دون أي مبلغ إضافي. وضّح خط السير كاملًا للفريق. أسعار الفنادق والشقق غير المعروضة تُحدد بالتواصل المباشر، وتؤكد الشركة عدم إضافة رسوم حجز لهذه الإقامات."
     },
     {
       title: "تتبع الرحلات الجوية ووقت الانتظار",
-      content: "اسأل الفريق عن توافر متابعة الرحلة ونقطة اللقاء ومدة الانتظار وأي رسوم إضافية تنطبق على طلب نقل المطار قبل التأكيد."
+      content: "ينتظر السائق حتى خروج العميل؛ الانتظار والمواقف مشمولان في سعر السيارة المعروض دون رسوم إضافية. راجع نقطة اللقاء وترتيبات متابعة الرحلة مع الفريق."
     },
     {
       title: "سياسة الإلغاء والاسترجاع",
-      content: "تواصل مع خدمة العملاء لطلب تعديل الحجز أو إلغائه، واسأل عن الشروط والاسترداد المطبقين على حجزك قبل التأكيد. إلغاء الحجز عبر حساب العميل غير متاح مؤقتًا."
+      content: "يمكن إلغاء حجوزات السيارات والليموزين والفاست تراك مع استرداد المبلغ دون رسوم قبل موعد الخدمة بـ48 ساعة على الأقل. تخضع حجوزات الفنادق لسياسة كل فندق، وتذاكر الطيران لسياسة شركة الطيران. للشقق الفندقية عربون مقدم لا يقل عن إيجار يوم واحد وهو غير مسترد وفق سياسة المؤجرين؛ وبدون عربون يتاح الاختيار فقط من الشقق المتاحة خلال فترة الإقامة. للإلغاء خلال أقل من 48 ساعة للسيارات أو فاست تراك، اسأل الفريق عن الشروط المطبقة. تواصل مع خدمة العملاء لطلب الإلغاء؛ إلغاء الحجز عبر حساب العميل غير متاح مؤقتًا."
     },
     {
       title: "سياسة التوصيل وتنفيذ الخدمة",

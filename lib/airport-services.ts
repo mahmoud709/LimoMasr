@@ -17,9 +17,9 @@ export function airportCopy(key: AirportKey, locale: Locale) {
     airportCheck: `Check your flight itinerary and make sure the airport is ${name} (${airport.code}). You can also review another airport transfer:`,
     otherPath: other.path, otherLabel: other.names.en + " transfers",
     faqs: [
-      { question: "What should I clarify for a pickup at " + name + "?", answer: "Send the flight details and destination. Ask the team to confirm the meeting point, pickup time and any waiting terms; submitting this form does not guarantee these details." },
+      { question: "What should I clarify for a pickup at " + name + "?", answer: "Send the flight details and destination. The driver waits until the customer exits without an additional waiting fee; confirm the meeting point and pickup time with the team." },
       { question: "Can I request a car to " + name + " for departure?", answer: "Yes. Include your pickup address, travel date and requested pickup time, and review the arrangements and quote with the team." },
-      { question: "Does this request include Fast Track?", answer: "This form requests car transport. Ask the team separately about available Fast Track packages and their inclusions for your airport and flight." },
+      { question: "Does this request include Fast Track?", answer: "This form requests car transport. Fast Track is available only at Cairo International Airport and must be requested separately." },
     ],
     arrival: "Arrival: airport pickup", arrivalText: "Tell us your arrival date and time, destination, passenger count and luggage requirements.",
     departure: "Departure: airport drop-off", departureText: "Tell us your pickup address, travel date, requested pickup time, passenger count and luggage requirements.",
@@ -31,9 +31,9 @@ export function airportCopy(key: AirportKey, locale: Locale) {
     airportCheck: `راجع تذكرة رحلتك وتأكد أن المطار هو ${name} (${airport.code}). يمكنك أيضًا مراجعة نقل مطار آخر:`,
     otherPath: other.path, otherLabel: "نقل " + other.names.ar,
     faqs: [
-      { question: "ماذا أوضح لطلب استقبال من " + name + "؟", answer: "أرسل بيانات الرحلة والوجهة. اطلب تأكيد نقطة اللقاء وموعد الاستقبال وشروط الانتظار مع الفريق؛ إرسال النموذج لا يضمن هذه التفاصيل." },
+      { question: "ماذا أوضح لطلب استقبال من " + name + "؟", answer: "أرسل بيانات الرحلة والوجهة. ينتظر السائق حتى خروج العميل دون رسوم انتظار إضافية؛ راجع نقطة اللقاء والموعد مع الفريق." },
       { question: "هل يمكن طلب توصيل إلى " + name + " للمغادرة؟", answer: "نعم. اذكر عنوان الانطلاق وتاريخ الرحلة ووقت الانطلاق المطلوب، وراجع الترتيبات وعرض السعر مع الفريق." },
-      { question: "هل يشمل الطلب فاست تراك؟", answer: "هذا النموذج لطلب النقل بالسيارة. استفسر من الفريق بشكل منفصل عن باقات فاست تراك المتاحة ومحتواها لمطارك ورحلتك." },
+      { question: "هل يشمل الطلب فاست تراك؟", answer: "هذا النموذج لطلب النقل بالسيارة. فاست تراك متاحة حصريًا في مطار القاهرة الدولي ويُطلب حجزها بشكل منفصل." },
     ],
     arrival: "الوصول: استقبال من المطار", arrivalText: "حدد تاريخ ووقت الوصول ووجهتك وعدد الركاب واحتياجات الأمتعة.",
     departure: "المغادرة: توصيل إلى المطار", departureText: "حدد عنوان الانطلاق وتاريخ الرحلة ووقت الانطلاق المطلوب وعدد الركاب والأمتعة.",

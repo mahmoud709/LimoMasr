@@ -14549,3 +14549,18 @@
 2026-11-09T08:25:51.435Z - INCOMING: /ar/cars | isRewritten: false | hasLocaleParam: false
 2026-11-09T08:25:56.714Z - INCOMING: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 | isRewritten: false | hasLocaleParam: false
 2026-11-09T08:25:56.725Z - REWRITE: /ar/cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5 -> /cars/%D8%B4%D9%8A%D8%B1%D9%8A-%D8%A3%D8%B1%D9%8A%D8%B2%D9%88-5?__locale=ar
+2026-11-09T12:49:29.125Z - ADMIN PASSTHROUGH: /admin
+2026-11-09T12:49:29.137Z - INCOMING: /admin | isRewritten: false | hasLocaleParam: false
+2026-11-09T12:49:29.150Z - REDIRECT: /admin -> /ar/admin
+2026-11-09T12:49:29.161Z - REWRITE: /ar/admin -> /admin?__locale=ar
+2026-11-09T12:49:29.175Z - INCOMING: /ar/admin | isRewritten: false | hasLocaleParam: false
+2026-11-09T12:49:29.190Z - ADMIN PASSTHROUGH: /ar/admin
+2026-11-09T12:49:32.389Z - REDIRECT: /admin/articles -> /ar/admin/articles
+2026-11-09T12:49:32.412Z - INCOMING: /admin/articles | isRewritten: false | hasLocaleParam: false
+2026-11-09T12:49:32.438Z - ADMIN PASSTHROUGH: /admin/articles
+2026-11-09T12:49:32.485Z - INCOMING: /ar/admin/articles | isRewritten: false | hasLocaleParam: false
+2026-11-09T12:49:32.505Z - ADMIN PASSTHROUGH: /ar/admin/articles
+2026-11-09T12:49:32.538Z - REWRITE: /ar/admin/articles -> /admin/articles?__locale=ar
+2026-11-09T12:49:33.135Z - INCOMING: /ar/admin/articles | isRewritten: false | hasLocaleParam: false
+2026-11-09T12:49:33.149Z - ADMIN PASSTHROUGH: /ar/admin/articles
+2026-11-09T12:49:33.166Z - REWRITE: /ar/admin/articles -> /admin/articles?__locale=ar

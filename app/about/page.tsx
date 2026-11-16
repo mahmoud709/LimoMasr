@@ -67,8 +67,8 @@ export default async function AboutPage({ searchParams }: { searchParams?: Promi
               </h3>
               <p className="text-[#1a2b3c]/70 leading-relaxed font-light text-base">
                 {locale === "en"
-                  ? "Skip the waiting lines at airports. The fast track service ensures that all arrival or departure procedures are completed smoothly and quickly."
-                  : "تخلص من عناء الانتظار في المطارات. خدمة المسار السريع تضمن لك إنهاء كافة الإجراءات بسلاسة وسرعة فائقة لحظة وصولك أو مغادرتك."}
+                  ? "Fast Track assistance is available exclusively at Cairo International Airport. Contact the team to check the package and arrangements for your trip."
+                  : "تتوفر خدمة المسار السريع حصريًا في مطار القاهرة الدولي. تواصل مع الفريق لمراجعة الباقة وترتيبات رحلتك."}
               </p>
             </div>
 

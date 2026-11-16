@@ -1,8 +1,15 @@
 # Content gaps and unpublished briefs — 11 October 2026
 
+## Client policy confirmation — 16 November 2026
+
+Fast Track is exclusive to Cairo International Airport. Public package UIs now retain Cairo and legacy all-airports labels while excluding packages that identify another airport or have conflicting labels. Pricing copy states that cars include the driver, fuel, parking and waiting until the customer exits; the existing daily-car currency display and admin currency ambiguity remain unresolved and must be fixed before claiming price accuracy. Apartment reservation policy: a non-refundable deposit of at least one day's rent, while without a deposit the customer chooses from apartments available during the stay. Hotel and flight conditions are determined by each hotel or airline. Local changes need deployment and verification; this update supersedes earlier coverage notes.
+
+
 These briefs are not routes, sitemap entries or promises of service availability. Existing public booking forms remain guest forms. A saved enquiry is not confirmation.
 
 ## Owner confirmation — 9 November 2026
+
+Two additional bilingual guides cover Cairo/Giza family planning and a flexible seven-day itinerary, bringing the locally prepared guides to eight. An English translation draft based on the Arabic Sharm/Hurghada article is in `sharm-hurghada-english-translation-draft.md`; the Arabic source's Al-Arqiya place name and marine access need editorial review. The draft is not connected to the database-backed article or indexable English route.
 
 The owner confirmed car transfers at Hurghada, Sharm El Sheikh and Borg El Arab airports; local landing pages are now prepared. The owner also confirmed Fast Track and reception/waiting in general but did not specify per-airport packages, inclusions or a waiting duration. Car prices include trip costs including roads, bridges, waiting and additional stops. Private trip enquiries include Cairo/Giza, Alexandria, Sharm, Hurghada and Luxor; programme and duration are discussed with the customer. Local changes require deployment. Older briefs below record the earlier state and are superseded where they conflict.
 

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/utils";
 import type { FastTrackPackage, Locale } from "@/lib/types";
+import { cairoFastTrackPackages } from "@/lib/fast-track-coverage";
 
 export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar", currency = "EGP", exchangeRate = 50 }: { packages: FastTrackPackage[]; title: string; viewAllText?: string; locale?: Locale; currency?: string; exchangeRate?: number; }) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -66,9 +67,9 @@ export function FastTrackCarousel({ packages, title, viewAllText, locale = "ar",
         className="flex overflow-x-auto gap-5 pb-8 snap-x snap-mandatory scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {packages.map((item) => {
+        {cairoFastTrackPackages(packages).map((item) => {
           const name = locale === "en" ? item.translations?.en?.name || item.name : item.name;
-          const airport = locale === "en" ? item.translations?.en?.airport || item.airport : item.airport;
+          const airport = isEn ? "Cairo International Airport" : "القاهرة الدولي";
           const description = locale === "en" ? item.translations?.en?.description || item.description : item.description;
           const tagLeft = locale === "en" ? item.translations?.en?.tagLeft || item.tagLeft : item.tagLeft;
           const tagRight = locale === "en" ? item.translations?.en?.tagRight || item.tagRight : item.tagRight;

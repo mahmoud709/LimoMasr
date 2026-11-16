@@ -5,6 +5,7 @@ import { useState } from "react";
 import { BookingForm } from "@/components/BookingForm";
 import { formatCurrency } from "@/lib/utils";
 import type { FastTrackPackage, Locale } from "@/lib/types";
+import { cairoFastTrackPackages } from "@/lib/fast-track-coverage";
 
 export function FastTrackClient({ 
   packages, 
@@ -19,14 +20,15 @@ export function FastTrackClient({
   currency?: string;
   exchangeRate?: number;
 }) {
-  const [selectedPackage, setSelectedPackage] = useState<FastTrackPackage | null>(packages[0] || null);
+  const cairoPackages = cairoFastTrackPackages(packages);
+  const [selectedPackage, setSelectedPackage] = useState<FastTrackPackage | null>(cairoPackages[0] || null);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] animate-reveal-2">
       <section className="grid gap-6 md:grid-cols-2">
-        {packages.map((item) => {
+        {cairoPackages.map((item) => {
           const name = item.translations?.[locale]?.name || item.name;
-          const airport = item.translations?.[locale]?.airport || item.airport;
+          const airport = locale === "en" ? "Cairo International Airport" : "القاهرة الدولي";
           const description = item.translations?.[locale]?.description || item.description;
           const tagLeft = item.translations?.[locale]?.tagLeft || item.tagLeft;
           const tagRight = item.translations?.[locale]?.tagRight || item.tagRight;
@@ -65,7 +67,7 @@ export function FastTrackClient({
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <p className="text-xs font-bold tracking-widest text-[#d0a755] uppercase">
-                      {locale === 'ar' ? 'مطار ' : 'Airport '}{airport}
+                      {locale === 'ar' ? 'مطار ' : ''}{airport}
                     </p>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${selectedPackage?.id === item.id ? 'border-[#d0a755] bg-[#d0a755]' : 'border-black/10'}`}>
                       {selectedPackage?.id === item.id && <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
@@ -104,13 +106,13 @@ export function FastTrackClient({
         })}
       </section>
       <div className="h-fit sticky top-32 transition-all duration-500">
-        <BookingForm 
+        {selectedPackage ? <BookingForm
           type="fast_track" 
           serviceRefId={selectedPackage?.id ?? "fast-track"} 
           serviceName={selectedPackage ? (
             locale === "en"
-              ? `Fast Track: ${selectedPackage.translations?.en?.name || selectedPackage.name} - ${selectedPackage.translations?.en?.airport || selectedPackage.airport} Airport`
-              : `المسار السريع: ${selectedPackage.translations?.ar?.name || selectedPackage.name} - مطار ${selectedPackage.translations?.ar?.airport || selectedPackage.airport}`
+              ? `Fast Track: ${selectedPackage.translations?.en?.name || selectedPackage.name} - Cairo International Airport`
+              : `المسار السريع: ${selectedPackage.translations?.ar?.name || selectedPackage.name} - مطار القاهرة الدولي`
           ) : (locale === "en" ? "Fast Track Booking" : "حجز المسار السريع")} 
           whatsappNumber={whatsappNumber} 
           price={selectedPackage?.price} 
@@ -118,7 +120,7 @@ export function FastTrackClient({
           locale={locale}
           currency={currency}
           exchangeRate={exchangeRate}
-        />
+        /> : <p role="status" className="rounded-xl border p-5">{locale === "en" ? "No Cairo Fast Track packages are currently listed. Contact our team to check availability." : "لا توجد باقات فاست تراك لمطار القاهرة معروضة حاليًا. تواصل مع الفريق للاستفسار عن التوافر."}</p>}
       </div>
     </div>
   );

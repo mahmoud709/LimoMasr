@@ -71,6 +71,8 @@ export default async function BlogPage({
                 { slug: "airport-fast-track", ar: "دليل طلب فاست تراك", en: "Requesting airport Fast Track" },
                 { slug: "flight-quote", ar: "كيف تطلب عرض طيران؟", en: "How to request a flight quote" },
                 { slug: "serviced-apartment", ar: "اختيار شقة فندقية", en: "Choosing a serviced apartment" },
+                { slug: "cairo-family-travel", ar: "دليل القاهرة والجيزة للعائلات", en: "Cairo and Giza family guide" },
+                { slug: "egypt-seven-day-itinerary", ar: "برنامج مقترح لسبعة أيام في مصر", en: "A suggested seven-day Egypt itinerary" },
               ].map(guide => <Link key={guide.slug} href={`/${locale}/blog/booking-guides/${guide.slug}`} className="rounded-2xl border border-black/10 bg-white p-6 font-bold text-[#1a2b3c] hover:border-[#d0a755]">{isEn ? guide.en : guide.ar} <span aria-hidden="true">←</span></Link>)}
             </div>
           </section>
