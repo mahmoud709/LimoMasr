@@ -228,10 +228,10 @@ export function HotelsCarousel({
               <article className="luxury-panel p-6 md:p-8 flex flex-col h-full bg-white relative overflow-hidden group hover:border-[#d0a755] transition-all duration-300">
                 {/* Floating Badges */}
                 <div className="absolute top-4 left-4 right-4 z-10 flex justify-between pointer-events-none">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#d0a755] text-[#1a2b3c] text-[10px] font-black shadow-md uppercase flex items-center gap-1">
+                  {item.rating > 0 && <span className="px-2.5 py-0.5 rounded-full bg-[#d0a755] text-[#1a2b3c] text-[10px] font-black shadow-md uppercase flex items-center gap-1">
                     <FiStar className="w-3 h-3 fill-current" />
-                    {item.rating || 5} {isEn ? "Stars" : "نجوم"}
-                  </span>
+                    {item.rating} {isEn ? "Stars" : "نجوم"}
+                  </span>}
                   <span className="px-2.5 py-0.5 rounded-full bg-[#1a2b3c] text-[#d0a755] text-[10px] font-black border border-[#d0a755]/20 shadow-md uppercase">
                     {tag}
                   </span>
@@ -240,16 +240,17 @@ export function HotelsCarousel({
                 {/* Hotel Image */}
                 <div className="w-[calc(100%+3rem)] md:w-[calc(100%+4rem)] h-56 -mt-6 md:-mt-8 -mx-6 md:-mx-8 mb-6 relative overflow-hidden rounded-t-2xl bg-gray-50 shrink-0">
                   
-                  <ResponsiveImage
+                  <div className="absolute inset-0 flex items-center justify-center text-sm text-[#1a2b3c]/60">{isEn ? "Hotel photo unavailable" : "صورة الفندق غير متاحة"}</div>
+                  {item.image && <ResponsiveImage
                     src={item.image}
                     alt={name}
                     compression="auto:eco"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="relative z-10 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80";
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
                     }}
-                  />
+                  />}
                 </div>
 
                 {/* Location */}
@@ -283,7 +284,7 @@ export function HotelsCarousel({
                 <div className="mt-6 pt-4 border-t border-black/5 flex flex-wrap items-center justify-between gap-2 relative z-10">
                   <div className="flex flex-col" dir={isEn ? "ltr" : "rtl"}>
                     <span className="text-[10px] font-bold text-[#1a2b3c]/50 uppercase tracking-wider">
-                      {isEn ? "Best Live Rates" : "أفضل الأسعار المتاحة"}
+                      {isEn ? "Hotel booking" : "حجز الفندق"}
                     </span>
                     <span className="text-sm font-black text-[#d0a755]">
                       {isEn ? "Price on Request" : "السعر عند الطلب"}

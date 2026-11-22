@@ -2,21 +2,11 @@ import { verifySession } from "@/lib/session-signing";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-function logDebug(message: string) {
-  if (process.env.NODE_ENV !== "development") return;
-  fetch("http://localhost:3000/api/log", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message }),
-  }).catch(() => {});
-}
-
 export function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
-  const isRewritten = req.headers.has("x-locale-rewritten");
-  const hasLocaleParam = req.nextUrl.searchParams.has("__locale");
 
-  logDebug(`INCOMING: ${pathname}${search} | isRewritten: ${isRewritten} | hasLocaleParam: ${hasLocaleParam}`);
+
+
 
   // 1. Let internal, API, and static files pass through directly
   if (
@@ -24,7 +14,7 @@ export function proxy(req: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.includes(".")
   ) {
-    logDebug(`PASSTHROUGH: ${pathname}`);
+
     return NextResponse.next();
   }
 
@@ -41,16 +31,16 @@ export function proxy(req: NextRequest) {
   // 2. Protect Admin dashboard
   if (normalizedPath.startsWith("/admin")) {
     if (normalizedPath === "/admin/login") {
-      logDebug(`ADMIN LOGIN: ${pathname}`);
+
     } else {
       const token = req.cookies.get("admin-token")?.value;
       if (verifySession("admin", token) !== "admin") {
-        logDebug(`ADMIN REDIRECT: ${pathname} -> /admin/login`);
+
         const locale = hasEnPrefix ? "en" : "ar";
         const loginUrl = new URL(`/${locale}/admin/login`, req.url);
         return NextResponse.redirect(loginUrl);
       }
-      logDebug(`ADMIN PASSTHROUGH: ${pathname}`);
+
     }
   }
 
@@ -73,7 +63,6 @@ export function proxy(req: NextRequest) {
     requestHeaders.set("x-site-locale", locale);
     requestHeaders.set("x-site-path", restOfPath);
 
-    logDebug(`REWRITE: ${pathname} -> ${rewriteUrl.pathname}${rewriteUrl.search}`);
 
     const response = NextResponse.rewrite(rewriteUrl, {
       request: {
@@ -91,7 +80,7 @@ export function proxy(req: NextRequest) {
   const locale = storedLocale === "en" ? "en" : "ar";
 
   const redirectUrl = new URL(`/${locale}${pathname === "/" ? "" : pathname}${search}`, req.url);
-  logDebug(`REDIRECT: ${pathname} -> ${redirectUrl.pathname}`);
+
   return NextResponse.redirect(redirectUrl);
 }
 
